@@ -1,0 +1,640 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		903DED2E290AABA800FB36D6 /* TorrentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED2D290AABA800FB36D6 /* TorrentAddView.swift */; };
+		903DED30290AADB300FB36D6 /* TorrentAddMagnetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED2F290AADB300FB36D6 /* TorrentAddMagnetView.swift */; };
+		903DED32290AADC200FB36D6 /* TorrentAddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED31290AADC200FB36D6 /* TorrentAddFileView.swift */; };
+		903DED3B290E7E7E00FB36D6 /* ServerRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED3A290E7E7E00FB36D6 /* ServerRowView.swift */; };
+		903DED3D290E8A9000FB36D6 /* ServerAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED3C290E8A9000FB36D6 /* ServerAddView.swift */; };
+		9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA2229080E53006C3960 /* qBitControlApp.swift */; };
+		9082FA2529080E53006C3960 /* ServersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA2429080E53006C3960 /* ServersView.swift */; };
+		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
+		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
+		9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4C29082208006C3960 /* qBittorrentClass.swift */; };
+		9082FA4F2908248B006C3960 /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4E2908248B006C3960 /* LoggedInView.swift */; };
+		909F850E290FFB73003FC051 /* TorrentAddOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */; };
+		90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A482909267A001E9E7F /* AuthClass.swift */; };
+		90EF6A4B29092AF1001E9E7F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4A29092AF1001E9E7F /* MainView.swift */; };
+		90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */; };
+		90EF6A4F29095594001E9E7F /* Structures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29095594001E9E7F /* Structures.swift */; };
+		90EF6A5129095ACC001E9E7F /* TorrentRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5029095ACC001E9E7F /* TorrentRowView.swift */; };
+		90EF6A5329098968001E9E7F /* TorrentDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5229098967001E9E7F /* TorrentDetailsView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9082FA3029080E55006C3960 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9082FA1729080E53006C3960 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9082FA1E29080E53006C3960;
+			remoteInfo = TorrentAttempt;
+		};
+		9082FA3A29080E55006C3960 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9082FA1729080E53006C3960 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9082FA1E29080E53006C3960;
+			remoteInfo = TorrentAttempt;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		903DED2D290AABA800FB36D6 /* TorrentAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddView.swift; sourceTree = "<group>"; };
+		903DED2F290AADB300FB36D6 /* TorrentAddMagnetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddMagnetView.swift; sourceTree = "<group>"; };
+		903DED31290AADC200FB36D6 /* TorrentAddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddFileView.swift; sourceTree = "<group>"; };
+		903DED3A290E7E7E00FB36D6 /* ServerRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerRowView.swift; sourceTree = "<group>"; };
+		903DED3C290E8A9000FB36D6 /* ServerAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddView.swift; sourceTree = "<group>"; };
+		9082FA1F29080E53006C3960 /* qBitRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qBitRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9082FA2229080E53006C3960 /* qBitControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlApp.swift; sourceTree = "<group>"; };
+		9082FA2429080E53006C3960 /* ServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersView.swift; sourceTree = "<group>"; };
+		9082FA2629080E55006C3960 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9082FA2929080E55006C3960 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		9082FA2F29080E55006C3960 /* qBitControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		9082FA4C29082208006C3960 /* qBittorrentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClass.swift; sourceTree = "<group>"; };
+		9082FA4E2908248B006C3960 /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
+		909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddOptionsView.swift; sourceTree = "<group>"; };
+		90EF6A482909267A001E9E7F /* AuthClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClass.swift; sourceTree = "<group>"; };
+		90EF6A4A29092AF1001E9E7F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
+		90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitRequestClass.swift; sourceTree = "<group>"; };
+		90EF6A4E29095594001E9E7F /* Structures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Structures.swift; sourceTree = "<group>"; };
+		90EF6A5029095ACC001E9E7F /* TorrentRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentRowView.swift; sourceTree = "<group>"; };
+		90EF6A5229098967001E9E7F /* TorrentDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9082FA1C29080E53006C3960 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9082FA2C29080E55006C3960 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9082FA3629080E55006C3960 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		903DED2B290A89E800FB36D6 /* TorrentView */ = {
+			isa = PBXGroup;
+			children = (
+				9082FA4E2908248B006C3960 /* LoggedInView.swift */,
+				90EF6A5029095ACC001E9E7F /* TorrentRowView.swift */,
+				90EF6A5229098967001E9E7F /* TorrentDetailsView.swift */,
+				903DED2D290AABA800FB36D6 /* TorrentAddView.swift */,
+				903DED2F290AADB300FB36D6 /* TorrentAddMagnetView.swift */,
+				903DED31290AADC200FB36D6 /* TorrentAddFileView.swift */,
+				909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */,
+			);
+			path = TorrentView;
+			sourceTree = "<group>";
+		};
+		903DED2C290A8A2000FB36D6 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				90EF6A482909267A001E9E7F /* AuthClass.swift */,
+				9082FA4C29082208006C3960 /* qBittorrentClass.swift */,
+				90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */,
+			);
+			path = Classes;
+			sourceTree = "<group>";
+		};
+		903DED39290E7DE100FB36D6 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				9082FA2429080E53006C3960 /* ServersView.swift */,
+				903DED3A290E7E7E00FB36D6 /* ServerRowView.swift */,
+				903DED3C290E8A9000FB36D6 /* ServerAddView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		9082FA1629080E53006C3960 = {
+			isa = PBXGroup;
+			children = (
+				9082FA2129080E53006C3960 /* qBitControl */,
+				9082FA2029080E53006C3960 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9082FA2029080E53006C3960 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9082FA1F29080E53006C3960 /* qBitRemote.app */,
+				9082FA2F29080E55006C3960 /* qBitControlTests.xctest */,
+				9082FA3929080E55006C3960 /* qBitControlUITests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9082FA2129080E53006C3960 /* qBitControl */ = {
+			isa = PBXGroup;
+			children = (
+				9082FA2229080E53006C3960 /* qBitControlApp.swift */,
+				90EF6A4A29092AF1001E9E7F /* MainView.swift */,
+				903DED39290E7DE100FB36D6 /* Login */,
+				903DED2B290A89E800FB36D6 /* TorrentView */,
+				903DED2C290A8A2000FB36D6 /* Classes */,
+				90EF6A4E29095594001E9E7F /* Structures.swift */,
+				9082FA2829080E55006C3960 /* Preview Content */,
+				9082FA2629080E55006C3960 /* Assets.xcassets */,
+			);
+			path = qBitControl;
+			sourceTree = "<group>";
+		};
+		9082FA2829080E55006C3960 /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				9082FA2929080E55006C3960 /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9082FA1E29080E53006C3960 /* qBitControl */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9082FA4329080E55006C3960 /* Build configuration list for PBXNativeTarget "qBitControl" */;
+			buildPhases = (
+				9082FA1B29080E53006C3960 /* Sources */,
+				9082FA1C29080E53006C3960 /* Frameworks */,
+				9082FA1D29080E53006C3960 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = qBitControl;
+			productName = TorrentAttempt;
+			productReference = 9082FA1F29080E53006C3960 /* qBitRemote.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9082FA2E29080E55006C3960 /* qBitControlTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9082FA4629080E55006C3960 /* Build configuration list for PBXNativeTarget "qBitControlTests" */;
+			buildPhases = (
+				9082FA2B29080E55006C3960 /* Sources */,
+				9082FA2C29080E55006C3960 /* Frameworks */,
+				9082FA2D29080E55006C3960 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9082FA3129080E55006C3960 /* PBXTargetDependency */,
+			);
+			name = qBitControlTests;
+			productName = TorrentAttemptTests;
+			productReference = 9082FA2F29080E55006C3960 /* qBitControlTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		9082FA3829080E55006C3960 /* qBitControlUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9082FA4929080E55006C3960 /* Build configuration list for PBXNativeTarget "qBitControlUITests" */;
+			buildPhases = (
+				9082FA3529080E55006C3960 /* Sources */,
+				9082FA3629080E55006C3960 /* Frameworks */,
+				9082FA3729080E55006C3960 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9082FA3B29080E55006C3960 /* PBXTargetDependency */,
+			);
+			name = qBitControlUITests;
+			productName = TorrentAttemptUITests;
+			productReference = 9082FA3929080E55006C3960 /* qBitControlUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9082FA1729080E53006C3960 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1400;
+				LastUpgradeCheck = 1400;
+				TargetAttributes = {
+					9082FA1E29080E53006C3960 = {
+						CreatedOnToolsVersion = 14.0.1;
+					};
+					9082FA2E29080E55006C3960 = {
+						CreatedOnToolsVersion = 14.0.1;
+						TestTargetID = 9082FA1E29080E53006C3960;
+					};
+					9082FA3829080E55006C3960 = {
+						CreatedOnToolsVersion = 14.0.1;
+						TestTargetID = 9082FA1E29080E53006C3960;
+					};
+				};
+			};
+			buildConfigurationList = 9082FA1A29080E53006C3960 /* Build configuration list for PBXProject "qBitControl" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9082FA1629080E53006C3960;
+			productRefGroup = 9082FA2029080E53006C3960 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9082FA1E29080E53006C3960 /* qBitControl */,
+				9082FA2E29080E55006C3960 /* qBitControlTests */,
+				9082FA3829080E55006C3960 /* qBitControlUITests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9082FA1D29080E53006C3960 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */,
+				9082FA2729080E55006C3960 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9082FA2D29080E55006C3960 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9082FA3729080E55006C3960 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9082FA1B29080E53006C3960 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */,
+				9082FA2529080E53006C3960 /* ServersView.swift in Sources */,
+				903DED2E290AABA800FB36D6 /* TorrentAddView.swift in Sources */,
+				90EF6A5129095ACC001E9E7F /* TorrentRowView.swift in Sources */,
+				909F850E290FFB73003FC051 /* TorrentAddOptionsView.swift in Sources */,
+				903DED3B290E7E7E00FB36D6 /* ServerRowView.swift in Sources */,
+				90EF6A4B29092AF1001E9E7F /* MainView.swift in Sources */,
+				903DED32290AADC200FB36D6 /* TorrentAddFileView.swift in Sources */,
+				90EF6A5329098968001E9E7F /* TorrentDetailsView.swift in Sources */,
+				903DED3D290E8A9000FB36D6 /* ServerAddView.swift in Sources */,
+				90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */,
+				903DED30290AADB300FB36D6 /* TorrentAddMagnetView.swift in Sources */,
+				9082FA4F2908248B006C3960 /* LoggedInView.swift in Sources */,
+				9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */,
+				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
+				90EF6A4F29095594001E9E7F /* Structures.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9082FA2B29080E55006C3960 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9082FA3529080E55006C3960 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9082FA3129080E55006C3960 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9082FA1E29080E53006C3960 /* qBitControl */;
+			targetProxy = 9082FA3029080E55006C3960 /* PBXContainerItemProxy */;
+		};
+		9082FA3B29080E55006C3960 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9082FA1E29080E53006C3960 /* qBitControl */;
+			targetProxy = 9082FA3A29080E55006C3960 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		9082FA4129080E55006C3960 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9082FA4229080E55006C3960 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9082FA4429080E55006C3960 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 626XV358Y5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = qBitControl;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControl;
+				PRODUCT_NAME = qBitRemote;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9082FA4529080E55006C3960 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "";
+				DEVELOPMENT_TEAM = 626XV358Y5;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = qBitControl;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControl;
+				PRODUCT_NAME = qBitRemote;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		9082FA4729080E55006C3960 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitControl";
+			};
+			name = Debug;
+		};
+		9082FA4829080E55006C3960 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitControl";
+			};
+			name = Release;
+		};
+		9082FA4A29080E55006C3960 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TorrentAttempt;
+			};
+			name = Debug;
+		};
+		9082FA4B29080E55006C3960 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = TorrentAttempt;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9082FA1A29080E53006C3960 /* Build configuration list for PBXProject "qBitControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9082FA4129080E55006C3960 /* Debug */,
+				9082FA4229080E55006C3960 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9082FA4329080E55006C3960 /* Build configuration list for PBXNativeTarget "qBitControl" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9082FA4429080E55006C3960 /* Debug */,
+				9082FA4529080E55006C3960 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9082FA4629080E55006C3960 /* Build configuration list for PBXNativeTarget "qBitControlTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9082FA4729080E55006C3960 /* Debug */,
+				9082FA4829080E55006C3960 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9082FA4929080E55006C3960 /* Build configuration list for PBXNativeTarget "qBitControlUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9082FA4A29080E55006C3960 /* Debug */,
+				9082FA4B29080E55006C3960 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9082FA1729080E53006C3960 /* Project object */;
+}
