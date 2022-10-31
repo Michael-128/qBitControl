@@ -19,7 +19,7 @@ qBitControl is an alternative to qBittorrents' Web UI for iPhone users.
 6. Build
 
 
-## Features TODO:
+## TODO:
 - Searching torrents by category and tags.
 - Viewing and managing torrents' files.
 - Viewing and managing peers.
