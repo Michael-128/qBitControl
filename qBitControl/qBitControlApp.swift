@@ -1,6 +1,6 @@
 //
-//  TorrentAttemptApp.swift
-//  TorrentAttempt
+//  qBitControltApp.swift
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 25/10/2022.
 //

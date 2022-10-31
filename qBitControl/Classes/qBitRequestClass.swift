@@ -1,6 +1,6 @@
 //
 //  qBitRequestClass.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 26/10/2022.
 //

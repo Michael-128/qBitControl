@@ -1,6 +1,6 @@
 //
 //  TorrentAddMagnetView.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 27/10/2022.
 //

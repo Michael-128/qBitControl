@@ -1,6 +1,6 @@
 //
 //  qBittorrentClass.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 25/10/2022.
 //

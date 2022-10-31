@@ -1,6 +1,6 @@
 //
 //  ServerRowView.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 30/10/2022.
 //
@@ -19,6 +19,7 @@ struct ServerRowView: View {
     private let defaults = UserDefaults.standard
     
     @Binding var servers: [Server]
+    @Binding var isConnecting: [String: Bool]
     
     func refreshServers() -> Void {
         if let server = defaults.object(forKey: "servers") as? Data {
@@ -37,6 +38,10 @@ struct ServerRowView: View {
                 Text(friendlyName)
             } else {
                 Text(ip)
+            }
+            if isConnecting[id] ?? false {
+                ProgressView().progressViewStyle(.circular)
+                    .padding(.leading, 1)
             }
             Spacer()
             Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -82,6 +87,6 @@ struct ServerRowView: View {
 
 struct ServerRowView_Previews: PreviewProvider {
     static var previews: some View {
-        ServerRowView(id: "test", friendlyName: "", ip: "http://192.168.1.106:8080", username: "admin", password: "adminadmin", servers: .constant([]))
+        MainView()
     }
 }

@@ -1,6 +1,6 @@
 //
 //  ServerAddView.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 30/10/2022.
 //
@@ -36,7 +36,7 @@ struct ServerAddView: View {
                 Section(header: Text("Information")) {
                     TextField("Name", text: $friendlyName)
                         .autocapitalization(.none)
-                    TextField("IP:PORT", text: $ip)
+                    TextField("http(s)://IP:PORT", text: $ip)
                         .autocapitalization(.none)
                     TextField("Username", text: $username)
                         .autocapitalization(.none)
@@ -45,9 +45,9 @@ struct ServerAddView: View {
                 
                 Section {
                     Button {
-                        /*if !ip.hasPrefix("http://") || !ip.hasPrefix("https://") {
+                        if !(ip.starts(with: "http://") || ip.starts(with: "https://")) || username.count < 1 || password.count < 1 {
                             return
-                        }*/
+                        }
                         
                         var loadedServers: [Server] = []
                         

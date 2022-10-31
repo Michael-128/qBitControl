@@ -1,6 +1,6 @@
 //
 //  ContentView.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 25/10/2022.
 //
@@ -12,6 +12,8 @@ struct ServersView: View {
     @State private var cookie1 = qBittorrent.getCookie()
     @Binding var isLoggedIn: Bool
     @State private var isLoginFailed = false
+    
+    @State private var isConnecting: [String: Bool] = [:]
     
     @State private var isServerAddView = false
     
@@ -46,6 +48,8 @@ struct ServersView: View {
                     ForEach(servers, id: \.id) {
                         server in
                         Button {
+                            isConnecting[server.id] = true
+                            
                             let cookie = Auth.getCookie(id: server.id)
                             
                             if cookie.contains("SID") {
@@ -69,7 +73,7 @@ struct ServersView: View {
                                 }
                             })
                         } label: {
-                            ServerRowView(id: server.id, friendlyName: server.name, ip: server.ip, username: server.username, password: server.password, servers: $servers)
+                            ServerRowView(id: server.id, friendlyName: server.name, ip: server.ip, username: server.username, password: server.password, servers: $servers, isConnecting: $isConnecting)
                         }
                     }
                 }
@@ -89,6 +93,6 @@ struct ServersView: View {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ServersView(isLoggedIn: .constant(false))
+        MainView()
     }
 }

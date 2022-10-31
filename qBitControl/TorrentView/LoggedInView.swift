@@ -1,6 +1,6 @@
 //
 //  LoggedInView.swift
-//  TorrentAttempt
+//  qBitControl
 //
 //  Created by Michał Grzegoszczyk on 25/10/2022.
 //
@@ -127,7 +127,6 @@ struct LoggedInView: View {
                         if searchQuery == "" || torrent.name.lowercased().contains(searchQuery.lowercased()) {
                             NavigationLink {
                                 TorrentDetailsView(torrent: torrent)
-                                //TorrentDetailsView(hash: torrent.hash)
                             } label: {
                                 TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
                             }
