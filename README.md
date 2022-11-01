@@ -1,6 +1,6 @@
 # qBitControl
 
-qBitControl is an alternative to qBittorrents' Web UI for iPhone users.
+qBittorrent client for iOS devices.
 
 ## Features
 - Adding multiple servers
