@@ -165,12 +165,12 @@ struct TorrentDetailsView: View {
             
         }.onDisappear() {
             timer?.invalidate()
-        }.alert("Delete Torrent",isPresented: $presentDeleteAlert) {
-            Button("Delete Torrent") {
+        }.confirmationDialog("Delete Torrent",isPresented: $presentDeleteAlert) {
+            Button("Delete Torrent", role: .destructive) {
                 presentationMode.wrappedValue.dismiss()
                 qBittorrent.deleteTorrent(hash: torrent.hash)
             }
-            Button("Delete Torrent with Files") {
+            Button("Delete Torrent with Files", role: .destructive) {
                 presentationMode.wrappedValue.dismiss()
                 qBittorrent.deleteTorrent(hash: torrent.hash, deleteFiles: true)
             }

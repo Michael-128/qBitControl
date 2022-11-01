@@ -47,7 +47,7 @@ struct ServerRowView: View {
             Image(systemName: "rectangle.portrait.and.arrow.right")
         }
         .contextMenu() {
-            Button {
+            Button(role: .destructive) {
                 var loadedServers: [Server] = []
                 
                 if let servers = defaults.object(forKey: "servers") as? Data {

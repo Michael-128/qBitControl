@@ -21,52 +21,46 @@ struct TorrentRowView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Image(systemName: "\(qBittorrent.getStateIcon(state: state))")
-                    .padding(.trailing, iconLeftPadding)
-                    .foregroundColor(qBittorrent.getStateColor(state: state))
-                Spacer()
+            HStack(alignment: .bottom) {
                 Text(name)
                     .lineLimit(1)
                 Spacer()
-            }
+            }.padding(.bottom, -1)
             
             ProgressView(value: progress)
                 .progressViewStyle(LinearProgressViewStyle(tint: qBittorrent.getStateColor(state: state)))
             
-            HStack(alignment: .center) {
+            HStack(spacing: 3.5) {
                 Group {
-                    Image(systemName: "arrow.down.circle")
-                        .padding(.trailing, iconLeftPadding)
-                    Text("\(qBittorrent.getFormatedSize(size: dlspeed))/s")
+                    Image(systemName: "\(qBittorrent.getStateIcon(state: state))")
+                        .foregroundColor(qBittorrent.getStateColor(state: state))
                         .font(.footnote)
+                    //Text("\(qBittorrent.getState(state: state))")
                         .lineLimit(1)
                 }
-                    .foregroundColor(dlspeed > 0 ? Color.green : Color.gray)
-                
+                Group {
+                    Text("\(String(format: "%.1f", progress*100))%")
+                    Text("•")
+                }
+                Group {
+                    Image(systemName: "arrow.down")
+                    Text("\(qBittorrent.getFormatedSize(size: dlspeed))")
+                    Text("•")
+                }
+                Group {
+                    Image(systemName: "arrow.up")
+                    Text("\(qBittorrent.getFormatedSize(size: upspeed))")
+                    Text("•")
+                }
+                Group {
+                    Image(systemName: "arrow.up.arrow.down")
+                    Text("\(String(format: "%.2f", ratio))")
+                }
                 Spacer()
-                
-                Group {
-                    Image(systemName: "arrow.up.circle")
-                        .padding(.trailing, iconLeftPadding)
-                    Text("\(qBittorrent.getFormatedSize(size: upspeed))/s")
-                        .font(.footnote)
-                        .lineLimit(1)
-                        
-                }
-                .foregroundColor(upspeed > 0 ? Color.blue : Color.gray)
-                
-                Spacer()
-                
-                Group {
-                    Image(systemName: "arrow.up.arrow.down.circle")
-                        .padding(.trailing, iconLeftPadding)
-                    Text(String(format: "%.2f", ratio))
-                        .font(.footnote)
-                        .lineLimit(1)
-                }
-                .multilineTextAlignment(.trailing)
             }
+                .font(.caption)
+                .padding(.top, 1)
+                .lineLimit(1)
         }
         
         
@@ -75,6 +69,14 @@ struct TorrentRowView: View {
 
 struct TorrentRowView_Previews: PreviewProvider {
     static var previews: some View {
-        TorrentRowView(name: "Torrent name", progress: 0.75, state: "downloading", dlspeed:10000000, upspeed:1000000, ratio: 0.5)
+        NavigationView {
+            List {
+                NavigationLink {
+                    //MainView()
+                } label: {
+                    TorrentRowView(name: "Torrent name", progress: 0.789, state: "downloading", dlspeed:10000000, upspeed:1000000, ratio: 0.5)
+                }
+            }
+        }
     }
 }
