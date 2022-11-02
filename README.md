@@ -4,10 +4,10 @@ qBittorrent client for iOS devices.
 
 ## Features
 - Adding multiple servers
-- Viewing your torrents' progress, information and stats.
-- Searching and sorting torrents.
-- Managing your torrents - pausing/resuming, rechecking, reannouncing and deleting.
-- Adding new torrents from magnet or file.
+- Viewing torrents' progress, information and stats.
+- Searching, sorting and filtering torrents.
+- Managing torrents - pausing/resuming, rechecking, reannouncing and deleting.
+- Adding torrents from magnet or file.
 
 ## Installation
 ### With Xcode:
@@ -20,13 +20,11 @@ qBittorrent client for iOS devices.
 
 
 ## TODO
-- Searching torrents by category and tags.
 - Viewing and managing torrents' files.
-- Viewing and managing peers.
+- Banning peers.
 - Viewing and managing trackers.
 - RSS support.
 - Ability to change qBittorrents settings.
 - Editing torrents' information and limits
 - Open in qBitControl suggestion when clicking on a magnet link
-- Torrent filtering
 
