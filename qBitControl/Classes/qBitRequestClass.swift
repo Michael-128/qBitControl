@@ -86,6 +86,20 @@ class qBitRequest {
         }.resume()
     }
     
+    static func requestPeersJSON(request: URLRequest, completionHandler: @escaping (Peers) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+                if let data = data {
+                    do {
+                        let json = try JSONDecoder().decode(Peers.self, from: data)
+                        completionHandler(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+        }.resume()
+    }
+    
     static func requestCategoriesJSON(request: URLRequest, completionHandler: @escaping ([String: [String: String]]) -> Void) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in

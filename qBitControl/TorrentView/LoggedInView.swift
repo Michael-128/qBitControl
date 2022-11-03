@@ -70,10 +70,10 @@ struct LoggedInView: View {
                         Text("\(torrents.count) Torrents")
                         Text("•")
                         Image(systemName: "arrow.down")
-                        Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.dlspeed}).reduce(0, +)) )")
+                        Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
                         Text("•")
                         Image(systemName: "arrow.up")
-                        Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.upspeed}).reduce(0, +)) )")
+                        Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
                     }
                 ) {
                     Group {

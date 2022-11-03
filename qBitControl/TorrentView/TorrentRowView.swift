@@ -44,12 +44,12 @@ struct TorrentRowView: View {
                 }
                 Group {
                     Image(systemName: "arrow.down")
-                    Text("\(qBittorrent.getFormatedSize(size: dlspeed))")
+                    Text("\(qBittorrent.getFormatedSize(size: dlspeed))/s")
                     Text("•")
                 }
                 Group {
                     Image(systemName: "arrow.up")
-                    Text("\(qBittorrent.getFormatedSize(size: upspeed))")
+                    Text("\(qBittorrent.getFormatedSize(size: upspeed))/s")
                     Text("•")
                 }
                 Group {

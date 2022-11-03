@@ -102,7 +102,7 @@ struct TorrentDetailsView: View {
                 
                 Section(header: Text("Connections")) {
                     NavigationLink {
-                        Text("Peers")
+                        TorrentDetailsPeersView(torrentHash: .constant(torrent.hash))
                     } label: {
                         Text("Peers")
                     }
