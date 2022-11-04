@@ -100,6 +100,34 @@ class qBitRequest {
         }.resume()
     }
     
+    static func requestTrackersJSON(request: URLRequest, completionHandler: @escaping ([Tracker]) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+                if let data = data {
+                    do {
+                        let json = try JSONDecoder().decode([Tracker].self, from: data)
+                        completionHandler(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+        }.resume()
+    }
+    
+    static func requestFilesJSON(request: URLRequest, completionHandler: @escaping ([File]) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+                if let data = data {
+                    do {
+                        let json = try JSONDecoder().decode([File].self, from: data)
+                        completionHandler(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+        }.resume()
+    }
+    
     static func requestCategoriesJSON(request: URLRequest, completionHandler: @escaping ([String: [String: String]]) -> Void) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in

@@ -232,8 +232,48 @@ struct Peer: Decodable {
 }
 
 struct Peers: Decodable {
-    //var id: String = UUID().uuidString
     let full_update: Bool
     let peers: [String: Peer]
 }
 
+struct Tracker: Decodable {
+    let url: String // Tracker url
+    let status: Int // Tracker status. See the table below for possible values
+    let tier: Int // Tracker priority tier. Lower tier trackers are tried before higher tiers. Tier numbers are valid when >= 0, < 0 is used as placeholder when tier does not exist for special entries (such as DHT).
+    let num_peers: Int // Number of peers for current torrent, as reported by the tracker
+    let num_seeds: Int // Number of seeds for current torrent, asreported by the tracker
+    let num_leeches: Int // Number of leeches for current torrent, as reported by the tracker
+    let num_downloaded: Int // Number of completed downlods for current torrent, as reported by the tracker
+    let msg: String // Tracker message (there is no way of knowing what this message is - it's up to tracker admins)
+    
+    
+    /**
+     Possible values of status:
+     Value      Description
+     0             Tracker is disabled (used for DHT, PeX, and LSD)
+     1             Tracker has not been contacted yet
+     2             Tracker has been contacted and is working
+     3             Tracker is updating
+     4             Tracker has been contacted, but it is not working (or doesn't send proper replies)
+     */
+}
+
+struct File: Decodable {
+    let index: Int // File index
+    let name: String // File name (including relative path)
+    let size: Int // File size (bytes)
+    let progress: Float // File progress (percentage/100)
+    let priority: Int // File priority. See possible values here below
+    let is_seed: Bool? // True if file is seeding/complete
+    let piece_range: [Int]// The first number is the starting piece index and the second number is the ending piece index (inclusive)
+    let availability: Float // Percentage of file pieces currently available (percentage/100)
+    
+    /**
+     Possible values of priority:
+     Value      Description
+     0             Do not download
+     1             Normal priority
+     6             High priority
+     7             Maximal priority
+     */
+}
