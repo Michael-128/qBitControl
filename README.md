@@ -1,6 +1,7 @@
 # qBitControl
 
 qBittorrent client for iOS devices.
+
 ![presentation](https://user-images.githubusercontent.com/116978510/200120380-75156964-17f8-415c-9fab-e6452576b22a.png)
 
 ## Features
