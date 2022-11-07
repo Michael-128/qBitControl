@@ -66,7 +66,7 @@ struct LoggedInView: View {
                     }.searchable(text: $searchQuery)
                 }
                 Section(header:
-                    HStack {
+                    HStack(spacing: 3) {
                         Text("\(torrents.count) Torrents")
                         Text("•")
                         Image(systemName: "arrow.down")
@@ -75,6 +75,7 @@ struct LoggedInView: View {
                         Image(systemName: "arrow.up")
                         Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
                     }
+                        .lineLimit(1)
                 ) {
                     Group {
                         ForEach(torrents, id: \.name) {

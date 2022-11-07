@@ -11,6 +11,7 @@ struct TorrentDetailsTrackersView: View {
     
     @Binding var torrentHash: String
     
+    @State private var isLoaded = false
     @State private var timer: Timer?
     
     @State private var trackers: [Tracker] = []
@@ -21,25 +22,37 @@ struct TorrentDetailsTrackersView: View {
         qBitRequest.requestTrackersJSON(request: request, completionHandler: {
             trackers in
             self.trackers = trackers
+            self.isLoaded = true
         })
     }
     
     var body: some View {
-        List {
-            Section(header: Text("\(trackers.count) Trackers")) {
-                ForEach($trackers, id: \.url) {
-                    tracker in
-                    TorrentDetailsTrackerRow(tracker: tracker)
+        VStack {
+            if isLoaded {
+                List {
+                    Section(header: Text("\(trackers.count) Trackers")) {
+                        if trackers.count > 1 {
+                            ForEach($trackers, id: \.self) {
+                                tracker in
+                                TorrentDetailsTrackerRow(tracker: tracker)
+                            }
+                        } else {
+                            Text("No trackers")
+                        }
+                    }
+                    
+                    .navigationTitle("Trackers")
                 }
+            } else {
+                ProgressView().progressViewStyle(.circular)
+                    .navigationTitle("Trackers")
             }
-            
-            .navigationTitle("Trackers")
         }.onAppear() {
+            getTrackers()
             timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
                 timer in
                 getTrackers()
             }
-            getTrackers()
         }.onDisappear() {
             timer?.invalidate()
         }

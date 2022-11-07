@@ -236,7 +236,7 @@ struct Peers: Decodable {
     let peers: [String: Peer]
 }
 
-struct Tracker: Decodable {
+struct Tracker: Decodable, Hashable {
     let url: String // Tracker url
     let status: Int // Tracker status. See the table below for possible values
     let tier: Int // Tracker priority tier. Lower tier trackers are tried before higher tiers. Tier numbers are valid when >= 0, < 0 is used as placeholder when tier does not exist for special entries (such as DHT).
@@ -261,7 +261,7 @@ struct Tracker: Decodable {
 struct File: Decodable {
     let index: Int // File index
     let name: String // File name (including relative path)
-    let size: Int // File size (bytes)
+    let size: Int64 // File size (bytes)
     let progress: Float // File progress (percentage/100)
     let priority: Int // File priority. See possible values here below
     let is_seed: Bool? // True if file is seeding/complete

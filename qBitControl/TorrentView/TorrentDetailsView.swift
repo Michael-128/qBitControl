@@ -115,7 +115,7 @@ struct TorrentDetailsView: View {
                 
                 Section(header: Text("Files")) {
                     NavigationLink {
-                        Text("Files")
+                        TorrentDetailsFilesView(torrentHash: .constant(torrent.hash))
                     } label: {
                         Text("Files")
                     }

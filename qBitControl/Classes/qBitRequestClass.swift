@@ -72,6 +72,17 @@ class qBitRequest {
         }.resume()
     }
     
+    static func requestTorrentManagement(request: URLRequest, statusCode: @escaping (Int?) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+            if let response = response as? HTTPURLResponse {
+                statusCode(response.statusCode)
+                return
+            }
+            statusCode(nil)
+        }.resume()
+    }
+    
     static func requestPreferencesJSON(request: URLRequest, completionHandler: @escaping (qBitPreferences) -> Void) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in
