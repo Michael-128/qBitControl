@@ -2,6 +2,8 @@
 
 qBittorrent client for iOS devices.
 
+![presentation](https://user-images.githubusercontent.com/116978510/200120557-1a036291-700c-4b8c-9cc7-dd76e1f8028c.png)
+
 ## Features
 - Adding multiple servers
 - Viewing torrents' progress, information and stats.
