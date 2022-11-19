@@ -20,8 +20,11 @@
 		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
 		9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4C29082208006C3960 /* qBittorrentClass.swift */; };
-		9082FA4F2908248B006C3960 /* LoggedInView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4E2908248B006C3960 /* LoggedInView.swift */; };
+		9082FA4F2908248B006C3960 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4E2908248B006C3960 /* TorrentListView.swift */; };
 		909F850E290FFB73003FC051 /* TorrentAddOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */; };
+		90BCAD19291A7C91009F1FEC /* RSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD18291A7C91009F1FEC /* RSSView.swift */; };
+		90BCAD1B291A7EC9009F1FEC /* RSSFeedArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */; };
+		90BCAD1D291A7EDE009F1FEC /* RSSFeedArticleRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD1C291A7EDE009F1FEC /* RSSFeedArticleRowView.swift */; };
 		90C6F3982911529100F5A6FD /* TorrentFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C6F3972911529100F5A6FD /* TorrentFilterView.swift */; };
 		90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A482909267A001E9E7F /* AuthClass.swift */; };
 		90EF6A4B29092AF1001E9E7F /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4A29092AF1001E9E7F /* MainView.swift */; };
@@ -69,8 +72,11 @@
 		9082FA2F29080E55006C3960 /* qBitControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA4C29082208006C3960 /* qBittorrentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClass.swift; sourceTree = "<group>"; };
-		9082FA4E2908248B006C3960 /* LoggedInView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggedInView.swift; sourceTree = "<group>"; };
+		9082FA4E2908248B006C3960 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
 		909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddOptionsView.swift; sourceTree = "<group>"; };
+		90BCAD18291A7C91009F1FEC /* RSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSView.swift; sourceTree = "<group>"; };
+		90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedArticlesView.swift; sourceTree = "<group>"; };
+		90BCAD1C291A7EDE009F1FEC /* RSSFeedArticleRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedArticleRowView.swift; sourceTree = "<group>"; };
 		90C6F3972911529100F5A6FD /* TorrentFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilterView.swift; sourceTree = "<group>"; };
 		90EF6A482909267A001E9E7F /* AuthClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClass.swift; sourceTree = "<group>"; };
 		90EF6A4A29092AF1001E9E7F /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
@@ -112,7 +118,7 @@
 		903DED2B290A89E800FB36D6 /* TorrentView */ = {
 			isa = PBXGroup;
 			children = (
-				9082FA4E2908248B006C3960 /* LoggedInView.swift */,
+				9082FA4E2908248B006C3960 /* TorrentListView.swift */,
 				90C6F3972911529100F5A6FD /* TorrentFilterView.swift */,
 				90EF6A5029095ACC001E9E7F /* TorrentRowView.swift */,
 				90EF6A5229098967001E9E7F /* TorrentDetailsView.swift */,
@@ -174,6 +180,7 @@
 			children = (
 				9082FA2229080E53006C3960 /* qBitControlApp.swift */,
 				90EF6A4A29092AF1001E9E7F /* MainView.swift */,
+				90BCAD17291A7C65009F1FEC /* RSSView */,
 				903DED39290E7DE100FB36D6 /* Login */,
 				903DED2B290A89E800FB36D6 /* TorrentView */,
 				903DED2C290A8A2000FB36D6 /* Classes */,
@@ -190,6 +197,16 @@
 				9082FA2929080E55006C3960 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		90BCAD17291A7C65009F1FEC /* RSSView */ = {
+			isa = PBXGroup;
+			children = (
+				90BCAD18291A7C91009F1FEC /* RSSView.swift */,
+				90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */,
+				90BCAD1C291A7EDE009F1FEC /* RSSFeedArticleRowView.swift */,
+			);
+			path = RSSView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -324,20 +341,23 @@
 			files = (
 				90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */,
 				9043FB36291292310030688C /* TorrentDetailsPeersView.swift in Sources */,
+				90BCAD1B291A7EC9009F1FEC /* RSSFeedArticlesView.swift in Sources */,
 				9082FA2529080E53006C3960 /* ServersView.swift in Sources */,
 				903DED2E290AABA800FB36D6 /* TorrentAddView.swift in Sources */,
 				90EF6A5129095ACC001E9E7F /* TorrentRowView.swift in Sources */,
 				90C6F3982911529100F5A6FD /* TorrentFilterView.swift in Sources */,
 				909F850E290FFB73003FC051 /* TorrentAddOptionsView.swift in Sources */,
 				903DED3B290E7E7E00FB36D6 /* ServerRowView.swift in Sources */,
+				90BCAD19291A7C91009F1FEC /* RSSView.swift in Sources */,
 				90EF6A4B29092AF1001E9E7F /* MainView.swift in Sources */,
 				903DED32290AADC200FB36D6 /* TorrentAddFileView.swift in Sources */,
 				90EF6A5329098968001E9E7F /* TorrentDetailsView.swift in Sources */,
+				90BCAD1D291A7EDE009F1FEC /* RSSFeedArticleRowView.swift in Sources */,
 				903DED3D290E8A9000FB36D6 /* ServerAddView.swift in Sources */,
 				90F7BEE52913D24300F5DEDE /* TorrentDetailsTrackersView.swift in Sources */,
 				90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */,
 				903DED30290AADB300FB36D6 /* TorrentAddMagnetView.swift in Sources */,
-				9082FA4F2908248B006C3960 /* LoggedInView.swift in Sources */,
+				9082FA4F2908248B006C3960 /* TorrentListView.swift in Sources */,
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
 				9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */,
 				90FA253829190D3100DC8F0B /* TorrentDetailsFilesView.swift in Sources */,

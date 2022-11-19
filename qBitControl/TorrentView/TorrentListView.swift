@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LoggedInView: View {
+struct TorrentListView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @State private var timer: Timer?
@@ -52,6 +52,70 @@ struct LoggedInView: View {
         }
     }
     
+    func torrentListHeader() -> some View {
+        HStack(spacing: 3) {
+            Text("\(torrents.count) Torrents")
+            Text("•")
+            Image(systemName: "arrow.down")
+            Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
+            Text("•")
+            Image(systemName: "arrow.up")
+            Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
+        }
+            .lineLimit(1)
+    }
+    
+    func torrentRowContextMenu(torrent: Torrent) -> some View {
+        Group {
+            Button {
+                if torrent.state.contains("paused") {
+                    qBittorrent.resumeTorrent(hash: torrent.hash)
+                } else {
+                    qBittorrent.pauseTorrent(hash: torrent.hash)
+                }
+            } label: {
+                HStack {
+                    if torrent.state.contains("paused") {
+                        Text("Resume")
+                        Image(systemName: "play")
+                    } else {
+                        Text("Pause")
+                        Image(systemName: "pause")
+                    }
+                    
+                }
+            }
+            
+            Button {
+                qBittorrent.recheckTorrent(hash: torrent.hash)
+            } label: {
+                HStack {
+                    Text("Recheck")
+                    Image(systemName: "magnifyingglass")
+                }
+            }
+            
+            Button {
+                qBittorrent.reannounceTorrent(hash: torrent.hash)
+            } label: {
+                HStack {
+                    Text("Reannounce")
+                    Image(systemName: "circle.dashed")
+                }
+            }
+            
+            Button(role: .destructive) {
+                self.hash = torrent.hash
+                isDeleteAlert.toggle()
+            } label: {
+                HStack {
+                    Text("Delete")
+                    Image(systemName: "trash")
+                }
+            }
+        }
+    }
+    
     var body: some View {
         NavigationView {
             List {
@@ -65,18 +129,8 @@ struct LoggedInView: View {
                         }
                     }.searchable(text: $searchQuery)
                 }
-                Section(header:
-                    HStack(spacing: 3) {
-                        Text("\(torrents.count) Torrents")
-                        Text("•")
-                        Image(systemName: "arrow.down")
-                        Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
-                        Text("•")
-                        Image(systemName: "arrow.up")
-                        Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
-                    }
-                        .lineLimit(1)
-                ) {
+                
+                Section(header: torrentListHeader()) {
                     Group {
                         ForEach(torrents, id: \.name) {
                             torrent in
@@ -86,52 +140,7 @@ struct LoggedInView: View {
                                 } label: {
                                     TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
                                         .contextMenu() {
-                                            Button {
-                                                if torrent.state.contains("paused") {
-                                                    qBittorrent.resumeTorrent(hash: torrent.hash)
-                                                } else {
-                                                    qBittorrent.pauseTorrent(hash: torrent.hash)
-                                                }
-                                            } label: {
-                                                HStack {
-                                                    if torrent.state.contains("paused") {
-                                                        Text("Resume")
-                                                        Image(systemName: "play")
-                                                    } else {
-                                                        Text("Pause")
-                                                        Image(systemName: "pause")
-                                                    }
-                                                    
-                                                }
-                                            }
-                                            
-                                            Button {
-                                                qBittorrent.recheckTorrent(hash: torrent.hash)
-                                            } label: {
-                                                HStack {
-                                                    Text("Recheck")
-                                                    Image(systemName: "magnifyingglass")
-                                                }
-                                            }
-                                            
-                                            Button {
-                                                qBittorrent.reannounceTorrent(hash: torrent.hash)
-                                            } label: {
-                                                HStack {
-                                                    Text("Reannounce")
-                                                    Image(systemName: "circle.dashed")
-                                                }
-                                            }
-                                            
-                                            Button(role: .destructive) {
-                                                hash = torrent.hash
-                                                isDeleteAlert.toggle()
-                                            } label: {
-                                                HStack {
-                                                    Text("Delete")
-                                                    Image(systemName: "trash")
-                                                }
-                                            }
+                                            torrentRowContextMenu(torrent: torrent)
                                         }
                                 }
                             }

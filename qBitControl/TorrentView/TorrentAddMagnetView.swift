@@ -9,7 +9,7 @@ import SwiftUI
 
 struct TorrentAddMagnetView: View {
     
-    @State private var urls = ""
+    @State var urls = ""
     @Binding var isPresented: Bool
     /**
      root_folder optional     string     Create the root folder. Possible values are true, false, unset (default)

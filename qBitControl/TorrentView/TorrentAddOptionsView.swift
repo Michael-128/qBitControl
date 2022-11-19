@@ -48,7 +48,6 @@ struct TorrentAddOptionsView: View {
     }
     
     func addTorrent() {
-        print("Dodawanie")
         if !isFile {
             qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: torrent), savePath: savePath, cookie: cookie, category: category, tags: tags, skipChecking: skipChecking, paused: paused, dlLimit: Int(DLlimit) ?? -1, upLimit: Int(UPlimit) ?? -1, ratioLimit: Float(ratioLimit) ?? -1.0, seedingTimeLimit: Int(seedingTimeLimit) ?? -1)
         } else {

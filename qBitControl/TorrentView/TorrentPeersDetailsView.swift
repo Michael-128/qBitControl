@@ -40,10 +40,10 @@ struct TorrentPeersDetailsView: View {
                 listElement(label: "Relevance", value: "\(String(format: "%.1f", peer.relevance*100))%")
                 
                 listElement(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: peer.dl_speed))/s")
-                listElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: peer.downloaded))/s")
+                listElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: peer.downloaded))")
                 
                 listElement(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: peer.up_speed))/s")
-                listElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: peer.uploaded))/s")
+                listElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: peer.uploaded))")
             }
             
             .navigationTitle("Peer Details")

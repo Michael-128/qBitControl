@@ -7,6 +7,62 @@
 
 import SwiftUI
 
+struct ChangeCategoryView: View {
+    
+    @State var torrentHash: String
+    
+    @State private var categories: [String] = []
+    
+    @State var category: String
+
+    
+    var body: some View {
+        VStack {
+            Form {
+                if categories.count > 1 {
+                    Picker("Categories", selection: $category) {
+                        Text("None").tag("")
+                        ForEach(categories, id: \.self) {
+                            category in
+                            Text(category).tag(category)
+                        }
+                    }.pickerStyle(.inline)
+                }
+                
+                /*Button {
+                    // link to management view
+                } label: {
+                    Text("Manage Categories")
+                        .frame(maxWidth: .infinity)
+                }.buttonStyle(.borderedProminent)
+                    .listRowBackground(Color.blue)*/
+            }
+            .navigationTitle("Categories")
+        }.onAppear() {
+            qBittorrent.getCategories(completionHandler: {
+                categories in
+                
+                for (category, _) in categories {
+                    self.categories.append(category)
+                    self.categories.sort(by: <)
+                }
+            })
+        }.onChange(of: category) {
+            category in
+            print(category)
+            let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setCategory", queryItems: [
+                URLQueryItem(name: "hashes", value: torrentHash),
+                URLQueryItem(name: "category", value: category)
+            ])
+            
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {
+                code in
+                print(code)
+            })
+        }
+    }
+}
+
 struct TorrentDetailsView: View {
     
     @Environment(\.presentationMode) var presentationMode
@@ -91,13 +147,25 @@ struct TorrentDetailsView: View {
                     
                     listElement(label: "Added On", value: "\( qBittorrent.getFormatedDate(date: torrent.added_on) )")
                     
-                    listElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
+                    //listElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
                     
-                    listElement(label: "Tags", value: "\( torrent.tags != "" ? torrent.tags : "None" )")
+                    NavigationLink {
+                        ChangeCategoryView(torrentHash: torrent.hash, category: torrent.category)
+                    } label: {
+                        listElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
+                    }
+                    
+                    /*NavigationLink {
+                        ChangeTagsView(torrentHash: torrent.hash, selectedTags: torrent.tags.components(separatedBy: ","))
+                    } label: {*/
+                        listElement(label: "Tags", value: "\( torrent.tags != "" ? torrent.tags : "None" )")
+                    //}
                     
                     listElement(label: "Size", value: "\(qBittorrent.getFormatedSize(size: torrent.size))")
                     
                     listElement(label: "Total Size", value: "\(qBittorrent.getFormatedSize(size: torrent.total_size))")
+                    
+                    listElement(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability))%")
                 }
                 
                 Section(header: Text("Connections")) {

@@ -166,4 +166,19 @@ class qBitRequest {
                 }
         }.resume()
     }
+    
+    static func requestRSSFeedJSON(request: URLRequest, completion: @escaping ([String: RSS]) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+                
+            if let data = data {
+                do {
+                    try completion(JSONDecoder().decode([String: RSS].self, from: data))
+                } catch {
+                    print(error)
+                }
+            }
+        }.resume()
+    }
+
 }
