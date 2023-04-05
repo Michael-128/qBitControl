@@ -286,6 +286,7 @@ struct Article: Decodable {
     let date: Date
     let link: String
     let size: String
+    let isRead: Bool?
     
     enum CodingKeys: CodingKey {
         case category
@@ -295,6 +296,7 @@ struct Article: Decodable {
         case date
         case link
         case size
+        case isRead
     }
     
     init(from decoder: Decoder) throws {
@@ -317,6 +319,7 @@ struct Article: Decodable {
         
         self.link = try container.decode(String.self, forKey: .link)
         self.size = try container.decode(String.self, forKey: .size)
+        self.isRead = try? container.decode(Bool.self, forKey: .isRead)
     }
 }
 
@@ -327,6 +330,7 @@ struct RSS: Decodable {
     let title: String
     let hasError: Bool
     let articles: [Article]
+    
     
     enum CodingKeys: CodingKey {
         case url

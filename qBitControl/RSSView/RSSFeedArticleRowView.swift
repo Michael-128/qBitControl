@@ -10,7 +10,27 @@ import SwiftUI
 struct RSSFeedArticleRowView: View {
     
     @State var article: Article
+    //@State var isRead = false
     @State private var isDownloadSheet = false
+    
+    func articleAddView() -> some View {
+        NavigationView {
+            VStack {
+                List {
+                    TorrentAddMagnetView(urls: article.torrentURL, isPresented: $isDownloadSheet)
+                }
+                .navigationTitle("Link")
+            }.toolbar() {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button {
+                        isDownloadSheet = false
+                    } label: {
+                        Text("Cancel")
+                    }
+                }
+            }
+        }
+    }
     
     var body: some View {
         VStack {
@@ -19,6 +39,11 @@ struct RSSFeedArticleRowView: View {
             } label: {
                 HStack {
                     Text(article.title)
+                    /*if !(article.isRead ?? false) {
+                        Text("•")
+                            .foregroundColor(.blue)
+                            .font(.title)
+                    }*/
                     Spacer()
                 }
                 HStack(spacing: 3) {
@@ -33,23 +58,24 @@ struct RSSFeedArticleRowView: View {
                     .lineLimit(1)
             }.foregroundColor(Color.primary)
         }.sheet(isPresented: $isDownloadSheet, content: {
-            NavigationView {
-                VStack {
-                    List {
-                        TorrentAddMagnetView(urls: article.torrentURL, isPresented: $isDownloadSheet)
-                    }
-                    .navigationTitle("Link")
-                }.toolbar() {
-                    ToolbarItem(placement: .navigationBarLeading) {
-                        Button {
-                            isDownloadSheet = false
-                        } label: {
-                            Text("Cancel")
-                        }
-                    }
+            articleAddView()
+        }).contextMenu() {
+            Button {
+                if let url = URL(string: article.link) {
+                    UIApplication.shared.open(url)
                 }
+            } label: {
+                Text("Open")
+                Image(systemName: "globe")
             }
-        })
+            
+            Button {
+                isDownloadSheet = true
+            } label: {
+                Text("Download")
+                Image(systemName: "arrow.down")
+            }
+        }
     }
 }
 
