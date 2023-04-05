@@ -21,6 +21,7 @@
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
 		9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4C29082208006C3960 /* qBittorrentClass.swift */; };
 		9082FA4F2908248B006C3960 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4E2908248B006C3960 /* TorrentListView.swift */; };
+		90896E452B13FD26001B3322 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90896E442B13FD26001B3322 /* LoginView.swift */; };
 		909F850E290FFB73003FC051 /* TorrentAddOptionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */; };
 		90BCAD19291A7C91009F1FEC /* RSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD18291A7C91009F1FEC /* RSSView.swift */; };
 		90BCAD1B291A7EC9009F1FEC /* RSSFeedArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */; };
@@ -73,6 +74,7 @@
 		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA4C29082208006C3960 /* qBittorrentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClass.swift; sourceTree = "<group>"; };
 		9082FA4E2908248B006C3960 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
+		90896E442B13FD26001B3322 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		909F850D290FFB73003FC051 /* TorrentAddOptionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddOptionsView.swift; sourceTree = "<group>"; };
 		90BCAD18291A7C91009F1FEC /* RSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSView.swift; sourceTree = "<group>"; };
 		90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedArticlesView.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 				9082FA2429080E53006C3960 /* ServersView.swift */,
 				903DED3A290E7E7E00FB36D6 /* ServerRowView.swift */,
 				903DED3C290E8A9000FB36D6 /* ServerAddView.swift */,
+				90896E442B13FD26001B3322 /* LoginView.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -273,7 +276,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1400;
+				LastUpgradeCheck = 1500;
 				TargetAttributes = {
 					9082FA1E29080E53006C3960 = {
 						CreatedOnToolsVersion = 14.0.1;
@@ -361,6 +364,7 @@
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
 				9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */,
 				90FA253829190D3100DC8F0B /* TorrentDetailsFilesView.swift in Sources */,
+				90896E452B13FD26001B3322 /* LoginView.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
 				9043FB3429128DB90030688C /* TorrentDetailsPeersRowView.swift in Sources */,
 				90F7BEE72913D26300F5DEDE /* TorrentDetailsTrackerRow.swift in Sources */,
@@ -403,6 +407,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -435,6 +440,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -463,6 +469,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -495,6 +502,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -536,7 +544,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControl;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitRemote;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -567,7 +575,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControl;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitRemote;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

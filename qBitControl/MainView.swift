@@ -11,27 +11,28 @@ struct MainView: View {
     
     var body: some View {
         if(!isLoggedIn) {
-            ServersView(isLoggedIn: $isLoggedIn)
+            LoginView(isLoggedIn: $isLoggedIn)
         } else {
-            TabView {
+            TorrentListView(isLoggedIn: $isLoggedIn)
+            /*TabView {
                 VStack {
                     TorrentListView(isLoggedIn: $isLoggedIn)
                 }.tabItem() {
                     Label("Torrents", systemImage: "square.and.arrow.down.on.square")
                 }
                 
-                VStack {
+                /*VStack {
                     RSSView()
                 }.tabItem() {
                     Label("RSS", systemImage: "dot.radiowaves.up.forward")
-                }
+                }*/
                 
                 VStack {
                     Text("Settings")
                 }.tabItem() {
                     Label("Settings", systemImage: "gearshape")
                 }
-            }
+            }*/
         }
     }
 }

@@ -165,6 +165,7 @@ struct TorrentListView: View {
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        defaults.removeObject(forKey: "server")
                         qBittorrent.setURL(url: "")
                         qBittorrent.setCookie(cookie: "")
                         isLoggedIn = false

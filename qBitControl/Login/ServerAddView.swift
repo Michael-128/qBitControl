@@ -43,35 +43,7 @@ struct ServerAddView: View {
                 
                 Section {
                     Button {
-                        if !(ip.starts(with: "http://") || ip.starts(with: "https://")) || username.count < 1 || password.count < 1 {
-                            return
-                        }
-                        
-                        var loadedServers: [Server] = []
-                        
-                        if let servers = defaults.object(forKey: "servers") as? Data {
-                            let decoder = JSONDecoder()
-                            do {
-                                loadedServers = try decoder.decode([Server].self, from: servers)
-                            } catch {
-                                print(error)
-                            }
-                        }
-                        
-                        let server = Server(name: friendlyName, ip: ip, username: username, password: password)
-                        
-                        loadedServers.append(server)
-                        
-                        let encoder = JSONEncoder()
-                        
-                        do {
-                            let encodedServers = try encoder.encode(loadedServers)
-                            defaults.set(encodedServers, forKey: "servers")
-                            refreshServers()
-                        } catch {
-                            print(error)
-                        }
-                        presentationMode.wrappedValue.dismiss()
+                   
                     } label: {
                         Text("ADD")
                             .fontWeight(.bold)

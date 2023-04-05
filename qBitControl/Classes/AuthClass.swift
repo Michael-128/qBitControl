@@ -45,6 +45,8 @@ class Auth {
             if let error = error {
                 print(error.localizedDescription)
             }
+            
+            completion("error")
         }.resume()
     }
 }
