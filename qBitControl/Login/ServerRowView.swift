@@ -2,8 +2,6 @@
 //  ServerRowView.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 30/10/2022.
-//
 
 import SwiftUI
 

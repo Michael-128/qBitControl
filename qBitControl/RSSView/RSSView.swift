@@ -2,8 +2,6 @@
 //  RSSView.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 08/11/2022.
-//
 
 import SwiftUI
 

@@ -2,8 +2,6 @@
 //  FileNodeClass.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 07/11/2022.
-//
 
 import Foundation
 

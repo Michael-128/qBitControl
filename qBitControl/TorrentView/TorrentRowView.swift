@@ -2,8 +2,6 @@
 //  TorrentRowView.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 26/10/2022.
-//
 
 import SwiftUI
 

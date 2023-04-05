@@ -2,8 +2,6 @@
 //  qBittorrentClass.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 25/10/2022.
-//
 
 import Foundation
 import SwiftUI

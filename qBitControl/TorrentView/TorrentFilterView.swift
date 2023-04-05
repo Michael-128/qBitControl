@@ -2,8 +2,6 @@
 //  TorrentFilterView.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 01/11/2022.
-//
 
 import SwiftUI
 

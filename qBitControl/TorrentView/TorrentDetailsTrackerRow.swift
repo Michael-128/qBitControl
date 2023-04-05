@@ -2,8 +2,6 @@
 //  TorrentDetailsTrackerRow.swift
 //  qBitControl
 //
-//  Created by Michał Grzegoszczyk on 03/11/2022.
-//
 
 import SwiftUI
 
