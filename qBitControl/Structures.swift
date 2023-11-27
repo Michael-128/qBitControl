@@ -206,9 +206,10 @@ struct qBitPreferences: Decodable {
 struct Server: Codable, Identifiable {
     var id: String = UUID().uuidString
     let name: String
-    let ip: String
+    let url: String
     let username: String
     let password: String
+    let isRemember: Bool
 }
 
 struct Peer: Decodable {

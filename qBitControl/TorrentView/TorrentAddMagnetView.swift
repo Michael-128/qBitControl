@@ -17,14 +17,14 @@ struct TorrentAddMagnetView: View {
     
     var body: some View {
         Group {
-            Section(header: Text("Magnet")) {
+            Section(header: Text("URL")) {
                 TextEditor(text: $urls)
                     .frame(minHeight: CGFloat(200), maxHeight: CGFloat(200))
             }
             
             TorrentAddOptionsView(torrent: $urls, torrentData: .constant([:]), isFile: .constant(false), isPresented: $isPresented)
         }
-        .navigationTitle("Magnet")
+        .navigationTitle("URL")
     }
 }
 

@@ -16,8 +16,9 @@ class Auth {
         cookies[id] = cookie
     }
     
-    static func getCookie(ip: String, username: String, password: String, completion: @escaping (String) -> Void) {
-        guard let url = URL(string: "\(ip)/api/v2/auth/login") else {return}
+    static func getCookie(url: String, username: String, password: String, isSuccess: @escaping (Bool) -> Void) async {
+        let urlString = url;
+        guard let url = URL(string: "\(url)/api/v2/auth/login") else {return}
         
         var req = URLRequest(url: url)
         req.httpMethod = "POST"
@@ -33,20 +34,27 @@ class Auth {
         let data = bodyString.data(using: .utf8)
         req.httpBody = data
         
+        await URLSession.shared.reset()
+        
         URLSession.shared.dataTask(with: req) {
             data, response, error in
             /*if let data = data {
                 print(data)
             }*/
             if let response = response as? HTTPURLResponse {
-                print(response)
-                completion(String(String(describing: response.allHeaderFields["Set-Cookie"] ?? "n/a;").split(separator: ";")[0]))
+                let cookie = String(String(describing: response.allHeaderFields["Set-Cookie"] ?? "n/a;").split(separator: ";")[0])
+                if(cookie.contains("SID")) {
+                    qBittorrent.setURL(url: urlString)
+                    qBittorrent.setCookie(cookie: cookie)
+                    isSuccess(true)
+                } else {
+                    isSuccess(false)
+                }
             }
             if let error = error {
                 print(error.localizedDescription)
+                isSuccess(false)
             }
-            
-            completion("error")
         }.resume()
     }
 }

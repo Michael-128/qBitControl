@@ -13,8 +13,8 @@ struct TorrentAddView: View {
         NavigationView {
             List {
                 Section {
-                    Picker("Torrent Type", selection: $isMagnet) {
-                        Text("Magnet").tag(true)
+                    Picker("Task Type", selection: $isMagnet) {
+                        Text("URL").tag(true)
                         Text("File").tag(false)
                     }
                     .padding(.horizontal, 40.0)

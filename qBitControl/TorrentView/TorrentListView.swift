@@ -7,6 +7,7 @@ import SwiftUI
 
 struct TorrentListView: View {
     @Environment(\.presentationMode) var presentationMode
+    @Environment(\.scenePhase) var scenePhase
     
     @State private var timer: Timer?
     @State var torrents: [Torrent] = Array()
@@ -52,7 +53,7 @@ struct TorrentListView: View {
     
     func torrentListHeader() -> some View {
         HStack(spacing: 3) {
-            Text("\(torrents.count) Torrents")
+            Text("\(torrents.count) Tasks")
             Text("•")
             Image(systemName: "arrow.down")
             Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
@@ -123,7 +124,7 @@ struct TorrentListView: View {
                     } label: {
                         HStack {
                             Image(systemName: "plus.circle")
-                            Text("Add Torrent")
+                            Text("Add Task")
                         }
                     }.searchable(text: $searchQuery)
                 }
@@ -160,13 +161,11 @@ struct TorrentListView: View {
                     timer?.invalidate()
                 }
                 
-                .navigationTitle("Torrents")
+                .navigationTitle("Tasks")
             }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
-                        defaults.removeObject(forKey: "server")
-                        qBittorrent.setURL(url: "")
                         qBittorrent.setCookie(cookie: "")
                         isLoggedIn = false
                     } label: {
@@ -192,13 +191,13 @@ struct TorrentListView: View {
             })
             .refreshable() {
                 getTorrents()
-            }.confirmationDialog("Delete Torrent",isPresented: $isDeleteAlert) {
+            }.confirmationDialog("Delete Task",isPresented: $isDeleteAlert) {
                 Button("Delete Torrent", role: .destructive) {
                     presentationMode.wrappedValue.dismiss()
                     qBittorrent.deleteTorrent(hash: hash)
                     hash = ""
                 }
-                Button("Delete Torrent with Files", role: .destructive) {
+                Button("Delete Task with Files", role: .destructive) {
                     presentationMode.wrappedValue.dismiss()
                     qBittorrent.deleteTorrent(hash: hash, deleteFiles: true)
                     hash = ""

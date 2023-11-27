@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct ServersView: View {
+/*struct ServersView: View {
     
     @State private var cookie1 = qBittorrent.getCookie()
     @Binding var isLoggedIn: Bool
@@ -94,3 +94,4 @@ struct ContentView_Previews: PreviewProvider {
         MainView()
     }
 }
+*/
