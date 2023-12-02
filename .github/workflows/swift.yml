@@ -11,10 +11,12 @@ on:
 
 jobs:
   build:
-
     runs-on: macos-latest
-
+    
     steps:
+    - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+      with:
+        swift-version: "5.8"
     - uses: actions/checkout@v3
     - name: Build
       run: swift build -v
