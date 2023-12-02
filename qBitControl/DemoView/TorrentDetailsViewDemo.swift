@@ -5,11 +5,11 @@
 
 import SwiftUI
 
-struct ChangeCategoryView: View {
+struct ChangeCategoryViewDemo: View {
     
     @State var torrentHash: String
     
-    @State private var categories: [String] = []
+    @State private var categories: [String] = ["Category"]
     
     @State var category: String
 
@@ -26,58 +26,18 @@ struct ChangeCategoryView: View {
                         }
                     }.pickerStyle(.inline)
                 }
-                
-                /*Button {
-                    // link to management view
-                } label: {
-                    Text("Manage Categories")
-                        .frame(maxWidth: .infinity)
-                }.buttonStyle(.borderedProminent)
-                    .listRowBackground(Color.blue)*/
+
             }
             .navigationTitle("Categories")
-        }.onAppear() {
-            qBittorrent.getCategories(completionHandler: {
-                categories in
-                
-                for (category, _) in categories {
-                    self.categories.append(category)
-                    self.categories.sort(by: <)
-                }
-            })
-        }.onChange(of: category) {
-            category in
-            print(category)
-            let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setCategory", queryItems: [
-                URLQueryItem(name: "hashes", value: torrentHash),
-                URLQueryItem(name: "category", value: category)
-            ])
-            
-            qBitRequest.requestTorrentManagement(request: request, statusCode: {
-                code in
-                //print(code)
-            })
         }
     }
 }
 
-struct ChangePathView: View {
+struct ChangePathViewDemo: View {
     
     @Environment(\.presentationMode) var presentationMode
     @State var path: String
     let torrentHash: String
-    
-    func setPath() {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setLocation", queryItems: [
-            URLQueryItem(name: "hashes", value: torrentHash),
-            URLQueryItem(name: "location", value: path)
-        ])
-        
-        qBitRequest.requestTorrentManagement(request: request, statusCode: {
-            code in
-            print("Code: \(code ?? -1)")
-        })
-    }
     
     var body: some View {
         Form {
@@ -88,7 +48,6 @@ struct ChangePathView: View {
             
             Section {
                 Button {
-                    setPath()
                     presentationMode.wrappedValue.dismiss()
                 } label: {
                     Text("Update")
@@ -98,7 +57,7 @@ struct ChangePathView: View {
     }
 }
 
-struct TorrentDetailsView: View {
+struct TorrentDetailsViewDemo: View {
     
     @Environment(\.presentationMode) var presentationMode
     @State var torrent: Torrent
@@ -106,19 +65,7 @@ struct TorrentDetailsView: View {
     @State private var buttonTextColor = UITraitCollection.current.userInterfaceStyle == .dark ? Color.white : Color.black
     @State private var presentDeleteAlert = false
     
-    let impactMed = UIImpactFeedbackGenerator(style: .medium)
-    
-    
-    func getTorrent() {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: [URLQueryItem(name:"hashes", value: torrent.hash)])
-        
-        qBitRequest.requestTorrentListJSON(request: request) {
-            torrent in
-            if torrent.count >= 1 {
-                self.torrent = torrent[0]
-            } // There should be only one torrent in the response
-        }
-    }
+
     
     func listElement(label: String, value: String) -> some View {
         Button(action: {UIPasteboard.general.string = "\(value)"}) {
@@ -139,13 +86,13 @@ struct TorrentDetailsView: View {
             List {
                 Section(header: Text("Management")) {
                     Button(action: {
-                        impactMed.impactOccurred()
+
                         if torrent.state.contains("paused") {
-                            qBittorrent.resumeTorrent(hash: torrent.hash)
+                            //qBittorrent.resumeTorrent(hash: torrent.hash)
                         } else {
-                            qBittorrent.pauseTorrent(hash: torrent.hash)
+                            //qBittorrent.pauseTorrent(hash: torrent.hash)
                         }
-                        getTorrent()
+
                         
                     }) {
                         if torrent.state.contains("paused") {
@@ -156,20 +103,20 @@ struct TorrentDetailsView: View {
                     }
                     
                     Button(action: {
-                        impactMed.impactOccurred()
-                        qBittorrent.recheckTorrent(hash: torrent.hash)
+
+                        //qBittorrent.recheckTorrent(hash: torrent.hash)
                     }) {
                         Text("Recheck Task")
                     }
                     
                     Button(action: {
-                        impactMed.impactOccurred()
-                        qBittorrent.reannounceTorrent(hash: torrent.hash)
+                       
+                        //..qBittorrent.reannounceTorrent(hash: torrent.hash)
                     }) {
                         Text("Reannounce Task")
                     }
                     Button(action: {
-                        impactMed.impactOccurred()
+                     
                         presentDeleteAlert = true
                     }) {
                         Text("Delete Torrent")
@@ -205,28 +152,19 @@ struct TorrentDetailsView: View {
                 
                 Section(header: Text("Connections")) {
                     NavigationLink {
-                        TorrentDetailsPeersView(torrentHash: .constant(torrent.hash))
+                        List {
+                            Section(header: Text("5 peers")) {
+                                TorrentDetailsPeersRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "Poland", country_code: "pl", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
+                                TorrentDetailsPeersRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "Netherlands", country_code: "nl", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
+                                TorrentDetailsPeersRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "Greece", country_code: "gr", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
+                                TorrentDetailsPeersRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "United Kingdom", country_code: "gb", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
+                                TorrentDetailsPeersRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "France", country_code: "fr", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
+                            }
+                            
+                            .navigationTitle("Peers")
+                        }
                     } label: {
                         Text("Peers")
-                    }
-                    NavigationLink {
-                        TorrentDetailsTrackersView(torrentHash: .constant(torrent.hash))
-                    } label: {
-                        Text("Trackers")
-                    }
-                }
-                
-                Section(header: Text("Files")) {
-                    NavigationLink {
-                        ChangePathView(path: torrent.save_path, torrentHash: torrent.hash)
-                    } label: {
-                        listElement(label: "Save Path", value: torrent.save_path)
-                    }
-                    
-                    NavigationLink {
-                        TorrentDetailsFilesView(torrentHash: .constant(torrent.hash))
-                    } label: {
-                        Text("Files")
                     }
                 }
                 
@@ -265,27 +203,18 @@ struct TorrentDetailsView: View {
                 
             }
             .navigationTitle("Details")
-        }
-        .onAppear() {
-            timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
-                timer in
-                getTorrent()
-            }
-            
-        }.onDisappear() {
-            timer?.invalidate()
         }.confirmationDialog("Delete Task",isPresented: $presentDeleteAlert) {
             Button("Delete Task", role: .destructive) {
                 presentationMode.wrappedValue.dismiss()
-                qBittorrent.deleteTorrent(hash: torrent.hash)
+                //qBittorrent.deleteTorrent(hash: torrent.hash)
             }
             Button("Delete Task with Files", role: .destructive) {
                 presentationMode.wrappedValue.dismiss()
-                qBittorrent.deleteTorrent(hash: torrent.hash, deleteFiles: true)
+                //qBittorrent.deleteTorrent(hash: torrent.hash, deleteFiles: true)
             }
             Button("Cancel", role: .cancel) {}
         }.refreshable() {
-            getTorrent()
+            //getTorrent()
         }
     }
 }

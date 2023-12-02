@@ -8,12 +8,14 @@ import SwiftUI
 struct MainView: View {
     
     @State private var isLoggedIn: Bool = false
+    @State private var isDemo: Bool = false
     @Environment(\.scenePhase) var scenePhase
     @State private var defaults = UserDefaults.standard
     
     var body: some View {
-        if(!isLoggedIn) {
-            LoginView(isLoggedIn: $isLoggedIn)
+        if(isDemo) { DemoView(isDemo: $isDemo) }
+        else if(!isLoggedIn) {
+            LoginView(isDemo: $isDemo, isLoggedIn: $isLoggedIn)
         } else {
             TorrentListView(isLoggedIn: $isLoggedIn).onChange(of: scenePhase, perform: {
                 phase in

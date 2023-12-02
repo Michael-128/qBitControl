@@ -7,6 +7,8 @@ import SwiftUI
 
 struct LoginView: View {
     @State private var cookie1 = qBittorrent.getCookie()
+    
+    @Binding var isDemo: Bool
     @Binding var isLoggedIn: Bool {
         didSet {
 
@@ -71,6 +73,11 @@ struct LoginView: View {
                         Section {
                             if(!isConnecting) {
                                 Button {
+                                    if(URL == "demo" && username == "demo" && password == "demo") {
+                                        isDemo = true
+                                        return
+                                    }
+                                    
                                     isConnecting = true
                                     Task {
                                         await Auth.getCookie(url: URL, username: username, password: password, isSuccess: {
