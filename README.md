@@ -1,4 +1,4 @@
-# qBitControl
+# qBitControl [![Swift](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml/badge.svg)](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml)
 
 qBittorrent client for iOS devices.
 
