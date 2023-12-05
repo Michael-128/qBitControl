@@ -351,3 +351,11 @@ struct RSS: Decodable {
         self.articles = try container.decode([Article].self, forKey: .articles).sorted(by: { $0.date > $1.date })
     }
 }
+
+struct AlertIdentifier: Identifiable {
+    enum Choice {
+        case resumeAll, pauseAll, logOut
+    }
+
+    var id: Choice
+}

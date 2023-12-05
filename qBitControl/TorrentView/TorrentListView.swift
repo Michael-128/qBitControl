@@ -30,6 +30,8 @@ struct TorrentListView: View {
     
     @Binding var isLoggedIn: Bool
     
+    @State private var alertIdentifier: AlertIdentifier?
+    
     let defaults = UserDefaults.standard
     
     func getTorrents() {
@@ -165,14 +167,59 @@ struct TorrentListView: View {
             }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
+                    Menu {
+                        Button {
+                            alertIdentifier = AlertIdentifier(id: .resumeAll)
+                        } label: {
+                            Image(systemName: "play")
+                                .rotationEffect(.degrees(180))
+                            Text("Resume All Tasks")
+                        }
+                        
+                        Button {
+                            alertIdentifier =  AlertIdentifier(id: .pauseAll)
+                        } label: {
+                            Image(systemName: "pause")
+                                .rotationEffect(.degrees(180))
+                            Text("Pause All Tasks")
+                        }
+                        
+                        Button(role: .destructive) {
+                            alertIdentifier =  AlertIdentifier(id: .logOut)
+                        } label: {
+                            Image(systemName: "rectangle.portrait.and.arrow.forward")
+                                .rotationEffect(.degrees(180))
+                            Text("Log out")
+                        }
+                    } label: {
+                        Image(systemName: "ellipsis.circle")
+                    }.alert(item: $alertIdentifier) { alert in
+                        switch(alert.id) {
+                        case .resumeAll:
+                            return Alert(title: Text("Confirm Resume All"), message: Text("Are you sure you want to resume all tasks?"), primaryButton: .default(Text("Resume")) {
+                                qBittorrent.resumeAllTorrents()
+                            }, secondaryButton: .cancel())
+                        case .pauseAll:
+                            return Alert(title: Text("Confirm Pause All"), message: Text("Are you sure you want to pause all tasks?"), primaryButton: .default(Text("Pause")) {
+                                qBittorrent.pauseAllTorrents()
+                            }, secondaryButton: .cancel())
+                        case .logOut:
+                            return Alert(title: Text("Confirm Logout"), message: Text("Are you sure you want to log out?"), primaryButton: .destructive(Text("Log Out")) {
+                                qBittorrent.setCookie(cookie: "")
+                                isLoggedIn = false
+                            }, secondaryButton: .cancel())
+                        }
+                    }
+                    
+                    //Image(systemName: "ellipsis.circle")
+                    /*Button {
                         qBittorrent.setCookie(cookie: "")
                         isLoggedIn = false
                     } label: {
                         Image(systemName: "rectangle.portrait.and.arrow.forward")
                             .rotationEffect(.degrees(180))
                         Text("Log out")
-                    }
+                    }*/
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {

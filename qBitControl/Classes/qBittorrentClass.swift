@@ -215,12 +215,20 @@ class qBittorrent {
         qBitRequest.requestTorrentManagement(request: request)
     }
     
+    static func pauseAllTorrents() {
+        pauseTorrent(hash: "all")
+    }
+    
     static func resumeTorrent(hash: String) {
         let path = "/api/v2/torrents/resume"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hash)])
         
         qBitRequest.requestTorrentManagement(request: request)
+    }
+    
+    static func resumeAllTorrents() {
+        resumeTorrent(hash: "all")
     }
     
     static func recheckTorrent(hash: String) {
