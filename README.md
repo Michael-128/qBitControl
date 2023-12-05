@@ -1,8 +1,14 @@
-# qBitControl
+# qBitControl [![Swift](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml/badge.svg)](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml)
 
 qBittorrent client for iOS devices.
 
 ![presentation](https://user-images.githubusercontent.com/116978510/200120557-1a036291-700c-4b8c-9cc7-dd76e1f8028c.png)
+
+## Donations
+If you like my app, please consider supporting the development.
+
+<a href='https://ko-fi.com/mikemichael225' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+
 
 ## Features
 - Add torrents from magnet or file.
