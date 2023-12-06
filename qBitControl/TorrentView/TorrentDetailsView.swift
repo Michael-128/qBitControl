@@ -241,7 +241,7 @@ struct TorrentDetailsView: View {
                     
                     listElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded))")
                     
-                    listElement(label: "Uploadeded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
+                    listElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
                     
                     listElement(label: "Ratio", value: "\(String(format:"%.2f", torrent.ratio))")
                     
@@ -250,7 +250,7 @@ struct TorrentDetailsView: View {
                 Section(header: Text("Session")) {
                     listElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded_session))")
                     
-                    listElement(label: "Uploadeded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
+                    listElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
                 }
                 
                 Section(header: Text("Limits")) {
