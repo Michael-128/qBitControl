@@ -133,7 +133,7 @@ struct TorrentListView: View {
                 
                 Section(header: torrentListHeader()) {
                     Group {
-                        ForEach(torrents, id: \.name) {
+                        ForEach(torrents, id: \.hash) {
                             torrent in
                             if searchQuery == "" || torrent.name.lowercased().contains(searchQuery.lowercased()) {
                                 NavigationLink {

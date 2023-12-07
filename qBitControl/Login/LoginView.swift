@@ -140,7 +140,7 @@ struct LoginView: View {
             
             isLoading = false
         }.alert(isPresented: $isTroubleConnecting, content: {
-            Alert(title: Text("Couldn't connect to the server."), message: Text("Make sure the URL, username and password are correct"))
+            Alert(title: Text("Couldn't connect to the server."), message: Text("Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"))
         })
     }
 }

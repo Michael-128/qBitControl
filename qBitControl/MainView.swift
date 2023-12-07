@@ -16,6 +16,9 @@ struct MainView: View {
         if(isDemo) { DemoView(isDemo: $isDemo) }
         else if(!isLoggedIn) {
             LoginView(isDemo: $isDemo, isLoggedIn: $isLoggedIn)
+                .onAppear(perform: {
+                    LocalNetworkPermissionService().triggerDialog()
+                })
         } else {
             TorrentListView(isLoggedIn: $isLoggedIn).onChange(of: scenePhase, perform: {
                 phase in

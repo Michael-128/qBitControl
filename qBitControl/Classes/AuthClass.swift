@@ -34,9 +34,15 @@ class Auth {
         let data = bodyString.data(using: .utf8)
         req.httpBody = data
         
-        await URLSession.shared.reset()
+        let sessionConfiguration = URLSessionConfiguration.default
         
-        URLSession.shared.dataTask(with: req) {
+        sessionConfiguration.timeoutIntervalForRequest = 10
+        
+        let session = URLSession(configuration: sessionConfiguration)
+        
+        await session.reset()
+        
+        session.dataTask(with: req) {
             data, response, error in
             /*if let data = data {
                 print(data)
