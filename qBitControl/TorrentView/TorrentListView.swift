@@ -7,7 +7,8 @@ import SwiftUI
 
 struct TorrentListView: View {
     @Environment(\.presentationMode) var presentationMode
-    @Environment(\.scenePhase) var scenePhase
+    @Environment(\.scenePhase) var scenePhaseEnv
+    @State var scenePhase: ScenePhase = .active
     
     @State private var timer: Timer?
     @State var torrents: [Torrent] = Array()
@@ -35,6 +36,22 @@ struct TorrentListView: View {
     let defaults = UserDefaults.standard
     
     func getTorrents() {
+        if(scenePhase != .active) {
+            //print("App inactive")
+            return
+        }
+        if(isFilterView) {
+            //print("Filter view active")
+            return
+        }
+        if(isTorrentAddView) {
+            //print("Torrent view active")
+            return
+        }
+        
+        //print("Fetching torrents")
+        //print(scenePhase)
+        
         var queryItems = [URLQueryItem(name: "sort", value: sort), URLQueryItem(name: "filter", value: filter), URLQueryItem(name: "reverse", value: String(reverse))]
         
         if category != "None" {
@@ -161,6 +178,9 @@ struct TorrentListView: View {
                     
                 }.onDisappear() {
                     timer?.invalidate()
+                }.onChange(of: scenePhaseEnv) {
+                    phase in
+                    scenePhase = phase
                 }
                 
                 .navigationTitle("Tasks")
@@ -210,16 +230,6 @@ struct TorrentListView: View {
                             }, secondaryButton: .cancel())
                         }
                     }
-                    
-                    //Image(systemName: "ellipsis.circle")
-                    /*Button {
-                        qBittorrent.setCookie(cookie: "")
-                        isLoggedIn = false
-                    } label: {
-                        Image(systemName: "rectangle.portrait.and.arrow.forward")
-                            .rotationEffect(.degrees(180))
-                        Text("Log out")
-                    }*/
                 }
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button {
@@ -238,7 +248,7 @@ struct TorrentListView: View {
             })
             .refreshable() {
                 getTorrents()
-            }.confirmationDialog("Delete Task",isPresented: $isDeleteAlert) {
+            }.confirmationDialog("Delete Task", isPresented: $isDeleteAlert) {
                 Button("Delete Torrent", role: .destructive) {
                     presentationMode.wrappedValue.dismiss()
                     qBittorrent.deleteTorrent(hash: hash)
