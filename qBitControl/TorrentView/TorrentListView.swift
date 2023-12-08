@@ -35,6 +35,94 @@ struct TorrentListView: View {
     
     let defaults = UserDefaults.standard
     
+    var body: some View {
+        NavigationView {
+            List {
+                Section(header: Text("Manage")) {
+                    Button {
+                        isTorrentAddView.toggle()
+                    } label: {
+                        HStack {
+                            Image(systemName: "plus.circle")
+                            Text("Add Task")
+                        }
+                    }.searchable(text: $searchQuery)
+                }
+                
+                Section(header: torrentListHeader()) {
+                    Group {
+                        ForEach(torrents, id: \.hash) {
+                            torrent in
+                            if searchQuery == "" || torrent.name.lowercased().contains(searchQuery.lowercased()) {
+                                NavigationLink {
+                                    TorrentDetailsView(torrent: torrent)
+                                } label: {
+                                    TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+                                        .contextMenu() {
+                                            torrentRowContextMenu(torrent: torrent)
+                                        }
+                                }
+                            }
+                        }
+                    }
+                }.onAppear() {
+                    reverse = defaults.bool(forKey: "reverse")
+                    sort = defaults.string(forKey: "sort") ?? sort
+                    filter = defaults.string(forKey: "filter") ?? filter
+                    
+                    getTorrents()
+                    
+                    timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
+                        timer in
+                        getTorrents()
+                    }
+                    
+                }.onDisappear() {
+                    timer?.invalidate()
+                }.onChange(of: scenePhaseEnv) {
+                    phase in
+                    scenePhase = phase
+                }
+                
+                .navigationTitle(category == "None" ? "Tasks" : category)
+            }
+            .toolbar() {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    leftToolbarMenu()
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button {
+                        isFilterView.toggle()
+                    } label: {
+                        Image(systemName: "line.3.horizontal.decrease.circle")
+                    }
+                    
+                }
+            }
+            .sheet(isPresented: $isFilterView, content: {
+                TorrentFilterView(sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag)
+            })
+            .sheet(isPresented: $isTorrentAddView, content: {
+                TorrentAddView(isPresented: $isTorrentAddView)
+            })
+            .refreshable() {
+                getTorrents()
+            }.confirmationDialog("Delete Task", isPresented: $isDeleteAlert) {
+                Button("Delete Torrent", role: .destructive) {
+                    presentationMode.wrappedValue.dismiss()
+                    qBittorrent.deleteTorrent(hash: hash)
+                    hash = ""
+                }
+                Button("Delete Task with Files", role: .destructive) {
+                    presentationMode.wrappedValue.dismiss()
+                    qBittorrent.deleteTorrent(hash: hash, deleteFiles: true)
+                    hash = ""
+                }
+                Button("Cancel", role: .cancel) {}
+            }
+        }
+    }
+    
     func getTorrents() {
         if(scenePhase != .active) {
             //print("App inactive")
@@ -134,132 +222,70 @@ struct TorrentListView: View {
         }
     }
     
-    var body: some View {
-        NavigationView {
-            List {
-                Section(header: Text("Manage")) {
-                    Button {
-                        isTorrentAddView.toggle()
-                    } label: {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Add Task")
-                        }
-                    }.searchable(text: $searchQuery)
+    func leftToolbarMenu() -> some View {
+        Menu {
+            /*Section {
+                Button {
+                    //alertIdentifier = AlertIdentifier(id: .resumeAll)
+                } label: {
+                    Image(systemName: "play")
+                        .rotationEffect(.degrees(180))
+                    Text("Resume Category")
                 }
                 
-                Section(header: torrentListHeader()) {
-                    Group {
-                        ForEach(torrents, id: \.hash) {
-                            torrent in
-                            if searchQuery == "" || torrent.name.lowercased().contains(searchQuery.lowercased()) {
-                                NavigationLink {
-                                    TorrentDetailsView(torrent: torrent)
-                                } label: {
-                                    TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
-                                        .contextMenu() {
-                                            torrentRowContextMenu(torrent: torrent)
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }.onAppear() {
-                    reverse = defaults.bool(forKey: "reverse")
-                    sort = defaults.string(forKey: "sort") ?? sort
-                    filter = defaults.string(forKey: "filter") ?? filter
-                    
-                    getTorrents()
-                    
-                    timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
-                        timer in
-                        getTorrents()
-                    }
-                    
-                }.onDisappear() {
-                    timer?.invalidate()
-                }.onChange(of: scenePhaseEnv) {
-                    phase in
-                    scenePhase = phase
+                Button {
+                    //alertIdentifier =  AlertIdentifier(id: .pauseAll)
+                } label: {
+                    Image(systemName: "pause")
+                        .rotationEffect(.degrees(180))
+                    Text("Pause Category")
+                }
+            }*/
+            
+            Section {
+                Button {
+                    alertIdentifier = AlertIdentifier(id: .resumeAll)
+                } label: {
+                    Image(systemName: "play")
+                        .rotationEffect(.degrees(180))
+                    Text("Resume All Tasks")
                 }
                 
-                .navigationTitle("Tasks")
-            }
-            .toolbar() {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    Menu {
-                        Button {
-                            alertIdentifier = AlertIdentifier(id: .resumeAll)
-                        } label: {
-                            Image(systemName: "play")
-                                .rotationEffect(.degrees(180))
-                            Text("Resume All Tasks")
-                        }
-                        
-                        Button {
-                            alertIdentifier =  AlertIdentifier(id: .pauseAll)
-                        } label: {
-                            Image(systemName: "pause")
-                                .rotationEffect(.degrees(180))
-                            Text("Pause All Tasks")
-                        }
-                        
-                        Button(role: .destructive) {
-                            alertIdentifier =  AlertIdentifier(id: .logOut)
-                        } label: {
-                            Image(systemName: "rectangle.portrait.and.arrow.forward")
-                                .rotationEffect(.degrees(180))
-                            Text("Log out")
-                        }
-                    } label: {
-                        Image(systemName: "ellipsis.circle")
-                    }.alert(item: $alertIdentifier) { alert in
-                        switch(alert.id) {
-                        case .resumeAll:
-                            return Alert(title: Text("Confirm Resume All"), message: Text("Are you sure you want to resume all tasks?"), primaryButton: .default(Text("Resume")) {
-                                qBittorrent.resumeAllTorrents()
-                            }, secondaryButton: .cancel())
-                        case .pauseAll:
-                            return Alert(title: Text("Confirm Pause All"), message: Text("Are you sure you want to pause all tasks?"), primaryButton: .default(Text("Pause")) {
-                                qBittorrent.pauseAllTorrents()
-                            }, secondaryButton: .cancel())
-                        case .logOut:
-                            return Alert(title: Text("Confirm Logout"), message: Text("Are you sure you want to log out?"), primaryButton: .destructive(Text("Log Out")) {
-                                qBittorrent.setCookie(cookie: "")
-                                isLoggedIn = false
-                            }, secondaryButton: .cancel())
-                        }
-                    }
-                }
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    Button {
-                        isFilterView.toggle()
-                    } label: {
-                        Image(systemName: "line.3.horizontal.decrease.circle")
-                    }
-                    
+                Button {
+                    alertIdentifier =  AlertIdentifier(id: .pauseAll)
+                } label: {
+                    Image(systemName: "pause")
+                        .rotationEffect(.degrees(180))
+                    Text("Pause All Tasks")
                 }
             }
-            .sheet(isPresented: $isFilterView, content: {
-                TorrentFilterView(sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag)
-            })
-            .sheet(isPresented: $isTorrentAddView, content: {
-                TorrentAddView(isPresented: $isTorrentAddView)
-            })
-            .refreshable() {
-                getTorrents()
-            }.confirmationDialog("Delete Task", isPresented: $isDeleteAlert) {
-                Button("Delete Torrent", role: .destructive) {
-                    presentationMode.wrappedValue.dismiss()
-                    qBittorrent.deleteTorrent(hash: hash)
-                    hash = ""
+            
+            Section {
+                Button(role: .destructive) {
+                    alertIdentifier =  AlertIdentifier(id: .logOut)
+                } label: {
+                    Image(systemName: "rectangle.portrait.and.arrow.forward")
+                        .rotationEffect(.degrees(180))
+                    Text("Log out")
                 }
-                Button("Delete Task with Files", role: .destructive) {
-                    presentationMode.wrappedValue.dismiss()
-                    qBittorrent.deleteTorrent(hash: hash, deleteFiles: true)
-                    hash = ""
-                }
-                Button("Cancel", role: .cancel) {}
+            }
+        } label: {
+            Image(systemName: "ellipsis.circle")
+        }.alert(item: $alertIdentifier) { alert in
+            switch(alert.id) {
+            case .resumeAll:
+                return Alert(title: Text("Confirm Resume All"), message: Text("Are you sure you want to resume all tasks?"), primaryButton: .default(Text("Resume")) {
+                    qBittorrent.resumeAllTorrents()
+                }, secondaryButton: .cancel())
+            case .pauseAll:
+                return Alert(title: Text("Confirm Pause All"), message: Text("Are you sure you want to pause all tasks?"), primaryButton: .default(Text("Pause")) {
+                    qBittorrent.pauseAllTorrents()
+                }, secondaryButton: .cancel())
+            case .logOut:
+                return Alert(title: Text("Confirm Logout"), message: Text("Are you sure you want to log out?"), primaryButton: .destructive(Text("Log Out")) {
+                    qBittorrent.setCookie(cookie: "")
+                    isLoggedIn = false
+                }, secondaryButton: .cancel())
             }
         }
     }
