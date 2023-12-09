@@ -124,21 +124,9 @@ struct TorrentListView: View {
     }
     
     func getTorrents() {
-        if(scenePhase != .active) {
-            //print("App inactive")
+        if(scenePhase != .active || isFilterView || isTorrentAddView) {
             return
         }
-        if(isFilterView) {
-            //print("Filter view active")
-            return
-        }
-        if(isTorrentAddView) {
-            //print("Torrent view active")
-            return
-        }
-        
-        //print("Fetching torrents")
-        //print(scenePhase)
         
         var queryItems = [URLQueryItem(name: "sort", value: sort), URLQueryItem(name: "filter", value: filter), URLQueryItem(name: "reverse", value: String(reverse))]
         
