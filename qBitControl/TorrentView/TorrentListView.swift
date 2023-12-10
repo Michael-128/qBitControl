@@ -84,7 +84,12 @@ struct TorrentListView: View {
                     scenePhase = phase
                 }
                 
-                .navigationTitle(category == "None" ? "Tasks" : category)
+                .navigationTitle(category == "None" ? "Tasks" : category.capitalized)
+            }.onChange(of: isFilterView) {
+                isFilterView in
+                if(isFilterView) {
+                    getTorrents()
+                }
             }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -212,23 +217,35 @@ struct TorrentListView: View {
     
     func leftToolbarMenu() -> some View {
         Menu {
-            /*Section {
-                Button {
-                    //alertIdentifier = AlertIdentifier(id: .resumeAll)
-                } label: {
-                    Image(systemName: "play")
-                        .rotationEffect(.degrees(180))
-                    Text("Resume Category")
+            if(category != "None") {
+                Section {
+                    Button {
+                        let torrentsInCategory = torrents.filter {
+                            torrent in
+                            return torrent.category == category
+                        }
+                        
+                        qBittorrent.resumeTorrents(hashes: torrentsInCategory.compactMap { torrent in torrent.hash })
+                    } label: {
+                        Image(systemName: "play")
+                            .rotationEffect(.degrees(180))
+                        Text("Resume \(category.capitalized)")
+                    }
+                    
+                    Button {
+                        let torrentsInCategory = torrents.filter {
+                            torrent in
+                            return torrent.category == category
+                        }
+                        
+                        qBittorrent.pauseTorrents(hashes: torrentsInCategory.compactMap { torrent in torrent.hash })
+                    } label: {
+                        Image(systemName: "pause")
+                            .rotationEffect(.degrees(180))
+                        Text("Pause \(category.capitalized)")
+                    }
                 }
-                
-                Button {
-                    //alertIdentifier =  AlertIdentifier(id: .pauseAll)
-                } label: {
-                    Image(systemName: "pause")
-                        .rotationEffect(.degrees(180))
-                    Text("Pause Category")
-                }
-            }*/
+            }
             
             Section {
                 Button {
