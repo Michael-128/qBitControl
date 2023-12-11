@@ -271,10 +271,26 @@ class qBittorrent {
         qBitRequest.requestTorrentManagement(request: request)
     }
     
+    static func deleteTorrents(hashes: [String], deleteFiles: Bool) {
+        let path = "/api/v2/torrents/delete"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")), URLQueryItem(name: "deleteFiles", value: "\(deleteFiles)")])
+        
+        qBitRequest.requestTorrentManagement(request: request)
+    }
+    
     static func deleteTorrent(hash: String) {
         let path = "/api/v2/torrents/delete"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hash), URLQueryItem(name: "deleteFiles", value: "false")])
+        
+        qBitRequest.requestTorrentManagement(request: request)
+    }
+    
+    static func deleteTorrents(hashes: [String]) {
+        let path = "/api/v2/torrents/delete"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")), URLQueryItem(name: "deleteFiles", value: "false")])
         
         qBitRequest.requestTorrentManagement(request: request)
     }
