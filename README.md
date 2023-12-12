@@ -14,9 +14,9 @@ If you like my app, please consider supporting the development.
 - Add torrents from magnet or file.
 - View your torrents' progress, information, stats, trackers, and peers.
 - Manage your torrents - pause/resume, recheck, reannounce and delete.
-- Manage torrents files
+- Manage torrent files
 - Search, sort, and filter torrents.
-- Dark mode and light mode
+- Dark mode and light mode.
 
 
 ## Installation
@@ -27,13 +27,3 @@ If you like my app, please consider supporting the development.
 4. Enable developer mode
 5. Import profile
 6. Build
-
-
-## TODO
-- Banning peers.
-- Managing trackers.
-- RSS support.
-- qBittorrent settings.
-- Edit torrents' information and limits
-- Open in qBitControl suggestion when clicking on a magnet link
-
