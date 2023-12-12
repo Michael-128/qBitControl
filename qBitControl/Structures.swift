@@ -5,7 +5,7 @@
 
 import Foundation
 
-struct Torrent: Decodable {
+struct Torrent: Decodable, Hashable {
     let added_on: Int
     let amount_left: Int
     let auto_tmm: Bool
@@ -41,7 +41,7 @@ struct Torrent: Decodable {
     let seen_complete: Int
     let seq_dl: Bool
     let size: Int64
-    let state: String
+    var state: String
     let super_seeding: Bool
     let tags: String
     let time_active: Int

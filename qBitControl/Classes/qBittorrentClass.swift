@@ -255,10 +255,26 @@ class qBittorrent {
         qBitRequest.requestTorrentManagement(request: request)
     }
     
+    static func recheckTorrents(hashes: [String]) {
+        let path = "/api/v2/torrents/recheck"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))])
+        
+        qBitRequest.requestTorrentManagement(request: request)
+    }
+    
     static func reannounceTorrent(hash: String) {
         let path = "/api/v2/torrents/reannounce"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hash)])
+        
+        qBitRequest.requestTorrentManagement(request: request)
+    }
+    
+    static func reannounceTorrents(hashes: [String]) {
+        let path = "/api/v2/torrents/reannounce"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))])
         
         qBitRequest.requestTorrentManagement(request: request)
     }

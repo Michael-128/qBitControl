@@ -26,18 +26,39 @@ struct TorrentList: View {
     
     @State private var hash = ""
     
+    @Binding public var isSelectionMode: Bool
+    @Binding public var selectedTorrents: Set<Torrent>
+    
     var body: some View {
         Section(header: torrentListHeader()) {
             ForEach(torrents, id: \.hash) {
                 torrent in
                 if searchQuery == "" || torrent.name.lowercased().contains(searchQuery.lowercased()) {
-                    NavigationLink {
-                        TorrentDetailsView(torrent: torrent)
-                    } label: {
-                        TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
-                            .contextMenu() {
-                                torrentRowContextMenu(torrent: torrent)
+                    if(!isSelectionMode) {
+                        NavigationLink {
+                            TorrentDetailsView(torrent: torrent)
+                        } label: {
+                            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+                                .contextMenu() {
+                                    torrentRowContextMenu(torrent: torrent)
+                                }
+                        }
+                    } else {
+                        if(selectedTorrents.contains(torrent)) {
+                            HStack {
+                                Image(systemName: "checkmark.circle.fill").scaleEffect(1.25).foregroundStyle(Color(.blue))
+                                TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+                            }.onTapGesture {
+                                selectedTorrents.remove(torrent)
                             }
+                        } else {
+                            HStack {
+                                Image(systemName: "circle").scaleEffect(1.25).foregroundStyle(Color(.gray))
+                                TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+                            }.onTapGesture {
+                                selectedTorrents.insert(torrent)
+                            }
+                        }
                     }
                 }
             }
@@ -140,7 +161,7 @@ struct TorrentList: View {
     
     
     func getTorrents() {
-        if(scenePhase != .active || isTorrentAddView) {
+        if(scenePhase != .active || isTorrentAddView || isSelectionMode) {
             return
         }
         
