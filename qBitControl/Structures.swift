@@ -7,7 +7,7 @@ import Foundation
 
 struct GlobalTransferInfo: Decodable, Identifiable {
     let id = UUID()
-    let fetchDate: Date = Date.now
+    var fetchDate: Date = Date.now
     let dl_info_speed: Int64 // integer     Global download rate (bytes/s)
     let dl_info_data: Int64 // integer     Data downloaded this session (bytes)
     let up_info_speed: Int64 // integer     Global upload rate (bytes/s)
@@ -26,6 +26,20 @@ struct GlobalTransferInfo: Decodable, Identifiable {
         case up_rate_limit
         case dht_nodes
         case connection_status
+    }
+    
+    init(fetchDate: Date, dlspeed: Int64, dldata: Int64, dllimit: Int64, upspeed: Int64, updata: Int64, uplimit: Int64, dhtnodes: Int64, connection_status: String) {
+        self.fetchDate = fetchDate
+        self.dl_info_speed = dlspeed
+        self.dl_info_data = dldata
+        self.dl_rate_limit = dllimit
+        
+        self.up_info_speed = upspeed
+        self.up_info_data = updata
+        self.up_rate_limit = uplimit
+        
+        self.dht_nodes = dhtnodes
+        self.connection_status = connection_status
     }
     
     init(from decoder: Decoder) throws {

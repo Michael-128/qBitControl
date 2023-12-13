@@ -6,10 +6,10 @@
 import SwiftUI
 
     
-struct TorrentListView: View {
+struct TorrentListDemo: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State public var torrents: [Torrent] = Array()
+    @Binding public var torrents: [Torrent]
     
     @State private var searchQuery = ""
     @State private var sort = "name"
@@ -46,7 +46,7 @@ struct TorrentListView: View {
                     }.searchable(text: $searchQuery)
                 }
     
-                TorrentList(torrents: $torrents, searchQuery: $searchQuery, sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag, isTorrentAddView: $isTorrentAddView, isSelectionMode: $isSelectionMode, selectedTorrents: $selectedTorrents)
+                TorrentListDemo2(torrents: $torrents, searchQuery: $searchQuery, sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag, isTorrentAddView: $isTorrentAddView, isSelectionMode: $isSelectionMode, selectedTorrents: $selectedTorrents)
                 
                 .navigationTitle(category == "None" ? "Tasks" : category.capitalized)
             }.toolbar() {
@@ -62,9 +62,3 @@ struct TorrentListView: View {
     }
 }
     
-
-struct LoggedInView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
-}

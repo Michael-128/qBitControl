@@ -10,7 +10,7 @@ class qBitRequest {
     static func prepareURLRequest(path: String, queryItems: [URLQueryItem]) -> URLRequest {
         let cookie = qBittorrent.getCookie()
         let url = qBittorrent.getURL()
-        if(cookie == "n/a") {fatalError("Invalid cookie!")}
+        if(cookie == "n/a") {print("Invalid cookie!")}
         
         guard let url = URL(string: "\(url)\(path)") else {fatalError("Invalid URL!")}
         
@@ -36,7 +36,7 @@ class qBitRequest {
     static func prepareURLRequest(path: String) -> URLRequest {
         let cookie = qBittorrent.getCookie()
         let url = qBittorrent.getURL()
-        if(cookie == "n/a") {fatalError("Invalid cookie!")}
+        if(cookie == "n/a") {print("Invalid cookie!")}
         
         guard let url = URL(string: "\(url)\(path)") else {fatalError("Invalid URL!")}
         

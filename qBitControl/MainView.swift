@@ -13,7 +13,21 @@ struct MainView: View {
     @State private var defaults = UserDefaults.standard
     
     var body: some View {
-        if(isDemo) { DemoView(isDemo: $isDemo) }
+        if(isDemo) { 
+            TabView {
+                VStack {
+                    DemoView(isDemo: $isDemo)
+                }.tabItem() {
+                    Label("Tasks", systemImage: "square.and.arrow.down.on.square")
+                }
+                
+                VStack {
+                    TorrentStatsDemo()
+                }.tabItem() {
+                    Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
+                }
+            }
+        }
         else if(!isLoggedIn) {
             LoginView(isDemo: $isDemo, isLoggedIn: $isLoggedIn)
                 .onAppear(perform: {

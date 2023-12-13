@@ -112,6 +112,14 @@ struct LoginView: View {
                                 Text("Logging in...").foregroundStyle(Color(.gray))
                             }
                         }
+                        
+                        Section {
+                            Button {
+                                isDemo = true
+                            } label: {
+                                Text("View Demo")
+                            }
+                        }
                     }.navigationTitle("qBitControl")
                 }
             }
