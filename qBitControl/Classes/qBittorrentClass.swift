@@ -189,6 +189,12 @@ class qBittorrent {
         return formatter.string(from: fullDate)
     }
     
+    static func getGlobalTransferInfo(completionHandler: @escaping (GlobalTransferInfo) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/info")
+        
+        qBitRequest.requestGlobalTransferInfo(request: request, completionHandler: completionHandler)
+    }
+    
     static func getPreferences(completionHandler: @escaping (qBitPreferences) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/app/preferences")
         

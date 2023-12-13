@@ -20,34 +20,33 @@ struct MainView: View {
                     LocalNetworkPermissionService().triggerDialog()
                 })
         } else {
-            TorrentListView(isLoggedIn: $isLoggedIn).onChange(of: scenePhase, perform: {
-                phase in
-                print(phase)
-                if(phase == .active && isLoggedIn) {
-                    let data = defaults.value(forKey: "server") as? Data
-                    
-                    if let data = data {
-                        let decoder = JSONDecoder()
-                        do {
-                            let server = try decoder.decode(Server.self, from: data)
-                            
-                            Task {
-                                await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
-                                    isSuccess in
-                                    if(!isSuccess) {
-                                        isLoggedIn = false
-                                    }
-                                })
-                            }
-                        } catch {}
-                    }
-                }
-            })
-            /*TabView {
+            TabView {
                 VStack {
-                    TorrentListView(isLoggedIn: $isLoggedIn)
+                    TorrentListView(isLoggedIn: $isLoggedIn).onChange(of: scenePhase, perform: {
+                        phase in
+                        print(phase)
+                        if(phase == .active && isLoggedIn) {
+                            let data = defaults.value(forKey: "server") as? Data
+                            
+                            if let data = data {
+                                let decoder = JSONDecoder()
+                                do {
+                                    let server = try decoder.decode(Server.self, from: data)
+                                    
+                                    Task {
+                                        await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
+                                            isSuccess in
+                                            if(!isSuccess) {
+                                                isLoggedIn = false
+                                            }
+                                        })
+                                    }
+                                } catch {}
+                            }
+                        }
+                    })
                 }.tabItem() {
-                    Label("Torrents", systemImage: "square.and.arrow.down.on.square")
+                    Label("Tasks", systemImage: "square.and.arrow.down.on.square")
                 }
                 
                 /*VStack {
@@ -57,11 +56,11 @@ struct MainView: View {
                 }*/
                 
                 VStack {
-                    Text("Settings")
+                    TorrentStatsView()
                 }.tabItem() {
-                    Label("Settings", systemImage: "gearshape")
+                    Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                 }
-            }*/
+            }
         }
     }
 }

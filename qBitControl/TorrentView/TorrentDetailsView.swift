@@ -120,18 +120,6 @@ struct TorrentDetailsView: View {
         }
     }
     
-    func listElement(label: String, value: String) -> some View {
-        Button(action: {UIPasteboard.general.string = "\(value)"}) {
-            HStack {
-                Text("\(label)")
-                Spacer()
-                Text("\(value)")
-                    .foregroundColor(Color.gray)
-                    .lineLimit(1)
-            }
-        }.foregroundColor(buttonTextColor)
-    }
-    
     var body: some View {
         VStack {
             //Text("Torrent Details")
@@ -178,29 +166,29 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Information")) {
-                    listElement(label: "Name", value: "\(torrent.name)")
+                    ListElement(label: "Name", value: "\(torrent.name)")
                     
-                    listElement(label: "Added On", value: "\( qBittorrent.getFormatedDate(date: torrent.added_on) )")
+                    ListElement(label: "Added On", value: "\( qBittorrent.getFormatedDate(date: torrent.added_on) )")
                     
                     //listElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
                     
                     NavigationLink {
                         ChangeCategoryView(torrentHash: torrent.hash, category: torrent.category)
                     } label: {
-                        listElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
+                        ListElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
                     }
                     
                     /*NavigationLink {
                         ChangeTagsView(torrentHash: torrent.hash, selectedTags: torrent.tags.components(separatedBy: ","))
                     } label: {*/
-                        listElement(label: "Tags", value: "\( torrent.tags != "" ? torrent.tags : "None" )")
+                        ListElement(label: "Tags", value: "\( torrent.tags != "" ? torrent.tags : "None" )")
                     //}
                     
-                    listElement(label: "Size", value: "\(qBittorrent.getFormatedSize(size: torrent.size))")
+                    ListElement(label: "Size", value: "\(qBittorrent.getFormatedSize(size: torrent.size))")
                     
-                    listElement(label: "Total Size", value: "\(qBittorrent.getFormatedSize(size: torrent.total_size))")
+                    ListElement(label: "Total Size", value: "\(qBittorrent.getFormatedSize(size: torrent.total_size))")
                     
-                    listElement(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability))%")
+                    ListElement(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability))%")
                 }
                 
                 Section(header: Text("Connections")) {
@@ -220,7 +208,7 @@ struct TorrentDetailsView: View {
                     NavigationLink {
                         ChangePathView(path: torrent.save_path, torrentHash: torrent.hash)
                     } label: {
-                        listElement(label: "Save Path", value: torrent.save_path)
+                        ListElement(label: "Save Path", value: torrent.save_path)
                     }
                     
                     NavigationLink {
@@ -231,36 +219,36 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Status")) {
-                    listElement(label: "State", value: "\(qBittorrent.getState(state: torrent.state))")
+                    ListElement(label: "State", value: "\(qBittorrent.getState(state: torrent.state))")
                     
-                    listElement(label: "Progress", value: "\(String(format: "%.2f", (torrent.progress*100)))%")
+                    ListElement(label: "Progress", value: "\(String(format: "%.2f", (torrent.progress*100)))%")
                     
-                    listElement(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.dlspeed))/s")
+                    ListElement(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.dlspeed))/s")
                     
-                    listElement(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.upspeed))/s")
+                    ListElement(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.upspeed))/s")
                     
-                    listElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded))")
+                    ListElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded))")
                     
-                    listElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
+                    ListElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
                     
-                    listElement(label: "Ratio", value: "\(String(format:"%.2f", torrent.ratio))")
+                    ListElement(label: "Ratio", value: "\(String(format:"%.2f", torrent.ratio))")
                     
                 }
                 
                 Section(header: Text("Session")) {
-                    listElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded_session))")
+                    ListElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded_session))")
                     
-                    listElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
+                    ListElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
                 }
                 
                 Section(header: Text("Limits")) {
                     //listElement(label: "Maximum Seeding Time", value: "n/a")
                     
-                    listElement(label: "Maximum Ratio", value: "\(torrent.max_ratio > -1 ? String(format:"%.2f", torrent.max_ratio) : "None")")
+                    ListElement(label: "Maximum Ratio", value: "\(torrent.max_ratio > -1 ? String(format:"%.2f", torrent.max_ratio) : "None")")
                     
-                    listElement(label: "Download Limit", value: "\(torrent.dl_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.dl_limit)+"/s" : "None")")
+                    ListElement(label: "Download Limit", value: "\(torrent.dl_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.dl_limit)+"/s" : "None")")
                     
-                    listElement(label: "Upload Limit", value: "\(torrent.up_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.up_limit)+"/s" : "None")")
+                    ListElement(label: "Upload Limit", value: "\(torrent.up_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.up_limit)+"/s" : "None")")
                 }
                 
             }
