@@ -638,7 +638,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitRemote;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -670,7 +670,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.3;
+				MARKETING_VERSION = 1.0.4;
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitRemote;
 				SWIFT_EMIT_LOC_STRINGS = YES;
