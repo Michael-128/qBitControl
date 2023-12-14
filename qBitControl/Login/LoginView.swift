@@ -53,7 +53,7 @@ struct LoginView: View {
         NavigationView {
             if(isLoading) {
                 Spacer()
-                Text("qBitControl").font(.largeTitle)
+                Text("qBitManager").font(.largeTitle)
                 Spacer()
             } else {
                 Group {
@@ -120,7 +120,7 @@ struct LoginView: View {
                                 Text("View Demo")
                             }
                         }
-                    }.navigationTitle("qBitControl")
+                    }.navigationTitle("qBitManager")
                 }
             }
         }.onAppear() {

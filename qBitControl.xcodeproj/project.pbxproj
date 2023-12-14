@@ -82,7 +82,7 @@
 		9043FB3329128DB90030688C /* TorrentDetailsPeersRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsPeersRowView.swift; sourceTree = "<group>"; };
 		9043FB35291292310030688C /* TorrentDetailsPeersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsPeersView.swift; sourceTree = "<group>"; };
 		9043FB372912AA240030688C /* TorrentPeersDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentPeersDetailsView.swift; sourceTree = "<group>"; };
-		9082FA1F29080E53006C3960 /* qBitRemote.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qBitRemote.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9082FA1F29080E53006C3960 /* qBitManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qBitManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA2229080E53006C3960 /* qBitControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlApp.swift; sourceTree = "<group>"; };
 		9082FA2429080E53006C3960 /* ServersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersView.swift; sourceTree = "<group>"; };
 		9082FA2629080E55006C3960 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -209,7 +209,7 @@
 		9082FA2029080E53006C3960 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				9082FA1F29080E53006C3960 /* qBitRemote.app */,
+				9082FA1F29080E53006C3960 /* qBitManager.app */,
 				9082FA2F29080E55006C3960 /* qBitControlTests.xctest */,
 				9082FA3929080E55006C3960 /* qBitControlUITests.xctest */,
 			);
@@ -314,7 +314,7 @@
 			);
 			name = qBitControl;
 			productName = TorrentAttempt;
-			productReference = 9082FA1F29080E53006C3960 /* qBitRemote.app */;
+			productReference = 9082FA1F29080E53006C3960 /* qBitManager.app */;
 			productType = "com.apple.product-type.application";
 		};
 		9082FA2E29080E55006C3960 /* qBitControlTests */ = {
@@ -635,7 +635,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = qBitControl/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = qBitControl;
+				INFOPLIST_KEY_CFBundleDisplayName = qBitManager;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -646,9 +646,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
-				PRODUCT_NAME = qBitRemote;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitManager;
+				PRODUCT_NAME = qBitManager;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -667,7 +667,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = qBitControl/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = qBitControl;
+				INFOPLIST_KEY_CFBundleDisplayName = qBitManager;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -678,9 +678,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.4;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
-				PRODUCT_NAME = qBitRemote;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitManager;
+				PRODUCT_NAME = qBitManager;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
