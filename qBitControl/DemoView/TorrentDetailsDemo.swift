@@ -54,7 +54,7 @@ struct TorrentDetailsDemo: View {
                         impactMed.impactOccurred()
                         presentDeleteAlert = true
                     }) {
-                        Text("Delete Torrent")
+                        Text("Delete Task")
                             .foregroundColor(Color.red)
                     }
                 }
