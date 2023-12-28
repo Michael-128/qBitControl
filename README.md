@@ -2,7 +2,11 @@
 
 qBittorrent client for iOS devices.
 
-![presentation](https://user-images.githubusercontent.com/116978510/200120557-1a036291-700c-4b8c-9cc7-dd76e1f8028c.png)
+<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/04fa9256-e5dc-420c-8709-79064bb82044" width="22.5%"/>
+<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/02633a00-b647-4898-9edb-d4b8b89d4a88" width="22.5%"/>
+<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/e09a2508-56c7-41b3-91ce-d8e4c7639537" width="22.5%"/>
+<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/34cdfe91-0bcb-40ed-8bf5-3d3428567e10" width="22.5%"/>
+
 
 ## Donations
 If you like my app, please consider supporting the development.
@@ -11,12 +15,12 @@ If you like my app, please consider supporting the development.
 
 
 ## Features
-- Add torrents from magnet or file.
-- View your torrents' progress, information, stats, trackers, and peers.
-- Manage your torrents - pause/resume, recheck, reannounce and delete.
-- Manage torrent files
-- Search, sort, and filter torrents.
-- Dark mode and light mode.
+- Add torrents via .torrent files or magnet links.
+- Monitor download progress.
+- Manage torrents - pause/resume, recheck, reannounce and delete.
+- Browse & manage torrent files.
+- Real-time statistics.
+- Native iOS user interface.
 
 
 ## Installation
