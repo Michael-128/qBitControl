@@ -1,6 +1,6 @@
 # qBitControl [![Swift](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml/badge.svg)](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml)
 
-qBittorrent client for iOS devices.
+qBittorrent remote client for iOS devices.
 
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/04fa9256-e5dc-420c-8709-79064bb82044" width="22.5%"/>
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/02633a00-b647-4898-9edb-d4b8b89d4a88" width="22.5%"/>
