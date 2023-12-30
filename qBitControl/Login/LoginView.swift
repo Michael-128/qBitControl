@@ -47,13 +47,83 @@ struct LoginView: View {
     @State private var isLoading: Bool = true
     @State private var isTroubleConnecting: Bool = false
     @State private var isConnecting: Bool = false
+    @State private var isAutoLoggingIn: Bool = true
     
+    
+    func saveCredentials() -> Void {
+        let server = Server(name: URL, url: URL, username: username, password: password, isRemember: isRemember)
+        
+        let encoder = JSONEncoder()
+        
+        do {
+            defaults.setValue(try encoder.encode(server), forKey: "server")
+        } catch let error {
+            print("server set error")
+            print(error)
+        }
+    }
+    
+    func logIn() -> Void {
+        isConnecting = true
+        Task {
+            await Auth.getCookie(url: URL, username: username, password: password, isSuccess: {
+                    isSuccess in
+                    
+                    if(isSuccess) {
+                        saveCredentials()
+                        isLoggedIn = true
+                    } else {
+                        isTroubleConnecting = true
+                    }
+                    
+                    isConnecting = false
+                }
+            )
+            
+            isAutoLoggingIn = false
+        }
+    }
+    
+    func loadServerData() -> Void {
+        let server = defaults.value(forKey: "server") as? Data
+        
+        if let server = server {
+            let decoder = JSONDecoder()
+            
+            do {
+                let server = try decoder.decode(Server.self, from: server)
+                
+                URL = server.url
+                username = server.username
+                
+                if(server.isRemember) {
+                    password = server.password
+                }
+                
+                isRemember = server.isRemember
+            } catch let error {
+                print(error)
+                isLoading = false
+                return
+            }
+        }
+        
+        isLoading = false
+    }
+    
+    func autoLogIn() -> Void {
+        if(!qBittorrent.isCookie()) {
+            logIn()
+        } else {
+            isAutoLoggingIn = false
+        }
+    }
     
     var body: some View {
         NavigationView {
-            if(isLoading) {
+            if(isLoading || isAutoLoggingIn) {
                 Spacer()
-                Text("qBitManager").font(.largeTitle)
+                Text("qBitControl").font(.largeTitle)
                 Spacer()
             } else {
                 Group {
@@ -73,38 +143,7 @@ struct LoginView: View {
                         Section {
                             if(!isConnecting) {
                                 Button {
-                                    if(URL == "demo" && username == "demo" && password == "demo") {
-                                        isDemo = true
-                                        return
-                                    }
-                                    
-                                    isConnecting = true
-                                    Task {
-                                        await Auth.getCookie(url: URL, username: username, password: password, isSuccess: {
-                                                isSuccess in
-                                                
-                                                if(isSuccess) {
-                                                    let server = Server(name: URL, url: URL, username: username, password: password, isRemember: isRemember)
-                                                    
-                                                    let encoder = JSONEncoder()
-                                                    
-                                                    do {
-                                                        defaults.setValue(try encoder.encode(server), forKey: "server")
-                                                    } catch let error {
-                                                        print("server set error")
-                                                        print(error)
-                                                        return
-                                                    }
-                                                    
-                                                    isLoggedIn = true
-                                                } else {
-                                                    isTroubleConnecting = true
-                                                }
-                                                
-                                                isConnecting = false
-                                            }
-                                        )
-                                    }
+                                    logIn()
                                 } label: {
                                     Text("Log in")
                                 }
@@ -120,33 +159,12 @@ struct LoginView: View {
                                 Text("View Demo")
                             }
                         }
-                    }.navigationTitle("qBitManager")
+                    }.navigationTitle("qBitControl")
                 }
             }
         }.onAppear() {
-            let server = defaults.value(forKey: "server") as? Data
-            
-            if let server = server {
-                let decoder = JSONDecoder()
-                
-                do {
-                    let server = try decoder.decode(Server.self, from: server)
-                    
-                    URL = server.url
-                    username = server.username
-                    
-                    if(server.isRemember) {
-                        password = server.password
-                    }
-                    
-                    isRemember = server.isRemember
-                } catch let error {
-                    print(error)
-                    return
-                }
-            }
-            
-            isLoading = false
+            loadServerData()
+            autoLogIn()
         }.alert(isPresented: $isTroubleConnecting, content: {
             Alert(title: Text("Couldn't connect to the server."), message: Text("Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"))
         })

@@ -27,6 +27,14 @@ class qBittorrent {
         return cookie
     }
     
+    static func isCookie() -> Bool {
+        if(cookie != "n/a") {
+            return true
+        }
+        
+        return false
+    }
+    
     static func getState(state: String) -> String {
         switch state {
         case "error":
