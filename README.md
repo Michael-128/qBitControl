@@ -16,15 +16,17 @@ qBittorrent remote client for iOS devices.
 - Real-time statistics.
 - Native iOS user interface.
 
-
-## Installation
-### With Xcode:
-1. Clone the repository.
-2. Import the project to Xcode
-3. Connect your iPhone to the computer
-4. Enable developer mode
-5. Import profile
-6. Build
+## Building
+- Install Xcode from [App Store](https://apps.apple.com/us/app/xcode/id497799835).
+- Clone the repository.
+  - `git clone https://github.com/Michael-128/qBitControl`
+- Open qBitControl.xcodeproj in Xcode.
+- Click on "qBitControl" at the top of the left sidebar.
+- Click on the "Signing & Capabilities" tab.
+- Under "Targets", select "qBitControl".
+- In the "Team" dropdown, select your account.
+- Change the "Bundle Identifier" to something else.
+- Select your Apple device in the top bar as a target and click the Play button to run.
 
 
 ## Support
