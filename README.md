@@ -16,6 +16,9 @@ qBittorrent remote client for iOS devices.
 - Real-time statistics.
 - Native iOS user interface.
 
+To request a feature or report a bug, please open an [issue](https://github.com/Michael-128/qBitControl/issues) on GitHub.
+
+
 ## Building
 - Install Xcode from [App Store](https://apps.apple.com/us/app/xcode/id497799835).
 - Clone the repository.
