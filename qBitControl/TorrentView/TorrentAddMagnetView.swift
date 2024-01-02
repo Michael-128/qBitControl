@@ -7,7 +7,9 @@ import SwiftUI
 
 struct TorrentAddMagnetView: View {
     
-    @State var urls = ""
+    @State public var urls = ""
+    
+    @Binding var openedMagnetURL: String?
     @Binding var isPresented: Bool
     /**
      root_folder optional     string     Create the root folder. Possible values are true, false, unset (default)
@@ -20,6 +22,12 @@ struct TorrentAddMagnetView: View {
             Section(header: Text("URL")) {
                 TextEditor(text: $urls)
                     .frame(minHeight: CGFloat(200), maxHeight: CGFloat(200))
+            }.onAppear() {
+                if let magnetURL = openedMagnetURL {
+                    print(magnetURL)
+                    urls = magnetURL
+                    openedMagnetURL = nil
+                }
             }
             
             TorrentAddOptionsView(torrent: $urls, torrentData: .constant([:]), isFile: .constant(false), isPresented: $isPresented)

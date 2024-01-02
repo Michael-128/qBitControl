@@ -32,6 +32,8 @@ struct TorrentListView: View {
     @State private var isSelectionMode: Bool = false
     @State private var selectedTorrents = Set<Torrent>()
     
+    @State private var openedMagnetURL: String?
+    
     var body: some View {
         NavigationView {
             List {
@@ -56,7 +58,12 @@ struct TorrentListView: View {
                 TorrentFilterView(sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag)
             })
             .sheet(isPresented: $isTorrentAddView, content: {
-                TorrentAddView(isPresented: $isTorrentAddView)
+                TorrentAddView(isPresented: $isTorrentAddView, openedMagnetURL: $openedMagnetURL)
+            }).onOpenURL(perform: { url in
+                if url.absoluteString.contains("magnet") {
+                    isTorrentAddView = true
+                    openedMagnetURL = url.absoluteString
+                }
             })
         }
     }

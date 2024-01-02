@@ -5,17 +5,23 @@
 
 import SwiftUI
 
+enum TorrentType {
+    case magnet, file
+}
+
 struct TorrentAddView: View {
-    @State private var isMagnet = true
+    @State private var torrentType: TorrentType = .file
     @Binding var isPresented: Bool
+    
+    @Binding public var openedMagnetURL: String?
     
     var body: some View {
         NavigationView {
             List {
                 Section {
-                    Picker("Task Type", selection: $isMagnet) {
-                        Text("URL").tag(true)
-                        Text("File").tag(false)
+                    Picker("Task Type", selection: $torrentType) {
+                        Text("File").tag(TorrentType.file)
+                        Text("URL").tag(TorrentType.magnet)
                     }
                     .padding(.horizontal, 40.0)
                     .padding(.vertical, 0)
@@ -25,15 +31,19 @@ struct TorrentAddView: View {
                 
                 
                 
-                if isMagnet {
-                    TorrentAddMagnetView(isPresented: $isPresented)
+                if torrentType == .magnet {
+                    TorrentAddMagnetView(openedMagnetURL: $openedMagnetURL, isPresented: $isPresented)
                 } else {
                     TorrentAddFileView(isPresented: $isPresented)
                 }
-            }
-            .toolbar() {
+            }.onAppear() {
+                if (openedMagnetURL != nil) {
+                    torrentType = .magnet
+                }
+            }.toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button {
+                        openedMagnetURL = nil
                         isPresented = false
                     } label: {
                         Text("Cancel")

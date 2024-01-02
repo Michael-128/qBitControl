@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
+		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
+		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		903DED2E290AABA800FB36D6 /* TorrentAddView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED2D290AABA800FB36D6 /* TorrentAddView.swift */; };
 		903DED30290AADB300FB36D6 /* TorrentAddMagnetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED2F290AADB300FB36D6 /* TorrentAddMagnetView.swift */; };
 		903DED32290AADC200FB36D6 /* TorrentAddFileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 903DED31290AADC200FB36D6 /* TorrentAddFileView.swift */; };
@@ -74,6 +77,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		90200BA42B44BA6E00D3BA55 /* logo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo1.png; path = qBitControl/Assets.xcassets/AppIcon.appiconset/logo1.png; sourceTree = "<group>"; };
+		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
+		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		903DED2D290AABA800FB36D6 /* TorrentAddView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddView.swift; sourceTree = "<group>"; };
 		903DED2F290AADB300FB36D6 /* TorrentAddMagnetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddMagnetView.swift; sourceTree = "<group>"; };
 		903DED31290AADC200FB36D6 /* TorrentAddFileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddFileView.swift; sourceTree = "<group>"; };
@@ -201,6 +207,7 @@
 		9082FA1629080E53006C3960 = {
 			isa = PBXGroup;
 			children = (
+				90200BA42B44BA6E00D3BA55 /* logo1.png */,
 				9082FA2129080E53006C3960 /* qBitControl */,
 				9082FA2029080E53006C3960 /* Products */,
 			);
@@ -230,6 +237,8 @@
 				90EF6A4E29095594001E9E7F /* Structures.swift */,
 				9082FA2829080E55006C3960 /* Preview Content */,
 				9082FA2629080E55006C3960 /* Assets.xcassets */,
+				90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */,
+				90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */,
 			);
 			path = qBitControl;
 			sourceTree = "<group>";
@@ -368,10 +377,12 @@
 					};
 					9082FA2E29080E55006C3960 = {
 						CreatedOnToolsVersion = 14.0.1;
+						LastSwiftMigration = 1510;
 						TestTargetID = 9082FA1E29080E53006C3960;
 					};
 					9082FA3829080E55006C3960 = {
 						CreatedOnToolsVersion = 14.0.1;
+						LastSwiftMigration = 1510;
 						TestTargetID = 9082FA1E29080E53006C3960;
 					};
 				};
@@ -402,6 +413,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */,
+				90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */,
 				9082FA2729080E55006C3960 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -410,6 +422,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -417,6 +430,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -692,6 +706,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -700,6 +715,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlTests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitControl";
@@ -711,6 +728,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -719,6 +737,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitControl";
@@ -729,6 +748,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -736,6 +756,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlUITests-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TorrentAttempt;
@@ -746,6 +768,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -753,6 +776,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlUITests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = TorrentAttempt;

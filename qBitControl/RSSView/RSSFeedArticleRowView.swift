@@ -15,7 +15,7 @@ struct RSSFeedArticleRowView: View {
         NavigationView {
             VStack {
                 List {
-                    TorrentAddMagnetView(urls: article.torrentURL, isPresented: $isDownloadSheet)
+                    TorrentAddMagnetView(urls: article.torrentURL, openedMagnetURL: .constant(nil), isPresented: $isDownloadSheet)
                 }
                 .navigationTitle("Link")
             }.toolbar() {
