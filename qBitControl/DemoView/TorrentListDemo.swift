@@ -56,7 +56,7 @@ struct TorrentListDemo: View {
                 TorrentFilterView(sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag)
             })
             .sheet(isPresented: $isTorrentAddView, content: {
-                TorrentAddView(isPresented: $isTorrentAddView, openedMagnetURL: .constant(""))
+                TorrentAddView(isPresented: $isTorrentAddView, openedMagnetURL: .constant(nil), openedFileURL: .constant([]))
             })
         }
     }

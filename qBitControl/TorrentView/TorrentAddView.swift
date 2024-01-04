@@ -14,6 +14,7 @@ struct TorrentAddView: View {
     @Binding var isPresented: Bool
     
     @Binding public var openedMagnetURL: String?
+    @Binding public var openedFileURL: [URL]
     
     var body: some View {
         NavigationView {
@@ -34,7 +35,7 @@ struct TorrentAddView: View {
                 if torrentType == .magnet {
                     TorrentAddMagnetView(openedMagnetURL: $openedMagnetURL, isPresented: $isPresented)
                 } else {
-                    TorrentAddFileView(isPresented: $isPresented)
+                    TorrentAddFileView(isPresented: $isPresented, openedFileURL: $openedFileURL)
                 }
             }.onAppear() {
                 if (openedMagnetURL != nil) {

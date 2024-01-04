@@ -13,7 +13,8 @@ struct TorrentAddFileView: View {
     @State private var isFileOpen = false
     
     @Binding var isPresented: Bool
-    //@State private var buttonTextColor = UITraitCollection.current.userInterfaceStyle == .dark ? Color.white : Color.black
+    
+    @Binding public var openedFileURL: [URL]
     
     func listElement(value: String) -> some View {
         Button(action: {UIPasteboard.general.string = "\(value)"}) {
@@ -23,6 +24,23 @@ struct TorrentAddFileView: View {
                     .lineLimit(1)
             }
         }
+    }
+    
+    func handleFile(fileURL: URL) -> Void {
+        if(fileURL.pathExtension != "torrent") { return }
+        
+        let fileName = fileURL.lastPathComponent
+        self.fileNames.append(fileName)
+        
+        if fileURL.startAccessingSecurityScopedResource() {
+            do {
+                self.fileContent[fileName] = try Data(contentsOf: fileURL)
+            } catch {
+                print(error)
+            }
+        }
+        
+        fileURL.stopAccessingSecurityScopedResource()
     }
     
     var body: some View {
@@ -44,29 +62,18 @@ struct TorrentAddFileView: View {
             files in
             do {
                 for fileURL in try files.get() {
-                    let fileName = fileURL.lastPathComponent
-                    self.fileNames.append(fileName)
-                    
-                    if
-                        
-                        fileURL.startAccessingSecurityScopedResource() {
-                        
-                        do {
-                            self.fileContent[fileName] = try Data(contentsOf: fileURL)
-                        } catch {
-                            print(error)
-                        }
-                        
-                        
-                    }
-                    
-                    
-                    fileURL.stopAccessingSecurityScopedResource()
+                    handleFile(fileURL: fileURL)
                 }
             } catch {
                 print(error)
             }
-        })
+        }).onAppear() {
+            for fileURL in openedFileURL {
+                handleFile(fileURL: fileURL)
+            }
+            
+            openedFileURL = []
+        }
         
         TorrentAddOptionsView(torrent: .constant(""), torrentData: $fileContent, isFile: .constant(true), isPresented: $isPresented)
     }
@@ -74,6 +81,6 @@ struct TorrentAddFileView: View {
 
 struct TorrentAddFileView_Previews: PreviewProvider {
     static var previews: some View {
-        TorrentAddFileView(isPresented: .constant(true))
+        TorrentAddFileView(isPresented: .constant(true), openedFileURL: .constant([]))
     }
 }
