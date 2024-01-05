@@ -172,7 +172,7 @@ struct TorrentList: View {
         }
         
         if tag != "None" {
-            queryItems.append(URLQueryItem(name: "tag", value: category))
+            queryItems.append(URLQueryItem(name: "tag", value: tag))
         }
         
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: queryItems)
