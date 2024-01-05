@@ -1,4 +1,4 @@
-# qBitControl [![Swift](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml/badge.svg)](https://github.com/Michael-128/qBitControl/actions/workflows/swift.yml)
+# qBitControl [![iOS Build](https://github.com/Michael-128/qBitControl/actions/workflows/automated-ios-build.yml/badge.svg?branch=main)](https://github.com/Michael-128/qBitControl/actions/workflows/automated-ios-build.yml)
 
 qBittorrent remote client for iOS devices.
 
