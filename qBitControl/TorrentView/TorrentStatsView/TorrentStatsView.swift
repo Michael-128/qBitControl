@@ -37,7 +37,7 @@ struct TorrentStatsView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 List {
                     if let globalTransferInfo = globalTransferInfo.last {

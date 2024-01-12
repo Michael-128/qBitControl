@@ -8,7 +8,6 @@ import SwiftUI
 struct LoginView: View {
     @State private var cookie1 = qBittorrent.getCookie()
     
-    @Binding var isDemo: Bool
     @Binding var isLoggedIn: Bool {
         didSet {
 
@@ -120,7 +119,7 @@ struct LoginView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             if(isLoading || isAutoLoggingIn) {
                 Spacer()
                 Text("qBitControl").font(.largeTitle)
@@ -149,14 +148,6 @@ struct LoginView: View {
                                 }
                             } else {
                                 Text("Logging in...").foregroundStyle(Color(.gray))
-                            }
-                        }
-                        
-                        Section {
-                            Button {
-                                isDemo = true
-                            } label: {
-                                Text("View Demo")
                             }
                         }
                     }.navigationTitle("qBitControl")

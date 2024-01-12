@@ -36,7 +36,7 @@ struct TorrentListView: View {
     @State private var openedFileURL: [URL] = []
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 Section(header: Text("Manage")) {
                     Button {
