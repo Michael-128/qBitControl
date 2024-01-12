@@ -4,7 +4,7 @@
 //
 
 import SwiftUI
-
+/*
 struct LoginView: View {
     @State private var cookie1 = qBittorrent.getCookie()
     
@@ -22,11 +22,6 @@ struct LoginView: View {
                     URL = server.url
                     username = server.username
                     
-                    if(server.isRemember) {
-                        password = server.password
-                    }
-                    
-                    isRemember = server.isRemember
                 } catch let error {
                     print(error)
                     return
@@ -50,7 +45,7 @@ struct LoginView: View {
     
     
     func saveCredentials() -> Void {
-        let server = Server(name: URL, url: URL, username: username, password: password, isRemember: isRemember)
+        let server = Server(name: URL, url: URL, username: username, password: password, isRemember: isRemember, isActive: <#Bool#>)
         
         let encoder = JSONEncoder()
         
@@ -167,3 +162,4 @@ struct LoginView_Previews: PreviewProvider {
         MainView()
     }
 }
+*/

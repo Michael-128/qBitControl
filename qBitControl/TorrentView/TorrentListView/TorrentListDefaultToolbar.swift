@@ -84,7 +84,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                     }
                 }
                 
-                Section {
+                /*Section {
                     Button(role: .destructive) {
                         alertIdentifier =  AlertIdentifier(id: .logOut)
                     } label: {
@@ -92,7 +92,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                             .rotationEffect(.degrees(180))
                         Text("Log out")
                     }
-                }
+                }*/
             } label: {
                 Image(systemName: "ellipsis.circle")
             }.alert(item: $alertIdentifier) { alert in

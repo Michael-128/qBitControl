@@ -12,12 +12,27 @@ struct MainView: View {
     @Environment(\.scenePhase) var scenePhase
     @State private var defaults = UserDefaults.standard
     
+    @State private var shouldAttempAutoLogIn = true
+    
     var body: some View {
-        if(!isLoggedIn) {
-            LoginView(isLoggedIn: $isLoggedIn)
-                .onAppear(perform: {
-                    LocalNetworkPermissionService().triggerDialog()
-                })
+        if(shouldAttempAutoLogIn) {
+            Text("qBitControl").onAppear {
+                let serversHelper = ServersHelper()
+                let activeServer = serversHelper.getActiveServer()
+                
+                if let activeServer = activeServer {
+                    serversHelper.connect(server: activeServer, isSuccess: {
+                        success in
+                        isLoggedIn = success
+                    })
+                }
+                
+                shouldAttempAutoLogIn = false
+            }
+        } else if(!isLoggedIn) {
+            ServersView(isLoggedIn: $isLoggedIn).onAppear {
+                LocalNetworkPermissionService().triggerDialog()
+            }.navigationTitle("qBitControl")
         } else {
             TabView {
                 VStack {
@@ -25,22 +40,16 @@ struct MainView: View {
                         phase in
                         print(phase)
                         if(phase == .active && isLoggedIn) {
-                            let data = defaults.value(forKey: "server") as? Data
+                            let serversHelper = ServersHelper()
+                            let activeServer = serversHelper.getActiveServer()
                             
-                            if let data = data {
-                                let decoder = JSONDecoder()
-                                do {
-                                    let server = try decoder.decode(Server.self, from: data)
-                                    
-                                    Task {
-                                        await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
-                                            isSuccess in
-                                            if(!isSuccess) {
-                                                isLoggedIn = false
-                                            }
-                                        })
+                            if let activeServer = activeServer {
+                                serversHelper.connect(server: activeServer, isSuccess: {
+                                    success in
+                                    if(!success) {
+                                        isLoggedIn = false
                                     }
-                                } catch {}
+                                })
                             }
                         }
                     })
@@ -60,11 +69,11 @@ struct MainView: View {
                     Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                 }
                 
-                /*VStack {
-                    ServersView()
+                VStack {
+                    ServersView(isLoggedIn: $isLoggedIn)
                 }.tabItem() {
                     Label("Servers", systemImage: "server.rack")
-                }*/
+                }
             }
         }
     }

@@ -262,7 +262,6 @@ struct Server: Codable, Identifiable {
     let url: String
     let username: String
     let password: String
-    let isRemember: Bool
 }
 
 struct Peer: Decodable {

@@ -5,32 +5,28 @@
 
 import SwiftUI
 
-/*struct ServersView: View {
+struct ServersView: View {
     
-    @State private var cookie1 = qBittorrent.getCookie()
-    @Binding var isLoggedIn: Bool
-    @State private var isLoginFailed = false
-    
+    @State private var serversHelper = ServersHelper()
     @State private var isConnecting: [String: Bool] = [:]
     
     @State private var isServerAddView = false
     
     @State private var servers: [Server] = []
-    @State private var defaults = UserDefaults.standard
+    @State private var activeServerId: String = ""
     
-    func refreshServers() -> Void {
-        if let server = defaults.object(forKey: "servers") as? Data {
-            let decoder = JSONDecoder()
-            do {
-                servers = try decoder.decode([Server].self, from: server)
-            } catch {
-                print(error)
-            }
+    @Binding public var isLoggedIn: Bool
+    @State private var isTroubleConnecting = false
+    
+    func refreshServerList() { self.servers = serversHelper.getServers() }
+    func refreshActiveServer() {
+        if let activeServer = serversHelper.getActiveServer() {
+            activeServerId = activeServer.id
         }
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             List {
                 Section(header: Text("Manage")) {
                     Button {
@@ -42,56 +38,43 @@ import SwiftUI
                         }
                     }
                 }
-                Section(header: Text("Server List")) {
-                    ForEach(servers, id: \.id) {
-                        server in
-                        Button {
-                            isConnecting[server.id] = true
-                            
-                            let cookie = Auth.getCookie(id: server.id)
-                            
-                            if cookie.contains("SID") {
-                                qBittorrent.setURL(url: server.ip)
-                                qBittorrent.setCookie(cookie: cookie)
-                                isLoggedIn = true
-                                return
+                if(!servers.isEmpty) {
+                    Section(header: Text("Server List")) {
+                        ForEach(servers, id: \.id) {
+                            server in
+                            Button {
+                                isConnecting[server.id] = true
+                                
+                                serversHelper.connect(server: server, isSuccess: {
+                                    success in
+                                    if(!success) {
+                                        isTroubleConnecting = true
+                                    }
+                                    
+                                    isLoggedIn = success
+                                    isConnecting[server.id] = false
+                                    
+                                    refreshActiveServer()
+                                })
+                            } label: {
+                                ServerRowView(id: server.id, friendlyName: server.name, url: server.url, username: server.username, password: server.password, activeServerId: $activeServerId, serversHelper: serversHelper, refreshServerList: refreshServerList, isConnecting: $isConnecting)
                             }
-                            
-                            Auth.getCookie(ip: server.ip, username: server.username, password: server.password, completion: {
-                                cookie in
-                                //print(cookie)
-                                if cookie.contains("SID") {
-                                    Auth.setCookie(id: server.id, cookie: cookie)
-                                    qBittorrent.setURL(url: server.ip)
-                                    qBittorrent.setCookie(cookie: cookie)
-                                    isLoggedIn = true
-                                } else {
-                                    isLoggedIn = false
-                                    isLoginFailed = true
-                                }
-                            })
-                        } label: {
-                            ServerRowView(id: server.id, friendlyName: server.name, ip: server.ip, username: server.username, password: server.password, servers: $servers, isConnecting: $isConnecting)
                         }
                     }
                 }
-                
-                if(isLoginFailed) {
-                    Text("Failed to login!")
-                }
             }
-            .navigationTitle("qBitControl")
+            .navigationTitle("Servers")
         }.sheet(isPresented: $isServerAddView) {
-            ServerAddView(servers: $servers)
-        }.onAppear() {
-            refreshServers()
-        }
+            ServerAddView(serversHelper: serversHelper)
+        }.onChange(of: isServerAddView, perform: {
+            isServerAddView in
+            if(isServerAddView) { return }
+            refreshServerList()
+        }).onAppear() {
+            refreshServerList()
+            refreshActiveServer()
+        }.alert(isPresented: $isTroubleConnecting, content: {
+            Alert(title: Text("Couldn't connect to the server."), message: Text("Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"))
+        })
     }
 }
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
-}
-*/

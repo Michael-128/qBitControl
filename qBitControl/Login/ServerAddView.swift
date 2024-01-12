@@ -9,24 +9,11 @@ struct ServerAddView: View {
     @Environment(\.presentationMode) var presentationMode
 
     @State private var friendlyName = ""
-    @State private var ip = ""
+    @State private var url = ""
     @State private var username = ""
     @State private var password = ""
     
-    @State private var defaults = UserDefaults.standard
-    
-    @Binding var servers: [Server]
-    
-    func refreshServers() -> Void {
-        if let server = defaults.object(forKey: "servers") as? Data {
-            let decoder = JSONDecoder()
-            do {
-                servers = try decoder.decode([Server].self, from: server)
-            } catch {
-                print(error)
-            }
-        }
-    }
+    public var serversHelper: ServersHelper
     
     var body: some View {
         NavigationView {
@@ -34,7 +21,7 @@ struct ServerAddView: View {
                 Section(header: Text("Information")) {
                     TextField("Name", text: $friendlyName)
                         .autocapitalization(.none)
-                    TextField("http(s)://IP:PORT", text: $ip)
+                    TextField("http(s)://IP:PORT", text: $url)
                         .autocapitalization(.none)
                     TextField("Username", text: $username)
                         .autocapitalization(.none)
@@ -43,7 +30,8 @@ struct ServerAddView: View {
                 
                 Section {
                     Button {
-                   
+                        serversHelper.addServer(server: Server(name: friendlyName, url: url, username: username, password: password))
+                        presentationMode.wrappedValue.dismiss()
                     } label: {
                         Text("ADD")
                             .fontWeight(.bold)
@@ -56,11 +44,5 @@ struct ServerAddView: View {
             }
             .navigationTitle("Add Server")
         }
-    }
-}
-
-struct ServerAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        ServerAddView(servers: .constant([]))
     }
 }
