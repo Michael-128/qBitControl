@@ -34,6 +34,7 @@
 		90AB9B7E2B29D6AE005C3612 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB9B7D2B29D6AE005C3612 /* ListElement.swift */; };
 		90AB9B812B29DC45005C3612 /* UploadChartElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB9B802B29DC45005C3612 /* UploadChartElement.swift */; };
 		90AB9B832B29E363005C3612 /* DownloadChartElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB9B822B29E363005C3612 /* DownloadChartElement.swift */; };
+		90B61A8F2B540A10007ECCAD /* ServerEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B61A8E2B540A10007ECCAD /* ServerEvents.swift */; };
 		90BA88552B2206F100C8A342 /* LocalNetworkPermissionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */; };
 		90BCAD19291A7C91009F1FEC /* RSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD18291A7C91009F1FEC /* RSSView.swift */; };
 		90BCAD1B291A7EC9009F1FEC /* RSSFeedArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */; };
@@ -100,6 +101,7 @@
 		90AB9B7D2B29D6AE005C3612 /* ListElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListElement.swift; sourceTree = "<group>"; };
 		90AB9B802B29DC45005C3612 /* UploadChartElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadChartElement.swift; sourceTree = "<group>"; };
 		90AB9B822B29E363005C3612 /* DownloadChartElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadChartElement.swift; sourceTree = "<group>"; };
+		90B61A8E2B540A10007ECCAD /* ServerEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerEvents.swift; sourceTree = "<group>"; };
 		90BA88532B22019900C8A342 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkPermissionClass.swift; sourceTree = "<group>"; };
 		90BCAD18291A7C91009F1FEC /* RSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSView.swift; sourceTree = "<group>"; };
@@ -176,6 +178,7 @@
 				90FA253529190D0400DC8F0B /* FileNodeClass.swift */,
 				90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */,
 				90DCA7E42B51C393008A9C1B /* ServersHelper.swift */,
+				90B61A8E2B540A10007ECCAD /* ServerEvents.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -433,6 +436,7 @@
 				90AB9B832B29E363005C3612 /* DownloadChartElement.swift in Sources */,
 				90BCAD1D291A7EDE009F1FEC /* RSSFeedArticleRowView.swift in Sources */,
 				903DED3D290E8A9000FB36D6 /* ServerAddView.swift in Sources */,
+				90B61A8F2B540A10007ECCAD /* ServerEvents.swift in Sources */,
 				90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */,
 				90F7BEE52913D24300F5DEDE /* TorrentDetailsTrackersView.swift in Sources */,
 				90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */,

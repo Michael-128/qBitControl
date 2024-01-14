@@ -264,6 +264,11 @@ struct Server: Codable, Identifiable {
     let password: String
 }
 
+struct ServerAction {
+    let name: String
+    let action: () -> Void
+}
+
 struct Peer: Decodable {
     let client: String
     let connection: String

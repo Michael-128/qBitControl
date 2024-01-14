@@ -38,7 +38,7 @@ struct TorrentDetailsFilesView: View {
             for file in files {
                 var fileComponents = file.name.components(separatedBy: "/")
                 let actualFilename = fileComponents.last!
-                fileComponents.popLast()
+                let _ = fileComponents.popLast()
                 let path = fileComponents.joined(separator: "/")
                 filesWithCommonPaths[path, default: []].append(FileNode(index: file.index, name: actualFilename, size: file.size, progress: file.progress, priority: file.priority, is_seed: file.is_seed, availability: file.availability))
             }

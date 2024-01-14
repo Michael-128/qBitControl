@@ -2,6 +2,7 @@
 
 import Foundation
 
+
 class ServersHelper {
     private var defaults = UserDefaults.standard
     private var servers: [Server] = []
@@ -64,6 +65,7 @@ class ServersHelper {
                 success in
                 if(success) {
                     self.setActiveServer(id: server.id)
+                    
                 }
                 
                 isSuccess(success)
@@ -72,6 +74,12 @@ class ServersHelper {
     }
     
     func setActiveServer(id: String) {
+        if let activeServer = getActiveServer() {
+            if(id != activeServer.id) {
+                ServerEvents.callOnChangeActions()
+            }
+        }
+        
         defaults.setValue("\(id)", forKey: activeServerKey)
     }
     

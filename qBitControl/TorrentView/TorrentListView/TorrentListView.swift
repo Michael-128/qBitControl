@@ -35,6 +35,12 @@ struct TorrentListView: View {
     @State private var openedMagnetURL: String?
     @State private var openedFileURL: [URL] = []
     
+    @State private var sessionId: UUID = UUID()
+    
+    func regenerateSessionId() {
+        sessionId = UUID()
+    }
+    
     var body: some View {
         NavigationStack {
             List {
@@ -72,13 +78,10 @@ struct TorrentListView: View {
                     openedMagnetURL = url.absoluteString
                 }
             })
-        }
+        }.onAppear() {
+            ServerEvents.addOnChangeAction(action: ServerAction(name: "regenerateSessionId", action: regenerateSessionId))
+        }.id(sessionId)
     }
 }
     
 
-struct LoggedInView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
-}
