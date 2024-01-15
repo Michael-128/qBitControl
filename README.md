@@ -8,7 +8,7 @@ qBittorrent remote client for iOS devices.
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/34cdfe91-0bcb-40ed-8bf5-3d3428567e10" width="22.5%"/>
 
 
-## Features
+## Features ✨
 - Add torrents via .torrent files or magnet links.
 - Monitor download progress.
 - Manage torrents - pause/resume, recheck, reannounce and delete.
@@ -19,7 +19,7 @@ qBittorrent remote client for iOS devices.
 To request a feature or report a bug, please open an [issue](https://github.com/Michael-128/qBitControl/issues) on GitHub.
 
 
-## Building
+## Building 🛠️
 - Install Xcode from [App Store](https://apps.apple.com/us/app/xcode/id497799835).
 - Clone the repository.
   - `git clone https://github.com/Michael-128/qBitControl`
@@ -32,7 +32,7 @@ To request a feature or report a bug, please open an [issue](https://github.com/
 - Select your Apple device in the top bar as a target and click the Play button to run.
 
 
-## Support
-If you like this app, please consider supporting the development by contributing to the repository or donating.
+## Support 🤝
+If you like qBitControl, please consider supporting the development by contributing to the repository or donating.
 
 <a href='https://ko-fi.com/mikemichael225' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
