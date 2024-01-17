@@ -59,15 +59,22 @@ class ServersHelper {
         saveSeverList()
     }
     
+    func checkConnection(server: Server, result: @escaping (Bool) -> Void) {
+        Task {
+            await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
+                success in
+                result(success);
+            }, setCookie: false)
+        }
+    }
+    
     func connect(server: Server, isSuccess: @escaping (Bool) -> Void) {
         Task {
             await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
                 success in
                 if(success) {
                     self.setActiveServer(id: server.id)
-                    
                 }
-                
                 isSuccess(success)
             })
         }

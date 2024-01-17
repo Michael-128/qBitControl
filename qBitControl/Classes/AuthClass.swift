@@ -16,7 +16,7 @@ class Auth {
         cookies[id] = cookie
     }
     
-    static func getCookie(url: String, username: String, password: String, isSuccess: @escaping (Bool) -> Void) async {
+    static func getCookie(url: String, username: String, password: String, isSuccess: @escaping (Bool) -> Void, setCookie: Bool = true) async {
         let urlString = url;
         guard let url = URL(string: "\(url)/api/v2/auth/login") else {return}
         
@@ -50,8 +50,10 @@ class Auth {
             if let response = response as? HTTPURLResponse {
                 let cookie = String(String(describing: response.allHeaderFields["Set-Cookie"] ?? "n/a;").split(separator: ";")[0])
                 if(cookie.contains("SID")) {
-                    qBittorrent.setURL(url: urlString)
-                    qBittorrent.setCookie(cookie: cookie)
+                    if(setCookie) {
+                        qBittorrent.setURL(url: urlString)
+                        qBittorrent.setCookie(cookie: cookie)
+                    }
                     isSuccess(true)
                 } else {
                     isSuccess(false)

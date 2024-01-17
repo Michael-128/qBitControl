@@ -51,13 +51,15 @@ struct ServersView: View {
                                         isTroubleConnecting = true
                                     }
                                     
-                                    isLoggedIn = success
-                                    isConnecting[server.id] = false
+                                    if(success) {
+                                        isLoggedIn = true
+                                    }
                                     
+                                    isConnecting[server.id] = false
                                     refreshActiveServer()
                                 })
                             } label: {
-                                ServerRowView(id: server.id, friendlyName: server.name, url: server.url, username: server.username, password: server.password, activeServerId: $activeServerId, serversHelper: serversHelper, refreshServerList: refreshServerList, isConnecting: $isConnecting)
+                                ServerRowView(id: server.id, friendlyName: server.name, url: server.url, username: server.username, password: server.password, activeServerId: $activeServerId, serversHelper: serversHelper, refreshServerList: refreshServerList, isConnecting: $isConnecting, isLoggedIn: $isLoggedIn)
                             }
                         }
                     }

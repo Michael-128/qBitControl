@@ -18,6 +18,7 @@ struct ServerRowView: View {
     public var refreshServerList: () -> Void
     
     @Binding var isConnecting: [String: Bool]
+    @Binding var isLoggedIn: Bool
     
     var body: some View {
         HStack() {
@@ -27,7 +28,7 @@ struct ServerRowView: View {
                 Text(url)
             }
             
-            if(activeServerId == id) {
+            if(activeServerId == id && isLoggedIn) {
                 Spacer()
                 Image(systemName: "checkmark")
             } else if isConnecting[id] ?? false {
