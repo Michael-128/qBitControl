@@ -172,7 +172,7 @@ struct qBitPreferences: Decodable {
     let lsd: Bool?
     let encryption: Int?
     let anonymous_mode: Bool?
-    let proxy_type: Int?
+    let proxy_type: String?
     let proxy_ip: String?
     let proxy_port: Int?
     let proxy_peer_connections: Bool?

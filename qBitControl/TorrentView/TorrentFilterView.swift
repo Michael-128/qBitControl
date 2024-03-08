@@ -111,7 +111,7 @@ struct TorrentFilterView: View {
                         Text("Peers In Swarm").tag("num_incomplete")
                         Text("Connected Leeches").tag("num_leechs")
                         Text("Connected Seeds").tag("num_seeds")
-                        //Text("Priority").tag("priority")
+                        Text("Priority").tag("priority")
                         Text("Progress").tag("progress")
                         Text("Ratio").tag("ratio")
                         Text("Ratio Limit").tag("ratio_limit")

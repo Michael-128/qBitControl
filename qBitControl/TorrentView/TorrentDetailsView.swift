@@ -165,6 +165,42 @@ struct TorrentDetailsView: View {
                     }
                 }
                 
+                if let preferences = qBittorrent.getSavedPreferences() {
+                    if(preferences.queueing_enabled == true) {
+                        Section(header: Text("Queue Management")) {
+                            ListElement(label: "Priority", value: "\(torrent.priority)")
+                            
+                            Button(action: {
+                                impactMed.impactOccurred()
+                                qBittorrent.topPriorityTorrents(hashes: [torrent.hash])
+                            }) {
+                                Text("Move to Top")
+                            }
+                            
+                            Button(action: {
+                                impactMed.impactOccurred()
+                                qBittorrent.increasePriorityTorrents(hashes: [torrent.hash])
+                            }) {
+                                Text("Move Up")
+                            }
+                            
+                            Button(action: {
+                                impactMed.impactOccurred()
+                                qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash])
+                            }) {
+                                Text("Move Down")
+                            }
+                            
+                            Button(action: {
+                                impactMed.impactOccurred()
+                                qBittorrent.bottomPriorityTorrents(hashes: [torrent.hash])
+                            }) {
+                                Text("Move to Bottom")
+                            }
+                        }
+                    }
+                }
+                
                 Section(header: Text("Information")) {
                     ListElement(label: "Name", value: "\(torrent.name)")
                     

@@ -64,7 +64,7 @@ class qBitRequest {
         }.resume()
     }
     
-    static func requestTorrentManagement(request: URLRequest) {
+    static func requestUniversal(request: URLRequest) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in
         }.resume()

@@ -111,49 +111,70 @@ struct TorrentList: View {
     
     func torrentRowContextMenu(torrent: Torrent) -> some View {
         VStack {
-            Button {
-                if torrent.state.contains("paused") {
-                    qBittorrent.resumeTorrent(hash: torrent.hash)
-                } else {
-                    qBittorrent.pauseTorrent(hash: torrent.hash)
-                }
-            } label: {
-                HStack {
-                    if torrent.state.contains("paused") {
-                        Text("Resume")
-                        Image(systemName: "play")
-                    } else {
-                        Text("Pause")
-                        Image(systemName: "pause")
+            if let preferences = qBittorrent.getSavedPreferences() {
+                if(preferences.queueing_enabled == true) {
+                    Section(header: Text("Queue")) {
+                        Button {
+                            qBittorrent.increasePriorityTorrents(hashes: [torrent.hash])
+                        } label: {
+                            Text("Move Up")
+                            Image(systemName: "arrow.up")
+                        }
+                        Button {
+                            qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash])
+                        } label: {
+                            Text("Move Down")
+                            Image(systemName: "arrow.down")
+                        }
                     }
                 }
             }
             
-            Button {
-                qBittorrent.recheckTorrent(hash: torrent.hash)
-            } label: {
-                HStack {
-                    Text("Recheck")
-                    Image(systemName: "magnifyingglass")
+            Section(header: Text("Manage")) {
+                Button {
+                    if torrent.state.contains("paused") {
+                        qBittorrent.resumeTorrent(hash: torrent.hash)
+                    } else {
+                        qBittorrent.pauseTorrent(hash: torrent.hash)
+                    }
+                } label: {
+                    HStack {
+                        if torrent.state.contains("paused") {
+                            Text("Resume")
+                            Image(systemName: "play")
+                        } else {
+                            Text("Pause")
+                            Image(systemName: "pause")
+                        }
+                    }
                 }
-            }
-            
-            Button {
-                qBittorrent.reannounceTorrent(hash: torrent.hash)
-            } label: {
-                HStack {
-                    Text("Reannounce")
-                    Image(systemName: "circle.dashed")
+                
+                Button {
+                    qBittorrent.recheckTorrent(hash: torrent.hash)
+                } label: {
+                    HStack {
+                        Text("Recheck")
+                        Image(systemName: "magnifyingglass")
+                    }
                 }
-            }
-            
-            Button(role: .destructive) {
-                self.hash = torrent.hash
-                isDeleteAlert.toggle()
-            } label: {
-                HStack {
-                    Text("Delete")
-                    Image(systemName: "trash")
+                
+                Button {
+                    qBittorrent.reannounceTorrent(hash: torrent.hash)
+                } label: {
+                    HStack {
+                        Text("Reannounce")
+                        Image(systemName: "circle.dashed")
+                    }
+                }
+                
+                Button(role: .destructive) {
+                    self.hash = torrent.hash
+                    isDeleteAlert.toggle()
+                } label: {
+                    HStack {
+                        Text("Delete")
+                        Image(systemName: "trash")
+                    }
                 }
             }
         }
@@ -179,7 +200,28 @@ struct TorrentList: View {
         
         qBitRequest.requestTorrentListJSON(request: request) {
             torrent in
-            torrents = torrent
+            
+            switch(sort) {
+            case "priority":
+                torrents = torrent.sorted(by: {
+                    tor1, tor2 in
+                    
+                    if(reverse) {
+                        if(tor2.priority <= 0) { return false }
+                        if(tor1.priority < tor2.priority) { return false }
+                        
+                        return true;
+                    } else {
+                        if(tor2.priority <= 0) { return true }
+                        if(tor1.priority < tor2.priority) { return true; }
+                        
+                        return false;
+                    }
+                })
+                break
+            default:
+                torrents = torrent
+            }
         }
     }
 }
