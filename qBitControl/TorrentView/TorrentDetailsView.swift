@@ -102,6 +102,9 @@ struct TorrentDetailsView: View {
     
     @Environment(\.presentationMode) var presentationMode
     @State var torrent: Torrent
+    
+    @State private var isSequentialDownload: Bool = false
+    
     @State private var timer: Timer?
     @State private var buttonTextColor = UITraitCollection.current.userInterfaceStyle == .dark ? Color.white : Color.black
     @State private var presentDeleteAlert = false
@@ -116,6 +119,7 @@ struct TorrentDetailsView: View {
             torrent in
             if torrent.count >= 1 {
                 self.torrent = torrent[0]
+                self.isSequentialDownload = self.torrent.seq_dl
             } // There should be only one torrent in the response
         }
     }
@@ -277,6 +281,14 @@ struct TorrentDetailsView: View {
                     ListElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
                 }
                 
+                Section(header: Text("Advanced")) {
+                    Toggle(isOn: $isSequentialDownload, label: {Text("Sequential Download")})
+                        .onTapGesture {
+                            qBittorrent.toggleSequentialDownload(hashes: [torrent.hash])
+                            isSequentialDownload = !isSequentialDownload
+                        }
+                }
+                
                 Section(header: Text("Limits")) {
                     //listElement(label: "Maximum Seeding Time", value: "n/a")
                     
@@ -295,7 +307,7 @@ struct TorrentDetailsView: View {
                 timer in
                 getTorrent()
             }
-            
+            isSequentialDownload = torrent.seq_dl
         }.onDisappear() {
             timer?.invalidate()
         }.confirmationDialog("Delete Task",isPresented: $presentDeleteAlert) {

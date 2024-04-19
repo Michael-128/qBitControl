@@ -23,6 +23,7 @@ struct TorrentAddOptionsView: View {
     
     @State private var skipChecking = false
     @State private var paused = false
+    @State private var sequentialDownload = false
     
     @State private var showAdvanced = false
     
@@ -47,9 +48,9 @@ struct TorrentAddOptionsView: View {
     
     func addTorrent() {
         if !isFile {
-            qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: torrent), savePath: savePath, cookie: cookie, category: category, tags: tags, skipChecking: skipChecking, paused: paused, dlLimit: Int(DLlimit) ?? -1, upLimit: Int(UPlimit) ?? -1, ratioLimit: Float(ratioLimit) ?? -1.0, seedingTimeLimit: Int(seedingTimeLimit) ?? -1)
+            qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: torrent), savePath: savePath, cookie: cookie, category: category, tags: tags, skipChecking: skipChecking, paused: paused, sequentialDownload: sequentialDownload, dlLimit: Int(DLlimit) ?? -1, upLimit: Int(UPlimit) ?? -1, ratioLimit: Float(ratioLimit) ?? -1.0, seedingTimeLimit: Int(seedingTimeLimit) ?? -1)
         } else {
-            qBittorrent.addFileTorrent(torrents: torrentData, savePath: savePath, cookie: cookie, category: category, tags: tags, skipChecking: skipChecking, paused: paused, dlLimit: Int(DLlimit) ?? -1, upLimit: Int(UPlimit) ?? -1, ratioLimit: Float(ratioLimit) ?? -1.0, seedingTimeLimit: Int(seedingTimeLimit) ?? -1)
+            qBittorrent.addFileTorrent(torrents: torrentData, savePath: savePath, cookie: cookie, category: category, tags: tags, skipChecking: skipChecking, paused: paused, sequentialDownload: sequentialDownload, dlLimit: Int(DLlimit) ?? -1, upLimit: Int(UPlimit) ?? -1, ratioLimit: Float(ratioLimit) ?? -1.0, seedingTimeLimit: Int(seedingTimeLimit) ?? -1)
         }
         presentationMode.wrappedValue.dismiss()
     }
@@ -95,6 +96,7 @@ struct TorrentAddOptionsView: View {
                         Toggle(isOn: $skipChecking, label: {Text("Skip Checking")})
                     }
                     Toggle(isOn: $paused, label: {Text("Pause")})
+                    Toggle(isOn: $sequentialDownload, label: {Text("Sequential Download")})
                 }
                 
                 Section(header: Text("Advanced")) {

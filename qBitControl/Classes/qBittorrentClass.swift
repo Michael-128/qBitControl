@@ -376,7 +376,15 @@ class qBittorrent {
         qBitRequest.requestUniversal(request: request)
     }
     
-    static func addMagnetTorrent(torrent: URLQueryItem, savePath: String = "", cookie: String = "", category: String = "", tags: String = "", skipChecking: Bool = false, paused: Bool = false, dlLimit: Int = -1, upLimit: Int = -1, ratioLimit: Float = -1.0, seedingTimeLimit: Int = -1) {
+    static func toggleSequentialDownload(hashes: [String]) {
+        let path = "/api/v2/torrents/toggleSequentialDownload"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func addMagnetTorrent(torrent: URLQueryItem, savePath: String = "", cookie: String = "", category: String = "", tags: String = "", skipChecking: Bool = false, paused: Bool = false, sequentialDownload: Bool = false, dlLimit: Int = -1, upLimit: Int = -1, ratioLimit: Float = -1.0, seedingTimeLimit: Int = -1) {
         let path = "/api/v2/torrents/add"
         
         var queryItems: [URLQueryItem] = []
@@ -423,13 +431,17 @@ class qBittorrent {
             queryItems.append(URLQueryItem(name: "seedingTimeLimit", value: "\(seedingTimeLimit)"))
         }
         
+        if sequentialDownload {
+            queryItems.append(URLQueryItem(name: "sequentialDownload", value: "true"))
+        }
+        
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: queryItems)
         
         qBitRequest.requestUniversal(request: request)
     }
     
-    static func addFileTorrent(torrents: [String: Data], savePath: String = "", cookie: String = "", category: String = "", tags: String = "", skipChecking: Bool = false, paused: Bool = false, dlLimit: Int = -1, upLimit: Int = -1, ratioLimit: Float = -1.0, seedingTimeLimit: Int = -1) {
+    static func addFileTorrent(torrents: [String: Data], savePath: String = "", cookie: String = "", category: String = "", tags: String = "", skipChecking: Bool = false, paused: Bool = false, sequentialDownload: Bool = false, dlLimit: Int = -1, upLimit: Int = -1, ratioLimit: Float = -1.0, seedingTimeLimit: Int = -1) {
         
         // Function returning torrent data ready for upload
         func createFileEntry(file: Data, fileName: String = "unknown.torrent") -> Data {
@@ -527,6 +539,10 @@ class qBittorrent {
         
         if seedingTimeLimit > 0 {
             createSetting(name: "seedingTimeLimit", value: seedingTimeLimit)
+        }
+        
+        if sequentialDownload {
+            createSetting(name: "sequentialDownload", value: sequentialDownload)
         }
         
         // End
