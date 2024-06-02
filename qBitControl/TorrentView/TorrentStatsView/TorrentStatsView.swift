@@ -13,7 +13,7 @@ struct TorrentStatsView: View {
     
     @State private var totalUpload: Int64?
     @State private var totalDownload: Int64?
-    @State private var totalRatio: Float?
+    @State private var totalRatio: Double?
     
     func getTorrents() {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: [])
@@ -24,12 +24,13 @@ struct TorrentStatsView: View {
             
             totalUpload = torrent.compactMap {torrent in torrent.uploaded}.reduce(into: 0) {sum, upload in sum += upload}
             totalDownload = torrent.compactMap {torrent in torrent.downloaded}.reduce(into: 0) {sum, download in sum += download}
-            totalRatio = torrent.compactMap {torrent in torrent.ratio}.reduce(into: 0.0) {sum, ratio in sum += ratio} / Float(torrents.count)
+            totalRatio = Double(totalUpload!)/Double(totalDownload!);
+            
+            //totalRatio = torrent.compactMap {torrent in torrent.ratio}.reduce(into: 0.0) {sum, ratio in sum += ratio} / Float(torrents.count)
         }
     }
     
     func getGlobalTransferInfo() {
-        print("fetching")
         qBittorrent.getGlobalTransferInfo {
             info in
             globalTransferInfo.append(info)

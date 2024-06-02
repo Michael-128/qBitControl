@@ -38,7 +38,6 @@ struct MainView: View {
                 VStack {
                     TorrentListView(isLoggedIn: $isLoggedIn).onChange(of: scenePhase, perform: {
                         phase in
-                        print(phase)
                         if(phase == .active && isLoggedIn) {
                             let serversHelper = ServersHelper()
                             let activeServer = serversHelper.getActiveServer()

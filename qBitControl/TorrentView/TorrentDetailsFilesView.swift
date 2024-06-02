@@ -44,7 +44,6 @@ struct TorrentDetailsFilesView: View {
             }
             
             self.sortedFiles = filesWithCommonPaths.sorted(by: { $0.0 < $1.0 })
-            print(files.count)
             getNextFileNodes(startIndex: curStep, endIndex: getNextStep(currentStep: curStep))
         })
     }
@@ -58,8 +57,6 @@ struct TorrentDetailsFilesView: View {
             return
         }
         
-        //print(endIndex)
-        //print(sortedFiles.count)
         
         let rootFileNode = self.rootFileNode
         
@@ -70,14 +67,11 @@ struct TorrentDetailsFilesView: View {
             
             let pathComponents = path.components(separatedBy: "/")
             
-            //print(path)
-            //print(pathComponents)
             
             var lastFileNode = rootFileNode
             
             for pathComponent in pathComponents {
                 if let existingFileNode = lastFileNode.shallowSearch(name: pathComponent) {
-                    //print("Path component: \(pathComponent) exists in \(lastFileNode.name)")
                     lastFileNode = existingFileNode
                 } else {
                     let newFileNode = FileNode(name: pathComponent)
@@ -94,8 +88,6 @@ struct TorrentDetailsFilesView: View {
         isLoaded = true
         
         getNextFileNodes(startIndex: curStep, endIndex: getNextStep(currentStep: curStep))
-        
-        //print(rootFileNode.getIndexes())
     }
     
     func getPriorityColor(fileNode: FileNode) -> Color {
@@ -133,7 +125,6 @@ struct TorrentDetailsFilesView: View {
             self.rootFileNodes = rootFileNode.children ?? []
         } else {
             self.rootFileNodes = rootFileNode.findAll(query: searchQuery)
-            print("\(self.rootFileNodes.count) hits")
         }
     }
     
@@ -188,7 +179,6 @@ struct TorrentDetailsFilesView: View {
                                             if let childOfChild = child.search(index: index) {
                                                 childOfChild.setPriority(priority: 0)
                                                 refresh()
-                                                print(childOfChild.getPriority())
                                             }
                                         }
                                     }

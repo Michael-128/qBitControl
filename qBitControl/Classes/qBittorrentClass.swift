@@ -22,10 +22,7 @@ class qBittorrent {
     }
     
     static func getSavedPreferences() -> qBitPreferences? {
-        print(preferences?.queueing_enabled)
-        
         return preferences;
-        
     }
     
     static func setURL(url: String) {
@@ -555,10 +552,6 @@ class qBittorrent {
 
         // Sending the request
         session.uploadTask(with: urlRequest, from: data, completionHandler: { data, response, error in
-            if let response = response {
-                print("\(response)")
-            }
-            
             if let error = error {
                 print(error)
             }

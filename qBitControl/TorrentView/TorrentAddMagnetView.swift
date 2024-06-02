@@ -24,7 +24,6 @@ struct TorrentAddMagnetView: View {
                     .frame(minHeight: CGFloat(200), maxHeight: CGFloat(200))
             }.onAppear() {
                 if let magnetURL = openedMagnetURL {
-                    print(magnetURL)
                     urls = magnetURL
                     openedMagnetURL = nil
                 }

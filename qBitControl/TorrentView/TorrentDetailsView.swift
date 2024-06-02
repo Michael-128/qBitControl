@@ -47,7 +47,6 @@ struct ChangeCategoryView: View {
             })
         }.onChange(of: category) {
             category in
-            print(category)
             let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setCategory", queryItems: [
                 URLQueryItem(name: "hashes", value: torrentHash),
                 URLQueryItem(name: "category", value: category)
@@ -55,7 +54,6 @@ struct ChangeCategoryView: View {
             
             qBitRequest.requestTorrentManagement(request: request, statusCode: {
                 code in
-                //print(code)
             })
         }
     }
