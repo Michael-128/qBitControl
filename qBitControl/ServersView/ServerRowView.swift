@@ -6,7 +6,6 @@
 import SwiftUI
 
 struct ServerRowView: View {
-    
     @State var id: String
     @State var friendlyName: String
     @State var url: String
@@ -20,37 +19,45 @@ struct ServerRowView: View {
     @Binding var isConnecting: [String: Bool]
     @Binding var isLoggedIn: Bool
     
+    func getServerName() -> String {
+        if (!friendlyName.isEmpty) { return friendlyName } else { return url }
+    }
+    
+    func isServerConnected() -> Bool {
+        return (activeServerId == id && isLoggedIn)
+    }
+    
+    func isServerConnecting() -> Bool {
+        return isConnecting[id] ?? false
+    }
+    
+    func removeServer() -> Void {
+        serversHelper.removeServer(id: id)
+        refreshServerList()
+    }
+    
     var body: some View {
         HStack() {
-            if friendlyName != "" {
-                Text(friendlyName)
-            } else {
-                Text(url)
-            }
+            Text(getServerName())
             
-            if(activeServerId == id && isLoggedIn) {
-                Spacer()
+            Spacer()
+            
+            if(isServerConnected()) {
                 Image(systemName: "checkmark")
-            } else if isConnecting[id] ?? false {
-                Spacer()
-                ProgressView().progressViewStyle(.circular)
+            }
+            else if(isServerConnecting()) {
+                ProgressView()
+                    .progressViewStyle(.circular)
                     .padding(.leading, 1)
             }
         }
         .contextMenu() {
             Button(role: .destructive) {
-                serversHelper.removeServer(id: id)
-                refreshServerList()
+                removeServer()
             } label: {
                 Image(systemName: "trash")
                 Text("Delete")
             }
         }
-    }
-}
-
-struct ServerRowView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
     }
 }
