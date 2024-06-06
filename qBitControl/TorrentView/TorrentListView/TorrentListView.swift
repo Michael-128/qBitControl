@@ -37,8 +37,16 @@ struct TorrentListView: View {
     
     @State private var sessionId: UUID = UUID()
     
-    func regenerateSessionId() {
-        sessionId = UUID()
+    func openUrl(url: URL) {
+        if url.absoluteString.contains("file") {
+            isTorrentAddView = true
+            openedFileURL.append(url)
+        }
+        
+        if url.absoluteString.contains("magnet") {
+            isTorrentAddView = true
+            openedMagnetURL = url.absoluteString
+        }
     }
     
     var body: some View {
@@ -67,20 +75,9 @@ struct TorrentListView: View {
             .sheet(isPresented: $isTorrentAddView, content: {
                 TorrentAddView(isPresented: $isTorrentAddView, openedMagnetURL: $openedMagnetURL, openedFileURL: $openedFileURL)
             }).onOpenURL(perform: { url in
-                if url.absoluteString.contains("file") {
-                    isTorrentAddView = true
-                    openedFileURL.append(url)
-                    print(url)
-                }
-                
-                if url.absoluteString.contains("magnet") {
-                    isTorrentAddView = true
-                    openedMagnetURL = url.absoluteString
-                }
+                openUrl(url: url)
             })
-        }.onAppear() {
-            ServerEvents.addOnChangeAction(action: ServerAction(name: "regenerateSessionId", action: regenerateSessionId))
-        }.id(sessionId)
+        }
     }
 }
     

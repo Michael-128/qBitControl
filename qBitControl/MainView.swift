@@ -1,77 +1,47 @@
-//
-//  MainView.swift
-//  qBitControl
-//
-
 import SwiftUI
 
 struct MainView: View {
-    
-    @State private var isLoggedIn: Bool = false
-    @State private var isDemo: Bool = false
+    @StateObject private var viewModel = MainViewModel()
     @Environment(\.scenePhase) var scenePhase
-    @State private var defaults = UserDefaults.standard
-    
-    @State private var shouldAttempAutoLogIn = true
     
     var body: some View {
-        if(shouldAttempAutoLogIn) {
-            Text("qBitControl").onAppear {
-                let serversHelper = ServersHelper()
-                let activeServer = serversHelper.getActiveServer()
-                
-                if let activeServer = activeServer {
-                    serversHelper.connect(server: activeServer, isSuccess: {
-                        success in
-                        isLoggedIn = success
-                    })
-                }
-                
-                shouldAttempAutoLogIn = false
-            }
-        } else if(!isLoggedIn) {
-            ServersView(isLoggedIn: $isLoggedIn).onAppear {
-                LocalNetworkPermissionService().triggerDialog()
-            }.navigationTitle("qBitControl")
-        } else {
-            TabView {
-                VStack {
-                    TorrentListView(isLoggedIn: $isLoggedIn).onChange(of: scenePhase, perform: {
-                        phase in
-                        if(phase == .active && isLoggedIn) {
-                            let serversHelper = ServersHelper()
-                            let activeServer = serversHelper.getActiveServer()
-                            
-                            if let activeServer = activeServer {
-                                serversHelper.connect(server: activeServer, isSuccess: {
-                                    success in
-                                    if(!success) {
-                                        isLoggedIn = false
-                                    }
-                                })
-                            }
+        Group {
+           if viewModel.shouldAttemptAutoLogIn {
+                Image("logo")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 100, height: 100)
+                    .cornerRadius(20)
+                    .onAppear {
+                        viewModel.attemptAutoLogIn()
+                    }
+                Text("qBitControl")
+                    .font(.largeTitle)
+            } else if !viewModel.isLoggedIn {
+                ServersView(isLoggedIn: $viewModel.isLoggedIn)
+                    .onAppear {
+                        LocalNetworkPermissionService().triggerDialog()
+                    }
+                    .navigationTitle("qBitControl")
+            } else {
+                TabView {
+                    TorrentListView(isLoggedIn: $viewModel.isLoggedIn)
+                        .tabItem {
+                            Label("Tasks", systemImage: "square.and.arrow.down.on.square")
                         }
-                    })
-                }.tabItem() {
-                    Label("Tasks", systemImage: "square.and.arrow.down.on.square")
-                }
-                
-                /*VStack {
-                    RSSView()
-                }.tabItem() {
-                    Label("RSS", systemImage: "dot.radiowaves.up.forward")
-                }*/
-                
-                VStack {
+                        .onChange(of: scenePhase) { phase in
+                            viewModel.reconnectIfNeeded(on: phase)
+                        }
+                    
                     TorrentStatsView()
-                }.tabItem() {
-                    Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
-                }
-                
-                VStack {
-                    ServersView(isLoggedIn: $isLoggedIn)
-                }.tabItem() {
-                    Label("Servers", systemImage: "server.rack")
+                        .tabItem {
+                            Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
+                        }
+                    
+                    ServersView(isLoggedIn: $viewModel.isLoggedIn)
+                        .tabItem {
+                            Label("Servers", systemImage: "server.rack")
+                        }
                 }
             }
         }
