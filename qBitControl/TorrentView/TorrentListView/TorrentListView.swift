@@ -25,6 +25,8 @@ struct TorrentListView: View {
     @State private var isFilterView = false
     @State private var isDeleteAlert = false
     
+    
+    
     @Binding var isLoggedIn: Bool
     
     let defaults = UserDefaults.standard

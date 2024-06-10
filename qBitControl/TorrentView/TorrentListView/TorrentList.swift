@@ -3,225 +3,139 @@
 import SwiftUI
 
 struct TorrentList: View {
-    @Binding public var torrents: [Torrent]
-    
-    @Binding public var searchQuery: String
-    @Binding public var sort: String
-    @Binding public var reverse: Bool
-    @Binding public var filter: String
-    @Binding public var category: String
-    @Binding public var tag: String
-    
     @Environment(\.presentationMode) var presentationMode
-    
     @Environment(\.scenePhase) var scenePhaseEnv
-    @State var scenePhase: ScenePhase = .active
     
-    @Binding public var isTorrentAddView: Bool
-    @State private var isDeleteAlert: Bool = false
+    @StateObject var viewModel: TorrentListModel
     
-    @State private var timer: Timer?
-    
-    let defaults = UserDefaults.standard
-    
-    @State private var hash = ""
-    
-    @Binding public var isSelectionMode: Bool
-    @Binding public var selectedTorrents: Set<Torrent>
+    init(torrents: Binding<[Torrent]>, searchQuery: Binding<String>, sort: Binding<String>, reverse: Binding<Bool>, filter: Binding<String>, category: Binding<String>, tag: Binding<String>, isTorrentAddView: Binding<Bool>, isSelectionMode: Binding<Bool>, selectedTorrents: Binding<Set<Torrent>>) {
+        _viewModel = StateObject(wrappedValue: TorrentListModel(torrents: torrents, searchQuery: searchQuery, sort: sort, reverse: reverse, filter: filter, category: category, tag: tag, isTorrentAddView: isTorrentAddView, isSelectionMode: isSelectionMode, selectedTorrents: selectedTorrents))
+    }
     
     var body: some View {
         Section(header: torrentListHeader()) {
-            ForEach(torrents, id: \.hash) {
-                torrent in
-                if searchQuery == "" || torrent.name.lowercased().contains(searchQuery.lowercased()) {
-                    if(!isSelectionMode) {
-                        NavigationLink {
-                            TorrentDetailsView(torrent: torrent)
-                        } label: {
-                            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
-                                .contextMenu() {
-                                    torrentRowContextMenu(torrent: torrent)
-                                }
-                        }
-                    } else {
-                        if(selectedTorrents.contains(torrent)) {
-                            HStack {
-                                Image(systemName: "checkmark.circle.fill").scaleEffect(1.25).foregroundStyle(Color(.blue))
-                                TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
-                            }.onTapGesture {
-                                selectedTorrents.remove(torrent)
-                            }
-                        } else {
-                            HStack {
-                                Image(systemName: "circle").scaleEffect(1.25).foregroundStyle(Color(.gray))
-                                TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
-                            }.onTapGesture {
-                                selectedTorrents.insert(torrent)
-                            }
-                        }
-                    }
-                }
-            }
-        }.onAppear() {
-            reverse = defaults.bool(forKey: "reverse")
-            sort = defaults.string(forKey: "sort") ?? sort
-            filter = defaults.string(forKey: "filter") ?? filter
-            
-            getTorrents()
-            
-            timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
-                timer in
-                getTorrents()
-            }
-            
-        }.onDisappear() {
-            timer?.invalidate()
-        }.refreshable {
-            getTorrents()
-        }.onChange(of: scenePhaseEnv) {
-            phase in
-            scenePhase = phase
-        }.confirmationDialog("Delete Task", isPresented: $isDeleteAlert) {
-            Button("Delete Torrent", role: .destructive) {
-                presentationMode.wrappedValue.dismiss()
-                qBittorrent.deleteTorrent(hash: hash)
-                hash = ""
-            }
-            Button("Delete Task with Files", role: .destructive) {
-                presentationMode.wrappedValue.dismiss()
-                qBittorrent.deleteTorrent(hash: hash, deleteFiles: true)
-                hash = ""
-            }
-            Button("Cancel", role: .cancel) {}
+            ForEach(viewModel.filteredTorrents, id: \.hash) { torrent in torrentRowView(torrent: torrent) }
         }
+        .onAppear { viewModel.getInitialTorrents() }
+        .onDisappear { viewModel.stopTimer() }
+        .onChange(of: scenePhaseEnv) { phase in viewModel.scenePhase = phase }
+        .confirmationDialog("Delete Task", isPresented: $viewModel.isDeleteAlert) { deleteAlertView() }
     }
+    
+    // Helper Views
+    
+    // Torrent List
     
     func torrentListHeader() -> some View {
         HStack(spacing: 3) {
-            Text("\(torrents.count) Tasks")
+            Text("\(viewModel.filteredTorrents.count) Tasks")
             Text("•")
             Image(systemName: "arrow.down")
-            Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
+            Text("\( qBittorrent.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
             Text("•")
             Image(systemName: "arrow.up")
-            Text("\( qBittorrent.getFormatedSize(size: torrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
+            Text("\( qBittorrent.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
         }
         .lineLimit(1)
     }
     
-    func torrentRowContextMenu(torrent: Torrent) -> some View {
-        VStack {
-            if let preferences = qBittorrent.getSavedPreferences() {
-                if(preferences.queueing_enabled == true) {
-                    Section(header: Text("Queue")) {
-                        Button {
-                            qBittorrent.increasePriorityTorrents(hashes: [torrent.hash])
-                        } label: {
-                            Text("Move Up")
-                            Image(systemName: "arrow.up")
-                        }
-                        Button {
-                            qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash])
-                        } label: {
-                            Text("Move Down")
-                            Image(systemName: "arrow.down")
-                        }
-                    }
-                }
-            }
-            
-            Section(header: Text("Manage")) {
-                Button {
-                    if torrent.state.contains("paused") {
-                        qBittorrent.resumeTorrent(hash: torrent.hash)
-                    } else {
-                        qBittorrent.pauseTorrent(hash: torrent.hash)
-                    }
-                } label: {
-                    HStack {
-                        if torrent.state.contains("paused") {
-                            Text("Resume")
-                            Image(systemName: "play")
-                        } else {
-                            Text("Pause")
-                            Image(systemName: "pause")
-                        }
-                    }
-                }
-                
-                Button {
-                    qBittorrent.recheckTorrent(hash: torrent.hash)
-                } label: {
-                    HStack {
-                        Text("Recheck")
-                        Image(systemName: "magnifyingglass")
-                    }
-                }
-                
-                Button {
-                    qBittorrent.reannounceTorrent(hash: torrent.hash)
-                } label: {
-                    HStack {
-                        Text("Reannounce")
-                        Image(systemName: "circle.dashed")
-                    }
-                }
-                
-                Button(role: .destructive) {
-                    self.hash = torrent.hash
-                    isDeleteAlert.toggle()
-                } label: {
-                    HStack {
-                        Text("Delete")
-                        Image(systemName: "trash")
-                    }
-                }
-            }
+    
+    // Torrent Rows
+    
+    func torrentRowView(torrent: Torrent) -> some View {
+        if(viewModel.isSelectionMode) { return AnyView(torrentSelectionModeRowView(torrent: torrent)) }
+        return AnyView(torrentStandardRowView(torrent: torrent))
+    }
+    
+    func torrentStandardRowView(torrent: Torrent) -> some View {
+        NavigationLink {
+            TorrentDetailsView(torrent: torrent)
+        } label: {
+            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+            .contextMenu() { torrentRowContextMenu(torrent: torrent) }
+        }
+    }
+    
+    func torrentSelectionModeRowView(torrent: Torrent) -> some View {
+        let isTorrentSelected = viewModel.selectedTorrents.contains(torrent)
+        
+        return HStack {
+            Image(systemName: isTorrentSelected ? "checkmark.circle.fill" : "circle").scaleEffect(1.25).foregroundStyle(isTorrentSelected ? Color(.blue) : Color(.gray))
+            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+        }.onTapGesture {
+            if(isTorrentSelected) { viewModel.selectedTorrents.remove(torrent) } else { viewModel.selectedTorrents.insert(torrent) }
         }
     }
     
     
-    func getTorrents() {
-        if(scenePhase != .active || isTorrentAddView || isSelectionMode) {
-            return
+    // Context Menu
+    
+    func contextMenuControlsLabel(text: String, icon: String) -> some View {
+        HStack {
+            Text(text)
+            Image(systemName: icon)
+        }
+    }
+    
+    func torrentRowQueueControls(torrent: Torrent) -> some View {
+        var isQueueingEnabled = false
+        
+        if let preferences = qBittorrent.getSavedPreferences() { isQueueingEnabled = preferences.queueing_enabled ?? false }
+        
+        if(isQueueingEnabled) {
+            return AnyView(Section(header: Text("Queue")) {
+                Button { qBittorrent.increasePriorityTorrents(hashes: [torrent.hash]) }
+                label: { contextMenuControlsLabel(text: "Move Up", icon: "arrow.up") }
+                
+                Button { qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash]) }
+                label: { contextMenuControlsLabel(text: "Move Down", icon: "arrow.down") }
+            })
         }
         
-        var queryItems = [URLQueryItem(name: "sort", value: sort), URLQueryItem(name: "filter", value: filter), URLQueryItem(name: "reverse", value: String(reverse))]
+        return AnyView(EmptyView())
+    }
+    
+    func torrentRowManageControls(torrent: Torrent) -> some View {
+        let isTorrentPaused = torrent.state.contains("paused")
         
-        if category != "None" {
-            queryItems.append(URLQueryItem(name: "category", value: category))
-        }
-        
-        if tag != "None" {
-            queryItems.append(URLQueryItem(name: "tag", value: tag))
-        }
-        
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: queryItems)
-        
-        qBitRequest.requestTorrentListJSON(request: request) {
-            torrent in
+        return Section(header: Text("Manage")) {
+            Button { if isTorrentPaused { qBittorrent.resumeTorrent(hash: torrent.hash) } else { qBittorrent.pauseTorrent(hash: torrent.hash) } }
+            label: { contextMenuControlsLabel(text: isTorrentPaused ? "Resume" : "Pause", icon: isTorrentPaused ? "play" : "pause") }
             
-            switch(sort) {
-            case "priority":
-                torrents = torrent.sorted(by: {
-                    tor1, tor2 in
-                    
-                    if(reverse) {
-                        if(tor2.priority <= 0) { return false }
-                        if(tor1.priority < tor2.priority) { return false }
-                        
-                        return true;
-                    } else {
-                        if(tor2.priority <= 0) { return true }
-                        if(tor1.priority < tor2.priority) { return true; }
-                        
-                        return false;
-                    }
-                })
-                break
-            default:
-                torrents = torrent
+            Button { qBittorrent.recheckTorrent(hash: torrent.hash) }
+            label: { contextMenuControlsLabel(text: "Recheck", icon: "magnifyingglass") }
+            
+            Button { qBittorrent.reannounceTorrent(hash: torrent.hash) }
+            label: { contextMenuControlsLabel(text: "Reannounce", icon: "circle.dashed") }
+            
+            Button(role: .destructive) { viewModel.deleteTorrent(torrent: torrent) }
+            label: { contextMenuControlsLabel(text: "Delete", icon: "trash") }
+        }
+    }
+    
+    func torrentRowContextMenu(torrent: Torrent) -> some View {
+        VStack {
+            torrentRowQueueControls(torrent: torrent)
+            torrentRowManageControls(torrent: torrent)
+        }
+    }
+    
+    
+    // Alerts
+    
+    func deleteAlertView() -> some View {
+        Group {
+            Button("Delete Torrent", role: .destructive) {
+                presentationMode.wrappedValue.dismiss()
+                qBittorrent.deleteTorrent(hash: viewModel.hash)
+                viewModel.hash = ""
             }
+            Button("Delete Task with Files", role: .destructive) {
+                presentationMode.wrappedValue.dismiss()
+                qBittorrent.deleteTorrent(hash: viewModel.hash, deleteFiles: true)
+                viewModel.hash = ""
+            }
+            Button("Cancel", role: .cancel) {}
         }
     }
 }
