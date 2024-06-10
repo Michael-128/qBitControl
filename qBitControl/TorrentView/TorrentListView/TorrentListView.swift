@@ -9,73 +9,49 @@ import SwiftUI
 struct TorrentListView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State public var torrents: [Torrent] = Array()
-    
-    @State private var searchQuery = ""
-    @State private var sort = "name"
-    @State private var reverse = false
-    @State private var filter = "all"
-    @State private var category: String = "None"
-    @State private var tag: String = "None"
-    
-    @State private var totalDlSpeed = 0
-    @State private var totalUpSpeed = 0
-    
-    @State private var isTorrentAddView = false
-    @State private var isFilterView = false
-    @State private var isDeleteAlert = false
-    
-    
-    
     @Binding var isLoggedIn: Bool
-    
-    let defaults = UserDefaults.standard
-    
-    @State private var isSelectionMode: Bool = false
-    @State private var selectedTorrents = Set<Torrent>()
-    
+    @StateObject var torrentListModel: TorrentListModel = TorrentListModel()
+ 
+    @State private var isFilterView = false
+
     @State private var openedMagnetURL: String?
     @State private var openedFileURL: [URL] = []
     
-    @State private var sessionId: UUID = UUID()
-    
     func openUrl(url: URL) {
         if url.absoluteString.contains("file") {
-            isTorrentAddView = true
+            torrentListModel.isTorrentAddView = true
             openedFileURL.append(url)
         }
         
         if url.absoluteString.contains("magnet") {
-            isTorrentAddView = true
+            torrentListModel.isTorrentAddView = true
             openedMagnetURL = url.absoluteString
         }
+    }
+    
+    func listElementLabel(text: String, icon: String) -> some View {
+        HStack { Image(systemName: text); Text(icon) }
     }
     
     var body: some View {
         NavigationStack {
             List {
                 Section(header: Text("Manage")) {
-                    Button {
-                        isTorrentAddView.toggle()
-                    } label: {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Add Task")
-                        }
-                    }.searchable(text: $searchQuery)
+                    Button { torrentListModel.isTorrentAddView.toggle() }
+                    label: { listElementLabel(text: "plus.circle", icon: "Add Task") }
+                    .searchable(text: $torrentListModel.searchQuery)
                 }
     
-                TorrentList(torrents: $torrents, searchQuery: $searchQuery, sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag, isTorrentAddView: $isTorrentAddView, isSelectionMode: $isSelectionMode, selectedTorrents: $selectedTorrents)
-                
-                .navigationTitle(category == "None" ? "Tasks" : category.capitalized)
+                TorrentList(viewModel: torrentListModel)
+                .navigationTitle(torrentListModel.category == "None" ? "Tasks" : torrentListModel.category.capitalized)
             }.toolbar() {
-                TorrentListToolbar(torrents: $torrents, category: $category, isSelectionMode: $isSelectionMode, isLoggedIn: $isLoggedIn, isFilterView: $isFilterView, selectedTorrents: $selectedTorrents)
+                TorrentListToolbar(torrents: $torrentListModel.torrents, category: $torrentListModel.category, isSelectionMode: $torrentListModel.isSelectionMode, isLoggedIn: $isLoggedIn, isFilterView: $isFilterView, selectedTorrents: $torrentListModel.selectedTorrents)
             }
             .sheet(isPresented: $isFilterView, content: {
-                TorrentFilterView(sort: $sort, reverse: $reverse, filter: $filter, category: $category, tag: $tag)
+                TorrentFilterView(sort: $torrentListModel.sort, reverse: $torrentListModel.reverse, filter: $torrentListModel.filter, category: $torrentListModel.category, tag: $torrentListModel.tag)
             })
-            .sheet(isPresented: $isTorrentAddView, content: {
-                TorrentAddView(isPresented: $isTorrentAddView, openedMagnetURL: $openedMagnetURL, openedFileURL: $openedFileURL)
+            .sheet(isPresented: $torrentListModel.isTorrentAddView, content: {
+                TorrentAddView(isPresented: $torrentListModel.isTorrentAddView, openedMagnetURL: $openedMagnetURL, openedFileURL: $openedFileURL)
             }).onOpenURL(perform: { url in
                 openUrl(url: url)
             })

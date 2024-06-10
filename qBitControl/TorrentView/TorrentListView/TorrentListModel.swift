@@ -4,19 +4,19 @@ import SwiftUI
 class TorrentListModel: ObservableObject {
     let defaults = UserDefaults.standard
     
-    @Binding public var torrents: [Torrent]
+    @Published public var torrents: [Torrent] = []
     
-    @Binding public var searchQuery: String
-    @Binding public var sort: String
-    @Binding public var reverse: Bool
-    @Binding public var filter: String
-    @Binding public var category: String
-    @Binding public var tag: String
+    @Published public var searchQuery: String = ""
+    @Published public var sort: String = "name"
+    @Published public var reverse: Bool = false
+    @Published public var filter: String = "all"
+    @Published public var category: String = "None"
+    @Published public var tag: String = "None"
     
-    @Binding public var isTorrentAddView: Bool
-    @Binding public var isSelectionMode: Bool
+    @Published public var isTorrentAddView: Bool = false
+    @Published public var isSelectionMode: Bool = false
     
-    @Binding public var selectedTorrents: Set<Torrent>
+    @Published public var selectedTorrents: Set<Torrent> = Set()
     
     @Published public var filteredTorrents: [Torrent] = []
     
@@ -25,18 +25,7 @@ class TorrentListModel: ObservableObject {
     var timer: Timer?
     var hash = ""
     
-    init(torrents: Binding<[Torrent]>, searchQuery: Binding<String>, sort: Binding<String>, reverse: Binding<Bool>, filter: Binding<String>, category: Binding<String>, tag: Binding<String>, isTorrentAddView: Binding<Bool>, isSelectionMode: Binding<Bool>, selectedTorrents: Binding<Set<Torrent>>) {
-        _torrents = torrents
-        _searchQuery = searchQuery
-        _sort = sort
-        _reverse = reverse
-        _filter = filter
-        _category = category
-        _tag = tag
-        _isTorrentAddView = isTorrentAddView
-        _isSelectionMode = isSelectionMode
-        _selectedTorrents = selectedTorrents
-    }
+    init() {}
     
     func getTorrents() {
         if(scenePhase != .active || isTorrentAddView || isSelectionMode) { return }

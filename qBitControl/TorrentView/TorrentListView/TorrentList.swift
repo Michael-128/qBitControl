@@ -6,11 +6,7 @@ struct TorrentList: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.scenePhase) var scenePhaseEnv
     
-    @StateObject var viewModel: TorrentListModel
-    
-    init(torrents: Binding<[Torrent]>, searchQuery: Binding<String>, sort: Binding<String>, reverse: Binding<Bool>, filter: Binding<String>, category: Binding<String>, tag: Binding<String>, isTorrentAddView: Binding<Bool>, isSelectionMode: Binding<Bool>, selectedTorrents: Binding<Set<Torrent>>) {
-        _viewModel = StateObject(wrappedValue: TorrentListModel(torrents: torrents, searchQuery: searchQuery, sort: sort, reverse: reverse, filter: filter, category: category, tag: tag, isTorrentAddView: isTorrentAddView, isSelectionMode: isSelectionMode, selectedTorrents: selectedTorrents))
-    }
+    @ObservedObject var viewModel: TorrentListModel
     
     var body: some View {
         Section(header: torrentListHeader()) {
@@ -70,13 +66,6 @@ struct TorrentList: View {
     
     // Context Menu
     
-    func contextMenuControlsLabel(text: String, icon: String) -> some View {
-        HStack {
-            Text(text)
-            Image(systemName: icon)
-        }
-    }
-    
     func torrentRowQueueControls(torrent: Torrent) -> some View {
         var isQueueingEnabled = false
         
@@ -85,10 +74,10 @@ struct TorrentList: View {
         if(isQueueingEnabled) {
             return AnyView(Section(header: Text("Queue")) {
                 Button { qBittorrent.increasePriorityTorrents(hashes: [torrent.hash]) }
-                label: { contextMenuControlsLabel(text: "Move Up", icon: "arrow.up") }
+                label: { MenuControlsLabel(text: "Move Up", icon: "arrow.up") }
                 
                 Button { qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash]) }
-                label: { contextMenuControlsLabel(text: "Move Down", icon: "arrow.down") }
+                label: { MenuControlsLabel(text: "Move Down", icon: "arrow.down") }
             })
         }
         
@@ -100,16 +89,16 @@ struct TorrentList: View {
         
         return Section(header: Text("Manage")) {
             Button { if isTorrentPaused { qBittorrent.resumeTorrent(hash: torrent.hash) } else { qBittorrent.pauseTorrent(hash: torrent.hash) } }
-            label: { contextMenuControlsLabel(text: isTorrentPaused ? "Resume" : "Pause", icon: isTorrentPaused ? "play" : "pause") }
+            label: { MenuControlsLabel(text: isTorrentPaused ? "Resume" : "Pause", icon: isTorrentPaused ? "play" : "pause") }
             
             Button { qBittorrent.recheckTorrent(hash: torrent.hash) }
-            label: { contextMenuControlsLabel(text: "Recheck", icon: "magnifyingglass") }
+            label: { MenuControlsLabel(text: "Recheck", icon: "magnifyingglass") }
             
             Button { qBittorrent.reannounceTorrent(hash: torrent.hash) }
-            label: { contextMenuControlsLabel(text: "Reannounce", icon: "circle.dashed") }
+            label: { MenuControlsLabel(text: "Reannounce", icon: "circle.dashed") }
             
             Button(role: .destructive) { viewModel.deleteTorrent(torrent: torrent) }
-            label: { contextMenuControlsLabel(text: "Delete", icon: "trash") }
+            label: { MenuControlsLabel(text: "Delete", icon: "trash") }
         }
     }
     
