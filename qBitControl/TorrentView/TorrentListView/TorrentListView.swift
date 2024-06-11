@@ -13,19 +13,13 @@ struct TorrentListView: View {
     @StateObject var torrentListModel: TorrentListModel = TorrentListModel()
  
     @State private var isFilterView = false
-
-    @State private var openedMagnetURL: String?
-    @State private var openedFileURL: [URL] = []
+    
+    @State private var torrentUrls: [URL] = []
     
     func openUrl(url: URL) {
-        if url.absoluteString.contains("file") {
+        if url.absoluteString.contains("file") || url.absoluteString.contains("magnet") {
             torrentListModel.isTorrentAddView = true
-            openedFileURL.append(url)
-        }
-        
-        if url.absoluteString.contains("magnet") {
-            torrentListModel.isTorrentAddView = true
-            openedMagnetURL = url.absoluteString
+            torrentUrls.append(url)
         }
     }
     
@@ -44,17 +38,17 @@ struct TorrentListView: View {
     
                 TorrentList(viewModel: torrentListModel)
                 .navigationTitle(torrentListModel.category == "None" ? "Tasks" : torrentListModel.category.capitalized)
-            }.toolbar() {
+            }
+            .toolbar() {
                 TorrentListToolbar(torrents: $torrentListModel.torrents, category: $torrentListModel.category, isSelectionMode: $torrentListModel.isSelectionMode, isLoggedIn: $isLoggedIn, isFilterView: $isFilterView, selectedTorrents: $torrentListModel.selectedTorrents)
             }
             .sheet(isPresented: $isFilterView, content: {
                 TorrentFilterView(sort: $torrentListModel.sort, reverse: $torrentListModel.reverse, filter: $torrentListModel.filter, category: $torrentListModel.category, tag: $torrentListModel.tag)
             })
             .sheet(isPresented: $torrentListModel.isTorrentAddView, content: {
-                TorrentAddView(isPresented: $torrentListModel.isTorrentAddView, openedMagnetURL: $openedMagnetURL, openedFileURL: $openedFileURL)
-            }).onOpenURL(perform: { url in
-                openUrl(url: url)
+                TorrentAddView(torrentUrls: $torrentUrls)
             })
+            .onOpenURL(perform: openUrl)
         }
     }
 }

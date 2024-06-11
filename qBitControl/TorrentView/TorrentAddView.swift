@@ -5,22 +5,28 @@
 
 import SwiftUI
 
-enum TorrentType {
-    case magnet, file
-}
 
 struct TorrentAddView: View {
-    @State private var torrentType: TorrentType = .file
-    @Binding var isPresented: Bool
+    @Environment(\.dismiss) var dismissAction
+    @StateObject var viewModel: TorrentAddViewModel
     
-    @Binding public var openedMagnetURL: String?
-    @Binding public var openedFileURL: [URL]
+    @Binding var torrentUrls: [URL]
+    
+    func dismiss() {
+        torrentUrls = []
+        dismissAction()
+    }
+    
+    init(torrentUrls: Binding<[URL]> = .constant([])) {
+        _viewModel = StateObject(wrappedValue: TorrentAddViewModel(torrentUrls: torrentUrls.wrappedValue))
+        _torrentUrls = torrentUrls
+    }
     
     var body: some View {
         NavigationView {
             List {
                 Section {
-                    Picker("Task Type", selection: $torrentType) {
+                    Picker("Task Type", selection: $viewModel.torrentType) {
                         Text("File").tag(TorrentType.file)
                         Text("URL").tag(TorrentType.magnet)
                     }
@@ -31,32 +37,106 @@ struct TorrentAddView: View {
                 }
                 
                 
+                if(viewModel.torrentType == .magnet) { torrentMagnetView() }
+                else if(viewModel.torrentType == .file) { torrentFilesView() }
                 
-                if torrentType == .magnet {
-                    TorrentAddMagnetView(openedMagnetURL: $openedMagnetURL, isPresented: $isPresented)
-                } else {
-                    TorrentAddFileView(isPresented: $isPresented, openedFileURL: $openedFileURL)
-                }
-            }.onAppear() {
-                if (openedMagnetURL != nil) {
-                    torrentType = .magnet
-                }
-            }.toolbar() {
+                torrentOptionsView()
+            }
+            .onAppear() {
+                viewModel.getSavePath()
+                viewModel.getCategories()
+                viewModel.getTags()
+                viewModel.checkTorrentType()
+            }
+            .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
-                    Button {
-                        openedMagnetURL = nil
-                        isPresented = false
-                    } label: {
-                        Text("Cancel")
-                    }
+                    Button { dismiss() } label: { Text("Cancel") }
                 }
             }
         }
     }
-}
-
-/*struct TorrentAddView_Previews: PreviewProvider {
-    static var previews: some View {
-        TorrentAddView()
+    
+    
+    // Helper Views
+    
+    func listElement(value: String) -> some View {
+        Button(action: {UIPasteboard.general.string = "\(value)"}) {
+            HStack {
+                Text("\(value)")
+                    .foregroundColor(Color.gray)
+                    .lineLimit(1)
+            }
+        }
     }
-}*/
+    
+    func limitField(title: String, placeholder: String, content: Binding<String>) -> some View {
+        HStack {
+            Text(title)
+            Spacer()
+            TextField(placeholder, text: content).multilineTextAlignment(.trailing)
+        }
+    }
+    
+    func torrentMagnetView() -> some View {
+        Group {
+            Section(header: Text("URL")) {
+                TextEditor(text: $viewModel.magnetURL)
+                    .frame(minHeight: CGFloat(200), maxHeight: CGFloat(200))
+            }
+            
+        }
+        .navigationTitle("URL")
+    }
+    
+    func torrentFilesView() -> some View {
+        Group {
+            Section(header: Text("Files")) {
+                Button { viewModel.isFileImporter.toggle() } label: { Text("Open Files..") }
+                
+                ForEach(viewModel.fileNames, id: \.self) { fileName in listElement(value: fileName) }
+            }
+            .navigationTitle("File")
+        }
+        .fileImporter(isPresented: $viewModel.isFileImporter, allowedContentTypes: [.data], allowsMultipleSelection: true, onCompletion: viewModel.handleTorrentFiles)
+    }
+    
+    func torrentOptionsView() -> some View {
+        Group {
+            Section(header: Text("Save Path")) { TextField("Path", text: $viewModel.savePath) }
+            
+            Section(header: Text("Info")) {
+                Picker("Category", selection: $viewModel.category) {
+                    ForEach(viewModel.categoriesArr, id: \.self) { category in Text(category).tag(category) }
+                }
+                
+                Picker("Tags", selection: $viewModel.tags) {
+                    ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
+                }
+            }
+            
+            Section(header: Text("Management")) {
+                if viewModel.showAdvancedOptions { Toggle(isOn: $viewModel.skipChecking) { Text("Skip Checking") } }
+                Toggle(isOn: $viewModel.paused) { Text("Pause") }
+                Toggle(isOn: $viewModel.sequentialDownload) { Text("Sequential Download") }
+            }
+            
+            Section(header: Text("Advanced")) {
+                Toggle(isOn: $viewModel.showAdvancedOptions) { Text("Show Advanced Options") }
+            }
+        
+            Section(header: Text("Limits")) {
+                Toggle(isOn: $viewModel.showLimits) { Text("Limits") }
+                if viewModel.showLimits {
+                    limitField(title: "Download Limit", placeholder: "0 bytes/s", content: $viewModel.downloadLimit)
+                    limitField(title: "Upload Limit", placeholder: "0 bytes/s", content: $viewModel.uploadLimit)
+                    limitField(title: "Ratio Limit", placeholder: "Ratio Limit", content: $viewModel.ratioLimit)
+                    limitField(title: "Seeding Time Limit", placeholder: "Time Limit", content: $viewModel.seedingTimeLimit)
+                }
+            }
+            
+            Section {
+                Button { viewModel.addTorrent(then: dismiss) } label: { Text("ADD").frame(maxWidth: .infinity).fontWeight(.bold) }.buttonStyle(.borderedProminent)
+            }.listRowBackground(Color.blue)
+        }
+    }
+}
