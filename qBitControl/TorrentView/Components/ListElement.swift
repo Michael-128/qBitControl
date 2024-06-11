@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct ListElement: View {
-    public var label: String
+    public var label: LocalizedStringKey
     public var value: String
     
     @Environment(\.colorScheme) private var colorScheme
@@ -13,7 +13,7 @@ struct ListElement: View {
     var body: some View {
         Button(action: {UIPasteboard.general.string = "\(value)"}) {
             HStack {
-                Text("\(label)")
+                Text(label)
                 Spacer()
                 Text("\(value)")
                     .foregroundColor(Color.gray)

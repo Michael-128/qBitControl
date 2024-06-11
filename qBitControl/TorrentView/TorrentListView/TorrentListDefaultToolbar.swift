@@ -38,7 +38,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         } label: {
                             Image(systemName: "play")
                                 .rotationEffect(.degrees(180))
-                            Text("Resume \(category.capitalized)")
+                            Text(NSLocalizedString("Resume", comment: "") + " " + "\(category.capitalized)")
                         }
                         
                         Button {
@@ -51,7 +51,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         } label: {
                             Image(systemName: "pause")
                                 .rotationEffect(.degrees(180))
-                            Text("Pause \(category.capitalized)")
+                            Text(NSLocalizedString("Pause", comment: "") + " " + "\(category.capitalized)")
                         }
                     }
                 }

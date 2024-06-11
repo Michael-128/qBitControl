@@ -3,7 +3,7 @@
 import SwiftUI
 
 struct MenuControlsLabel: View {
-    let text: String
+    let text: LocalizedStringKey
     let icon: String
     
     var body: some View {

@@ -28,7 +28,7 @@ struct TorrentDetailsTrackersView: View {
         VStack {
             if isLoaded {
                 List {
-                    Section(header: Text("\(trackers.count) Trackers")) {
+                    Section(header: Text("\(trackers.count)" + " " + NSLocalizedString("Trackers", comment: ""))) {
                         if trackers.count > 1 {
                             ForEach($trackers, id: \.self) {
                                 tracker in

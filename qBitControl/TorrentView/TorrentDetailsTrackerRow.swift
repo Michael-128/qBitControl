@@ -12,17 +12,17 @@ struct TorrentDetailsTrackerRow: View {
     func getStatus(status: Int) -> String {
         switch status {
         case 0:
-            return "Disabled"
+            return NSLocalizedString("Disabled", comment: "")
         case 1:
-            return "Not contacted yet"
+            return NSLocalizedString("Not contacted yet", comment: "")
         case 2:
-            return "Working"
+            return NSLocalizedString("Working", comment: "")
         case 3:
-            return "Updating"
+            return NSLocalizedString("Updating", comment: "")
         case 4:
-            return "Not working"
+            return NSLocalizedString("Not working", comment: "")
         default:
-            return "Unknown"
+            return NSLocalizedString("Unknown", comment: "")
         }
     }
     

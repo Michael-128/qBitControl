@@ -24,7 +24,7 @@ struct TorrentList: View {
     
     func torrentListHeader() -> some View {
         HStack(spacing: 3) {
-            Text("\(viewModel.filteredTorrents.count) Tasks")
+            Text("\(viewModel.filteredTorrents.count) " + NSLocalizedString("Tasks", comment: ""))
             Text("•")
             Image(systemName: "arrow.down")
             Text("\( qBittorrent.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")

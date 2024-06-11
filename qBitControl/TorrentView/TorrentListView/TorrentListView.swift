@@ -23,8 +23,8 @@ struct TorrentListView: View {
         }
     }
     
-    func listElementLabel(text: String, icon: String) -> some View {
-        HStack { Image(systemName: text); Text(icon) }
+    func listElementLabel(text: LocalizedStringKey, icon: String) -> some View {
+        HStack { Image(systemName: icon); Text(text) }
     }
     
     var body: some View {
@@ -32,12 +32,12 @@ struct TorrentListView: View {
             List {
                 Section(header: Text("Manage")) {
                     Button { torrentListModel.isTorrentAddView.toggle() }
-                    label: { listElementLabel(text: "plus.circle", icon: "Add Task") }
+                    label: { listElementLabel(text: "Add Task", icon: "plus.circle") }
                     .searchable(text: $torrentListModel.searchQuery)
                 }
     
                 TorrentList(viewModel: torrentListModel)
-                .navigationTitle(torrentListModel.category == "None" ? "Tasks" : torrentListModel.category.capitalized)
+                    .navigationTitle(torrentListModel.category == "None" ? NSLocalizedString("Tasks", comment: "Tasks") : torrentListModel.category.capitalized)
             }
             .toolbar() {
                 TorrentListToolbar(torrents: $torrentListModel.torrents, category: $torrentListModel.category, isSelectionMode: $torrentListModel.isSelectionMode, isLoggedIn: $isLoggedIn, isFilterView: $isFilterView, selectedTorrents: $torrentListModel.selectedTorrents)

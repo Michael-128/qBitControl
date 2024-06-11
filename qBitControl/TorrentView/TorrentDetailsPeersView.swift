@@ -32,7 +32,7 @@ struct TorrentDetailsPeersView: View {
         VStack {
             if isLoaded {
                 List {
-                    Section(header: Text("\(peers.count) peers")) {
+                    Section(header: Text("\(peers.count) " + NSLocalizedString("Peers", comment: ""))) {
                         ForEach($peers, id: \.ip) {
                             peer in
                             TorrentDetailsPeersRowView(peer: peer)

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9006B51B2C1849D0002DDD4E /* TorrentAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9006B51A2C1849D0002DDD4E /* TorrentAddViewModel.swift */; };
+		9006B51E2C1868D4002DDD4E /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 9006B51D2C1868D4002DDD4E /* Localizable.xcstrings */; };
 		90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
@@ -74,6 +75,7 @@
 
 /* Begin PBXFileReference section */
 		9006B51A2C1849D0002DDD4E /* TorrentAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddViewModel.swift; sourceTree = "<group>"; };
+		9006B51D2C1868D4002DDD4E /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		90200BA42B44BA6E00D3BA55 /* logo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo1.png; path = qBitControl/Assets.xcassets/AppIcon.appiconset/logo1.png; sourceTree = "<group>"; };
 		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -151,6 +153,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9006B5212C186974002DDD4E /* Localizations */ = {
+			isa = PBXGroup;
+			children = (
+				9006B51D2C1868D4002DDD4E /* Localizable.xcstrings */,
+			);
+			name = Localizations;
+			path = Localization/Localizations;
+			sourceTree = "<group>";
+		};
 		903DED2B290A89E800FB36D6 /* TorrentView */ = {
 			isa = PBXGroup;
 			children = (
@@ -190,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				90200BA42B44BA6E00D3BA55 /* logo1.png */,
+				9006B5212C186974002DDD4E /* Localizations */,
 				9082FA2129080E53006C3960 /* qBitControl */,
 				9082FA2029080E53006C3960 /* Products */,
 			);
@@ -376,6 +388,8 @@
 			knownRegions = (
 				en,
 				Base,
+				pl,
+				ja,
 			);
 			mainGroup = 9082FA1629080E53006C3960;
 			productRefGroup = 9082FA2029080E53006C3960 /* Products */;
@@ -396,6 +410,7 @@
 			files = (
 				9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */,
 				90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */,
+				9006B51E2C1868D4002DDD4E /* Localizable.xcstrings in Resources */,
 				9082FA2729080E55006C3960 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
