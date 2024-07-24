@@ -7,6 +7,11 @@ qBittorrent remote client for iOS devices.
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/e09a2508-56c7-41b3-91ce-d8e4c7639537" width="22.5%"/>
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/34cdfe91-0bcb-40ed-8bf5-3d3428567e10" width="22.5%"/>
 
+## Now available on AltStore PAL! 📱
+qBitControl is now available on AltStore PAL, allowing users located in the EU to get and update the app seamlessly, as well as support its development. 
+
+Get qBitControl by adding Michael-128 source from the list of recommended sources or via pasting the link below:
+`https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json`
 
 ## Features ✨
 - Add torrents via .torrent files or magnet links.
@@ -33,6 +38,8 @@ To request a feature or report a bug, please open an [issue](https://github.com/
 
 
 ## Support 🤝
-If you like qBitControl, please consider supporting the development by contributing to the repository or donating.
+If you like qBitControl, please consider supporting the development by contributing to the repository or subscribing to my <a href="https://patreon.com/michael128?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink">Patreon</a>. Thank you!
 
-<a href='https://ko-fi.com/mikemichael225' target='_blank'><img height='35' style='border:0px;height:46px;' src='https://az743702.vo.msecnd.net/cdn/kofi3.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' />
+<a href="https://patreon.com/michael128?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink">
+  <img height="100px" src="https://github.com/user-attachments/assets/dd45b4da-ae9d-44ce-821d-883190557312"/>
+</a>
