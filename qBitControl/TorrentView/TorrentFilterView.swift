@@ -12,7 +12,7 @@ struct TorrentFilterView: View {
     @Binding var reverse: Bool
     @Binding var filter: String
     
-    @State private var categoriesArr: [String] = []
+    @State private var categories: [Category] = []
     @State private var tagsArr: [String] = []
     
     @Binding var category: String
@@ -33,13 +33,12 @@ struct TorrentFilterView: View {
                     }
                 }
                 
-                if categoriesArr.count > 1 {
+                if categories.count > 1 {
                     Picker("Categories", selection: $category) {
                         Text("None").tag("None")
                         Text("Uncategorized").tag("")
-                        ForEach(categoriesArr, id: \.self) {
-                            category1 in
-                            Text(category1).tag(category1)
+                        ForEach(categories, id: \.self) { theCategory in
+                            Text(theCategory.name).tag(theCategory.name)
                         }
                     }.pickerStyle(.inline)
                 }
@@ -154,11 +153,9 @@ struct TorrentFilterView: View {
                     }
                 }
             }.onAppear() {
-                qBittorrent.getCategories(completionHandler: {
-                    categories in
-                    for (key, _) in categories {
-                        categoriesArr.append(key)
-                    }
+                qBittorrent.getCategories(completionHandler: { response in
+                    // Append sorted list of Category objects to ensure "None" always appears at the top
+                    self.categories.append(contentsOf: response.map { $1 }.sorted { $0.name < $1.name })
                 })
                 qBittorrent.getTags(completionHandler: {
                     tags in
