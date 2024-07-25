@@ -107,8 +107,12 @@ struct TorrentAddView: View {
             Section(header: Text("Info")) {
                 Picker("Category", selection: $viewModel.category) {
                     ForEach(viewModel.categoriesArr, id: \.self) { category in Text(category).tag(category) }
+                }.onChange(of: viewModel.category) { category in
+                    if let newSavePath = viewModel.categoriesPaths[category] {
+                        viewModel.savePath = newSavePath
+                    }
                 }
-                
+
                 Picker("Tags", selection: $viewModel.tags) {
                     ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
                 }
