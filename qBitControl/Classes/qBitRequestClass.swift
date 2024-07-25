@@ -152,12 +152,12 @@ class qBitRequest {
         }.resume()
     }
     
-    static func requestCategoriesJSON(request: URLRequest, completionHandler: @escaping ([String: [String: String]]) -> Void) {
+    static func requestCategoriesJSON(request: URLRequest, completionHandler: @escaping ([String: Category]) -> Void) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
-                        let json = try JSONDecoder().decode([String: [String: String]].self, from: data)
+                        let json = try JSONDecoder().decode([String: Category].self, from: data)
                         completionHandler(json)
                     } catch {
                         print(error)

@@ -9,8 +9,8 @@ struct ChangeCategoryView: View {
     
     @State var torrentHash: String
     
-    @State private var categories: [String] = []
-    
+    @State private var categories: [Category] = []
+
     @State var category: String
 
     
@@ -20,9 +20,8 @@ struct ChangeCategoryView: View {
                 if categories.count > 1 {
                     Picker("Categories", selection: $category) {
                         Text("None").tag("")
-                        ForEach(categories, id: \.self) {
-                            category in
-                            Text(category).tag(category)
+                        ForEach(categories, id: \.self) { category in
+                            Text(category.name).tag(category.name)
                         }
                     }.pickerStyle(.inline)
                 }
@@ -37,13 +36,9 @@ struct ChangeCategoryView: View {
             }
             .navigationTitle("Categories")
         }.onAppear() {
-            qBittorrent.getCategories(completionHandler: {
-                categories in
-                
-                for (category, _) in categories {
-                    self.categories.append(category)
-                    self.categories.sort(by: <)
-                }
+            qBittorrent.getCategories(completionHandler: { response in
+                // Append sorted list of Category objects to ensure "None" always appears at the top
+                self.categories.append(contentsOf: response.map { $1 }.sorted { $0.name < $1.name })
             })
         }.onChange(of: category) {
             category in

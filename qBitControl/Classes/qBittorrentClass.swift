@@ -225,7 +225,7 @@ class qBittorrent {
         qBitRequest.requestPreferencesJSON(request: request, completionHandler: completionHandler)
     }
     
-    static func getCategories(completionHandler: @escaping ([String: [String: String]]) -> Void) {
+    static func getCategories(completionHandler: @escaping ([String: Category]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/categories")
         
         qBitRequest.requestCategoriesJSON(request: request, completionHandler: completionHandler)
@@ -579,8 +579,7 @@ class qBittorrent {
      @State private var ratioLimit = ""
      @State private var seedingTimeLimit = ""
      
-     @State private var categoriesArr = ["None"]
-     @State private var categoriesPaths = ["None": ""]
+     @State private var categories = []
      @State private var tagsArr: [String] = ["None"]
      */
     

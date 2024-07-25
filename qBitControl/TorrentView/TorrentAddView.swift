@@ -99,18 +99,18 @@ struct TorrentAddView: View {
         }
         .fileImporter(isPresented: $viewModel.isFileImporter, allowedContentTypes: [.data], allowsMultipleSelection: true, onCompletion: viewModel.handleTorrentFiles)
     }
-    
+
     func torrentOptionsView() -> some View {
         Group {
             Section(header: Text("Save Path")) { TextField("Path", text: $viewModel.savePath) }
             
             Section(header: Text("Info")) {
                 Picker("Category", selection: $viewModel.category) {
-                    ForEach(viewModel.categoriesArr, id: \.self) { category in Text(category).tag(category) }
-                }.onChange(of: viewModel.category) { category in
-                    if let newSavePath = viewModel.categoriesPaths[category] {
-                        viewModel.savePath = newSavePath
+                    ForEach(viewModel.categories, id: \.self) { category in
+                        Text(category.name).tag(category.name)
                     }
+                }.onChange(of: viewModel.category) { category in
+                    viewModel.savePath = category.savePath
                 }
 
                 Picker("Tags", selection: $viewModel.tags) {

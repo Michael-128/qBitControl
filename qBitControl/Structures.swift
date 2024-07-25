@@ -416,3 +416,8 @@ struct AlertIdentifier: Identifiable {
 
     var id: Choice
 }
+
+struct Category: Decodable, Hashable {
+    let name: String
+    let savePath: String
+}
