@@ -1,4 +1,5 @@
-# qBitControl [![iOS Build](https://github.com/Michael-128/qBitControl/actions/workflows/automated-ios-build.yml/badge.svg?branch=main)](https://github.com/Michael-128/qBitControl/actions/workflows/automated-ios-build.yml)
+# qBitControl [![iOS Build](https://github.com/Michael-128/qBitControl/actions/workflows/automated-ios-build.yml/badge.svg?branch=main)](https://github.com/Michael-128/qBitControl/actions/workflows/automated-ios-build.yml) ![GitHub Downloads (all assets, all releases)](https://img.shields.io/github/downloads/Michael-128/qBitControl/total)
+
 
 qBittorrent remote client for iOS devices.
 
