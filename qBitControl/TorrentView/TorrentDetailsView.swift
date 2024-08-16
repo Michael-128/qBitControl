@@ -221,7 +221,7 @@ struct TorrentDetailsView: View {
                     
                     ListElement(label: "Total Size", value: "\(qBittorrent.getFormatedSize(size: torrent.total_size))")
                     
-                    ListElement(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability))%")
+                    ListElement(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability*100))%")
                 }
                 
                 Section(header: Text("Connections")) {
