@@ -4,90 +4,38 @@ import SwiftUI
 
 struct TorrentStatsView: View {
     
-    @State public var globalTransferInfo: [GlobalTransferInfo] = []
+    @ObservedObject var qBitDataShared = qBitData.shared
     
     @State private var timer: Timer?
     private var fetchInterval: TimeInterval = 2
-    
-    @State private var torrents: [Torrent] = []
-    
-    @State private var totalUpload: Int64?
-    @State private var totalDownload: Int64?
-    @State private var totalRatio: Double?
-    
-    func getTorrents() {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: [])
-        
-        qBitRequest.requestTorrentListJSON(request: request) {
-            torrent in
-            torrents = torrent
-            
-            totalUpload = torrent.compactMap {torrent in torrent.uploaded}.reduce(into: 0) {sum, upload in sum += upload}
-            totalDownload = torrent.compactMap {torrent in torrent.downloaded}.reduce(into: 0) {sum, download in sum += download}
-            totalRatio = Double(totalUpload!)/Double(totalDownload!);
-            
-            //totalRatio = torrent.compactMap {torrent in torrent.ratio}.reduce(into: 0.0) {sum, ratio in sum += ratio} / Float(torrents.count)
-        }
-    }
-    
-    func getGlobalTransferInfo() {
-        qBittorrent.getGlobalTransferInfo {
-            info in
-            globalTransferInfo.append(info)
-        }
-    }
     
     var body: some View {
         NavigationStack {
             VStack {
                 List {
-                    if let globalTransferInfo = globalTransferInfo.last {
-                        Section(header: Text("Download")) {
-                            ListElement(label: "Total Session Download", value: "\(qBittorrent.getFormatedSize(size: globalTransferInfo.dl_info_data))")
-                            ListElement(label: "Total Download Speed", value: "\(qBittorrent.getFormatedSize(size: globalTransferInfo.dl_info_speed))/s")
-                            DownloadChartElement(transferData: $globalTransferInfo)
-                        }
-                        
-                        Section(header: Text("Upload")) {
-                            ListElement(label: "Total Session Upload", value: "\(qBittorrent.getFormatedSize(size: globalTransferInfo.up_info_data))")
-                            ListElement(label: "Total Upload Speed", value: "\(qBittorrent.getFormatedSize(size: globalTransferInfo.up_info_speed))/s")
-                            UploadChartElement(transferData: $globalTransferInfo)
-                        }
-                    } else {
-                        Section(header: Text("Download")) {
-                            ListElement(label: "Total Session Download", value: "\(qBittorrent.getFormatedSize(size: 0))")
-                            ListElement(label: "Total Download Speed", value: "\(qBittorrent.getFormatedSize(size: 0))/s")
-                            DownloadChartElement(transferData: $globalTransferInfo)
-                        }
-                        
-                        Section(header: Text("Upload")) {
-                            ListElement(label: "Total Session Upload", value: "\(qBittorrent.getFormatedSize(size: 0))")
-                            ListElement(label: "Total Upload Speed", value: "\(qBittorrent.getFormatedSize(size: 0))/s")
-                            UploadChartElement(transferData: $globalTransferInfo)
-                        }
+                    Section(header: Text("Download")) {
+                        ListElement(label: "Session Download", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.dl_info_data ?? 0))")
+                        ListElement(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.dl_info_speed ?? 0))/s")
+                        ChartElement(transferData: $qBitDataShared.dlTransferData)
                     }
                     
-                    if let totalUpload = totalUpload, let totalDownload = totalDownload, let totalRatio = totalRatio {
-                        Section(header: Text("All Time"), footer: Text("The displayed data is calculated only from torrents that are currently on the list.")) {
-                            ListElement(label: "Total Upload", value: "\(qBittorrent.getFormatedSize(size: totalUpload))")
-                            ListElement(label: "Total Download", value: "\(qBittorrent.getFormatedSize(size: totalDownload))")
-                            ListElement(label: "Total Ratio", value: "\((totalRatio*100).rounded()/100)")
-                        }
+                    Section(header: Text("Upload")) {
+                        ListElement(label: "Session Upload", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.up_info_data ?? 0))")
+                        ListElement(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.up_info_speed ?? 0))/s")
+                        ChartElement(transferData: $qBitDataShared.upTransferData)
+                    }
+                    
+                    Section(header: Text("Disk")) {
+                        ListElement(label: "Free Space", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.free_space_on_disk ?? 0))")
+                    }
+                    
+                    Section(header: Text("All-Time")) {
+                        ListElement(label: "Upload", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.alltime_ul ?? 0))")
+                        ListElement(label: "Download", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.alltime_dl ?? 0))")
+                        ListElement(label: "Ratio", value: "\(qBitDataShared.serverState?.global_ratio ?? "0.00")")
                     }
                 }
             }.navigationTitle("Statistics")
-                .onAppear {
-                    getGlobalTransferInfo()
-                    getTorrents()
-                    
-                    timer = Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) {
-                        _ in
-                        getGlobalTransferInfo()
-                    }
-                }
-                .onDisappear {
-                    timer?.invalidate()
-                }
         }
     }
 }

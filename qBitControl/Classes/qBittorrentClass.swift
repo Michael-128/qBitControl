@@ -206,6 +206,13 @@ class qBittorrent {
         return formater.string(fromByteCount: size)
     }
     
+    static func getFormatedSize(size: Int) -> String {
+        let formater = ByteCountFormatter()
+        formater.isAdaptive = true
+        formater.countStyle = ByteCountFormatter.CountStyle.binary
+        return formater.string(fromByteCount: Int64(size))
+    }
+    
     static func getFormatedDate(date: Int) -> String {
         let fullDate = Date(timeIntervalSince1970: TimeInterval(date))
         let formatter = DateFormatter()
@@ -217,6 +224,14 @@ class qBittorrent {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/info")
         
         qBitRequest.requestGlobalTransferInfo(request: request, completionHandler: completionHandler)
+    }
+    
+    static func getMainData(rid: Int = 0, completionHandler: @escaping (MainData) -> Void) {
+        let path = "/api/v2/sync/maindata"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "rid", value: "\(rid)")])
+        
+        qBitRequest.requestMainData(request: request, completionHandler: completionHandler)
     }
     
     static func getPreferences(completionHandler: @escaping (qBitPreferences) -> Void) {

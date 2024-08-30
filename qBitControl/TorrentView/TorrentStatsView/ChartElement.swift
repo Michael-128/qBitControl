@@ -3,9 +3,9 @@
 import SwiftUI
 import Charts
 
-struct DownloadChartElement: View {
+struct ChartElement: View {
     
-    @Binding public var transferData: [GlobalTransferInfo]
+    @Binding public var transferData: [TransferInfo]
     
     var body: some View {
         VStack {
@@ -13,7 +13,7 @@ struct DownloadChartElement: View {
                 transferData in
                 AreaMark(
                     x: .value("Time", transferData.fetchDate.timeIntervalSinceNow),
-                    y: .value("Download", transferData.dl_info_speed),
+                    y: .value("Transfer", transferData.info_speed),
                     stacking: .standard
                 ).interpolationMethod(.monotone)
                     .mask { RectangleMark() }

@@ -274,6 +274,7 @@
       }
     },
     "All Time" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -288,6 +289,9 @@
           }
         }
       }
+    },
+    "All-Time" : {
+
     },
     "Amount Left" : {
       "localizations" : {
@@ -865,6 +869,9 @@
         }
       }
     },
+    "Disk" : {
+
+    },
     "Do not download" : {
       "localizations" : {
         "ja" : {
@@ -1120,6 +1127,9 @@
           }
         }
       }
+    },
+    "Free Space" : {
+
     },
     "http(s)://IP:PORT" : {
       "localizations" : {
@@ -2146,6 +2156,12 @@
         }
       }
     },
+    "Session Download" : {
+
+    },
+    "Session Upload" : {
+
+    },
     "Show Advanced Options" : {
       "localizations" : {
         "ja" : {
@@ -2340,6 +2356,7 @@
       }
     },
     "The displayed data is calculated only from torrents that are currently on the list." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2388,6 +2405,7 @@
       }
     },
     "Total Download" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2404,6 +2422,7 @@
       }
     },
     "Total Download Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2420,6 +2439,7 @@
       }
     },
     "Total Ratio" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2436,6 +2456,7 @@
       }
     },
     "Total Session Download" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2452,6 +2473,7 @@
       }
     },
     "Total Session Upload" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2484,6 +2506,7 @@
       }
     },
     "Total Upload" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2500,6 +2523,7 @@
       }
     },
     "Total Upload Speed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2530,6 +2554,9 @@
           }
         }
       }
+    },
+    "Transfer" : {
+
     },
     "Uncategorized" : {
       "localizations" : {
