@@ -411,9 +411,17 @@ struct RSS: Decodable {
 
 struct AlertIdentifier: Identifiable {
     enum Choice {
-        case resumeAll, pauseAll, logOut
+        case resumeAll, pauseAll
     }
+        
+    var id: Choice
+}
 
+struct SheetIdentifier: Identifiable {
+    enum Choice {
+        case showAbout
+    }
+        
     var id: Choice
 }
 

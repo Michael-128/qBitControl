@@ -12,6 +12,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
     @Binding public var isFilterView: Bool
     
     @State private var alertIdentifier: AlertIdentifier?
+    @State private var sheetIdentifier: SheetIdentifier?
     @State private var isAlertClearCompleted: Bool = false
     
     var body: some ToolbarContent {
@@ -66,7 +67,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                     }
                     
                     Button {
-                        alertIdentifier =  AlertIdentifier(id: .pauseAll)
+                        alertIdentifier = AlertIdentifier(id: .pauseAll)
                     } label: {
                         Image(systemName: "pause")
                             .rotationEffect(.degrees(180))
@@ -84,15 +85,14 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                     }
                 }
                 
-                /*Section {
-                    Button(role: .destructive) {
-                        alertIdentifier =  AlertIdentifier(id: .logOut)
+                Section {
+                    Button {
+                        sheetIdentifier = SheetIdentifier(id: .showAbout)
                     } label: {
-                        Image(systemName: "rectangle.portrait.and.arrow.forward")
-                            .rotationEffect(.degrees(180))
-                        Text("Log out")
+                        Image(systemName: "info.circle")
+                        Text("About")
                     }
-                }*/
+                }
             } label: {
                 Image(systemName: "ellipsis.circle")
             }.alert(item: $alertIdentifier) { alert in
@@ -104,11 +104,6 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 case .pauseAll:
                     return Alert(title: Text("Confirm Pause All"), message: Text("Are you sure you want to pause all tasks?"), primaryButton: .default(Text("Pause")) {
                         qBittorrent.pauseAllTorrents()
-                    }, secondaryButton: .cancel())
-                case .logOut:
-                    return Alert(title: Text("Confirm Logout"), message: Text("Are you sure you want to log out?"), primaryButton: .destructive(Text("Log Out")) {
-                        qBittorrent.setCookie(cookie: "")
-                        isLoggedIn = false
                     }, secondaryButton: .cancel())
                 }
             }.alert("Confirm Deletion", isPresented: $isAlertClearCompleted, actions: {
@@ -126,6 +121,13 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                     qBittorrent.deleteTorrents(hashes: completedHashes, deleteFiles: true)
                 }
             })
+            .sheet(item: $sheetIdentifier) {
+                sheet in
+                switch sheet.id {
+                case .showAbout:
+                    return TorrentAboutView()
+                }
+            }
         }
         
         ToolbarItem(placement: .topBarTrailing) {

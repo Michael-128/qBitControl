@@ -113,6 +113,9 @@
         }
       }
     },
+    "About" : {
+
+    },
     "Active" : {
       "localizations" : {
         "ja" : {
@@ -310,6 +313,7 @@
       }
     },
     "Are you sure you want to log out?" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -534,6 +538,7 @@
       }
     },
     "Confirm Logout" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1131,6 +1136,9 @@
     "Free Space" : {
 
     },
+    "GitHub" : {
+
+    },
     "http(s)://IP:PORT" : {
       "localizations" : {
         "ja" : {
@@ -1276,6 +1284,7 @@
       }
     },
     "Log Out" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1580,6 +1589,9 @@
         }
       }
     },
+    "Patreon" : {
+
+    },
     "Pause" : {
       "localizations" : {
         "ja" : {
@@ -1756,6 +1768,19 @@
         }
       }
     },
+    "qBitControl %@ (%@)" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "qBitControl %1$@ (%2$@)"
+          }
+        }
+      }
+    },
+    "qBitControl is the definitive remote client for managing your qBittorrent downloads on iOS devices." : {
+
+    },
     "Queue" : {
       "localizations" : {
         "ja" : {
@@ -1899,6 +1924,9 @@
           }
         }
       }
+    },
+    "Report a bug" : {
+
     },
     "Resume" : {
       "localizations" : {
