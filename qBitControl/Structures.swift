@@ -66,7 +66,7 @@ struct Torrent: Decodable, Hashable {
     let category: String
     let completed: Int
     let completion_on: Int
-    let content_path: String
+    let content_path: String?
     let dl_limit: Int64
     let dlspeed: Int64
     let downloaded: Int64
@@ -89,7 +89,7 @@ struct Torrent: Decodable, Hashable {
     let ratio: Float
     let ratio_limit: Float
     let save_path: String
-    let seeding_time: Int
+    let seeding_time: Int?
     let seeding_time_limit: Int
     let seen_complete: Int
     let seq_dl: Bool
@@ -172,7 +172,7 @@ struct qBitPreferences: Decodable {
     let lsd: Bool?
     let encryption: Int?
     let anonymous_mode: Bool?
-    let proxy_type: String?
+    //let proxy_type: String?
     let proxy_ip: String?
     let proxy_port: Int?
     let proxy_peer_connections: Bool?
