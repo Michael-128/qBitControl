@@ -110,7 +110,7 @@ struct TorrentAddView: View {
                         Text(category.name).tag(category.name)
                     }
                 }.onChange(of: viewModel.category) { category in
-                    viewModel.savePath = category.savePath
+                    if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
                 }
 
                 Picker("Tags", selection: $viewModel.tags) {
