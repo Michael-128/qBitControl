@@ -10,8 +10,12 @@ struct ServerAddView: View {
     
     @StateObject private var viewModel: ServerAddViewModel
     
-    init(serversHelper: ServersHelper) {
-        _viewModel = StateObject(wrappedValue: ServerAddViewModel(serversHelper: serversHelper))
+    init() {
+        _viewModel = StateObject(wrappedValue: ServerAddViewModel())
+    }
+    
+    init(editServerId: String) {
+        _viewModel = StateObject(wrappedValue: ServerAddViewModel(editServerId: editServerId))
     }
     
     var body: some View {
@@ -43,8 +47,13 @@ struct ServerAddView: View {
                         viewModel.addServer(dismiss: dismiss)
                     } label: {
                         Spacer()
-                        Text("ADD")
-                            .fontWeight(.bold)
+                        if(viewModel.editServerId != nil) {
+                            Text("SAVE")
+                                .fontWeight(.bold)
+                        } else {
+                            Text("ADD")
+                                .fontWeight(.bold)
+                        }
                         Spacer()
                     }.buttonStyle(.borderedProminent)
                 }.listRowBackground(Color.blue)

@@ -33,7 +33,6 @@
 		90AB9B7C2B29D35C005C3612 /* TorrentStatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB9B7B2B29D35C005C3612 /* TorrentStatsView.swift */; };
 		90AB9B7E2B29D6AE005C3612 /* ListElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB9B7D2B29D6AE005C3612 /* ListElement.swift */; };
 		90AB9B812B29DC45005C3612 /* ChartElement.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB9B802B29DC45005C3612 /* ChartElement.swift */; };
-		90B61A8F2B540A10007ECCAD /* ServerEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90B61A8E2B540A10007ECCAD /* ServerEvents.swift */; };
 		90BA88552B2206F100C8A342 /* LocalNetworkPermissionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */; };
 		90BCAD19291A7C91009F1FEC /* RSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD18291A7C91009F1FEC /* RSSView.swift */; };
 		90BCAD1B291A7EC9009F1FEC /* RSSFeedArticlesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BCAD1A291A7EC9009F1FEC /* RSSFeedArticlesView.swift */; };
@@ -41,7 +40,6 @@
 		90C6F3982911529100F5A6FD /* TorrentFilterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C6F3972911529100F5A6FD /* TorrentFilterView.swift */; };
 		90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DCA7E42B51C393008A9C1B /* ServersHelper.swift */; };
 		90E5DDF82C1213910010DF7A /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E5DDF72C1213910010DF7A /* MainViewModel.swift */; };
-		90E5DDFA2C1218200010DF7A /* ServersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E5DDF92C1218200010DF7A /* ServersViewModel.swift */; };
 		90E5DDFC2C1219E10010DF7A /* ServerAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E5DDFB2C1219E10010DF7A /* ServerAddViewModel.swift */; };
 		90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */; };
 		90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A482909267A001E9E7F /* AuthClass.swift */; };
@@ -105,7 +103,6 @@
 		90AB9B7B2B29D35C005C3612 /* TorrentStatsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentStatsView.swift; sourceTree = "<group>"; };
 		90AB9B7D2B29D6AE005C3612 /* ListElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListElement.swift; sourceTree = "<group>"; };
 		90AB9B802B29DC45005C3612 /* ChartElement.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartElement.swift; sourceTree = "<group>"; };
-		90B61A8E2B540A10007ECCAD /* ServerEvents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerEvents.swift; sourceTree = "<group>"; };
 		90BA88532B22019900C8A342 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkPermissionClass.swift; sourceTree = "<group>"; };
 		90BCAD18291A7C91009F1FEC /* RSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSView.swift; sourceTree = "<group>"; };
@@ -114,7 +111,6 @@
 		90C6F3972911529100F5A6FD /* TorrentFilterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilterView.swift; sourceTree = "<group>"; };
 		90DCA7E42B51C393008A9C1B /* ServersHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersHelper.swift; sourceTree = "<group>"; };
 		90E5DDF72C1213910010DF7A /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
-		90E5DDF92C1218200010DF7A /* ServersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewModel.swift; sourceTree = "<group>"; };
 		90E5DDFB2C1219E10010DF7A /* ServerAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddViewModel.swift; sourceTree = "<group>"; };
 		90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitDataClass.swift; sourceTree = "<group>"; };
 		90EF6A482909267A001E9E7F /* AuthClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClass.swift; sourceTree = "<group>"; };
@@ -198,7 +194,6 @@
 				90FA253529190D0400DC8F0B /* FileNodeClass.swift */,
 				90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */,
 				90DCA7E42B51C393008A9C1B /* ServersHelper.swift */,
-				90B61A8E2B540A10007ECCAD /* ServerEvents.swift */,
 				90FF93462C8707BF001CDCE4 /* AppInfo.swift */,
 			);
 			path = Classes;
@@ -298,7 +293,6 @@
 			isa = PBXGroup;
 			children = (
 				9082FA2429080E53006C3960 /* ServersView.swift */,
-				90E5DDF92C1218200010DF7A /* ServersViewModel.swift */,
 				903DED3A290E7E7E00FB36D6 /* ServerRowView.swift */,
 				903DED3C290E8A9000FB36D6 /* ServerAddView.swift */,
 				90E5DDFB2C1219E10010DF7A /* ServerAddViewModel.swift */,
@@ -454,7 +448,6 @@
 				90AB9B772B2901D5005C3612 /* TorrentListDefaultToolbar.swift in Sources */,
 				90EF6A5129095ACC001E9E7F /* TorrentRowView.swift in Sources */,
 				90C6F3982911529100F5A6FD /* TorrentFilterView.swift in Sources */,
-				90E5DDFA2C1218200010DF7A /* ServersViewModel.swift in Sources */,
 				90AB9B7E2B29D6AE005C3612 /* ListElement.swift in Sources */,
 				90A4E4C22C175F8D00920968 /* TorrentListModel.swift in Sources */,
 				90FF93452C8703D0001CDCE4 /* TorrentAboutView.swift in Sources */,
@@ -468,7 +461,6 @@
 				90EF6A5329098968001E9E7F /* TorrentDetailsView.swift in Sources */,
 				90BCAD1D291A7EDE009F1FEC /* RSSFeedArticleRowView.swift in Sources */,
 				903DED3D290E8A9000FB36D6 /* ServerAddView.swift in Sources */,
-				90B61A8F2B540A10007ECCAD /* ServerEvents.swift in Sources */,
 				90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */,
 				90F7BEE52913D24300F5DEDE /* TorrentDetailsTrackersView.swift in Sources */,
 				90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */,
@@ -647,7 +639,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 626XV358Y5;
 				ENABLE_PREVIEWS = YES;
@@ -665,7 +657,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitManager;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -683,7 +675,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 8;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 626XV358Y5;
 				ENABLE_PREVIEWS = YES;
@@ -701,7 +693,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.2.1;
+				MARKETING_VERSION = 1.2.2;
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitManager;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

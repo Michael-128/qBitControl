@@ -6,57 +6,36 @@
 import SwiftUI
 
 struct ServerRowView: View {
-    @State var id: String
-    @State var friendlyName: String
-    @State var url: String
-    @State var username: String
-    @State var password: String
-    @Binding var activeServerId: String
-    
-    public var serversHelper: ServersHelper
-    public var refreshServerList: () -> Void
-    
-    @Binding var isConnecting: [String: Bool]
-    @Binding var isLoggedIn: Bool
-    
-    func getServerName() -> String {
-        if (!friendlyName.isEmpty) { return friendlyName } else { return url }
-    }
-    
-    func isServerConnected() -> Bool {
-        return (activeServerId == id && isLoggedIn)
-    }
-    
-    func isServerConnecting() -> Bool {
-        return isConnecting[id] ?? false
-    }
-    
-    func removeServer() -> Void {
-        serversHelper.removeServer(id: id)
-        refreshServerList()
-    }
+    @ObservedObject var serversHelper = ServersHelper.shared
+    @State var server: Server
+    @State var setActiveSheet: (ActiveSheet) -> Void
     
     var body: some View {
         HStack() {
-            Text(getServerName())
+            Text(server.name.isEmpty ? server.url : server.name)
             
             Spacer()
             
-            if(isServerConnected()) {
+            if(serversHelper.activeServerId == server.id) {
                 Image(systemName: "checkmark")
             }
-            else if(isServerConnecting()) {
+            else if(serversHelper.connectingServerId == server.id) {
                 ProgressView()
                     .progressViewStyle(.circular)
                     .padding(.leading, 1)
             }
         }
         .contextMenu() {
-            Button(role: .destructive) {
-                removeServer()
+            Button {
+                setActiveSheet(.edit(serverId: server.id))
             } label: {
-                Image(systemName: "trash")
-                Text("Delete")
+                Label("Edit", systemImage: "pencil")
+            }
+            
+            Button(role: .destructive) {
+                serversHelper.removeServer(id: server.id)
+            } label: {
+                Label("Delete", systemImage: "trash")
             }
         }
     }

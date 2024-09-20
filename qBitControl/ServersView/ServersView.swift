@@ -1,10 +1,34 @@
 import SwiftUI
 
-struct ServersView: View {
-    @StateObject private var viewModel: ServersViewModel
+enum ActiveSheet: Identifiable {
+    case add
+    case edit(serverId: String)
+    
+    var id: String {
+        switch self {
+        case .add:
+            return "add"
+        case .edit(let serverId):
+            return serverId
+        }
+    }
+}
 
-    init(isLoggedIn: Binding<Bool>) {
-        _viewModel = StateObject(wrappedValue: ServersViewModel(isLoggedIn: isLoggedIn))
+struct ServersView: View {
+    @ObservedObject var serversHelper = ServersHelper.shared
+    
+    @State var activeSheet: ActiveSheet?
+    @State var isTroubleConnecting = false
+    
+    func setActiveSheet(sheet: ActiveSheet) {
+        activeSheet = sheet
+    }
+    
+    func sortServers(server1: Server, server2: Server) -> Bool {
+        let name1 = server1.name.isEmpty ? server1.url : server1.name
+        let name2 = server2.name.isEmpty ? server2.url : server2.name
+        
+        return name1 < name2
     }
 
     var body: some View {
@@ -12,7 +36,7 @@ struct ServersView: View {
             List {
                 Section(header: Text("Manage")) {
                     Button {
-                        viewModel.isServerAddView.toggle()
+                        activeSheet = .add
                     } label: {
                         HStack {
                             Image(systemName: "plus.circle")
@@ -20,13 +44,15 @@ struct ServersView: View {
                         }
                     }
                 }
-                if !viewModel.servers.isEmpty {
+                if !serversHelper.servers.isEmpty {
                     Section(header: Text("Server List")) {
-                        ForEach(viewModel.servers, id: \.id) { server in
+                        ForEach(serversHelper.servers.sorted(by: sortServers), id: \.id) { server in
                             Button {
-                                viewModel.connectToServer(server: server)
+                                serversHelper.connect(server: server, result: { success in
+                                    if(!success) { isTroubleConnecting = true }
+                                })
                             } label: {
-                                ServerRowView(id: server.id, friendlyName: server.name, url: server.url, username: server.username, password: server.password, activeServerId: $viewModel.activeServerId, serversHelper: viewModel.serversHelper, refreshServerList: viewModel.refreshServerList, isConnecting: $viewModel.isConnecting, isLoggedIn: $viewModel.isLoggedIn)
+                                ServerRowView(server: server, setActiveSheet: setActiveSheet)
                             }
                         }
                     }
@@ -34,19 +60,15 @@ struct ServersView: View {
             }
             .navigationTitle("Servers")
         }
-        .sheet(isPresented: $viewModel.isServerAddView) {
-            ServerAddView(serversHelper: viewModel.serversHelper)
-        }
-        .onChange(of: viewModel.isServerAddView) { isServerAddView in
-            if !isServerAddView {
-                viewModel.refreshServerList()
+        .sheet(item: $activeSheet) { item in
+            switch item {
+            case .add:
+                ServerAddView()
+            case .edit(let serverId):
+                ServerAddView(editServerId: serverId)
             }
         }
-        .onAppear {
-            viewModel.refreshServerList()
-            viewModel.refreshActiveServer()
-        }
-        .alert(isPresented: $viewModel.isTroubleConnecting) {
+        .alert(isPresented: $isTroubleConnecting) {
             Alert(title: Text("Couldn't connect to the server."), message: Text("Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"))
         }
     }

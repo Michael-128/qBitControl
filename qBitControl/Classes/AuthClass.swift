@@ -33,7 +33,6 @@ class Auth {
            return "\(key)=\(value.addingPercentEncoding(withAllowedCharacters: .alphanumerics) ?? "")"
         }
         let bodyString = parameterArray.joined(separator: "&")
-        print(bodyString)
         req.httpBody = bodyString.data(using: .utf8)
 
         let sessionConfiguration = URLSessionConfiguration.default

@@ -6,7 +6,9 @@
 import SwiftUI
 
 class ServerAddViewModel: ObservableObject {
-    var serversHelper: ServersHelper
+    @ObservedObject var serversHelper = ServersHelper.shared
+    
+    var editServerId: String?
     
     @Published var friendlyName = ""
     @Published var url = ""
@@ -17,8 +19,16 @@ class ServerAddViewModel: ObservableObject {
     @Published var isInvalidAlert = false;
     @Published var invalidAlertMessage = "";
     
-    init(serversHelper: ServersHelper) {
-        self.serversHelper = serversHelper
+    init() { }
+    init(editServerId: String) {
+        self.editServerId = editServerId
+        
+        if let server = serversHelper.getServer(id: editServerId) {
+            friendlyName = server.name
+            url = server.url
+            username = server.username
+            password = server.password
+        }
     }
     
     func showAlert(message: String) {
@@ -41,6 +51,7 @@ class ServerAddViewModel: ObservableObject {
         let server = Server(name: friendlyName, url: url, username: username, password: password)
         
         if(!isCheckConnection) {
+            if let editServerId = self.editServerId { serversHelper.removeServer(id: editServerId) }
             serversHelper.addServer(server: server)
             dismiss()
         }
@@ -49,6 +60,7 @@ class ServerAddViewModel: ObservableObject {
             didConnect in
             DispatchQueue.main.async {
                 if(didConnect) {
+                    if let editServerId = self.editServerId { self.serversHelper.removeServer(id: editServerId) }
                     self.serversHelper.addServer(server: server)
                     dismiss()
                 } else {

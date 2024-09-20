@@ -2,30 +2,28 @@ import SwiftUI
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
+    @ObservedObject var serversHelper = ServersHelper.shared
     @Environment(\.scenePhase) var scenePhase
     
     var body: some View {
         Group {
-           if viewModel.shouldAttemptAutoLogIn {
+            if serversHelper.connectingServerId != nil && !serversHelper.isLoggedIn {
                 Image("logo")
                     .resizable()
                     .scaledToFit()
                     .frame(width: 100, height: 100)
                     .cornerRadius(20)
-                    .onAppear {
-                        viewModel.attemptAutoLogIn()
-                    }
                 Text("qBitControl")
                     .font(.largeTitle)
-            } else if !viewModel.isLoggedIn {
-                ServersView(isLoggedIn: $viewModel.isLoggedIn)
+            } else if !serversHelper.isLoggedIn {
+                ServersView()
                     .onAppear {
                         LocalNetworkPermissionService().triggerDialog()
                     }
                     .navigationTitle("qBitControl")
             } else {
                 TabView {
-                    TorrentListView(isLoggedIn: $viewModel.isLoggedIn)
+                    TorrentListView(isLoggedIn: $serversHelper.isLoggedIn)
                         .tabItem {
                             Label("Tasks", systemImage: "square.and.arrow.down.on.square")
                         }
@@ -38,7 +36,7 @@ struct MainView: View {
                             Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                         }
                     
-                    ServersView(isLoggedIn: $viewModel.isLoggedIn)
+                    ServersView()
                         .tabItem {
                             Label("Servers", systemImage: "server.rack")
                         }

@@ -3,14 +3,31 @@
 import Foundation
 
 
-class ServersHelper {
-    private var defaults = UserDefaults.standard
-    private var servers: [Server] = []
+class ServersHelper: ObservableObject {
+    static public var shared = ServersHelper()
     
+    private var defaults = UserDefaults.standard
     private let serversKey = "servers"
     private let activeServerKey = "activeServer"
     
-    func refreshServerList() {
+    @Published public var servers: [Server] = []
+    @Published public var activeServerId: String?
+    @Published public var connectingServerId: String?
+    
+    @Published public var isLoggedIn = false
+    
+    init() {
+        getServerList()
+        getActiveServer()
+        
+        if let activeServerId = self.activeServerId {
+            if let activeServer = self.getServer(id: activeServerId) {
+                self.connect(server: activeServer)
+            }
+        }
+    }
+    
+    func getServerList() {
         let encodedServers = defaults.data(forKey: self.serversKey)
         
         if let encodedServers = encodedServers {
@@ -21,6 +38,29 @@ class ServersHelper {
             } catch {
                 print("Servers could not be decoded.")
             }
+        }
+    }
+    
+    func getServer(id: String) -> Server? {
+        return servers.first(where: {
+            server in
+            return server.id == id
+        })
+    }
+    
+    private func setActiveServer(id: String) {
+        self.activeServerId = id
+        defaults.setValue("\(id)", forKey: activeServerKey)
+    }
+    
+    private func getActiveServer() {
+        let serverId = defaults.string(forKey: activeServerKey)
+        
+        if let serverId = serverId {
+            self.activeServerId = self.servers.first(where: {
+                server in
+                server.id == serverId
+            })?.id
         }
     }
     
@@ -35,26 +75,21 @@ class ServersHelper {
         }
     }
     
-    func getServers() -> [Server] {
-        refreshServerList()
-        return servers
-    }
-    
     func addServer(server: Server) {
-        refreshServerList()
-        
         self.servers.append(server)
-        
         saveSeverList()
     }
     
     func removeServer(id: String) {
-        refreshServerList()
-        
         self.servers.removeAll(where: {
             server in
             return server.id == id
         })
+        
+        if(id == activeServerId) {
+            activeServerId = nil
+            isLoggedIn = false
+        }
         
         saveSeverList()
     }
@@ -68,40 +103,43 @@ class ServersHelper {
         }
     }
     
-    func connect(server: Server, isSuccess: @escaping (Bool) -> Void) {
+    func connect(server: Server, result: ((Bool) -> Void)?) {
+        connectingServerId = server.id
+        
         Task {
             await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
                 success in
-                if(success) {
-                    self.setActiveServer(id: server.id)
+                DispatchQueue.main.async {
+                    if let result = result {
+                        result(success)
+                    }
+                    
+                    if(success) {
+                        self.setActiveServer(id: server.id)
+                        self.isLoggedIn = true
+                    }
+                    
+                    self.connectingServerId = nil
                 }
-                isSuccess(success)
             })
         }
     }
     
-    func setActiveServer(id: String) {
-        if let activeServer = getActiveServer() {
-            if(id != activeServer.id) {
-                ServerEvents.callOnChangeActions()
-            }
-        }
+    func connect(server: Server) {
+        connectingServerId = server.id
         
-        defaults.setValue("\(id)", forKey: activeServerKey)
-    }
-    
-    func getActiveServer() -> Server? {
-        let serverId = defaults.string(forKey: activeServerKey)
-        
-        if let serverId = serverId {
-            refreshServerList()
-            
-            return self.servers.first(where: {
-                server in
-                server.id == serverId
+        Task {
+            await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
+                success in
+                DispatchQueue.main.async {
+                    if(success) {
+                        self.setActiveServer(id: server.id)
+                        self.isLoggedIn = true
+                    }
+                    
+                    self.connectingServerId = nil
+                }
             })
         }
-        
-        return nil
     }
 }
