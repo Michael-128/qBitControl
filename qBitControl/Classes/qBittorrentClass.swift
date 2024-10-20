@@ -395,7 +395,29 @@ class qBittorrent {
         
         qBitRequest.requestUniversal(request: request)
     }
+
+    static func getTrackers(hash: String, completionHandler: @escaping ([Tracker]) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/trackers", queryItems: [URLQueryItem(name: "hash", value: hash)])
+        
+        qBitRequest.requestTrackersJSON(request: request, completionHandler: completionHandler)
+    }
     
+    static func removeTracker(hash: String, url: String) {
+        let path = "/api/v2/torrents/removeTrackers"
+
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hash", value: hash), URLQueryItem(name: "urls", value: url)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func editTrackerURL(hash: String, origUrl: String, newURL: String) {
+        let path = "/api/v2/torrents/editTracker"
+
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hash", value: hash), URLQueryItem(name: "origUrl", value: origUrl), URLQueryItem(name: "newUrl", value: newURL)])
+
+        qBitRequest.requestUniversal(request: request)
+    }
+
     static func addMagnetTorrent(torrent: URLQueryItem, savePath: String = "", cookie: String = "", category: String = "", tags: String = "", skipChecking: Bool = false, paused: Bool = false, sequentialDownload: Bool = false, dlLimit: Int = -1, upLimit: Int = -1, ratioLimit: Float = -1.0, seedingTimeLimit: Int = -1) {
         let path = "/api/v2/torrents/add"
         

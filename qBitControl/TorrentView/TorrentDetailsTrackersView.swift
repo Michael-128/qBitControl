@@ -6,59 +6,76 @@
 import SwiftUI
 
 struct TorrentDetailsTrackersView: View {
-    
     @Binding var torrentHash: String
     
     @State private var isLoaded = false
+
+    @State private var showingEditAlert = false
+    @State private var origURL = ""
+    @State private var newURL = ""  
+
     @State private var timer: Timer?
     
     @State private var trackers: [Tracker] = []
-    
-    func getTrackers() {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/trackers", queryItems: [URLQueryItem(name: "hash", value: torrentHash)])
-        
-        qBitRequest.requestTrackersJSON(request: request, completionHandler: {
-            trackers in
-            self.trackers = trackers
-            self.isLoaded = true
-        })
-    }
-    
+
     var body: some View {
         VStack {
-            if isLoaded {
-                List {
-                    Section(header: Text("\(trackers.count)" + " " + NSLocalizedString("Trackers", comment: ""))) {
-                        if trackers.count > 1 {
-                            ForEach($trackers, id: \.self) {
-                                tracker in
-                                TorrentDetailsTrackerRow(tracker: tracker)
-                            }
-                        } else {
-                            Text("No trackers")
+            List {
+                Section(header: Text("\(trackers.count)" + " " + NSLocalizedString("Trackers", comment: ""))) {
+                    if !trackers.isEmpty {
+                        ForEach($trackers, id: \.self) { tracker in
+                            TorrentDetailsTrackerRow(tracker: tracker)
+                                .contextMenu {
+                                    if !["** [DHT] **", "** [PeX] **", "** [LSD] **"].contains(tracker.wrappedValue.url) {
+                                        Button {
+                                            showingEditAlert = true
+                                            origURL = tracker.wrappedValue.url
+                                            newURL = tracker.wrappedValue.url
+                                        } label: {
+                                            Label("Edit", systemImage: "pencil")
+                                        }
+
+                                        Button(role: .destructive) {
+                                            qBittorrent.removeTracker(hash: torrentHash, url: tracker.wrappedValue.url)
+                                        } label: {
+                                            Label("Remove", systemImage: "trash")
+                                        }
+                                    }
+                                }
                         }
+                    } else {
+                        Text("No trackers")
                     }
-                    
-                    .navigationTitle("Trackers")
                 }
-            } else {
-                ProgressView().progressViewStyle(.circular)
-                    .navigationTitle("Trackers")
             }
+                
+            .navigationTitle("Trackers")
         }.onAppear() {
-            getTrackers()
+            qBittorrent.getTrackers(hash: torrentHash) {
+                trackers in
+                self.trackers = trackers
+                self.isLoaded = true
+            }
             timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
                 timer in
-                getTrackers()
+                qBittorrent.getTrackers(hash: torrentHash) {
+                    trackers in
+                    self.trackers = trackers
+                }
             }
         }.onDisappear() {
             timer?.invalidate()
+        }.alert("Edit Tracker", isPresented: $showingEditAlert) {
+            TextField("New URL", text: $newURL)
+            Button("Save") {
+                qBittorrent.editTrackerURL(hash: torrentHash, origUrl: origURL, newURL: newURL)
+            }
+            Button("Cancel", role: .cancel) {
+                showingEditAlert = false
+            }
         }
     }
 }
 
-struct TorrentDetailsTrackersView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
-    }
-}
+
+

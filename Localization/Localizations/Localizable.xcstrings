@@ -1008,6 +1008,9 @@
     "Edit" : {
 
     },
+    "Edit Tracker" : {
+
+    },
     "Errored" : {
       "localizations" : {
         "ja" : {
@@ -1462,6 +1465,9 @@
           }
         }
       }
+    },
+    "New URL" : {
+
     },
     "No trackers" : {
       "localizations" : {
@@ -1928,6 +1934,9 @@
         }
       }
     },
+    "Remove" : {
+
+    },
     "Report a bug" : {
 
     },
@@ -1994,6 +2003,9 @@
           }
         }
       }
+    },
+    "Save" : {
+
     },
     "SAVE" : {
 
