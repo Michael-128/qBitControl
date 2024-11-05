@@ -11,6 +11,7 @@
 		90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
+		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		90726B1F2CDA22160032993E /* AlertIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B0C2CDA22160032993E /* AlertIdentifier.swift */; };
 		90726B202CDA22160032993E /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B0D2CDA22160032993E /* Article.swift */; };
 		90726B212CDA22160032993E /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B0E2CDA22160032993E /* Category.swift */; };
@@ -60,6 +61,7 @@
 		90726B762CDA221B0032993E /* TorrentAddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B702CDA221B0032993E /* TorrentAddViewModel.swift */; };
 		90726B772CDA221B0032993E /* TorrentListModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B712CDA221B0032993E /* TorrentListModel.swift */; };
 		90726B782CDA221B0032993E /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B732CDA221B0032993E /* MainViewModel.swift */; };
+		90726B7A2CDA24960032993E /* TorrentDetailsTrackersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B792CDA24820032993E /* TorrentDetailsTrackersViewModel.swift */; };
 		9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA2229080E53006C3960 /* qBitControlApp.swift */; };
 		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
@@ -95,6 +97,7 @@
 		90200BA42B44BA6E00D3BA55 /* logo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo1.png; path = qBitControl/Assets.xcassets/AppIcon.appiconset/logo1.png; sourceTree = "<group>"; };
 		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsViewModel.swift; sourceTree = "<group>"; };
 		90726B0C2CDA22160032993E /* AlertIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertIdentifier.swift; sourceTree = "<group>"; };
 		90726B0D2CDA22160032993E /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		90726B0E2CDA22160032993E /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -144,6 +147,7 @@
 		90726B702CDA221B0032993E /* TorrentAddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddViewModel.swift; sourceTree = "<group>"; };
 		90726B712CDA221B0032993E /* TorrentListModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListModel.swift; sourceTree = "<group>"; };
 		90726B732CDA221B0032993E /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
+		90726B792CDA24820032993E /* TorrentDetailsTrackersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsTrackersViewModel.swift; sourceTree = "<group>"; };
 		9082FA1F29080E53006C3960 /* qBitManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qBitManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA2229080E53006C3960 /* qBitControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlApp.swift; sourceTree = "<group>"; };
 		9082FA2629080E55006C3960 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -329,6 +333,8 @@
 		90726B722CDA221B0032993E /* TorrentView */ = {
 			isa = PBXGroup;
 			children = (
+				9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */,
+				90726B792CDA24820032993E /* TorrentDetailsTrackersViewModel.swift */,
 				90726B702CDA221B0032993E /* TorrentAddViewModel.swift */,
 				90726B712CDA221B0032993E /* TorrentListModel.swift */,
 			);
@@ -541,6 +547,7 @@
 				90726B542CDA22190032993E /* RSSFeedArticlesView.swift in Sources */,
 				90726B552CDA22190032993E /* RSSView.swift in Sources */,
 				90726B562CDA22190032993E /* ServerAddView.swift in Sources */,
+				9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */,
 				90726B572CDA22190032993E /* ServerRowView.swift in Sources */,
 				90726B582CDA22190032993E /* ServersView.swift in Sources */,
 				90726B592CDA22190032993E /* ListElement.swift in Sources */,
@@ -570,6 +577,7 @@
 				90726B762CDA221B0032993E /* TorrentAddViewModel.swift in Sources */,
 				90726B772CDA221B0032993E /* TorrentListModel.swift in Sources */,
 				90726B782CDA221B0032993E /* MainViewModel.swift in Sources */,
+				90726B7A2CDA24960032993E /* TorrentDetailsTrackersViewModel.swift in Sources */,
 				90726B232CDA22160032993E /* GlobalTransferInfo.swift in Sources */,
 				90726B242CDA22160032993E /* MainData.swift in Sources */,
 				90726B252CDA22160032993E /* PartialServerState.swift in Sources */,

@@ -55,7 +55,6 @@ struct ChangeCategoryView: View {
 }
 
 struct ChangePathView: View {
-    
     @Environment(\.presentationMode) var presentationMode
     @State var path: String
     let torrentHash: String
@@ -92,7 +91,6 @@ struct ChangePathView: View {
 }
 
 struct TorrentDetailsView: View {
-    
     @Environment(\.presentationMode) var presentationMode
     @State var torrent: Torrent
     
@@ -101,6 +99,12 @@ struct TorrentDetailsView: View {
     @State private var timer: Timer?
     @State private var buttonTextColor = UITraitCollection.current.userInterfaceStyle == .dark ? Color.white : Color.black
     @State private var presentDeleteAlert = false
+    @StateObject private var trackersViewModel: TorrentDetailsTrackersViewModel
+    
+    init(torrent: Torrent) {
+        self.torrent = torrent
+        _trackersViewModel = StateObject(wrappedValue: TorrentDetailsTrackersViewModel(torrentHash: torrent.hash))
+    }
     
     let impactMed = UIImpactFeedbackGenerator(style: .medium)
     
@@ -231,7 +235,7 @@ struct TorrentDetailsView: View {
                         Text("Peers")
                     }
                     NavigationLink {
-                        TorrentDetailsTrackersView(torrentHash: .constant(torrent.hash))
+                        TorrentDetailsTrackersView(viewModel: trackersViewModel)
                     } label: {
                         Text("Trackers")
                     }

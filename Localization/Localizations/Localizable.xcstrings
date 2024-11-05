@@ -180,6 +180,9 @@
         }
       }
     },
+    "Add" : {
+
+    },
     "ADD" : {
       "localizations" : {
         "ja" : {
@@ -227,6 +230,9 @@
           }
         }
       }
+    },
+    "Add Tracker" : {
+
     },
     "Added On" : {
       "localizations" : {
@@ -1470,6 +1476,7 @@
 
     },
     "No trackers" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
