@@ -14,6 +14,8 @@
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
 		907023322CDA62FD007B2199 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907023312CDA62FD007B2199 /* TorrentListView.swift */; };
+		907023342CDA657A007B2199 /* ChangeCategoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907023332CDA657A007B2199 /* ChangeCategoryView.swift */; };
+		907023362CDA6592007B2199 /* ChangePathView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907023352CDA6592007B2199 /* ChangePathView.swift */; };
 		90726B1F2CDA22160032993E /* AlertIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B0C2CDA22160032993E /* AlertIdentifier.swift */; };
 		90726B202CDA22160032993E /* Article.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B0D2CDA22160032993E /* Article.swift */; };
 		90726B212CDA22160032993E /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B0E2CDA22160032993E /* Category.swift */; };
@@ -101,6 +103,8 @@
 		9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsViewModel.swift; sourceTree = "<group>"; };
 		9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListViewModel.swift; sourceTree = "<group>"; };
 		907023312CDA62FD007B2199 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
+		907023332CDA657A007B2199 /* ChangeCategoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCategoryView.swift; sourceTree = "<group>"; };
+		907023352CDA6592007B2199 /* ChangePathView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePathView.swift; sourceTree = "<group>"; };
 		90726B0C2CDA22160032993E /* AlertIdentifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertIdentifier.swift; sourceTree = "<group>"; };
 		90726B0D2CDA22160032993E /* Article.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Article.swift; sourceTree = "<group>"; };
 		90726B0E2CDA22160032993E /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -289,6 +293,8 @@
 				90726B392CDA22190032993E /* CustomLabelView.swift */,
 				90726B3A2CDA22190032993E /* MenuControlsLabelView.swift */,
 				90726B4A2CDA22190032993E /* TrackerRow.swift */,
+				907023332CDA657A007B2199 /* ChangeCategoryView.swift */,
+				907023352CDA6592007B2199 /* ChangePathView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -555,6 +561,7 @@
 				90726B572CDA22190032993E /* ServerRowView.swift in Sources */,
 				90726B582CDA22190032993E /* ServersView.swift in Sources */,
 				90726B592CDA22190032993E /* CustomLabelView.swift in Sources */,
+				907023362CDA6592007B2199 /* ChangePathView.swift in Sources */,
 				90726B5A2CDA22190032993E /* MenuControlsLabelView.swift in Sources */,
 				90726B5B2CDA22190032993E /* TorrentListHelperView.swift in Sources */,
 				90726B5C2CDA22190032993E /* TorrentListDefaultToolbar.swift in Sources */,
@@ -580,6 +587,7 @@
 				90726B752CDA221B0032993E /* ServerAddViewModel.swift in Sources */,
 				90726B762CDA221B0032993E /* TorrentAddViewModel.swift in Sources */,
 				90726B772CDA221B0032993E /* TorrentListHelperViewModel.swift in Sources */,
+				907023342CDA657A007B2199 /* ChangeCategoryView.swift in Sources */,
 				90726B782CDA221B0032993E /* MainViewModel.swift in Sources */,
 				90726B7A2CDA24960032993E /* TrackersViewModel.swift in Sources */,
 				90726B232CDA22160032993E /* GlobalTransferInfo.swift in Sources */,
