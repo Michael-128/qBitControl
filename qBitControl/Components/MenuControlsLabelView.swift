@@ -2,7 +2,7 @@
 
 import SwiftUI
 
-struct MenuControlsLabel: View {
+struct MenuControlsLabelView: View {
     let text: LocalizedStringKey
     let icon: String
     

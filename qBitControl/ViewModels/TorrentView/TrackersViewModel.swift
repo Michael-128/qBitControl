@@ -1,6 +1,6 @@
 import SwiftUI
 
-class TorrentDetailsTrackersViewModel: ObservableObject {
+class TrackersViewModel: ObservableObject {
     private var torrentHash: String
     @Published public var trackers: [Tracker] = []
     

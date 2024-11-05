@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct TorrentDetailsTrackerRow: View {
+struct TrackerRow: View {
     
     @Binding var tracker: Tracker
     
@@ -68,7 +68,7 @@ struct TorrentDetailsTrackerRow: View {
 struct TorrentDetailsTrackerRow_Previews: PreviewProvider {
     static var previews: some View {
         List {
-            TorrentDetailsTrackerRow(tracker: .constant(Tracker(url: "http://example.com/announce", status: 1, tier: 1, num_peers: 100, num_seeds: 100, num_leeches: 10, num_downloaded: 1000, msg: "Tracker available")))
+            TrackerRow(tracker: .constant(Tracker(url: "http://example.com/announce", status: 1, tier: 1, num_peers: 100, num_seeds: 100, num_leeches: 10, num_downloaded: 1000, msg: "Tracker available")))
         }
     }
 }

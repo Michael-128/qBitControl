@@ -99,11 +99,11 @@ struct TorrentDetailsView: View {
     @State private var timer: Timer?
     @State private var buttonTextColor = UITraitCollection.current.userInterfaceStyle == .dark ? Color.white : Color.black
     @State private var presentDeleteAlert = false
-    @StateObject private var trackersViewModel: TorrentDetailsTrackersViewModel
+    @StateObject private var trackersViewModel: TrackersViewModel
     
     init(torrent: Torrent) {
         self.torrent = torrent
-        _trackersViewModel = StateObject(wrappedValue: TorrentDetailsTrackersViewModel(torrentHash: torrent.hash))
+        _trackersViewModel = StateObject(wrappedValue: TrackersViewModel(torrentHash: torrent.hash))
     }
     
     let impactMed = UIImpactFeedbackGenerator(style: .medium)
@@ -169,7 +169,7 @@ struct TorrentDetailsView: View {
                 if let preferences = qBittorrent.getSavedPreferences() {
                     if(preferences.queueing_enabled == true) {
                         Section(header: Text("Queue Management")) {
-                            ListElement(label: "Priority", value: "\(torrent.priority)")
+                            CustomLabelView(label: "Priority", value: "\(torrent.priority)")
                             
                             Button(action: {
                                 impactMed.impactOccurred()
@@ -203,39 +203,39 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Information")) {
-                    ListElement(label: "Name", value: "\(torrent.name)")
+                    CustomLabelView(label: "Name", value: "\(torrent.name)")
                     
-                    ListElement(label: "Added On", value: "\( qBittorrent.getFormatedDate(date: torrent.added_on) )")
+                    CustomLabelView(label: "Added On", value: "\( qBittorrent.getFormatedDate(date: torrent.added_on) )")
                     
                     //listElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
                     
                     NavigationLink {
                         ChangeCategoryView(torrentHash: torrent.hash, category: torrent.category)
                     } label: {
-                        ListElement(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
+                        CustomLabelView(label: "Categories", value: "\( torrent.category != "" ? torrent.category : "None" )")
                     }
                     
                     /*NavigationLink {
                         ChangeTagsView(torrentHash: torrent.hash, selectedTags: torrent.tags.components(separatedBy: ","))
                     } label: {*/
-                        ListElement(label: "Tags", value: "\( torrent.tags != "" ? torrent.tags : "None" )")
+                        CustomLabelView(label: "Tags", value: "\( torrent.tags != "" ? torrent.tags : "None" )")
                     //}
                     
-                    ListElement(label: "Size", value: "\(qBittorrent.getFormatedSize(size: torrent.size))")
+                    CustomLabelView(label: "Size", value: "\(qBittorrent.getFormatedSize(size: torrent.size))")
                     
-                    ListElement(label: "Total Size", value: "\(qBittorrent.getFormatedSize(size: torrent.total_size))")
+                    CustomLabelView(label: "Total Size", value: "\(qBittorrent.getFormatedSize(size: torrent.total_size))")
                     
-                    ListElement(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability*100))%")
+                    CustomLabelView(label: "Availability", value: torrent.availability < 0 ? "-" : "\(String(format: "%.1f", torrent.availability*100))%")
                 }
                 
                 Section(header: Text("Connections")) {
                     NavigationLink {
-                        TorrentDetailsPeersView(torrentHash: .constant(torrent.hash))
+                        PeersView(torrentHash: .constant(torrent.hash))
                     } label: {
                         Text("Peers")
                     }
                     NavigationLink {
-                        TorrentDetailsTrackersView(viewModel: trackersViewModel)
+                        TrackersView(viewModel: trackersViewModel)
                     } label: {
                         Text("Trackers")
                     }
@@ -245,37 +245,37 @@ struct TorrentDetailsView: View {
                     NavigationLink {
                         ChangePathView(path: torrent.save_path, torrentHash: torrent.hash)
                     } label: {
-                        ListElement(label: "Save Path", value: torrent.save_path)
+                        CustomLabelView(label: "Save Path", value: torrent.save_path)
                     }
                     
                     NavigationLink {
-                        TorrentDetailsFilesView(torrentHash: .constant(torrent.hash))
+                        FilesView(torrentHash: .constant(torrent.hash))
                     } label: {
                         Text("Files")
                     }
                 }
                 
                 Section(header: Text("Status")) {
-                    ListElement(label: "State", value: "\(qBittorrent.getState(state: torrent.state))")
+                    CustomLabelView(label: "State", value: "\(qBittorrent.getState(state: torrent.state))")
                     
-                    ListElement(label: "Progress", value: "\(String(format: "%.2f", (torrent.progress*100)))%")
+                    CustomLabelView(label: "Progress", value: "\(String(format: "%.2f", (torrent.progress*100)))%")
                     
-                    ListElement(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.dlspeed))/s")
+                    CustomLabelView(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.dlspeed))/s")
                     
-                    ListElement(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.upspeed))/s")
+                    CustomLabelView(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: torrent.upspeed))/s")
                     
-                    ListElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded))")
+                    CustomLabelView(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded))")
                     
-                    ListElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
+                    CustomLabelView(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
                     
-                    ListElement(label: "Ratio", value: "\(String(format:"%.2f", torrent.ratio))")
+                    CustomLabelView(label: "Ratio", value: "\(String(format:"%.2f", torrent.ratio))")
                     
                 }
                 
                 Section(header: Text("Session")) {
-                    ListElement(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded_session))")
+                    CustomLabelView(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: torrent.downloaded_session))")
                     
-                    ListElement(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
+                    CustomLabelView(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: torrent.uploaded_session))")
                 }
                 
                 Section(header: Text("Advanced")) {
@@ -289,11 +289,11 @@ struct TorrentDetailsView: View {
                 Section(header: Text("Limits")) {
                     //listElement(label: "Maximum Seeding Time", value: "n/a")
                     
-                    ListElement(label: "Maximum Ratio", value: "\(torrent.max_ratio > -1 ? String(format:"%.2f", torrent.max_ratio) : NSLocalizedString("None", comment: "None"))")
+                    CustomLabelView(label: "Maximum Ratio", value: "\(torrent.max_ratio > -1 ? String(format:"%.2f", torrent.max_ratio) : NSLocalizedString("None", comment: "None"))")
                     
-                    ListElement(label: "Download Limit", value: "\(torrent.dl_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.dl_limit)+"/s" : NSLocalizedString("None", comment: "None"))")
+                    CustomLabelView(label: "Download Limit", value: "\(torrent.dl_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.dl_limit)+"/s" : NSLocalizedString("None", comment: "None"))")
                     
-                    ListElement(label: "Upload Limit", value: "\(torrent.up_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.up_limit)+"/s" : NSLocalizedString("None", comment: "None"))")
+                    CustomLabelView(label: "Upload Limit", value: "\(torrent.up_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.up_limit)+"/s" : NSLocalizedString("None", comment: "None"))")
                 }
                 
             }

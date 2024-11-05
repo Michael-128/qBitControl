@@ -23,7 +23,7 @@ struct MainView: View {
                     .navigationTitle("qBitControl")
             } else {
                 TabView {
-                    TorrentListView(isLoggedIn: $serversHelper.isLoggedIn)
+                    TorrentListView()
                         .tabItem {
                             Label("Tasks", systemImage: "square.and.arrow.down.on.square")
                         }
@@ -31,7 +31,7 @@ struct MainView: View {
                             viewModel.reconnectIfNeeded(on: phase)
                         }
                     
-                    TorrentStatsView()
+                    StatsView()
                         .tabItem {
                             Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
                         }

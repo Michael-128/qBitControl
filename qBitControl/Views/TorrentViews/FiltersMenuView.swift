@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct TorrentFilterView: View {
+struct FiltersMenuView: View {
     @Environment(\.presentationMode) var presentationMode
     
     @Binding var sort: String

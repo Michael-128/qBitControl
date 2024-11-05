@@ -8,7 +8,6 @@ struct TorrentListDefaultToolbar: ToolbarContent {
     @Binding public var category: String
     
     @Binding public var isSelectionMode: Bool
-    @Binding public var isLoggedIn: Bool
     @Binding public var isFilterView: Bool
     
     @State private var alertIdentifier: AlertIdentifier?
@@ -125,7 +124,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 sheet in
                 switch sheet.id {
                 case .showAbout:
-                    return TorrentAboutView()
+                    return AboutView()
                 }
             }
         }

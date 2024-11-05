@@ -3,7 +3,7 @@
 import SwiftUI
 import Charts
 
-struct ChartElement: View {
+struct StatsChartView: View {
     
     @Binding public var transferData: [TransferInfo]
     

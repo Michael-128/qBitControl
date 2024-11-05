@@ -1,7 +1,7 @@
 //
 import SwiftUI
 
-class TorrentListModel: ObservableObject {
+class TorrentListHelperViewModel: ObservableObject {
     let defaults = UserDefaults.standard
     
     @Published public var torrents: [Torrent] = []

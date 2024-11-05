@@ -5,10 +5,10 @@
 
 import SwiftUI
 
-struct TorrentDetailsTrackersView: View {
-    @ObservedObject var viewModel: TorrentDetailsTrackersViewModel
+struct TrackersView: View {
+    @ObservedObject var viewModel: TrackersViewModel
     
-    init(viewModel: TorrentDetailsTrackersViewModel) {
+    init(viewModel: TrackersViewModel) {
         self.viewModel = viewModel
     }
     
@@ -25,7 +25,7 @@ struct TorrentDetailsTrackersView: View {
                 
                 Section(header: Text("\($viewModel.trackers.count)" + " " + NSLocalizedString("Trackers", comment: ""))) {
                     ForEach($viewModel.trackers, id: \.url) { tracker in
-                        TorrentDetailsTrackerRow(tracker: tracker)
+                        TrackerRow(tracker: tracker)
                             .contextMenu {
                                 if !["** [DHT] **", "** [PeX] **", "** [LSD] **"].contains(tracker.wrappedValue.url) {
                                     Button {

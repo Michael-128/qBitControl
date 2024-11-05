@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct TorrentDetailsPeersView: View {
+struct PeersView: View {
     @Binding var torrentHash: String
     
     @State private var peers: [Peer] = []
@@ -35,7 +35,7 @@ struct TorrentDetailsPeersView: View {
                     Section(header: Text("\(peers.count) " + NSLocalizedString("Peers", comment: ""))) {
                         ForEach($peers, id: \.ip) {
                             peer in
-                            TorrentDetailsPeersRowView(peer: peer)
+                            PeerRowView(peer: peer)
                         }
                     }
                     
@@ -60,7 +60,7 @@ struct TorrentDetailsPeersView: View {
 struct TorrentDetailsPeersView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            TorrentDetailsPeersRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "Poland", country_code: "pl", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
+            PeerRowView(peer: .constant(Peer(client: "example client", connection: "BT", country: "Poland", country_code: "pl", dl_speed: 10000, downloaded: 100000, files: "example file", flags: "e", flags_desc: "e", ip: "192.168.1.1", port: 22222, progress: 1, relevance: 1, up_speed: 10000, uploaded: 10000)))
         }
     }
 }

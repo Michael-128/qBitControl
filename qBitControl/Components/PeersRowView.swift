@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct TorrentDetailsPeersRowView: View {
+struct PeerRowView: View {
     
     @Binding var peer: Peer
     
@@ -28,7 +28,7 @@ struct TorrentDetailsPeersRowView: View {
     
     var body: some View {
         NavigationLink {
-            TorrentPeersDetailsView(peer: $peer)
+            PeerDetailsView(peer: $peer)
         } label: {
             VStack {
                 HStack {

@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct TorrentDetailsFilesView: View {
+struct FilesView: View {
     @Binding var torrentHash: String
 
     @State private var sortedFiles: [Dictionary<String, [FileNode]>.Element] = []

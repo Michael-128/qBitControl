@@ -3,7 +3,7 @@
 import Foundation
 import SwiftUI
 
-struct TorrentAboutView: View {
+struct AboutView: View {
     @Environment(\.dismiss) var dismiss
     
     @ObservedObject var appInfo = AppInfo.shared

@@ -2,11 +2,11 @@
 
 import SwiftUI
 
-struct TorrentList: View {
+struct TorrentListHelperView: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(\.scenePhase) var scenePhaseEnv
     
-    @ObservedObject var viewModel: TorrentListModel
+    @ObservedObject var viewModel: TorrentListHelperViewModel
     
     var body: some View {
         Section(header: torrentListHeader()) {
@@ -74,10 +74,10 @@ struct TorrentList: View {
         if(isQueueingEnabled) {
             return AnyView(Section(header: Text("Queue")) {
                 Button { qBittorrent.increasePriorityTorrents(hashes: [torrent.hash]) }
-                label: { MenuControlsLabel(text: "Move Up", icon: "arrow.up") }
+                label: { MenuControlsLabelView(text: "Move Up", icon: "arrow.up") }
                 
                 Button { qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash]) }
-                label: { MenuControlsLabel(text: "Move Down", icon: "arrow.down") }
+                label: { MenuControlsLabelView(text: "Move Down", icon: "arrow.down") }
             })
         }
         
@@ -89,16 +89,16 @@ struct TorrentList: View {
         
         return Section(header: Text("Manage")) {
             Button { if isTorrentPaused { qBittorrent.resumeTorrent(hash: torrent.hash) } else { qBittorrent.pauseTorrent(hash: torrent.hash) } }
-            label: { MenuControlsLabel(text: isTorrentPaused ? "Resume" : "Pause", icon: isTorrentPaused ? "play" : "pause") }
+            label: { MenuControlsLabelView(text: isTorrentPaused ? "Resume" : "Pause", icon: isTorrentPaused ? "play" : "pause") }
             
             Button { qBittorrent.recheckTorrent(hash: torrent.hash) }
-            label: { MenuControlsLabel(text: "Recheck", icon: "magnifyingglass") }
+            label: { MenuControlsLabelView(text: "Recheck", icon: "magnifyingglass") }
             
             Button { qBittorrent.reannounceTorrent(hash: torrent.hash) }
-            label: { MenuControlsLabel(text: "Reannounce", icon: "circle.dashed") }
+            label: { MenuControlsLabelView(text: "Reannounce", icon: "circle.dashed") }
             
             Button(role: .destructive) { viewModel.deleteTorrent(torrent: torrent) }
-            label: { MenuControlsLabel(text: "Delete", icon: "trash") }
+            label: { MenuControlsLabelView(text: "Delete", icon: "trash") }
         }
     }
     
