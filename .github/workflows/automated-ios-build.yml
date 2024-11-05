@@ -8,13 +8,13 @@ on:
 
 jobs:
   build:
-    runs-on: macos-14
+    runs-on: macos-15
     steps:
     - uses: actions/checkout@v3
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '15.4'
-    - uses: yukiarrr/ios-build-action@v1.11.2
+        xcode-version: '16.1'
+    - uses: yukiarrr/ios-build-action@v1.12.0
       with:
         project-path: qBitControl.xcodeproj
         p12-base64: ${{ secrets.P12_BASE64 }}
