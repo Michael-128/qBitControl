@@ -8,12 +8,12 @@ on:
 
 jobs:
   build:
-    runs-on: macos-15
+    runs-on: macos-14
     steps:
     - uses: actions/checkout@v3
     - uses: maxim-lobanov/setup-xcode@v1
       with:
-        xcode-version: '16.1'
+        xcode-version: '15.4'
     - uses: yukiarrr/ios-build-action@v1.11.2
       with:
         project-path: qBitControl.xcodeproj
