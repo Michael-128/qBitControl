@@ -72,16 +72,18 @@ class TorrentAddViewModel: ObservableObject {
             self.fileNames.append(fileName)
         }
         
-        if fileURL.startAccessingSecurityScopedResource() {
-            do {
-                let data = try Data(contentsOf: fileURL)
-                DispatchQueue.main.async {
-                    self.fileContent[fileName] = data
+        if fileURL.startAccessingSecurityScopedResource() || fileURL.scheme == "https" || fileURL.scheme == "http" {
+            Task {
+                do {
+                    let data = try Data(contentsOf: fileURL)
+                    DispatchQueue.main.async {
+                        self.fileContent[fileName] = data
+                    }
+                } catch {
+                    print(error)
                 }
-            } catch {
-                print(error)
+                fileURL.stopAccessingSecurityScopedResource()
             }
-            fileURL.stopAccessingSecurityScopedResource()
         }
     }
     

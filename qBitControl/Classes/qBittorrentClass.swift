@@ -418,6 +418,12 @@ class qBittorrent {
         qBitRequest.requestTrackersJSON(request: request, completionHandler: completionHandler)
     }
     
+    static func getRSSFeeds(withDate: Bool = true, completionHandler: @escaping (RSSNode) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/items", queryItems: [URLQueryItem(name: "withData", value: "true")])
+        
+        qBitRequest.requestRSSFeedJSON(request: request, completion: { RSSNodes in completionHandler(RSSNodes) })
+    }
+    
     static func removeTracker(hash: String, url: String) {
         let path = "/api/v2/torrents/removeTrackers"
 

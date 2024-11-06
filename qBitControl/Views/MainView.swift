@@ -31,6 +31,11 @@ struct MainView: View {
                             viewModel.reconnectIfNeeded(on: phase)
                         }
                     
+                    RSSView()
+                        .tabItem {
+                            Label("RSS", systemImage: "dot.radiowaves.up.forward")
+                        }
+                    
                     StatsView()
                         .tabItem {
                             Label("Stats", systemImage: "chart.line.uptrend.xyaxis")

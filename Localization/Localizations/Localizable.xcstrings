@@ -81,7 +81,11 @@
         }
       }
     },
+    "%lld Articles" : {
+
+    },
     "%lld Feeds" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1286,6 +1290,7 @@
       }
     },
     "Link" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1548,6 +1553,7 @@
       }
     },
     "Open" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2016,6 +2022,9 @@
           }
         }
       }
+    },
+    "RSS" : {
+
     },
     "Save" : {
 
