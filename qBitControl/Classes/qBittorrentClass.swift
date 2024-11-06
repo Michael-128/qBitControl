@@ -395,6 +395,14 @@ class qBittorrent {
         
         qBitRequest.requestUniversal(request: request)
     }
+    
+    static func toggleFLPiecesFirst(hashes: [String]) {
+        let path = "/api/v2/torrents/toggleFirstLastPiecePrio"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
 
     static func getTrackers(hash: String, completionHandler: @escaping ([Tracker]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/trackers", queryItems: [URLQueryItem(name: "hash", value: hash)])

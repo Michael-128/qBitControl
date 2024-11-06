@@ -4,7 +4,9 @@ class TorrentDetailsViewModel: ObservableObject {
     @Published public var torrent: Torrent
     
     @Published public var isDeleteAlert: Bool = false
+    
     @Published public var isSequentialDownload: Bool = false
+    @Published public var isFLPiecesFirst: Bool = false
     
     let haptics = UIImpactFeedbackGenerator(style: .medium)
     private var timer: Timer?
@@ -12,6 +14,7 @@ class TorrentDetailsViewModel: ObservableObject {
     init(torrent: Torrent) {
         self.torrent = torrent
         self.isSequentialDownload = torrent.seq_dl
+        self.isFLPiecesFirst = torrent.f_l_piece_prio
     }
     
     func setRefreshTimer() {
@@ -32,6 +35,8 @@ class TorrentDetailsViewModel: ObservableObject {
             if let torrent = torrent.first {
                 DispatchQueue.main.async {
                     self.torrent = torrent
+                    self.isSequentialDownload = torrent.seq_dl
+                    self.isFLPiecesFirst = torrent.f_l_piece_prio
                 }
             }
         }
@@ -71,8 +76,12 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func toggleSequentialDownload() {
         qBittorrent.toggleSequentialDownload(hashes: [torrent.hash])
-        isSequentialDownload.toggle()
     }
+    
+    func toggleFLPiecesFirst() {
+        qBittorrent.toggleFLPiecesFirst(hashes: [torrent.hash])
+    }
+    
     
     func recheckTorrent() {
         haptics.impactOccurred()

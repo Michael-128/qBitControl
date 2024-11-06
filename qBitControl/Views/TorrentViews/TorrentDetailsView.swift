@@ -99,7 +99,9 @@ struct TorrentDetailsView: View {
                 
                 Section(header: Text("Advanced")) {
                     Toggle(isOn: $viewModel.isSequentialDownload, label: { Text("Sequential Download") })
-                        .onTapGesture { viewModel.toggleSequentialDownload() }
+                        .onChange(of: viewModel.isSequentialDownload, perform: { _ in viewModel.toggleSequentialDownload() })
+                    Toggle(isOn: $viewModel.isFLPiecesFirst, label: { Text("First & Last Pieces First") })
+                        .onChange(of: viewModel.isFLPiecesFirst, perform: { _ in viewModel.toggleFLPiecesFirst() })
                 }
                 
                 Section(header: Text("Limits")) {
