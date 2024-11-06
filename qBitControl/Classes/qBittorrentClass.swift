@@ -403,6 +403,14 @@ class qBittorrent {
         
         qBitRequest.requestUniversal(request: request)
     }
+    
+    static func setForceStart(hashes: [String], value: Bool) {
+        let path = "/api/v2/torrents/setForceStart"
+        
+        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")), URLQueryItem(name: "value", value: "\(value)")])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
 
     static func getTrackers(hash: String, completionHandler: @escaping ([Tracker]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/trackers", queryItems: [URLQueryItem(name: "hash", value: hash)])

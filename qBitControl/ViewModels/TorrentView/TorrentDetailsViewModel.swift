@@ -8,6 +8,8 @@ class TorrentDetailsViewModel: ObservableObject {
     @Published public var isSequentialDownload: Bool = false
     @Published public var isFLPiecesFirst: Bool = false
     
+    @Published public var state: State = .resumed
+    
     let haptics = UIImpactFeedbackGenerator(style: .medium)
     private var timer: Timer?
     
@@ -37,6 +39,10 @@ class TorrentDetailsViewModel: ObservableObject {
                     self.torrent = torrent
                     self.isSequentialDownload = torrent.seq_dl
                     self.isFLPiecesFirst = torrent.f_l_piece_prio
+                    
+                    if(torrent.state.contains("paused")) { self.state = .paused }
+                    else if(torrent.state.contains("forced")) { self.state = .forceStart }
+                    else { self.state = .resumed }
                 }
             }
         }
@@ -62,11 +68,12 @@ class TorrentDetailsViewModel: ObservableObject {
     func getUploadLimit() -> String { "\(torrent.up_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.up_limit)+"/s" : NSLocalizedString("None", comment: "None"))" }
     
     
-    func isPaused() -> Bool { torrent.state.contains("paused") }
+    func isPaused() -> Bool { state == .paused }
+    func isForceStart() -> Bool { state == .forceStart }
     
     func toggleTorrentPause() {
         haptics.impactOccurred()
-        if torrent.state.contains("paused") {
+        if self.isPaused() {
             qBittorrent.resumeTorrent(hash: torrent.hash)
         } else {
             qBittorrent.pauseTorrent(hash: torrent.hash)
@@ -82,6 +89,9 @@ class TorrentDetailsViewModel: ObservableObject {
         qBittorrent.toggleFLPiecesFirst(hashes: [torrent.hash])
     }
     
+    func setForceStart(value: Bool) {
+        qBittorrent.setForceStart(hashes: [torrent.hash], value: value)
+    }
     
     func recheckTorrent() {
         haptics.impactOccurred()
@@ -129,6 +139,6 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     enum State {
-        case resumed, paused, isPausing, isResuming
+        case resumed, paused, forceStart
     }
 }

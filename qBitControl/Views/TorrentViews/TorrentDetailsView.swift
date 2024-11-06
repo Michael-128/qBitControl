@@ -24,7 +24,8 @@ struct TorrentDetailsView: View {
                     Button { viewModel.toggleTorrentPause() } label: { Text(viewModel.isPaused() ? "Resume Task" : "Pause Task") }
                     Button { viewModel.recheckTorrent() } label: { Text("Recheck Task") }
                     Button { viewModel.reannounceTorrent() } label: { Text("Reannounce Task") }
-                    Button { viewModel.deleteTorrent() } label: { Text("Delete Task").foregroundColor(Color.red) }
+                    Button { viewModel.setForceStart(value: !viewModel.isForceStart()) } label: { Text(viewModel.isForceStart() ? "Stop Force Start" : "Force Start").foregroundColor(.yellow) }
+                    Button { viewModel.deleteTorrent() } label: { Text("Delete Task").foregroundColor(.red) }
                 }
                 
                 if let preferences = qBittorrent.getSavedPreferences() {
