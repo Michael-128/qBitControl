@@ -64,7 +64,9 @@ class TorrentAddViewModel: ObservableObject {
     }
     
     func handleTorrentFile(fileURL: URL) -> Void {
-        if fileURL.pathExtension != "torrent" { return }
+        let isRemote = fileURL.scheme == "https" || fileURL.scheme == "http"
+        
+        if fileURL.pathExtension != "torrent" && !isRemote { return }
         
         let fileName = fileURL.lastPathComponent
         
@@ -72,7 +74,7 @@ class TorrentAddViewModel: ObservableObject {
             self.fileNames.append(fileName)
         }
         
-        if fileURL.startAccessingSecurityScopedResource() || fileURL.scheme == "https" || fileURL.scheme == "http" {
+        if fileURL.startAccessingSecurityScopedResource() || isRemote {
             Task {
                 do {
                     let data = try Data(contentsOf: fileURL)
@@ -129,7 +131,7 @@ class TorrentAddViewModel: ObservableObject {
         qBittorrent.getCategories(completionHandler: { response in
             DispatchQueue.main.async {
                 // Append sorted list of Category objects to ensure "None" always appears at the top
-                self.categories.append(contentsOf: response.map { $1 }.sorted { $0.name < $1.name })
+                self.categories = response.map { $1 }.sorted { $0.name < $1.name }
             }
         })
     }

@@ -424,6 +424,18 @@ class qBittorrent {
         qBitRequest.requestRSSFeedJSON(request: request, completion: { RSSNodes in completionHandler(RSSNodes) })
     }
     
+    static func addRSSFeed(url: String, path: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/addFeed", queryItems: [URLQueryItem(name: "url", value: url), URLQueryItem(name: "path", value: path)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func addRSSFolder(path: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/addFolder", queryItems: [URLQueryItem(name: "path", value: path)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
     static func removeTracker(hash: String, url: String) {
         let path = "/api/v2/torrents/removeTrackers"
 

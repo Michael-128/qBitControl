@@ -203,6 +203,12 @@
         }
       }
     },
+    "Add Feed" : {
+
+    },
+    "Add Folder" : {
+
+    },
     "Add Server" : {
       "localizations" : {
         "ja" : {
@@ -1054,6 +1060,7 @@
       }
     },
     "Feeds" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

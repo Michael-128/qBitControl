@@ -104,17 +104,23 @@ struct TorrentAddView: View {
         Group {
             Section(header: Text("Save Path")) { TextField("Path", text: $viewModel.savePath) }
             
-            Section(header: Text("Info")) {
-                Picker("Category", selection: $viewModel.category) {
-                    ForEach(viewModel.categories, id: \.self) { category in
-                        Text(category.name).tag(category.name)
+            Group {
+                Section(header: Text("Info")) {
+                    Picker("Category", selection: $viewModel.category) {
+                        if !viewModel.categories.isEmpty {
+                            ForEach(viewModel.categories, id: \.self) { category in
+                                Text(category.name).tag(category.name)
+                            }
+                        }
+                    }.onChange(of: viewModel.category) { category in
+                        if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
                     }
-                }.onChange(of: viewModel.category) { category in
-                    if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
-                }
-
-                Picker("Tags", selection: $viewModel.tags) {
-                    ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
+                    
+                    Picker("Tags", selection: $viewModel.tags) {
+                        if !viewModel.tags.isEmpty {
+                            ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
+                        }
+                    }
                 }
             }
             

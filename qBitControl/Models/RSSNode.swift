@@ -5,7 +5,37 @@ final class RSSNode: Decodable, Identifiable {
     var title = "RSS"
     var nodes: [RSSNode] = []
     var feeds: [RSSFeed] = []
+    
+    weak var parent: RSSNode?
 
+    func getPath() -> String {
+        if let parent = self.parent {
+            if parent.getPath().isEmpty {
+                return title
+            }
+            return "\(parent.getPath())\\\(title)"
+        }
+        if title == "RSS" { return "" }
+        return title
+    }
+    
+    func getNode(path: [String]) -> RSSNode? {
+        if path.count == 1 && path.first! == self.title { return self }
+        
+        var newPath = path
+        newPath.removeFirst()
+        
+        for node in nodes {
+            if newPath.first! == node.title {
+                return node.getNode(path: newPath)
+            }
+        }
+        
+        return nil
+    }
+    
+    init() { }
+    
     required init(from decoder: any Decoder) throws {
         let decoder = try decoder.singleValueContainer()
 
@@ -16,6 +46,7 @@ final class RSSNode: Decodable, Identifiable {
                     feeds.append(feed)
                 case .node(let node):
                     node.title = key
+                    node.parent = self
                     nodes.append(node)
                 case .empty:
                     continue

@@ -66,6 +66,7 @@
 		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
 		9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4C29082208006C3960 /* qBittorrentClass.swift */; };
+		909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */; };
 		90AE89322CDB6F00000E0276 /* RSSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */; };
 		90AE89342CDB731A000E0276 /* RSSNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AE89332CDB7316000E0276 /* RSSNode.swift */; };
 		90AE89392CDBEC4D000E0276 /* RSSNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AE89382CDBEC47000E0276 /* RSSNodeView.swift */; };
@@ -160,6 +161,7 @@
 		9082FA2F29080E55006C3960 /* qBitControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA4C29082208006C3960 /* qBittorrentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClass.swift; sourceTree = "<group>"; };
+		909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNodeViewModel.swift; sourceTree = "<group>"; };
 		90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSViewModel.swift; sourceTree = "<group>"; };
 		90AE89332CDB7316000E0276 /* RSSNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNode.swift; sourceTree = "<group>"; };
 		90AE89382CDBEC47000E0276 /* RSSNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNodeView.swift; sourceTree = "<group>"; };
@@ -415,6 +417,7 @@
 		90AE89302CDB6EF5000E0276 /* RSSView */ = {
 			isa = PBXGroup;
 			children = (
+				909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */,
 				90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */,
 			);
 			path = RSSView;
@@ -609,6 +612,7 @@
 				90726B242CDA22160032993E /* MainData.swift in Sources */,
 				90726B252CDA22160032993E /* PartialServerState.swift in Sources */,
 				90AE89322CDB6F00000E0276 /* RSSViewModel.swift in Sources */,
+				909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */,
 				90726B262CDA22160032993E /* Peer.swift in Sources */,
 				90726B272CDA22160032993E /* Peers.swift in Sources */,
 				90726B282CDA22160032993E /* qBitPreferences.swift in Sources */,

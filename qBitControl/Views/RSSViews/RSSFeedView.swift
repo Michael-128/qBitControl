@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct RSSFeedView: View {
+    @ObservedObject var rssNodeViewModel = RSSNodeViewModel.shared
+    
     @State public var rssFeed: RSSFeed
     @State public var searchQuery: String = ""
     
@@ -27,5 +29,6 @@ struct RSSFeedView: View {
         }
         .navigationTitle(rssFeed.title)
         .searchable(text: $searchQuery)
+        .onAppear { if self.rssFeed.title.isEmpty { rssNodeViewModel.getRssRootNode() } }
     }
 }
