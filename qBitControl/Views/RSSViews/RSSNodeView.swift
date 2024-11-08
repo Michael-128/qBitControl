@@ -38,7 +38,7 @@ struct RSSNodeView: View {
                     TextField("URL", text: $newFeedURL)
                     Button("Add") {
                         if self.newFeedURL.isEmpty { return }
-                        var path = self.path + [rssNode.title, newFeedURL]
+                        var path = self.path + [newFeedURL]
                         path.removeFirst()
                         qBittorrent.addRSSFeed(url: newFeedURL, path: path.joined(separator: "\\"))
                         newFeedURL = ""
@@ -74,7 +74,7 @@ struct RSSNodeView: View {
     func toolbar() -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Menu {
-                //Button { isAddFeedAlert = true } label: { Label("Add Feed", systemImage: "dot.radiowaves.up.forward") }
+                Button { isAddFeedAlert = true } label: { Label("Add Feed", systemImage: "dot.radiowaves.up.forward") }
                 Button { isAddFolderAlert = true } label: { Label("Add Folder", systemImage: "folder.badge.plus") }
             } label: {
                 Image(systemName: "plus")
