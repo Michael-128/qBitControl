@@ -18,50 +18,23 @@ struct RSSNodeView: View {
                     NavigationLink {
                         RSSNodeView(path: path + [node.title])
                     } label: {
-                        Label(node.title, systemImage: "folder.fill")
-                    }//.disabled(node.nodes.isEmpty && node.feeds.isEmpty)
+                        Label(node.title, systemImage: "folder.fill").contextMenu(menuItems: { itemContextMenu(itemTitle: node.title, isFolder: true) })
+                    }
                 }
                 
                 ForEach(rssNode.feeds, id: \.id) { feed in
                     NavigationLink {
                         RSSFeedView(rssFeed: feed)
                     } label: {
-                        Label(feed.title.isEmpty ? "Feed" : feed.title, systemImage: "dot.radiowaves.up.forward")
+                        Label(feed.title.isEmpty ? "Feed" : feed.title, systemImage: "dot.radiowaves.up.forward").contextMenu(menuItems: { itemContextMenu(itemTitle: feed.title) })
                     }
                 }
             }
         }.navigationTitle(viewModel.rssRootNode.getNode(path: path)!.title)
             .refreshable { refresh() }
             .toolbar { toolbar() }
-            .alert("Add Feed", isPresented: $isAddFeedAlert, actions: {
-                VStack {
-                    TextField("URL", text: $newFeedURL)
-                    Button("Add") {
-                        if self.newFeedURL.isEmpty { return }
-                        var path = self.path + [newFeedURL]
-                        path.removeFirst()
-                        qBittorrent.addRSSFeed(url: newFeedURL, path: path.joined(separator: "\\"))
-                        newFeedURL = ""
-                        refresh()
-                    }
-                    Button("Cancel", role: .cancel) {}
-                }
-            }).alert("Add Folder", isPresented: $isAddFolderAlert, actions: {
-                VStack {
-                    TextField("Name", text: $newFolderName)
-                    Button("Add") {
-                        let path = rssNode.getPath()
-                        if path.isEmpty {
-                            qBittorrent.addRSSFolder(path: newFolderName)
-                        } else {
-                            qBittorrent.addRSSFolder(path: rssNode.getPath() + "\\" + newFolderName)
-                        }
-                        newFolderName = ""
-                        refresh()
-                    }
-                    Button("Cancel", role: .cancel) {}
-                }
-            })
+            .alert("Add Feed", isPresented: $isAddFeedAlert, actions: { addFeedAlert() })
+            .alert("Add Folder", isPresented: $isAddFolderAlert, actions: { addFolderAlert() })
     }
     
     func sectionHeader() -> Text {
@@ -79,6 +52,56 @@ struct RSSNodeView: View {
             } label: {
                 Image(systemName: "plus")
             }
+        }
+    }
+    
+    func addFeedAlert() -> some View {
+        VStack {
+            TextField("URL", text: $newFeedURL)
+            Button("Add") {
+                if self.newFeedURL.isEmpty { return }
+                var path = self.path + [newFeedURL]
+                path.removeFirst()
+                qBittorrent.addRSSFeed(url: newFeedURL, path: path.joined(separator: "\\"))
+                newFeedURL = ""
+                refresh()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+    }
+    
+    func addFolderAlert() -> some View {
+        VStack {
+            TextField("Name", text: $newFolderName)
+            Button("Add") {
+                let path = rssNode.getPath()
+                if path.isEmpty {
+                    qBittorrent.addRSSFolder(path: newFolderName)
+                } else {
+                    qBittorrent.addRSSFolder(path: rssNode.getPath() + "\\" + newFolderName)
+                }
+                newFolderName = ""
+                refresh()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+    }
+    
+    func itemContextMenu(itemTitle: String, isFolder: Bool = false) -> some View {
+        VStack {
+            if !isFolder {
+                Button {
+                    var path = self.path + [itemTitle]
+                    path.removeFirst()
+                    print(path.joined(separator: "\\"))
+                    qBittorrent.addRSSRefreshItem(path: path.joined(separator: "\\"))
+                } label: { Label("Refresh", systemImage: "arrow.clockwise") }
+            }
+            Button(role: .destructive) {
+                var path = self.path + [itemTitle]
+                path.removeFirst()
+                qBittorrent.addRSSRemoveItem(path: path.joined(separator: "\\"))
+            } label: { Label("Remove", systemImage: "trash") }
         }
     }
     
