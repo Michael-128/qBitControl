@@ -997,8 +997,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%lld Articles"
+            "state" : "translated",
+            "value" : "%lld Artykułów"
           }
         },
         "pt-BR" : {
@@ -1176,8 +1176,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%lld Feeds"
+            "state" : "translated",
+            "value" : "%lld Kanałów"
           }
         },
         "pt-BR" : {
@@ -1532,8 +1532,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "About"
+            "state" : "translated",
+            "value" : "Informacje"
           }
         },
         "pt-BR" : {
@@ -2422,8 +2422,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add"
+            "state" : "translated",
+            "value" : "Dodaj"
           }
         },
         "pt-BR" : {
@@ -2778,8 +2778,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Feed"
+            "state" : "translated",
+            "value" : "Dodaj Kanał"
           }
         },
         "pt-BR" : {
@@ -2956,8 +2956,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Folder"
+            "state" : "translated",
+            "value" : "Dodaj Folder"
           }
         },
         "pt-BR" : {
@@ -3490,8 +3490,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Tracker"
+            "state" : "translated",
+            "value" : "Dodaj Tracker"
           }
         },
         "pt-BR" : {
@@ -4381,8 +4381,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All-Time"
+            "state" : "translated",
+            "value" : "Cały czas"
           }
         },
         "pt-BR" : {
@@ -10969,8 +10969,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Disk"
+            "state" : "translated",
+            "value" : "Dysk"
           }
         },
         "pt-BR" : {
@@ -12571,8 +12571,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit"
+            "state" : "translated",
+            "value" : "Edytuj"
           }
         },
         "pt-BR" : {
@@ -12749,8 +12749,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit Tracker"
+            "state" : "translated",
+            "value" : "Edytuj Tracker"
           }
         },
         "pt-BR" : {
@@ -14174,8 +14174,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "First & Last Pieces First"
+            "state" : "translated",
+            "value" : "Pierwsze i Ostatnie Części"
           }
         },
         "pt-BR" : {
@@ -14530,8 +14530,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Force Start"
+            "state" : "translated",
+            "value" : "Wymuś Start"
           }
         },
         "pt-BR" : {
@@ -14708,8 +14708,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Free Space"
+            "state" : "translated",
+            "value" : "Dostępna Przestrzeń"
           }
         },
         "pt-BR" : {
@@ -14886,7 +14886,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "GitHub"
           }
         },
@@ -15064,7 +15064,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "http(s)://IP:PORT"
           }
         },
@@ -15954,7 +15954,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "IP"
           }
         },
@@ -16489,7 +16489,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Link"
           }
         },
@@ -18626,8 +18626,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "New URL"
+            "state" : "translated",
+            "value" : "Nowy URL"
           }
         },
         "pt-BR" : {
@@ -20231,7 +20231,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Patreon"
           }
         },
@@ -21655,7 +21655,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Port"
           }
         },
@@ -22189,7 +22189,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "qBitControl"
           }
         },
@@ -22373,7 +22373,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "qBitControl %1$@ (%2$@)"
           }
         },
@@ -22551,8 +22551,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "qBitControl is the definitive remote client for managing your qBittorrent downloads on iOS devices."
+            "state" : "translated",
+            "value" : "qBitControl jest aplikacją do zdalnego zarządzania klientem qBittorrent na urządzeniach iOS."
           }
         },
         "pt-BR" : {
@@ -23085,7 +23085,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Ratio"
           }
         },
@@ -24153,8 +24153,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Refresh"
+            "state" : "translated",
+            "value" : "Odśwież"
           }
         },
         "pt-BR" : {
@@ -24509,8 +24509,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Remove"
+            "state" : "translated",
+            "value" : "Usuń"
           }
         },
         "pt-BR" : {
@@ -24687,8 +24687,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Report a bug"
+            "state" : "translated",
+            "value" : "Zgłoś Błąd"
           }
         },
         "pt-BR" : {
@@ -25577,7 +25577,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "RSS"
           }
         },
@@ -25755,8 +25755,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Save"
+            "state" : "translated",
+            "value" : "Zapisz"
           }
         },
         "pt-BR" : {
@@ -25933,8 +25933,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "SAVE"
+            "state" : "translated",
+            "value" : "ZAPISZ"
           }
         },
         "pt-BR" : {
@@ -28247,8 +28247,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Session Download"
+            "state" : "translated",
+            "value" : "Pobrane w Sesji"
           }
         },
         "pt-BR" : {
@@ -28425,8 +28425,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Session Upload"
+            "state" : "translated",
+            "value" : "Wysłane w Sesji"
           }
         },
         "pt-BR" : {
@@ -30027,7 +30027,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Status"
           }
         },
@@ -30205,8 +30205,8 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop Force Start"
+            "state" : "translated",
+            "value" : "Zatrzymaj Wymuszony Start"
           }
         },
         "pt-BR" : {
@@ -33062,7 +33062,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Transfer"
           }
         },
@@ -35020,7 +35020,7 @@
         },
         "pl" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "URL"
           }
         },
