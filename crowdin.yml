@@ -1,0 +1,4 @@
+files:
+  - source: /Localization/Localizations/Localizable.xcstrings
+    translation: '%original_path%'
+    multilingual: 1
