@@ -2,9 +2,13 @@ name: Automated iOS Build
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - "main"
+    tags:
+      - "build-ci*" 
   pull_request:
-    branches: [ "main" ]
+    branches:
+      - "main"
 
 jobs:
   build:
@@ -22,7 +26,9 @@ jobs:
         code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
         team-id: ${{ secrets.TEAM_ID }}
         output-path: qBitControl.ipa
-    - uses: "marvinpinto/action-automatic-releases@latest"
+    - name: "Upload Release"
+      if: startsWith(github.ref, 'refs/tags/build-ci')
+      uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: true
