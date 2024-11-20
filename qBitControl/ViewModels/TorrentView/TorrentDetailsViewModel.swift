@@ -66,6 +66,7 @@ class TorrentDetailsViewModel: ObservableObject {
     func getMaxRatio() -> String { "\(torrent.max_ratio > -1 ? String(format:"%.2f", torrent.max_ratio) : NSLocalizedString("None", comment: "None"))" }
     func getDownloadLimit() -> String { "\(torrent.dl_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.dl_limit)+"/s" : NSLocalizedString("None", comment: "None"))" }
     func getUploadLimit() -> String { "\(torrent.up_limit > 0 ? qBittorrent.getFormatedSize(size: torrent.up_limit)+"/s" : NSLocalizedString("None", comment: "None"))" }
+    func getETA() -> String { torrent.progress < 1 ? qBittorrent.getFormattedTime(time: torrent.eta) : "-" }
     
     
     func isPaused() -> Bool { state == .paused }

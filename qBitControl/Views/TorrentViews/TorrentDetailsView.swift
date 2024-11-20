@@ -40,6 +40,17 @@ struct TorrentDetailsView: View {
                     }
                 }
                 
+                Section(header: Text("Status")) {
+                    CustomLabelView(label: "State", value: viewModel.getState())
+                    CustomLabelView(label: "Progress", value: viewModel.getProgress())
+                    CustomLabelView(label: "ETA", value: viewModel.getETA())
+                    CustomLabelView(label: "Download Speed", value: viewModel.getDownloadSpeed())
+                    CustomLabelView(label: "Upload Speed", value: viewModel.getUploadSpeed())
+                    CustomLabelView(label: "Downloaded", value: viewModel.getDownloaded())
+                    CustomLabelView(label: "Uploaded", value: viewModel.getUploaded())
+                    CustomLabelView(label: "Ratio", value: viewModel.getRatio())
+                }
+                
                 Section(header: Text("Information")) {
                     CustomLabelView(label: "Name", value: viewModel.torrent.name)
                     CustomLabelView(label: "Added On", value: viewModel.getAddedOn())
@@ -54,6 +65,11 @@ struct TorrentDetailsView: View {
                     CustomLabelView(label: "Size", value: viewModel.getSize())
                     CustomLabelView(label: "Total Size", value: viewModel.getTotalSize())
                     CustomLabelView(label: "Availability", value: viewModel.getAvailability())
+                }
+                
+                Section(header: Text("Session")) {
+                    CustomLabelView(label: "Downloaded", value: viewModel.getDownloadedSession())
+                    CustomLabelView(label: "Uploaded", value: viewModel.getUploadedSession())
                 }
                 
                 Section(header: Text("Connections")) {
@@ -81,21 +97,6 @@ struct TorrentDetailsView: View {
                     } label: {
                         Text("Files")
                     }
-                }
-                
-                Section(header: Text("Status")) {
-                    CustomLabelView(label: "State", value: viewModel.getState())
-                    CustomLabelView(label: "Progress", value: viewModel.getProgress())
-                    CustomLabelView(label: "Download Speed", value: viewModel.getDownloadSpeed())
-                    CustomLabelView(label: "Upload Speed", value: viewModel.getUploadSpeed())
-                    CustomLabelView(label: "Downloaded", value: viewModel.getDownloaded())
-                    CustomLabelView(label: "Uploaded", value: viewModel.getUploaded())
-                    CustomLabelView(label: "Ratio", value: viewModel.getRatio())
-                }
-                
-                Section(header: Text("Session")) {
-                    CustomLabelView(label: "Downloaded", value: viewModel.getDownloadedSession())
-                    CustomLabelView(label: "Uploaded", value: viewModel.getUploadedSession())
                 }
                 
                 Section(header: Text("Advanced")) {

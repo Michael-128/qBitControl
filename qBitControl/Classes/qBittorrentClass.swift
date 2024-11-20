@@ -220,6 +220,31 @@ class qBittorrent {
         return formatter.string(from: fullDate)
     }
     
+    static func getFormattedTime(time: Int) -> String {
+        let days = time / (24 * 60 * 60)
+        let hours = (time / (60 * 60)) % 24
+        let minutes = (time / 60) % 60
+        let seconds = time % 60
+        
+        var components: [String] = []
+        
+        if days > 0 {
+           components.append("\(days)d")
+           components.append("\(hours)h")
+       } else if hours > 0 {
+           components.append("\(hours)h")
+           components.append("\(minutes)m")
+       } else if minutes > 0 {
+           components.append("\(minutes)m")
+           components.append("\(seconds)s")
+       } else {
+           components.append("\(seconds)s")
+       }
+       
+       return components.joined(separator: " ")
+    }
+
+    
     static func getGlobalTransferInfo(completionHandler: @escaping (GlobalTransferInfo) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/info")
         
