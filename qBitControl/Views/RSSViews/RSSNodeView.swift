@@ -39,8 +39,8 @@ struct RSSNodeView: View {
     
     func sectionHeader() -> Text {
         var header: [String] = []
-        if(!rssNode.nodes.isEmpty) { header.append("\(rssNode.nodes.count) Folders") }
-        if(!rssNode.feeds.isEmpty) { header.append("\(rssNode.feeds.count) Feeds") }
+        if(!rssNode.nodes.isEmpty) { header.append("\(rssNode.nodes.count)" + " " + String(localized: "Folders")) }
+        if(!rssNode.feeds.isEmpty) { header.append("\(rssNode.feeds.count)" + " " + String(localized: "Feeds")) }
         
         return Text(header.joined(separator: " • "))
     }
