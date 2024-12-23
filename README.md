@@ -12,7 +12,8 @@ qBittorrent remote client for iOS devices.
 qBitControl is now available on AltStore PAL, allowing users located in the EU to get and update the app seamlessly, as well as support its development. 
 
 Get qBitControl by adding Michael-128 source from the list of recommended sources or via pasting the link below:
-`https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json`
+- AltStore PAL: `https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json`
+- AltStore: `https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json`
 
 ## Features ✨
 - Add torrents via .torrent files or magnet links.
