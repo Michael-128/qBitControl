@@ -116,6 +116,7 @@ class ServersHelper: ObservableObject {
                     
                     if(success) {
                         self.setActiveServer(id: server.id)
+                        qBittorrent.initialize()
                         self.isLoggedIn = true
                     }
                     
@@ -134,6 +135,7 @@ class ServersHelper: ObservableObject {
                 DispatchQueue.main.async {
                     if(success) {
                         self.setActiveServer(id: server.id)
+                        qBittorrent.initialize()
                         self.isLoggedIn = true
                     }
                     

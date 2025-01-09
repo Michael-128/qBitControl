@@ -85,7 +85,7 @@ struct TorrentListHelperView: View {
     }
     
     func torrentRowManageControls(torrent: Torrent) -> some View {
-        let isTorrentPaused = torrent.state.contains("paused")
+        let isTorrentPaused = qBittorrent.getState(state: torrent.state).contains("Paused")
         
         return Section(header: Text("Manage")) {
             Button { if isTorrentPaused { qBittorrent.resumeTorrent(hash: torrent.hash) } else { qBittorrent.pauseTorrent(hash: torrent.hash) } }

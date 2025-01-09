@@ -180,6 +180,20 @@ class qBitRequest {
         }.resume()
     }
     
+    static func requestVersion(request: URLRequest, completionHandler: @escaping (Version) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+                if let data = data, let versionData = String(data: data, encoding: .utf8)  {
+                    let versionString = versionData.filter { "0123456789.".contains($0) }
+                    let versionParts = versionString.split(separator: ".").map { Int($0) ?? 0 }
+                    if versionParts.count >= 3 {
+                        let versionModel = Version(major: versionParts[0], minor: versionParts[1], patch: versionParts[2])
+                        completionHandler(versionModel)
+                    }
+                }
+        }.resume()
+    }
+    
     static func requestTagsJSON(request: URLRequest, completionHandler: @escaping ([String]) -> Void) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in

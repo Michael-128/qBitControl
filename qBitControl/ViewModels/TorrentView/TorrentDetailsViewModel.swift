@@ -17,6 +17,7 @@ class TorrentDetailsViewModel: ObservableObject {
         self.torrent = torrent
         self.isSequentialDownload = torrent.seq_dl
         self.isFLPiecesFirst = torrent.f_l_piece_prio
+        self.fetchState(state: torrent.state)
     }
     
     func setRefreshTimer() {
@@ -39,13 +40,17 @@ class TorrentDetailsViewModel: ObservableObject {
                     self.torrent = torrent
                     self.isSequentialDownload = torrent.seq_dl
                     self.isFLPiecesFirst = torrent.f_l_piece_prio
-                    
-                    if(torrent.state.contains("paused")) { self.state = .paused }
-                    else if(torrent.state.contains("forced")) { self.state = .forceStart }
-                    else { self.state = .resumed }
+                    self.fetchState(state: torrent.state)
                 }
             }
         }
+    }
+    
+    private func fetchState(state: String) {
+        let state = qBittorrent.getState(state: state)
+        if(state == "Paused") { self.state = .paused }
+        else if(torrent.state.contains("forced")) { self.state = .forceStart }
+        else { self.state = .resumed }
     }
     
     func getCategory() -> String { torrent.category != "" ? torrent.category : "None" }

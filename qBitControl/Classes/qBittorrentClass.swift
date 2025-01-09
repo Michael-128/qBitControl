@@ -11,6 +11,11 @@ class qBittorrent {
     static private var cookie = "n/a"
     static private var url = "http://0.0.0.0"
     static private var preferences: qBitPreferences?
+    static private var version: Version = Version(major: 0, minor: 0, patch: 0)
+    
+    static func initialize() {
+        self.fetchVersion()
+    }
     
     static func savePreferences() {
         if(!isCookie()) { return; }
@@ -50,6 +55,24 @@ class qBittorrent {
         return false
     }
     
+    static private func setVersion(version: Version) {
+        self.version = version
+    }
+    
+    static func fetchVersion() {
+        let path = "/api/v2/app/version"
+        
+        let request = qBitRequest.prepareURLRequest(path: path)
+        
+        qBitRequest.requestVersion(request: request, completionHandler: { version in
+            Self.setVersion(version: version)
+        })
+    }
+    
+    static func getVersion() -> Version {
+        return self.version
+    }
+ 
     static func getState(state: String) -> String {
         switch state {
         case "error":
@@ -58,7 +81,7 @@ class qBittorrent {
             return "Missing Files"
         case "uploading":
             return "Seeding"
-        case "pausedUP":
+        case "pausedUP", "stoppedUP":
             return "Paused"
         case "queuedUP":
             return "Queued"
@@ -74,7 +97,7 @@ class qBittorrent {
             return "Downloading"
         case "metaDL":
             return "Downloading"
-        case "pausedDL":
+        case "pausedDL", "stoppedDL":
             return "Paused"
         case "queuedDL":
             return "Queued"
@@ -111,7 +134,7 @@ class qBittorrent {
             return errorIcon
         case "uploading":
             return uploadIcon
-        case "pausedUP":
+        case "pausedUP", "stoppedUP":
             return pauseIcon
         case "queuedUP":
             return queuedIcon
@@ -127,7 +150,7 @@ class qBittorrent {
             return downloadIcon
         case "metaDL":
             return metadataDownloadIcon
-        case "pausedDL":
+        case "pausedDL", "stoppedDL":
             return pauseIcon
         case "queuedDL":
             return queuedIcon
@@ -163,7 +186,7 @@ class qBittorrent {
             return errorColor
         case "uploading":
             return seedingColor
-        case "pausedUP":
+        case "pausedUP", "stoppedUP":
             return pausedColor
         case "queuedUP":
             return pausedColor
@@ -179,7 +202,7 @@ class qBittorrent {
             return downloadingColor
         case "metaDL":
             return downloadingColor
-        case "pausedDL":
+        case "pausedDL", "stoppedDL":
             return pausedColor
         case "queuedDL":
             return pausedColor
@@ -278,7 +301,9 @@ class qBittorrent {
     }
     
     static func pauseTorrent(hash: String) {
-        let path = "/api/v2/torrents/pause"
+        // qBittorrent 5.0.0 changes pause route to stop and resume to start
+        let suffix = self.version.major == 5 ? "stop" : "pause"
+        let path = "/api/v2/torrents/\(suffix)"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hash)])
         
@@ -298,7 +323,9 @@ class qBittorrent {
     }
     
     static func resumeTorrent(hash: String) {
-        let path = "/api/v2/torrents/resume"
+        // qBittorrent 5.0.0 changes pause route to stop and resume to start
+        let suffix = self.version.major == 5 ? "start" : "resume"
+        let path = "/api/v2/torrents/\(suffix)"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hash)])
         
@@ -635,7 +662,8 @@ class qBittorrent {
         }
         
         if paused {
-            createSetting(name: "paused", value: paused)
+            if(self.version.major == 5) { createSetting(name: "stopped", value: paused) }
+            else { createSetting(name: "paused", value: paused) }
         }
         
         if dlLimit > 0 {
