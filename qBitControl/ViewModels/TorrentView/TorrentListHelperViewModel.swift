@@ -10,8 +10,8 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published public var sort: String = "name"
     @Published public var reverse: Bool = false
     @Published public var filter: String = "all"
-    @Published public var category: String = "None"
-    @Published public var tag: String = "None"
+    @Published public var category: String = "All"
+    @Published public var tag: String = "All"
     
     @Published public var isTorrentAddView: Bool = false
     @Published public var isSelectionMode: Bool = false
@@ -32,8 +32,8 @@ class TorrentListHelperViewModel: ObservableObject {
         
         var queryItems = [URLQueryItem(name: "sort", value: sort), URLQueryItem(name: "filter", value: filter), URLQueryItem(name: "reverse", value: String(reverse))]
         
-        if category != "None" { queryItems.append(URLQueryItem(name: "category", value: category)) }
-        if tag != "None" { queryItems.append(URLQueryItem(name: "tag", value: tag)) }
+        if category != "All" { queryItems.append(URLQueryItem(name: "category", value: category)) }
+        if tag != "All" { queryItems.append(URLQueryItem(name: "tag", value: tag)) }
         
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: queryItems)
         

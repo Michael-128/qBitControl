@@ -35,7 +35,7 @@ struct FiltersMenuView: View {
                 
                 if categories.count > 1 {
                     Picker("Categories", selection: $category) {
-                        Text("None").tag("None")
+                        Text("All").tag("All")
                         Text("Uncategorized").tag("")
                         ForEach(categories, id: \.self) { theCategory in
                             Text(theCategory.name).tag(theCategory.name)
@@ -45,7 +45,7 @@ struct FiltersMenuView: View {
                 
                 if tagsArr.count > 1 {
                     Picker("Tags", selection: $tag) {
-                        Text("None").tag("None")
+                        Text("All").tag("All")
                         Text("Untagged").tag("")
                         ForEach(tagsArr, id: \.self) {
                             tag1 in
