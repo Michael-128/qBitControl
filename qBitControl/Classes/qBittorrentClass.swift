@@ -294,6 +294,15 @@ class qBittorrent {
         qBitRequest.requestCategoriesJSON(request: request, completionHandler: completionHandler)
     }
     
+    static func setCategory(hash: String, category: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setCategory", queryItems: [
+            URLQueryItem(name: "hashes", value: hash),
+            URLQueryItem(name: "category", value: category)
+        ])
+        
+        qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
+    }
+    
     static func getTags(completionHandler: @escaping ([String]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/tags")
         

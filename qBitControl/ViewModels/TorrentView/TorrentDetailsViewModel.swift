@@ -53,7 +53,7 @@ class TorrentDetailsViewModel: ObservableObject {
         else { self.state = .resumed }
     }
     
-    func getCategory() -> String { torrent.category != "" ? torrent.category : "None" }
+    func getCategory() -> String { torrent.category != "" ? torrent.category : "Uncategorized" }
     func getTags() -> String { torrent.tags != "" ? torrent.tags : "None" }
     func getAddedOn() -> String { qBittorrent.getFormatedDate(date: torrent.added_on) }
     func getSize() -> String { "\(qBittorrent.getFormatedSize(size: torrent.size))" }
