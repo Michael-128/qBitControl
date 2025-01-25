@@ -61,7 +61,12 @@ struct TorrentDetailsView: View {
                         CustomLabelView(label: "Categories", value: viewModel.getCategory())
                     }
                     
-                    CustomLabelView(label: "Tags", value: viewModel.getTags())
+                    NavigationLink{
+                        ChangeTagsView(torrentHash: viewModel.torrent.hash, selectedTags: viewModel.getTags())
+                    } label: {
+                        CustomLabelView(label: "Tags", value: viewModel.getTag())
+                    }
+                    
                     CustomLabelView(label: "Size", value: viewModel.getSize())
                     CustomLabelView(label: "Total Size", value: viewModel.getTotalSize())
                     CustomLabelView(label: "Availability", value: viewModel.getAvailability())

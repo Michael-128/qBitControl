@@ -10,6 +10,8 @@ class TorrentDetailsViewModel: ObservableObject {
     
     @Published public var state: State = .resumed
     
+    private var tags: [String] { torrent.tags.split(separator: ", ").map { String($0) } }
+    
     let haptics = UIImpactFeedbackGenerator(style: .medium)
     private var timer: Timer?
     
@@ -54,7 +56,8 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func getCategory() -> String { torrent.category != "" ? torrent.category : "Uncategorized" }
-    func getTags() -> String { torrent.tags != "" ? torrent.tags : "None" }
+    func getTags() -> [String] { tags }
+    func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
     func getAddedOn() -> String { qBittorrent.getFormatedDate(date: torrent.added_on) }
     func getSize() -> String { "\(qBittorrent.getFormatedSize(size: torrent.size))" }
     func getTotalSize() -> String { "\(qBittorrent.getFormatedSize(size: torrent.total_size))" }

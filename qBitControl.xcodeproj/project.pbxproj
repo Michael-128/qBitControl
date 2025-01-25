@@ -11,6 +11,7 @@
 		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		9025400A2CF4D6D10019D729 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 902540092CF4D6D10019D729 /* Localizable.xcstrings */; };
+		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
 		907023322CDA62FD007B2199 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907023312CDA62FD007B2199 /* TorrentListView.swift */; };
@@ -104,6 +105,7 @@
 		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
 		902540092CF4D6D10019D729 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		905284972D457618000EB12C /* ChangeTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTagsView.swift; sourceTree = "<group>"; };
 		9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsViewModel.swift; sourceTree = "<group>"; };
 		9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListViewModel.swift; sourceTree = "<group>"; };
 		907023312CDA62FD007B2199 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
@@ -304,6 +306,7 @@
 				90726B3A2CDA22190032993E /* MenuControlsLabelView.swift */,
 				90726B4A2CDA22190032993E /* TrackerRow.swift */,
 				907023332CDA657A007B2199 /* ChangeCategoryView.swift */,
+				905284972D457618000EB12C /* ChangeTagsView.swift */,
 				907023352CDA6592007B2199 /* ChangePathView.swift */,
 			);
 			path = Components;
@@ -611,6 +614,7 @@
 				90726B762CDA221B0032993E /* TorrentAddViewModel.swift in Sources */,
 				90726B772CDA221B0032993E /* TorrentListHelperViewModel.swift in Sources */,
 				907023342CDA657A007B2199 /* ChangeCategoryView.swift in Sources */,
+				905284982D457618000EB12C /* ChangeTagsView.swift in Sources */,
 				90726B782CDA221B0032993E /* MainViewModel.swift in Sources */,
 				90726B7A2CDA24960032993E /* TrackersViewModel.swift in Sources */,
 				90726B232CDA22160032993E /* GlobalTransferInfo.swift in Sources */,
