@@ -47,19 +47,19 @@ struct ServerAddView: View {
                         viewModel.addServer(dismiss: dismiss)
                     } label: {
                         Spacer()
-                        if(viewModel.editServerId != nil) {
-                            Text("SAVE")
-                                .fontWeight(.bold)
+                        if(viewModel.isCheckingConnection) {
+                            Text("ADDING")
                         } else {
                             Text("ADD")
-                                .fontWeight(.bold)
                         }
                         Spacer()
                     }.buttonStyle(.borderedProminent)
                 }.listRowBackground(Color.blue)
             }
             .alert(isPresented: $viewModel.isInvalidAlert) {
-                Alert(title: Text("Invalid server information"), message: Text(viewModel.invalidAlertMessage))
+                Alert(title: Text("Invalid server information"), message: Text(viewModel.invalidAlertMessage), dismissButton: .default(Text("OK"), action: {
+                    viewModel.alertDismissed()
+                }))
             }
             .toolbar() {
                 Button {

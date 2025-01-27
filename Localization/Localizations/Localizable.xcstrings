@@ -318,12 +318,6 @@
             "state" : "translated",
             "value" : "关于"
           }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "About"
-          }
         }
       }
     },
@@ -803,6 +797,28 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Added On"
+          }
+        }
+      }
+    },
+    "ADDING" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "追加する"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "DODAWANIE"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加中"
           }
         }
       }
@@ -4150,6 +4166,28 @@
         }
       }
     },
+    "OK" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "OK"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "好的"
+          }
+        }
+      }
+    },
     "Open Files.." : {
       "localizations" : {
         "ja" : {
@@ -5557,6 +5595,7 @@
       }
     },
     "SAVE" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
