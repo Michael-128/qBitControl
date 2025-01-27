@@ -19,6 +19,10 @@ class ServerAddViewModel: ObservableObject {
     @Published var isInvalidAlert = false;
     @Published var invalidAlertMessage = "";
     
+    @Published var isCheckingConnection = false;
+    
+    private var alertQueue: [String] = [];
+    
     init() { }
     init(editServerId: String) {
         self.editServerId = editServerId
@@ -31,11 +35,6 @@ class ServerAddViewModel: ObservableObject {
         }
     }
     
-    func showAlert(message: String) {
-        invalidAlertMessage = message;
-        isInvalidAlert = true;
-    }
-    
     func validateInputs() -> Bool {
         if(!(url.contains("https://") || url.contains("http://"))) {
             showAlert(message: "Include protocol in the URL - 'https://' or 'http://' depending on your setup.")
@@ -45,27 +44,65 @@ class ServerAddViewModel: ObservableObject {
         return true;
     }
     
+    func validateIsConnecting() -> Bool {
+        if (self.isCheckingConnection) {
+            showAlert(message: "Adding, Please wait")
+            return false;
+        }
+        
+        return true;
+    }
+    
+    func showAlert(message: String?) {
+        if let message = message {
+            alertQueue.append(message)
+        }
+        
+        guard !isInvalidAlert, let message = alertQueue.first else {
+            return;
+        }
+        
+        alertQueue.removeFirst()
+        invalidAlertMessage = message
+        isInvalidAlert = true
+    }
+    
+    func alertDismissed() {
+        DispatchQueue.main.async {
+            self.showAlert(message: nil)
+        }
+    }
+    
+    func addServer(server: Server) {
+        showAlert(message: "Add server success!")
+        serversHelper.addServer(server: server)
+    }
+    
     func addServer(dismiss: DismissAction) -> Void {
         if(!validateInputs()) { return; }
+        if(!validateIsConnecting()) { return; }
         
         let server = Server(name: friendlyName, url: url, username: username, password: password)
         
         if(!isCheckConnection) {
             if let editServerId = self.editServerId { serversHelper.removeServer(id: editServerId) }
-            serversHelper.addServer(server: server)
+            addServer(server: server)
             dismiss()
         }
+        
+        self.isCheckingConnection = true
         
         serversHelper.checkConnection(server: server, result: {
             didConnect in
             DispatchQueue.main.async {
                 if(didConnect) {
                     if let editServerId = self.editServerId { self.serversHelper.removeServer(id: editServerId) }
-                    self.serversHelper.addServer(server: server)
+                    self.addServer(server: server)
                     dismiss()
                 } else {
                     self.showAlert(message: "Can't connect to the server.")
                 }
+                self.isCheckingConnection = false
             }
         })
     }
