@@ -21,6 +21,8 @@ class ServerAddViewModel: ObservableObject {
     
     @Published var isCheckingConnection = false;
     
+    public var addButtonColor: Color { self.isCheckingConnection ? Color.gray : Color.blue }
+    
     private var alertQueue: [String] = [];
     
     init() { }
@@ -46,7 +48,7 @@ class ServerAddViewModel: ObservableObject {
     
     func validateIsConnecting() -> Bool {
         if (self.isCheckingConnection) {
-            showAlert(message: "Adding, Please wait")
+            //showAlert(message: "Adding, Please wait")
             return false;
         }
         
@@ -74,7 +76,6 @@ class ServerAddViewModel: ObservableObject {
     }
     
     func addServer(server: Server) {
-        showAlert(message: "Add server success!")
         serversHelper.addServer(server: server)
     }
     

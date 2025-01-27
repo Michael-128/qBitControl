@@ -48,13 +48,16 @@ struct ServerAddView: View {
                     } label: {
                         Spacer()
                         if(viewModel.isCheckingConnection) {
-                            Text("ADDING")
+                            Text("ADDING" + "...")
+                                .fontWeight(.bold)
                         } else {
                             Text("ADD")
+                                .fontWeight(.bold)
                         }
                         Spacer()
                     }.buttonStyle(.borderedProminent)
-                }.listRowBackground(Color.blue)
+                        .tint(viewModel.addButtonColor)
+                }.listRowBackground(viewModel.addButtonColor)
             }
             .alert(isPresented: $viewModel.isInvalidAlert) {
                 Alert(title: Text("Invalid server information"), message: Text(viewModel.invalidAlertMessage), dismissButton: .default(Text("OK"), action: {
