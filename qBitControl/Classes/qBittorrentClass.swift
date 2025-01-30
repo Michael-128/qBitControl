@@ -579,7 +579,9 @@ class qBittorrent {
         }
         
         if paused {
-            queryItems.append(URLQueryItem(name: "paused", value: "true"))
+            let version = qBittorrent.getVersion()
+            if(version.major == 5) { queryItems.append(URLQueryItem(name: "stopped", value: "true")) }
+            else { queryItems.append(URLQueryItem(name: "paused", value: "true")) }
         }
         
         if dlLimit > 0 {
