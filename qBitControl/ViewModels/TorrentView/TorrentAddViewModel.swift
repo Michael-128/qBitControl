@@ -5,7 +5,8 @@ enum TorrentType {
 }
 
 class TorrentAddViewModel: ObservableObject {
-    static let defaultCategory = Category(name: "None", savePath: "")
+    static let defaultCategory = Category(name: "Uncategorized", savePath: "")
+    static let defaultTag = "Untagged"
 
     @Published var torrentType: TorrentType = .file
     public var torrentUrls: [URL]
@@ -24,7 +25,7 @@ class TorrentAddViewModel: ObservableObject {
     
     @Published var cookie = ""
     @Published var category: Category = defaultCategory
-    @Published var tags = ""
+    @Published var tags = defaultTag
     
     @Published var skipChecking = false
     @Published var paused = false
@@ -39,7 +40,7 @@ class TorrentAddViewModel: ObservableObject {
     @Published var seedingTimeLimit = ""
     
     @Published var categories: [Category] = [defaultCategory]
-    @Published var tagsArr: [String] = ["None"]
+    @Published var tagsArr: [String] = [defaultTag]
     
     init(torrentUrls: [URL]) {
         self.torrentUrls = torrentUrls
@@ -105,8 +106,11 @@ class TorrentAddViewModel: ObservableObject {
     
     func addTorrent(then dismiss: () -> Void) {
         DispatchQueue.main.async {
+            let category = self.category == Self.defaultCategory ? "" : self.category.name
+            let tags = self.tags == Self.defaultTag ? "" : self.tags
+            
             if self.torrentType == .magnet {
-                qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: self.magnetURL), savePath: self.savePath, cookie: self.cookie, category: self.category.name, tags: self.tags, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
+                qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: self.magnetURL), savePath: self.savePath, cookie: self.cookie, category: category, tags: tags, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
             } else {
                 qBittorrent.addFileTorrent(torrents: self.fileContent, savePath: self.savePath, cookie: self.cookie, category: self.category.name, tags: self.tags, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
             }
@@ -128,10 +132,10 @@ class TorrentAddViewModel: ObservableObject {
     }
     
     func getCategories() {
-        qBittorrent.getCategories(completionHandler: { response in
+        qBittorrent.getCategories(completionHandler: { categories in
             DispatchQueue.main.async {
-                // Append sorted list of Category objects to ensure "None" always appears at the top
-                self.categories = response.map { $1 }.sorted { $0.name < $1.name }
+                // Append sorted list of Category objects to ensure "Uncategorized" always appears at the top
+                self.categories += categories.map { $1 }.sorted { $0.name < $1.name }
             }
         })
     }

@@ -117,7 +117,7 @@ struct TorrentAddView: View {
                     }
                     
                     Picker("Tags", selection: $viewModel.tags) {
-                        if !viewModel.tags.isEmpty {
+                        if(!viewModel.tagsArr.isEmpty) {
                             ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
                         }
                     }
