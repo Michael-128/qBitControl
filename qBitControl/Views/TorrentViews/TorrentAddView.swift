@@ -46,7 +46,11 @@ struct TorrentAddView: View {
                 viewModel.getSavePath()
                 viewModel.getCategories()
                 viewModel.getTags()
-                viewModel.checkTorrentType()
+                
+                if(!viewModel.isAppeared) {
+                    viewModel.isAppeared.toggle()
+                    viewModel.checkTorrentType()
+                }
             }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -99,6 +103,35 @@ struct TorrentAddView: View {
         }
         .fileImporter(isPresented: $viewModel.isFileImporter, allowedContentTypes: [.data], allowsMultipleSelection: true, onCompletion: viewModel.handleTorrentFiles)
     }
+    
+    func changeTagsView() -> some View {
+        VStack {
+            Form {
+                if viewModel.tagsArr.count > 1 {
+                    List(viewModel.tagsArr, id: \.self) { tag in
+                        Button {
+                            if !viewModel.selectedTags.contains(tag) {
+                                viewModel.selectedTags.insert(tag)
+                            } else {
+                                viewModel.selectedTags.remove(tag)
+                            }
+                        } label: {
+                            HStack {
+                                Text(tag)
+                                    .foregroundStyle(.foreground)
+                                Spacer()
+                                if viewModel.selectedTags.contains(tag) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.accentColor)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            .navigationTitle("Tags")
+        }
+    }
 
     func torrentOptionsView() -> some View {
         Group {
@@ -116,11 +149,17 @@ struct TorrentAddView: View {
                         if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
                     }
                     
-                    Picker("Tags", selection: $viewModel.tags) {
-                        if(!viewModel.tagsArr.isEmpty) {
-                            ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
-                        }
+                    NavigationLink {
+                        changeTagsView()
+                    } label: {
+                        CustomLabelView(label: "Tags", value: viewModel.getTag())
                     }
+                    
+//                    Picker("Tags", selection: $viewModel.tags) {
+//                        if(!viewModel.tagsArr.isEmpty) {
+//                            ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
+//                        }
+//                    }
                 }
             }
             

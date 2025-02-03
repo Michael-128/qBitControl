@@ -25,7 +25,10 @@ class TorrentAddViewModel: ObservableObject {
     
     @Published var cookie = ""
     @Published var category: Category = defaultCategory
-    @Published var tags = defaultTag
+    
+    var tags: [String] { Array(selectedTags).sorted(by: <) }
+    var tagsString: String { tags.joined(separator: ",") }
+    @Published var selectedTags: Set<String> = Set()
     
     @Published var skipChecking = false
     @Published var paused = false
@@ -40,11 +43,15 @@ class TorrentAddViewModel: ObservableObject {
     @Published var seedingTimeLimit = ""
     
     @Published var categories: [Category] = [defaultCategory]
-    @Published var tagsArr: [String] = [defaultTag]
+    @Published var tagsArr: [String] = []
+    
+    @Published var isAppeared = false
     
     init(torrentUrls: [URL]) {
         self.torrentUrls = torrentUrls
     }
+    
+    func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
     
     func checkTorrentType() -> Void {
         if torrentUrls.isEmpty { return }
@@ -107,12 +114,11 @@ class TorrentAddViewModel: ObservableObject {
     func addTorrent(then dismiss: () -> Void) {
         DispatchQueue.main.async {
             let category = self.category == Self.defaultCategory ? "" : self.category.name
-            let tags = self.tags == Self.defaultTag ? "" : self.tags
             
             if self.torrentType == .magnet {
-                qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: self.magnetURL), savePath: self.savePath, cookie: self.cookie, category: category, tags: tags, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
+                qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: self.magnetURL), savePath: self.savePath, cookie: self.cookie, category: category, tags: self.tagsString, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
             } else {
-                qBittorrent.addFileTorrent(torrents: self.fileContent, savePath: self.savePath, cookie: self.cookie, category: self.category.name, tags: self.tags, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
+                qBittorrent.addFileTorrent(torrents: self.fileContent, savePath: self.savePath, cookie: self.cookie, category: category, tags: self.tagsString, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
             }
         }
         dismiss()
@@ -135,7 +141,7 @@ class TorrentAddViewModel: ObservableObject {
         qBittorrent.getCategories(completionHandler: { categories in
             DispatchQueue.main.async {
                 // Append sorted list of Category objects to ensure "Uncategorized" always appears at the top
-                self.categories += categories.map { $1 }.sorted { $0.name < $1.name }
+                self.categories = [Self.defaultCategory] + categories.map { $1 }.sorted { $0.name < $1.name }
             }
         })
     }
@@ -143,7 +149,7 @@ class TorrentAddViewModel: ObservableObject {
     func getTags() {
         qBittorrent.getTags(completionHandler: { tags in
             DispatchQueue.main.async {
-                self.tagsArr.append(contentsOf: tags)
+                self.tagsArr = tags
             }
         })
     }
