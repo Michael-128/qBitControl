@@ -44,30 +44,32 @@ struct ChangeCategoryView: View {
                 }
                 
                 if categories.count > 1 {
-                    List {
-                        ForEach(categories, id: \.self) { category in
-                            Button {
-                                if(self.category != category.name) { self.category = category.name }
-                            } label: {
-                                HStack {
-                                    Text(category.name)
-                                        .foregroundStyle(.foreground)
-                                    Spacer()
-                                    if(self.category == category.name) {
-                                        Image(systemName: "checkmark")
-                                            .foregroundColor(.accentColor)
+                    Section(header: Text("Categories")) {
+                        List {
+                            ForEach(categories, id: \.self) { category in
+                                Button {
+                                    if(self.category != category.name) { self.category = category.name }
+                                } label: {
+                                    HStack {
+                                        Text(category.name)
+                                            .foregroundStyle(.foreground)
+                                        Spacer()
+                                        if(self.category == category.name) {
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.accentColor)
+                                        }
                                     }
                                 }
                             }
+                            .onDelete(perform: { offsets in
+                                for index in offsets {
+                                    let category = categories[index].name
+                                    qBittorrent.removeCategory(category: category, then: {status in print(status)})
+                                }
+                                
+                                categories.remove(atOffsets: offsets)
+                            })
                         }
-                        .onDelete(perform: { offsets in
-                            for index in offsets {
-                                let category = categories[index].name
-                                qBittorrent.removeCategory(category: category, then: {status in print(status)})
-                            }
-                            
-                            categories.remove(atOffsets: offsets)
-                        })
                     }
                 }
             }
