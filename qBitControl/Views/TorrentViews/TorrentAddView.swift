@@ -138,15 +138,14 @@ struct TorrentAddView: View {
             Section(header: Text("Save Path")) { TextField("Path", text: $viewModel.savePath) }
             
             Group {
-                Section(header: Text("Info")) {
-                    Picker("Category", selection: $viewModel.category) {
-                        if !viewModel.categories.isEmpty {
-                            ForEach(viewModel.categories, id: \.self) { category in
-                                Text(category.name).tag(category.name)
-                            }
-                        }
-                    }.onChange(of: viewModel.category) { category in
-                        if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
+                Section(header: Text("Info")) {          
+                    NavigationLink {
+                        ChangeCategoryView(category: viewModel.category.name, onCategoryChange: { category in
+                            viewModel.category = category
+                            if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
+                        })
+                    } label: {
+                        CustomLabelView(label: "Category", value: viewModel.category.name)
                     }
                     
                     NavigationLink {
@@ -154,12 +153,6 @@ struct TorrentAddView: View {
                     } label: {
                         CustomLabelView(label: "Tags", value: viewModel.getTag())
                     }
-                    
-//                    Picker("Tags", selection: $viewModel.tags) {
-//                        if(!viewModel.tagsArr.isEmpty) {
-//                            ForEach(viewModel.tagsArr, id: \.self) { tag in Text(tag).tag(tag) }
-//                        }
-//                    }
                 }
             }
             

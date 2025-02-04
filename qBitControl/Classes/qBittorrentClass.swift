@@ -303,6 +303,34 @@ class qBittorrent {
         qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
     }
     
+    static func addCategory(category: String, savePath: String?, then callback: ((Int) -> Void)?) {
+        var params = [ URLQueryItem(name: "category", value: category) ]
+        
+        if let savePath = savePath {
+            params.append(URLQueryItem(name: "savePath", value: savePath))
+        }
+        
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/createCategory", queryItems: params)
+        
+        if let callback = callback {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {status in callback(status ?? 0)})
+        } else {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
+        }
+    }
+    
+    static func removeCategory(category: String, then callback: ((Int) -> Void)?) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/removeCategories", queryItems: [
+            URLQueryItem(name: "categories", value: category)
+        ])
+        
+        if let callback = callback {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {status in callback(status ?? 0)})
+        } else {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
+        }
+    }
+    
     static func getTags(completionHandler: @escaping ([String]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/tags")
         

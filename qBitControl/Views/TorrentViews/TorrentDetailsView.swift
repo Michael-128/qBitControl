@@ -56,7 +56,9 @@ struct TorrentDetailsView: View {
                     CustomLabelView(label: "Added On", value: viewModel.getAddedOn())
                     
                     NavigationLink {
-                        ChangeCategoryView(torrentHash: viewModel.torrent.hash, category: viewModel.torrent.category)
+                        ChangeCategoryView(torrentHash: viewModel.torrent.hash, category: viewModel.torrent.category, onCategoryChange: {_ in
+                            viewModel.getTorrent()
+                        })
                     } label: {
                         CustomLabelView(label: "Categories", value: viewModel.getCategory())
                     }
