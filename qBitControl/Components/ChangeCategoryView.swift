@@ -7,11 +7,31 @@ struct ChangeCategoryView: View {
     @State private var categories: [Category] = []
 
     @State var category: String
-
+    
+    @State private var showAddCategoryAlert = false
+    @State private var newCategoryName = ""
     
     var body: some View {
         VStack {
             Form {
+                Section(header: Text("Add Category")) {
+                    Button {
+                        showAddCategoryAlert = true
+                    } label: {
+                        Label("Add Category", systemImage: "plus.circle")
+                    }.alert("Add New Category", isPresented: $showAddCategoryAlert, actions: {
+                        TextField("Category Name", text: $newCategoryName)
+                        Button("Add", action: {
+                            // Add category
+                            print(newCategoryName)
+                            newCategoryName = ""
+                        })
+                        Button("Cancel", role: .cancel, action: {
+                            newCategoryName = ""
+                        })
+                    })
+                }
+                
                 if categories.count > 1 {
                     Picker("Categories", selection: $category) {
                         Text("Uncategorized").tag("")

@@ -561,6 +561,9 @@
         }
       }
     },
+    "Add Category" : {
+
+    },
     "Add Feed" : {
       "localizations" : {
         "ja" : {
@@ -640,6 +643,9 @@
           }
         }
       }
+    },
+    "Add New Category" : {
+
     },
     "Add Server" : {
       "localizations" : {
@@ -1222,6 +1228,9 @@
           }
         }
       }
+    },
+    "Category Name" : {
+
     },
     "Check Connection" : {
       "localizations" : {
