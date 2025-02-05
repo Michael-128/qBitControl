@@ -24,6 +24,7 @@ struct ChangeTagsView: View {
     func getTags() {
         qBittorrent.getTags(completionHandler: { tags in
             self.allTags = tags.sorted()
+            self.clearSelectedTags()
         })
     }
     
@@ -67,7 +68,6 @@ struct ChangeTagsView: View {
         qBittorrent.removeTag(tag: tag, then: { status in
             if(status == 200) {
                 self.getTags()
-                self.clearSelectedTags()
             }
         })
     }

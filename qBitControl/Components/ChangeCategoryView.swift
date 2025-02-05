@@ -14,9 +14,17 @@ struct ChangeCategoryView: View {
         qBittorrent.getCategories(completionHandler: { _categories in
             var categories = _categories.map { $0.value }
             categories.sort { $0.name < $1.name }
-            
             self.categories = categories
+            clearSelectedCategories()
         })
+    }
+    
+    private func clearSelectedCategories() {
+        if let onCategoryChange = self.onCategoryChange {
+            if !categories.map({ $0.name }).contains(category) {
+                onCategoryChange(Category(name: "Uncategorized", savePath: ""))
+            }
+        }
     }
     
     var body: some View {
@@ -68,6 +76,7 @@ struct ChangeCategoryView: View {
                                 }
                                 
                                 categories.remove(atOffsets: offsets)
+                                self.clearSelectedCategories()
                             })
                         }
                     }
