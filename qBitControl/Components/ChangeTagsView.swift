@@ -1,26 +1,49 @@
 import SwiftUI
 
 struct ChangeTagsView: View {
-    @State var torrentHash: String
+    @State var torrentHash: String?
     @State var selectedTags: Set<String>
     
     @State private var allTags: [String] = []
+    
+    public var onTagsChange: ((Set<String>) -> Void)?
     
     init(torrentHash: String, selectedTags: [String]) {
         self.torrentHash = torrentHash
         self.selectedTags = Set(selectedTags)
     }
     
+    init(onTagsChange: @escaping (Set<String>) -> Void) {
+        self.selectedTags = Set()
+        self.onTagsChange = onTagsChange
+    }
+    
     func removeTag(tag: String) {
-        qBittorrent.unsetTag(hash: self.torrentHash, tag: tag, result: { isSuccess in
-            if(isSuccess) { selectedTags.remove(tag) }
-        })
+        if let hash = self.torrentHash {
+            qBittorrent.unsetTag(hash: hash, tag: tag, result: { isSuccess in
+                if(isSuccess) { selectedTags.remove(tag) }
+            })
+        } else {
+            selectedTags.remove(tag)
+        }
+        
+        if let onTagsChange = self.onTagsChange {
+            onTagsChange(selectedTags)
+        }
     }
     
     func addTag(tag: String) {
-        qBittorrent.setTag(hash: self.torrentHash, tag: tag, result: { isSuccess in
-            if(isSuccess) { selectedTags.insert(tag) }
-        })
+        if let hash = self.torrentHash {
+            qBittorrent.setTag(hash: hash, tag: tag, result: { isSuccess in
+                if(isSuccess) { selectedTags.insert(tag) }
+            })
+        } else {
+            selectedTags.insert(tag)
+        }
+        
+        if let onTagsChange = self.onTagsChange {
+            onTagsChange(selectedTags)
+        }
     }
     
     var body: some View {
