@@ -355,6 +355,30 @@ class qBittorrent {
         qBitRequest.requestTorrentManagement(request: request, statusCode: {code in result((code == 200))})
     }
     
+    static func removeTag(tag: String, then callback: ((Int) -> Void)?) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/deleteTags", queryItems: [
+            URLQueryItem(name: "tags", value: tag)
+        ])
+        
+        if let callback = callback {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {status in callback(status ?? 0)})
+        } else {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
+        }
+    }
+    
+    static func addTag(tag: String, then callback: ((Int) -> Void)?) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/createTags", queryItems: [
+            URLQueryItem(name: "tags", value: tag)
+        ])
+        
+        if let callback = callback {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {status in callback(status ?? 0)})
+        } else {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
+        }
+    }
+    
     static func pauseTorrent(hash: String) {
         // qBittorrent 5.0.0 changes pause route to stop and resume to start
         let suffix = self.version.major == 5 ? "stop" : "pause"

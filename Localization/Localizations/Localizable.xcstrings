@@ -647,6 +647,9 @@
     "Add New Category" : {
 
     },
+    "Add New Tag" : {
+
+    },
     "Add Server" : {
       "localizations" : {
         "ja" : {
@@ -686,6 +689,9 @@
           }
         }
       }
+    },
+    "Add Tag" : {
+
     },
     "Add Task" : {
       "localizations" : {
@@ -6603,6 +6609,9 @@
           }
         }
       }
+    },
+    "Tag Name" : {
+
     },
     "Tags" : {
       "localizations" : {

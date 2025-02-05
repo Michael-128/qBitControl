@@ -8,17 +8,26 @@ struct ChangeTagsView: View {
     
     public var onTagsChange: ((Set<String>) -> Void)?
     
+    @State private var showAddTagAlert = false
+    @State private var newTagName = ""
+    
     init(torrentHash: String, selectedTags: [String]) {
         self.torrentHash = torrentHash
         self.selectedTags = Set(selectedTags)
     }
     
-    init(onTagsChange: @escaping (Set<String>) -> Void) {
-        self.selectedTags = Set()
+    init(selectedTags: Set<String>, onTagsChange: @escaping (Set<String>) -> Void) {
+        self.selectedTags = selectedTags
         self.onTagsChange = onTagsChange
     }
     
-    func removeTag(tag: String) {
+    func getTags() {
+        qBittorrent.getTags(completionHandler: { tags in
+            self.allTags = tags.sorted()
+        })
+    }
+    
+    func unsetTag(tag: String) {
         if let hash = self.torrentHash {
             qBittorrent.unsetTag(hash: hash, tag: tag, result: { isSuccess in
                 if(isSuccess) { selectedTags.remove(tag) }
@@ -32,7 +41,7 @@ struct ChangeTagsView: View {
         }
     }
     
-    func addTag(tag: String) {
+    func setTag(tag: String) {
         if let hash = self.torrentHash {
             qBittorrent.setTag(hash: hash, tag: tag, result: { isSuccess in
                 if(isSuccess) { selectedTags.insert(tag) }
@@ -46,36 +55,90 @@ struct ChangeTagsView: View {
         }
     }
     
+    func addTag() {
+        qBittorrent.addTag(tag: newTagName, then: { status in
+            if(status == 200) {
+                self.getTags()
+            }
+        })
+    }
+    
+    func removeTag(tag: String) {
+        qBittorrent.removeTag(tag: tag, then: { status in
+            if(status == 200) {
+                self.getTags()
+                self.clearSelectedTags()
+            }
+        })
+    }
+    
+    func clearSelectedTags() {
+        if let onTagsChange = self.onTagsChange {
+            self.selectedTags = self.selectedTags.filter { tag in
+                return self.allTags.contains(tag)
+            }
+            onTagsChange(selectedTags)
+        }
+    }
+    
+    
     var body: some View {
         VStack {
             Form {
+                Section(header: Text("Add Tag")) {
+                    Button {
+                        showAddTagAlert = true
+                    } label: {
+                        Label("Add Tag", systemImage: "plus.circle")
+                    }.alert("Add New Tag", isPresented: $showAddTagAlert, actions: {
+                        TextField("Tag Name", text: $newTagName)
+                        Button("Add", action: {
+                            self.addTag()
+                            newTagName = ""
+                        })
+                        Button("Cancel", role: .cancel, action: {
+                            newTagName = ""
+                        })
+                    })
+                }
+                
                 if allTags.count > 1 {
-                    List(allTags, id: \.self) { tag in
-                        Button {
-                            if selectedTags.contains(tag) {
-                                removeTag(tag: tag)
-                            } else {
-                                addTag(tag: tag)
-                            }
-                        } label: {
-                            HStack {
-                                Text(tag)
-                                    .foregroundStyle(.foreground)
-                                Spacer()
-                                if selectedTags.contains(tag) {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(.accentColor)
+                    Section {
+                        List {
+                            ForEach(allTags, id: \.self) { tag in
+                                Button {
+                                    if selectedTags.contains(tag) {
+                                        unsetTag(tag: tag)
+                                    } else {
+                                        setTag(tag: tag)
+                                    }
+                                } label: {
+                                    HStack {
+                                        Text(tag)
+                                            .foregroundStyle(.foreground)
+                                        Spacer()
+                                        if selectedTags.contains(tag) {
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.accentColor)
+                                        }
+                                    }
                                 }
                             }
+                            
+                            .onDelete(perform: { atOffsets in
+                                atOffsets.forEach { index in
+                                    self.removeTag(tag: self.allTags[index])
+                                }
+                                
+                                self.allTags.remove(atOffsets: atOffsets)
+                            })
                         }
                     }
                 }
             }
             .navigationTitle("Tags")
         }.onAppear() {
-            qBittorrent.getTags(completionHandler: { _tags in
-                self.allTags = _tags.sorted()
-            })
+            self.getTags()
         }
     }
 }

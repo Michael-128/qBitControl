@@ -120,7 +120,7 @@ struct TorrentAddView: View {
                     }
                     
                     NavigationLink {
-                        ChangeTagsView(onTagsChange: { selectedTags in
+                        ChangeTagsView(selectedTags: viewModel.selectedTags, onTagsChange: { selectedTags in
                             viewModel.selectedTags = selectedTags
                         })
                     } label: {
