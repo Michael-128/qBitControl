@@ -44,8 +44,6 @@ struct TorrentAddView: View {
             }
             .onAppear() {
                 viewModel.getSavePath()
-                viewModel.getCategories()
-                viewModel.getTags()
                 
                 if(!viewModel.isAppeared) {
                     viewModel.isAppeared.toggle()
@@ -112,8 +110,11 @@ struct TorrentAddView: View {
                 Section(header: Text("Info")) {          
                     NavigationLink {
                         ChangeCategoryView(category: viewModel.category.name, onCategoryChange: { category in
-                            viewModel.category = category
-                            if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
+                            DispatchQueue.main.async {
+                                viewModel.category = category
+                                if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
+                                print(viewModel.savePath)
+                            }
                         })
                     } label: {
                         CustomLabelView(label: "Category", value: viewModel.category.name)
@@ -121,7 +122,9 @@ struct TorrentAddView: View {
                     
                     NavigationLink {
                         ChangeTagsView(selectedTags: viewModel.selectedTags, onTagsChange: { selectedTags in
-                            viewModel.selectedTags = selectedTags
+                            DispatchQueue.main.async {
+                                viewModel.selectedTags = selectedTags
+                            }
                         })
                     } label: {
                         CustomLabelView(label: "Tags", value: viewModel.getTag())

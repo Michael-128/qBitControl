@@ -42,9 +42,6 @@ class TorrentAddViewModel: ObservableObject {
     @Published var ratioLimit = ""
     @Published var seedingTimeLimit = ""
     
-    @Published var categories: [Category] = [defaultCategory]
-    @Published var tagsArr: [String] = []
-    
     @Published var isAppeared = false
     
     init(torrentUrls: [URL]) {
@@ -125,6 +122,8 @@ class TorrentAddViewModel: ObservableObject {
     }
     
     func getSavePath() {
+        if(!self.savePath.isEmpty) { return; }
+        
         qBittorrent.getPreferences(completionHandler: { preferences in
             DispatchQueue.main.async {
                 self.autoTmmEnabled = preferences.auto_tmm_enabled ?? false
@@ -133,23 +132,6 @@ class TorrentAddViewModel: ObservableObject {
                     self.savePath = preferences.save_path ?? ""
                     self.defaultSavePath = preferences.save_path ?? ""
                 }
-            }
-        })
-    }
-    
-    func getCategories() {
-        qBittorrent.getCategories(completionHandler: { categories in
-            DispatchQueue.main.async {
-                // Append sorted list of Category objects to ensure "Uncategorized" always appears at the top
-                self.categories = [Self.defaultCategory] + categories.map { $1 }.sorted { $0.name < $1.name }
-            }
-        })
-    }
-    
-    func getTags() {
-        qBittorrent.getTags(completionHandler: { tags in
-            DispatchQueue.main.async {
-                self.tagsArr = tags
             }
         })
     }
