@@ -4020,6 +4020,9 @@
         }
       }
     },
+    "New Name" : {
+
+    },
     "New URL" : {
       "localizations" : {
         "ja" : {
@@ -5328,6 +5331,9 @@
           }
         }
       }
+    },
+    "Rename" : {
+
     },
     "Report a bug" : {
       "localizations" : {

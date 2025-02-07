@@ -579,6 +579,15 @@ class qBittorrent {
         qBitRequest.requestUniversal(request: request)
     }
     
+    static func moveRSSItem(itemPath: String, destPath: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/moveItem", queryItems: [
+            URLQueryItem(name: "itemPath", value: itemPath),
+            URLQueryItem(name: "destPath", value: destPath)
+        ])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
     static func removeTracker(hash: String, url: String) {
         let path = "/api/v2/torrents/removeTrackers"
 

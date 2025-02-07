@@ -7,10 +7,19 @@ struct RSSNodeView: View {
     
     @State private var isAddFeedAlert: Bool = false
     @State private var isAddFolderAlert: Bool = false
+    @State private var isRenameAlert: Bool = false
     
     @State private var newFeedURL = ""
     @State private var newFolderName = ""
-
+    @State private var newRenameName = ""
+    @State private var oldRenamePath = ""
+    
+    func getItemPath(item: String) -> String {
+        var path = self.path + [item]
+        path.removeFirst()
+        return path.joined(separator: "\\")
+    }
+    
     var body: some View {
         List {
             Section(header: sectionHeader()) {
@@ -35,6 +44,7 @@ struct RSSNodeView: View {
             .toolbar { toolbar() }
             .alert("Add Feed", isPresented: $isAddFeedAlert, actions: { addFeedAlert() })
             .alert("Add Folder", isPresented: $isAddFolderAlert, actions: { addFolderAlert() })
+            .alert("New Name", isPresented: $isRenameAlert, actions: { renameAlert() })
     }
     
     func sectionHeader() -> Text {
@@ -88,20 +98,35 @@ struct RSSNodeView: View {
         }
     }
     
+    func renameAlert() -> some View {
+        VStack {
+            TextField("Name", text: $newRenameName)
+            Button("Save") {
+                let newRenamePath = self.getItemPath(item: newRenameName)
+                qBittorrent.moveRSSItem(itemPath: oldRenamePath, destPath: newRenamePath)
+                
+                oldRenamePath = ""
+                newRenameName = ""
+                refresh()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+    }
+    
     func itemContextMenu(itemTitle: String, isFolder: Bool = false) -> some View {
         VStack {
             if !isFolder {
                 Button {
-                    var path = self.path + [itemTitle]
-                    path.removeFirst()
-                    print(path.joined(separator: "\\"))
-                    qBittorrent.addRSSRefreshItem(path: path.joined(separator: "\\"))
+                    qBittorrent.addRSSRefreshItem(path: self.getItemPath(item: itemTitle))
                 } label: { Label("Refresh", systemImage: "arrow.clockwise") }
             }
+            Button {
+                self.newRenameName = itemTitle
+                self.oldRenamePath = self.getItemPath(item: itemTitle)
+                self.isRenameAlert.toggle()
+            } label: { Label("Rename", systemImage: "pencil") }
             Button(role: .destructive) {
-                var path = self.path + [itemTitle]
-                path.removeFirst()
-                qBittorrent.addRSSRemoveItem(path: path.joined(separator: "\\"))
+                qBittorrent.addRSSRemoveItem(path: self.getItemPath(item: itemTitle))
             } label: { Label("Remove", systemImage: "trash") }
         }
     }
