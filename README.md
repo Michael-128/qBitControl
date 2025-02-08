@@ -3,10 +3,18 @@
 
 qBittorrent remote client for iOS devices.
 
-<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/04fa9256-e5dc-420c-8709-79064bb82044" width="22.5%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/7ece56e7-6062-49a3-8c2b-c17d221a9b55" width="19%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/ae05c542-2396-4cf3-9a58-a7f15f713ea4" width="19%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/ebbf8fef-8037-45ec-b6f8-720b28c4786a" width="19%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/67a0e58c-c986-4c69-9a40-3639395a24c4" width="19%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/2d862f78-3666-4b77-a328-0d1236f80659" width="19%"/>
+
+
+
+<!--<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/04fa9256-e5dc-420c-8709-79064bb82044" width="22.5%"/>
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/02633a00-b647-4898-9edb-d4b8b89d4a88" width="22.5%"/>
 <img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/e09a2508-56c7-41b3-91ce-d8e4c7639537" width="22.5%"/>
-<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/34cdfe91-0bcb-40ed-8bf5-3d3428567e10" width="22.5%"/>
+<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/34cdfe91-0bcb-40ed-8bf5-3d3428567e10" width="22.5%"/>-->
 
 ## Now available on AltStore PAL! 📱
 qBitControl is now available on AltStore PAL, allowing users located in the EU to get and update the app seamlessly, as well as support its development. 
