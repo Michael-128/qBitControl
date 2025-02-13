@@ -2,6 +2,7 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@" : {
+      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -39,10 +40,10 @@
             "value" : "%@"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "%@/s" : {
+      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -80,10 +81,10 @@
             "value" : "%@/s"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "%@%%" : {
+      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -121,10 +122,10 @@
             "value" : "%@%%"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "%@s" : {
+      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -162,10 +163,10 @@
             "value" : "%@s"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "%lld" : {
+      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -203,8 +204,7 @@
             "value" : "%lld"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "%lld Articles" : {
       "localizations" : {
@@ -240,13 +240,14 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "%lld Articles"
+            "state" : "translated",
+            "value" : "%lld 文章"
           }
         }
       }
     },
     "•" : {
+      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -284,8 +285,7 @@
             "value" : "•"
           }
         }
-      },
-      "shouldTranslate" : false
+      }
     },
     "About" : {
       "localizations" : {
@@ -317,6 +317,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "关于"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關於程式"
           }
         }
       }
@@ -355,8 +361,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Active"
+            "state" : "translated",
+            "value" : "啟用"
           }
         }
       }
@@ -395,8 +401,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Active Downloading"
+            "state" : "translated",
+            "value" : "正在下載"
           }
         }
       }
@@ -435,8 +441,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Active Seeding"
+            "state" : "translated",
+            "value" : "正在做種"
           }
         }
       }
@@ -475,8 +481,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Activity"
+            "state" : "translated",
+            "value" : "活動"
           }
         }
       }
@@ -515,8 +521,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add"
+            "state" : "translated",
+            "value" : "新增"
           }
         }
       }
@@ -555,14 +561,51 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "ADD"
+            "state" : "translated",
+            "value" : "新增"
           }
         }
       }
     },
     "Add Category" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カテゴリーを追加"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj Kategorię"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add Category"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add Category"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加类目"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add Category"
+          }
+        }
+      }
     },
     "Add Feed" : {
       "localizations" : {
@@ -598,8 +641,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Feed"
+            "state" : "translated",
+            "value" : "新增訊息來源"
           }
         }
       }
@@ -638,17 +681,91 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Folder"
+            "state" : "translated",
+            "value" : "新增資料夾"
           }
         }
       }
     },
     "Add New Category" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新規カテゴリを追加"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj Nową Kategorię"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add New Category"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add New Category"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加新分类"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add New Category"
+          }
+        }
+      }
     },
     "Add New Tag" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しいタグを追加"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj Nowy Tag"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add New Tag"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add New Tag"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加新标签"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add New Tag"
+          }
+        }
+      }
     },
     "Add Server" : {
       "localizations" : {
@@ -684,14 +801,51 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Server"
+            "state" : "translated",
+            "value" : "新增伺服器"
           }
         }
       }
     },
     "Add Tag" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タグを追加"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaj Tag"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add Tag"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add Tag"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加标签"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Add Tag"
+          }
+        }
+      }
     },
     "Add Task" : {
       "localizations" : {
@@ -727,8 +881,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Task"
+            "state" : "translated",
+            "value" : "新增任務"
           }
         }
       }
@@ -767,8 +921,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Tracker"
+            "state" : "translated",
+            "value" : "新增 Tracker"
           }
         }
       }
@@ -807,8 +961,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Added On"
+            "state" : "translated",
+            "value" : "新增於"
           }
         }
       }
@@ -818,7 +972,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "追加する"
+            "value" : "追加"
           }
         },
         "pl" : {
@@ -827,10 +981,28 @@
             "value" : "DODAWANIE"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ADDING"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ADDING"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "添加中"
+            "value" : "正在添加"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "ADDING"
           }
         }
       }
@@ -869,8 +1041,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Advanced"
+            "state" : "translated",
+            "value" : "進階設定"
           }
         }
       }
@@ -909,8 +1081,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All"
+            "state" : "translated",
+            "value" : "所有"
           }
         }
       }
@@ -949,8 +1121,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All-Time"
+            "state" : "translated",
+            "value" : "所有时间"
           }
         }
       }
@@ -989,8 +1161,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Amount Left"
+            "state" : "translated",
+            "value" : "餘量"
           }
         }
       }
@@ -1029,8 +1201,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Are you sure you want to pause all tasks?"
+            "state" : "translated",
+            "value" : "您確定要暫停所有任務嗎？"
           }
         }
       }
@@ -1069,8 +1241,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Are you sure you want to resume all tasks?"
+            "state" : "translated",
+            "value" : "您確定要恢復所有任務嗎？"
           }
         }
       }
@@ -1109,8 +1281,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Availability"
+            "state" : "translated",
+            "value" : "可用性"
           }
         }
       }
@@ -1149,8 +1321,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Cancel"
+            "state" : "translated",
+            "value" : "取消"
           }
         }
       }
@@ -1189,8 +1361,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Categories"
+            "state" : "translated",
+            "value" : "類別"
           }
         }
       }
@@ -1229,14 +1401,51 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Category"
+            "state" : "translated",
+            "value" : "類別"
           }
         }
       }
     },
     "Category Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "カテゴリ名"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa Kategorii"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Category Name"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Category Name"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分类名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Category Name"
+          }
+        }
+      }
     },
     "Check Connection" : {
       "localizations" : {
@@ -1272,8 +1481,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Check Connection"
+            "state" : "translated",
+            "value" : "檢查連線"
           }
         }
       }
@@ -1312,8 +1521,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"
+            "state" : "translated",
+            "value" : "檢查URL、用戶名稱及密碼是否正確。 確保本地網路訪問已啓用：\n設置 > 隱私與安全 > 本地網路 > qBitControl"
           }
         }
       }
@@ -1352,8 +1561,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Clear Completed"
+            "state" : "translated",
+            "value" : "清除已完成項目"
           }
         }
       }
@@ -1392,8 +1601,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Client"
+            "state" : "translated",
+            "value" : "用戶端"
           }
         }
       }
@@ -1432,8 +1641,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Completed"
+            "state" : "translated",
+            "value" : "已完成"
           }
         }
       }
@@ -1472,8 +1681,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Completion On"
+            "state" : "translated",
+            "value" : "完成於"
           }
         }
       }
@@ -1512,8 +1721,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Confirm Deletion"
+            "state" : "translated",
+            "value" : "確認刪除"
           }
         }
       }
@@ -1552,8 +1761,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Confirm Pause All"
+            "state" : "translated",
+            "value" : "確認暫停所有工作"
           }
         }
       }
@@ -1592,8 +1801,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Confirm Resume All"
+            "state" : "translated",
+            "value" : "確認恢復所有工作"
           }
         }
       }
@@ -1632,8 +1841,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Connected Leeches"
+            "state" : "translated",
+            "value" : "已連線的下載者"
           }
         }
       }
@@ -1672,8 +1881,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Connected Seeds"
+            "state" : "translated",
+            "value" : "已連線的做種者"
           }
         }
       }
@@ -1712,8 +1921,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Connection"
+            "state" : "translated",
+            "value" : "連接"
           }
         }
       }
@@ -1752,8 +1961,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Connections"
+            "state" : "translated",
+            "value" : "連接"
           }
         }
       }
@@ -1792,8 +2001,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Couldn't connect to the server."
+            "state" : "translated",
+            "value" : "無法連線至伺服器。"
           }
         }
       }
@@ -1832,8 +2041,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Country"
+            "state" : "translated",
+            "value" : "國家/地區"
           }
         }
       }
@@ -1872,8 +2081,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete"
+            "state" : "translated",
+            "value" : "刪除"
           }
         }
       }
@@ -1912,8 +2121,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Completed Tasks"
+            "state" : "translated",
+            "value" : "清除已完成的工作"
           }
         }
       }
@@ -1952,8 +2161,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Completed Tasks with Files"
+            "state" : "translated",
+            "value" : "清除已完成的工作及檔案"
           }
         }
       }
@@ -1992,8 +2201,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Selected Tasks"
+            "state" : "translated",
+            "value" : "清除已選擇的工作"
           }
         }
       }
@@ -2032,8 +2241,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Selected Tasks with Files"
+            "state" : "translated",
+            "value" : "清除已選擇的工作及檔案"
           }
         }
       }
@@ -2072,8 +2281,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Task"
+            "state" : "translated",
+            "value" : "刪除工作"
           }
         }
       }
@@ -2112,8 +2321,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Task with Files"
+            "state" : "translated",
+            "value" : "刪除的工作及檔案"
           }
         }
       }
@@ -2152,8 +2361,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Delete Torrent"
+            "state" : "translated",
+            "value" : "删除种子"
           }
         }
       }
@@ -2192,8 +2401,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Descending"
+            "state" : "translated",
+            "value" : "遞減"
           }
         }
       }
@@ -2232,8 +2441,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Deselect All"
+            "state" : "translated",
+            "value" : "取消選取"
           }
         }
       }
@@ -2272,8 +2481,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Details"
+            "state" : "translated",
+            "value" : "詳細資訊"
           }
         }
       }
@@ -2312,8 +2521,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Disabled"
+            "state" : "translated",
+            "value" : "已停用"
           }
         }
       }
@@ -2352,8 +2561,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Disk"
+            "state" : "translated",
+            "value" : "硬碟"
           }
         }
       }
@@ -2392,8 +2601,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Do not download"
+            "state" : "translated",
+            "value" : "不要下載"
           }
         }
       }
@@ -2432,8 +2641,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Done"
+            "state" : "translated",
+            "value" : "已完成"
           }
         }
       }
@@ -2472,8 +2681,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Download"
+            "state" : "translated",
+            "value" : "下載"
           }
         }
       }
@@ -2512,8 +2721,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Download Limit"
+            "state" : "translated",
+            "value" : "下載速率限制"
           }
         }
       }
@@ -2552,8 +2761,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Download Speed"
+            "state" : "translated",
+            "value" : "下載速率"
           }
         }
       }
@@ -2592,8 +2801,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Downloaded"
+            "state" : "translated",
+            "value" : "已下載"
           }
         }
       }
@@ -2672,8 +2881,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Downloading"
+            "state" : "translated",
+            "value" : "正在下載"
           }
         }
       }
@@ -2712,8 +2921,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit"
+            "state" : "translated",
+            "value" : "修改"
           }
         }
       }
@@ -2752,8 +2961,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Edit Tracker"
+            "state" : "translated",
+            "value" : "修改 Tracker"
           }
         }
       }
@@ -2832,8 +3041,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "ETA"
+            "state" : "translated",
+            "value" : "預計完成時間"
           }
         }
       }
@@ -2912,8 +3121,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "File"
+            "state" : "translated",
+            "value" : "檔案"
           }
         }
       }
@@ -2952,8 +3161,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Files"
+            "state" : "translated",
+            "value" : "檔案"
           }
         }
       }
@@ -2992,8 +3201,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Filter By"
+            "state" : "translated",
+            "value" : "按條件篩選"
           }
         }
       }
@@ -3032,8 +3241,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Filters"
+            "state" : "translated",
+            "value" : "篩選"
           }
         }
       }
@@ -3152,8 +3361,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Folders"
+            "state" : "translated",
+            "value" : "資料夾"
           }
         }
       }
@@ -3192,8 +3401,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Force Start"
+            "state" : "translated",
+            "value" : "強行啟動"
           }
         }
       }
@@ -3232,8 +3441,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Free Space"
+            "state" : "translated",
+            "value" : "剩餘空間"
           }
         }
       }
@@ -3272,7 +3481,7 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "GitHub"
           }
         }
@@ -3283,7 +3492,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "翻訳に参加"
+            "value" : "翻訳を手伝う"
           }
         },
         "pl" : {
@@ -3292,10 +3501,28 @@
             "value" : "Pomóż z tłumaczeniem"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Help with translation"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Help with translation"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "帮助翻译"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Help with translation"
           }
         }
       }
@@ -3334,8 +3561,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "http(s)://IP:PORT"
+            "state" : "translated",
+            "value" : "http(s)://IP位址:通訊端口"
           }
         }
       }
@@ -3374,8 +3601,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Inactive"
+            "state" : "translated",
+            "value" : "未啟用"
           }
         }
       }
@@ -3414,8 +3641,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Info"
+            "state" : "translated",
+            "value" : "詳細資訊"
           }
         }
       }
@@ -3454,8 +3681,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Information"
+            "state" : "translated",
+            "value" : "詳細資訊"
           }
         }
       }
@@ -3494,8 +3721,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Invalid server information"
+            "state" : "translated",
+            "value" : "伺服器訊息不正確"
           }
         }
       }
@@ -3534,8 +3761,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "IP"
+            "state" : "translated",
+            "value" : "IP位址"
           }
         }
       }
@@ -3574,8 +3801,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Last Activity"
+            "state" : "translated",
+            "value" : "上次活動"
           }
         }
       }
@@ -3654,8 +3881,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Manage"
+            "state" : "translated",
+            "value" : "管理"
           }
         }
       }
@@ -3694,8 +3921,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Management"
+            "state" : "translated",
+            "value" : "管理"
           }
         }
       }
@@ -3854,8 +4081,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move Down"
+            "state" : "translated",
+            "value" : "向下移動"
           }
         }
       }
@@ -3894,8 +4121,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move to Bottom"
+            "state" : "translated",
+            "value" : "移到底端"
           }
         }
       }
@@ -3934,8 +4161,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move to Top"
+            "state" : "translated",
+            "value" : "移到頂端"
           }
         }
       }
@@ -3974,8 +4201,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Move Up"
+            "state" : "translated",
+            "value" : "向上移動"
           }
         }
       }
@@ -4014,14 +4241,51 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Name"
+            "state" : "translated",
+            "value" : "名稱"
           }
         }
       }
     },
     "New Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新しい名前"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nowa Nazwa"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New Name"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New Name"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新名称"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "New Name"
+          }
+        }
+      }
     },
     "New URL" : {
       "localizations" : {
@@ -4057,8 +4321,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "New URL"
+            "state" : "translated",
+            "value" : "通過 URL 新增"
           }
         }
       }
@@ -4098,8 +4362,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "None"
+            "state" : "translated",
+            "value" : "無"
           }
         }
       }
@@ -4138,8 +4402,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Not contacted yet"
+            "state" : "translated",
+            "value" : "未曾聯繫"
           }
         }
       }
@@ -4178,8 +4442,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Not working"
+            "state" : "translated",
+            "value" : "無效"
           }
         }
       }
@@ -4198,10 +4462,28 @@
             "value" : "OK"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OK"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OK"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "好的"
+            "value" : "确定"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "OK"
           }
         }
       }
@@ -4240,8 +4522,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Open Files.."
+            "state" : "translated",
+            "value" : "開啟檔案..."
           }
         }
       }
@@ -4280,8 +4562,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Password"
+            "state" : "translated",
+            "value" : "密碼"
           }
         }
       }
@@ -4320,8 +4602,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Path"
+            "state" : "translated",
+            "value" : "路徑"
           }
         }
       }
@@ -4360,7 +4642,7 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "Patreon"
           }
         }
@@ -4400,8 +4682,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pause"
+            "state" : "translated",
+            "value" : "暫停"
           }
         }
       }
@@ -4440,8 +4722,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pause All Tasks"
+            "state" : "translated",
+            "value" : "暫停所有工作"
           }
         }
       }
@@ -4480,8 +4762,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Pause Task"
+            "state" : "translated",
+            "value" : "暫停任務"
           }
         }
       }
@@ -4520,8 +4802,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Paused"
+            "state" : "translated",
+            "value" : "已暫停"
           }
         }
       }
@@ -4680,8 +4962,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Port"
+            "state" : "translated",
+            "value" : "通訊端口"
           }
         }
       }
@@ -4720,8 +5002,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Priority"
+            "state" : "translated",
+            "value" : "優先級別"
           }
         }
       }
@@ -4760,8 +5042,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Progress"
+            "state" : "translated",
+            "value" : "當前進度"
           }
         }
       }
@@ -4800,7 +5082,7 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "qBitControl"
           }
         }
@@ -4846,7 +5128,7 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
+            "state" : "translated",
             "value" : "qBitControl %1$@ (%2$@)"
           }
         }
@@ -5006,8 +5288,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Ratio"
+            "state" : "translated",
+            "value" : "比率"
           }
         }
       }
@@ -5166,8 +5448,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Recheck"
+            "state" : "translated",
+            "value" : "重新檢查"
           }
         }
       }
@@ -5246,8 +5528,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Refresh"
+            "state" : "translated",
+            "value" : "更新"
           }
         }
       }
@@ -5286,8 +5568,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Relevance"
+            "state" : "translated",
+            "value" : "關聯性"
           }
         }
       }
@@ -5326,14 +5608,51 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Remove"
+            "state" : "translated",
+            "value" : "移除"
           }
         }
       }
     },
     "Rename" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名前を変更"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zmień Nazwę"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Rename"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Rename"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "改名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Rename"
+          }
+        }
+      }
     },
     "Report a bug" : {
       "localizations" : {
@@ -5369,8 +5688,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Report a bug"
+            "state" : "translated",
+            "value" : "回報程式錯誤"
           }
         }
       }
@@ -5409,8 +5728,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Resume"
+            "state" : "translated",
+            "value" : "繼續"
           }
         }
       }
@@ -5449,8 +5768,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Resume All Tasks"
+            "state" : "translated",
+            "value" : "繼續所有工作"
           }
         }
       }
@@ -5569,8 +5888,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "RSS"
+            "state" : "translated",
+            "value" : "RSS訂閱"
           }
         }
       }
@@ -5609,8 +5928,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Save"
+            "state" : "translated",
+            "value" : "儲存"
           }
         }
       }
@@ -5650,8 +5969,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "SAVE"
+            "state" : "translated",
+            "value" : "儲存"
           }
         }
       }
@@ -5690,8 +6009,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Save Path"
+            "state" : "translated",
+            "value" : "存檔路徑"
           }
         }
       }
@@ -5730,8 +6049,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Seeding"
+            "state" : "translated",
+            "value" : "正在做種"
           }
         }
       }
@@ -5770,8 +6089,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Seeding Time"
+            "state" : "translated",
+            "value" : "做種時間"
           }
         }
       }
@@ -5890,8 +6209,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select"
+            "state" : "translated",
+            "value" : "選取"
           }
         }
       }
@@ -5930,8 +6249,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Select All"
+            "state" : "translated",
+            "value" : "選取所有"
           }
         }
       }
@@ -5970,8 +6289,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sequential Download"
+            "state" : "translated",
+            "value" : "依序下載"
           }
         }
       }
@@ -6010,8 +6329,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Server List"
+            "state" : "translated",
+            "value" : "伺服器一覽"
           }
         }
       }
@@ -6050,8 +6369,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Server Name (optional)"
+            "state" : "translated",
+            "value" : "伺服器名稱（非必須）"
           }
         }
       }
@@ -6090,8 +6409,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Servers"
+            "state" : "translated",
+            "value" : "伺服器"
           }
         }
       }
@@ -6250,8 +6569,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Show Advanced Options"
+            "state" : "translated",
+            "value" : "顯示進階設定"
           }
         }
       }
@@ -6290,8 +6609,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Size"
+            "state" : "translated",
+            "value" : "大小"
           }
         }
       }
@@ -6330,8 +6649,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Skip Checking"
+            "state" : "translated",
+            "value" : "不執行檢查"
           }
         }
       }
@@ -6370,8 +6689,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Sort By"
+            "state" : "translated",
+            "value" : "排序依據"
           }
         }
       }
@@ -6410,8 +6729,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Stalled"
+            "state" : "translated",
+            "value" : "停滯"
           }
         }
       }
@@ -6450,8 +6769,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "State"
+            "state" : "translated",
+            "value" : "狀態"
           }
         }
       }
@@ -6530,8 +6849,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Stats"
+            "state" : "translated",
+            "value" : "統計訊息"
           }
         }
       }
@@ -6570,8 +6889,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Status"
+            "state" : "translated",
+            "value" : "狀態"
           }
         }
       }
@@ -6617,7 +6936,44 @@
       }
     },
     "Tag Name" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "タグ名"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nazwa Tagu"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tag Name"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tag Name"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标签名称"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Tag Name"
+          }
+        }
+      }
     },
     "Tags" : {
       "localizations" : {
@@ -6653,8 +7009,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Tags"
+            "state" : "translated",
+            "value" : "標籤"
           }
         }
       }
@@ -6693,8 +7049,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Task Type"
+            "state" : "translated",
+            "value" : "工作類型"
           }
         }
       }
@@ -6734,8 +7090,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Tasks"
+            "state" : "translated",
+            "value" : "工作"
           }
         }
       }
@@ -6774,8 +7130,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Time"
+            "state" : "translated",
+            "value" : "時間"
           }
         }
       }
@@ -6854,8 +7210,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Total Size"
+            "state" : "translated",
+            "value" : "總體大小"
           }
         }
       }
@@ -6934,8 +7290,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Transfer"
+            "state" : "translated",
+            "value" : "傳輸"
           }
         }
       }
@@ -6974,8 +7330,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Uncategorized"
+            "state" : "translated",
+            "value" : "未分類"
           }
         }
       }
@@ -7014,8 +7370,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Unknown"
+            "state" : "translated",
+            "value" : "未知"
           }
         }
       }
@@ -7054,8 +7410,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Untagged"
+            "state" : "translated",
+            "value" : "無標籤"
           }
         }
       }
@@ -7094,8 +7450,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Update"
+            "state" : "translated",
+            "value" : "更新"
           }
         }
       }
@@ -7134,8 +7490,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Updating"
+            "state" : "translated",
+            "value" : "正在更新"
           }
         }
       }
@@ -7174,8 +7530,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upload"
+            "state" : "translated",
+            "value" : "上載"
           }
         }
       }
@@ -7254,8 +7610,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upload Speed"
+            "state" : "translated",
+            "value" : "上載速率"
           }
         }
       }
@@ -7374,8 +7730,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "URL"
+            "state" : "translated",
+            "value" : "URL連結"
           }
         }
       }
@@ -7414,8 +7770,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Username"
+            "state" : "translated",
+            "value" : "使用者名稱"
           }
         }
       }
@@ -7454,8 +7810,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Working"
+            "state" : "translated",
+            "value" : "正常運轉"
           }
         }
       }

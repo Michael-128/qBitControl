@@ -10,7 +10,7 @@
 		90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
-		9025400A2CF4D6D10019D729 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 902540092CF4D6D10019D729 /* Localizable.xcstrings */; };
+		9043F2322D5E795700E48419 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 9043F2312D5E795700E48419 /* Localizable.xcstrings */; };
 		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
@@ -104,7 +104,7 @@
 		90200BA42B44BA6E00D3BA55 /* logo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo1.png; path = qBitControl/Assets.xcassets/AppIcon.appiconset/logo1.png; sourceTree = "<group>"; };
 		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
-		902540092CF4D6D10019D729 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		9043F2312D5E795700E48419 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		905284972D457618000EB12C /* ChangeTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTagsView.swift; sourceTree = "<group>"; };
 		9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsViewModel.swift; sourceTree = "<group>"; };
 		9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListViewModel.swift; sourceTree = "<group>"; };
@@ -210,7 +210,7 @@
 		9006B5212C186974002DDD4E /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
-				902540092CF4D6D10019D729 /* Localizable.xcstrings */,
+				9043F2312D5E795700E48419 /* Localizable.xcstrings */,
 			);
 			name = Localizations;
 			path = Localization/Localizations;
@@ -539,8 +539,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */,
-				9025400A2CF4D6D10019D729 /* Localizable.xcstrings in Resources */,
 				90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */,
+				9043F2322D5E795700E48419 /* Localizable.xcstrings in Resources */,
 				9082FA2729080E55006C3960 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -796,7 +796,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 626XV358Y5;
 				ENABLE_PREVIEWS = YES;
@@ -832,7 +832,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 626XV358Y5;
 				ENABLE_PREVIEWS = YES;
