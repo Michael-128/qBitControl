@@ -2,7 +2,6 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@" : {
-      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -40,10 +39,10 @@
             "value" : "%@"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%@/s" : {
-      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -81,10 +80,10 @@
             "value" : "%@/s"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%@%%" : {
-      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -122,10 +121,10 @@
             "value" : "%@%%"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%@s" : {
-      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -163,10 +162,10 @@
             "value" : "%@s"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%lld" : {
-      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -204,7 +203,8 @@
             "value" : "%lld"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "%lld Articles" : {
       "localizations" : {
@@ -247,7 +247,6 @@
       }
     },
     "•" : {
-      "shouldTranslate" : false,
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -285,7 +284,8 @@
             "value" : "•"
           }
         }
-      }
+      },
+      "shouldTranslate" : false
     },
     "About" : {
       "localizations" : {
@@ -1048,6 +1048,7 @@
       }
     },
     "All" : {
+      "comment" : "Pause All/Resume All",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

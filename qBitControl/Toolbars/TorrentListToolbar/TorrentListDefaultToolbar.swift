@@ -14,6 +14,13 @@ struct TorrentListDefaultToolbar: ToolbarContent {
     @State private var sheetIdentifier: SheetIdentifier?
     @State private var isAlertClearCompleted: Bool = false
     
+    private var categoryName: String {
+        if(category == "All") {
+            return NSLocalizedString("All", comment: "Pause All/Resume All")
+        }
+        return category.capitalized
+    }
+    
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Menu {
@@ -38,7 +45,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         } label: {
                             Image(systemName: "play")
                                 .rotationEffect(.degrees(180))
-                            Text(NSLocalizedString("Resume", comment: "") + " " + "\(category.capitalized)")
+                            Text(NSLocalizedString("Resume", comment: "") + " " + self.categoryName)
                         }
                         
                         Button {
@@ -51,7 +58,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         } label: {
                             Image(systemName: "pause")
                                 .rotationEffect(.degrees(180))
-                            Text(NSLocalizedString("Pause", comment: "") + " " + "\(category.capitalized)")
+                            Text(NSLocalizedString("Pause", comment: "") + " " + self.categoryName)
                         }
                     }
                 }
