@@ -21,6 +21,15 @@ struct RSSFeed: Decodable, Identifiable {
         let size: String?
         let torrentURL: String?
         let isRead: Bool?
+        
+        var description: String? {
+            var components: [String] = []
+            if let category = self.category { components.append(category) }
+            if let size = self.size { components.append(size) }
+            
+            let result = components.joined(separator: " • ")
+            return result.isEmpty ? nil : result
+        }
     }
 }
 
