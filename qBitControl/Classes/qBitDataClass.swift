@@ -14,6 +14,16 @@ class qBitData: ObservableObject {
     private var fetchInterval: TimeInterval = 2
     
     init() {
+        let date = Date()
+        
+        for n in stride(from: -30, to: 0, by: 2) {
+            dlTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
+            
+            upTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
+        }
+        
+        print(dlTransferData)
+        
         self.getMainData()
         
         timer = Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) {

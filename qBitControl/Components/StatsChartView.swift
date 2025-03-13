@@ -17,6 +17,20 @@ struct StatsChartView: View {
                     stacking: .standard
                 ).interpolationMethod(.monotone)
                     .mask { RectangleMark() }
+                    .foregroundStyle(
+                        LinearGradient(
+                            gradient: Gradient(colors: [.blue.opacity(0.4), .blue.opacity(0.2)]),
+                                startPoint: .top,
+                                endPoint: .bottom
+                            )
+                    )
+                
+                LineMark(
+                    x: .value("Time", transferData.fetchDate.timeIntervalSinceNow),
+                    y: .value("Transfer", transferData.info_speed)
+                ).interpolationMethod(.monotone)
+                    .mask { RectangleMark() }
+                    .foregroundStyle(.blue)
             }.chartXScale(domain: -30...0)
                 .chartYAxis {
                     AxisMarks {
