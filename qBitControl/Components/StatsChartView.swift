@@ -6,6 +6,7 @@ import Charts
 struct StatsChartView: View {
     
     @Binding public var transferData: [TransferInfo]
+    public var color: Color = .blue
     
     var body: some View {
         VStack {
@@ -19,7 +20,7 @@ struct StatsChartView: View {
                     .mask { RectangleMark() }
                     .foregroundStyle(
                         LinearGradient(
-                            gradient: Gradient(colors: [.blue.opacity(0.4), .blue.opacity(0.2)]),
+                            gradient: Gradient(colors: [self.color.opacity(0.4), self.color.opacity(0.2)]),
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
@@ -30,7 +31,7 @@ struct StatsChartView: View {
                     y: .value("Transfer", transferData.info_speed)
                 ).interpolationMethod(.monotone)
                     .mask { RectangleMark() }
-                    .foregroundStyle(.blue)
+                    .foregroundStyle(self.color)
             }.chartXScale(domain: -30...0)
                 .chartYAxis {
                     AxisMarks {

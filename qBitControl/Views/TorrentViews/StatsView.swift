@@ -16,7 +16,7 @@ struct StatsView: View {
                     Section(header: Text("Download")) {
                         CustomLabelView(label: "Session Download", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.dl_info_data ?? 0))")
                         CustomLabelView(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.dl_info_speed ?? 0))/s")
-                        StatsChartView(transferData: $qBitDataShared.dlTransferData)
+                        StatsChartView(transferData: $qBitDataShared.dlTransferData, color: .green)
                     }
                     
                     Section(header: Text("Upload")) {
