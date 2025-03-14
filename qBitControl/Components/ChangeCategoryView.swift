@@ -5,6 +5,11 @@ struct ChangeCategoryView: View {
     @State private var categories: [Category] = []
     @State var category: String
     
+    let defaultCategory: Category = Category(name: "Uncategorized", savePath: "")
+    func isDefaultCategorySelected(currentCategory: String) -> Bool {
+        return currentCategory == defaultCategory.name && category == ""
+    }
+    
     @State private var showAddCategoryAlert = false
     @State private var newCategoryName = ""
     
@@ -14,6 +19,7 @@ struct ChangeCategoryView: View {
         qBittorrent.getCategories(completionHandler: { _categories in
             var categories = _categories.map { $0.value }
             categories.sort { $0.name < $1.name }
+            categories.insert(defaultCategory, at: 0)
             self.categories = categories
             clearSelectedCategories()
         })
@@ -22,7 +28,7 @@ struct ChangeCategoryView: View {
     private func clearSelectedCategories() {
         if let onCategoryChange = self.onCategoryChange {
             if !categories.map({ $0.name }).contains(category) {
-                onCategoryChange(Category(name: "Uncategorized", savePath: ""))
+                onCategoryChange(defaultCategory)
             }
         }
     }
@@ -62,7 +68,7 @@ struct ChangeCategoryView: View {
                                         Text(category.name)
                                             .foregroundStyle(.foreground)
                                         Spacer()
-                                        if(self.category == category.name) {
+                                        if(self.category == category.name || isDefaultCategorySelected(currentCategory: category.name)) {
                                             Image(systemName: "checkmark")
                                                 .foregroundColor(.accentColor)
                                         }
@@ -84,10 +90,11 @@ struct ChangeCategoryView: View {
             }
             .navigationTitle("Categories")
         }.onAppear() {
+            print(category)
             self.getCategories()
         }.onChange(of: category) { category in
             if let onCategoryChange = self.onCategoryChange, let category = categories.first(where: { $0.name == category }) { onCategoryChange(category) }
-            if let hash = self.torrentHash { qBittorrent.setCategory(hash: hash, category: category) }
+            if let hash = self.torrentHash { qBittorrent.setCategory(hash: hash, category: category == defaultCategory.name ? "" : category) }
         }
     }
 }
