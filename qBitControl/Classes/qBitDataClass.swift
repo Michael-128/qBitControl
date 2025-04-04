@@ -22,8 +22,6 @@ class qBitData: ObservableObject {
             upTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
         }
         
-        print(dlTransferData)
-        
         self.getMainData()
         
         timer = Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) {

@@ -7308,7 +7308,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nieskategoryzowanie"
+            "value" : "Bez kategorii"
           }
         },
         "ru" : {
@@ -7388,7 +7388,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nieotagowane"
+            "value" : "Bez tagów"
           }
         },
         "ru" : {

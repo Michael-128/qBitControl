@@ -11,7 +11,7 @@ struct CustomLabelView: View {
             HStack {
                 Text(label)
                 Spacer()
-                Text("\(value)")
+                Text(NSLocalizedString(value, comment: ""))
                     .foregroundColor(Color.gray)
                     .lineLimit(1)
             }

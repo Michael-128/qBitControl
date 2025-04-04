@@ -5,7 +5,7 @@ struct ChangeCategoryView: View {
     @State private var categories: [Category] = []
     @State var category: String
     
-    let defaultCategory: Category = Category(name: "Uncategorized", savePath: "")
+    let defaultCategory: Category = Category(name: NSLocalizedString("Uncategorized", comment: ""), savePath: "")
     func isDefaultCategorySelected(currentCategory: String) -> Bool {
         return currentCategory == defaultCategory.name && category == ""
     }

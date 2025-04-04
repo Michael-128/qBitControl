@@ -333,8 +333,8 @@
 		90726B522CDA22190032993E /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				90726B342CDA22190032993E /* RSSViews */,
 				90726B382CDA22190032993E /* ServersViews */,
+				90726B342CDA22190032993E /* RSSViews */,
 				90726B502CDA22190032993E /* TorrentViews */,
 				90726B512CDA22190032993E /* MainView.swift */,
 			);
