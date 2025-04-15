@@ -8,7 +8,7 @@ import SwiftUI
 struct RSSView: View {
     var body: some View {
         VStack {
-            NavigationStack {
+            NavigationStack {                
                 RSSNodeView(path: ["RSS"])
             }
         }

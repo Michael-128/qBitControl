@@ -14,6 +14,10 @@ struct RSSNodeView: View {
     @State private var newRenameName = ""
     @State private var oldRenamePath = ""
     
+    var isRootView: Bool {
+        self.path.count == 1
+    }
+    
     func getItemPath(item: String) -> String {
         var path = self.path + [item]
         path.removeFirst()
@@ -22,6 +26,16 @@ struct RSSNodeView: View {
     
     var body: some View {
         List {
+            if isRootView {
+                Section(header: Text("Search")) {
+                    NavigationLink {
+                        SearchView()
+                    } label: {
+                        Label("Search", systemImage: "magnifyingglass")
+                    }
+                }
+            }
+            
             Section(header: sectionHeader()) {
                 ForEach(rssNode.nodes, id: \.id) { node in
                     NavigationLink {

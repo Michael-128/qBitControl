@@ -63,6 +63,9 @@
 		90726B772CDA221B0032993E /* TorrentListHelperViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B712CDA221B0032993E /* TorrentListHelperViewModel.swift */; };
 		90726B782CDA221B0032993E /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B732CDA221B0032993E /* MainViewModel.swift */; };
 		90726B7A2CDA24960032993E /* TrackersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B792CDA24820032993E /* TrackersViewModel.swift */; };
+		907C63282DAED94A004B1F41 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C63262DAED94A004B1F41 /* SearchView.swift */; };
+		907C632A2DAEDACA004B1F41 /* SearchStartResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */; };
+		907C632D2DAEDC28004B1F41 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C632C2DAEDC1C004B1F41 /* SearchViewModel.swift */; };
 		9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA2229080E53006C3960 /* qBitControlApp.swift */; };
 		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
@@ -157,6 +160,9 @@
 		90726B712CDA221B0032993E /* TorrentListHelperViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListHelperViewModel.swift; sourceTree = "<group>"; };
 		90726B732CDA221B0032993E /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		90726B792CDA24820032993E /* TrackersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewModel.swift; sourceTree = "<group>"; };
+		907C63262DAED94A004B1F41 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
+		907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStartResult.swift; sourceTree = "<group>"; };
+		907C632C2DAEDC1C004B1F41 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		9082FA1F29080E53006C3960 /* qBitManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = qBitManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA2229080E53006C3960 /* qBitControlApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlApp.swift; sourceTree = "<group>"; };
 		9082FA2629080E55006C3960 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -252,6 +258,7 @@
 		90726B1E2CDA22160032993E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */,
 				90E1D0532D30438C00B81F12 /* Version.swift */,
 				90726B0C2CDA22160032993E /* AlertIdentifier.swift */,
 				90726B0E2CDA22160032993E /* Category.swift */,
@@ -333,6 +340,7 @@
 		90726B522CDA22190032993E /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				907C63272DAED94A004B1F41 /* SearchViews */,
 				90726B382CDA22190032993E /* ServersViews */,
 				90726B342CDA22190032993E /* RSSViews */,
 				90726B502CDA22190032993E /* TorrentViews */,
@@ -364,12 +372,29 @@
 		90726B742CDA221B0032993E /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				907C632B2DAEDC15004B1F41 /* SearchView */,
 				90AE89302CDB6EF5000E0276 /* RSSView */,
 				90726B6F2CDA221B0032993E /* ServersView */,
 				90726B722CDA221B0032993E /* TorrentView */,
 				90726B732CDA221B0032993E /* MainViewModel.swift */,
 			);
 			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		907C63272DAED94A004B1F41 /* SearchViews */ = {
+			isa = PBXGroup;
+			children = (
+				907C63262DAED94A004B1F41 /* SearchView.swift */,
+			);
+			path = SearchViews;
+			sourceTree = "<group>";
+		};
+		907C632B2DAEDC15004B1F41 /* SearchView */ = {
+			isa = PBXGroup;
+			children = (
+				907C632C2DAEDC1C004B1F41 /* SearchViewModel.swift */,
+			);
+			path = SearchView;
 			sourceTree = "<group>";
 		};
 		9082FA1629080E53006C3960 = {
@@ -568,6 +593,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				907C632D2DAEDC28004B1F41 /* SearchViewModel.swift in Sources */,
 				90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */,
 				90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */,
 				907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */,
@@ -581,6 +607,7 @@
 				90726B552CDA22190032993E /* RSSView.swift in Sources */,
 				90726B562CDA22190032993E /* ServerAddView.swift in Sources */,
 				9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */,
+				907C63282DAED94A004B1F41 /* SearchView.swift in Sources */,
 				90726B572CDA22190032993E /* ServerRowView.swift in Sources */,
 				90726B582CDA22190032993E /* ServersView.swift in Sources */,
 				90726B592CDA22190032993E /* CustomLabelView.swift in Sources */,
@@ -596,6 +623,7 @@
 				90726B622CDA22190032993E /* AboutView.swift in Sources */,
 				90726B632CDA22190032993E /* TorrentAddView.swift in Sources */,
 				90726B642CDA22190032993E /* FilesView.swift in Sources */,
+				907C632A2DAEDACA004B1F41 /* SearchStartResult.swift in Sources */,
 				90726B652CDA22190032993E /* PeersRowView.swift in Sources */,
 				90726B662CDA22190032993E /* PeersView.swift in Sources */,
 				90726B672CDA22190032993E /* TrackerRow.swift in Sources */,

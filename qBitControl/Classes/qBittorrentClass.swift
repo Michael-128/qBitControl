@@ -288,6 +288,16 @@ class qBittorrent {
         qBitRequest.requestPreferencesJSON(request: request, completionHandler: completionHandler)
     }
     
+    static func getSearchStart(pattern: String, category: String, plugins: Bool = true, completionHandler: @escaping (SearchStartResult) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/start", queryItems: [
+            URLQueryItem(name: "pattern", value: pattern),
+            URLQueryItem(name: "category", value: category),
+            URLQueryItem(name: "plugins", value: plugins ? "enabled" : "disabled")
+        ])
+        
+        qBitRequest.requestSearchStart(request: request, completionHandler: completionHandler)
+    }
+    
     static func getCategories(completionHandler: @escaping ([String: Category]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/categories")
         

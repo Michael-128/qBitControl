@@ -95,6 +95,20 @@ class qBitRequest {
         }.resume()
     }
     
+    static func requestSearchStart(request: URLRequest, completionHandler: @escaping (SearchStartResult) -> Void) {
+        URLSession.shared.dataTask(with: request) {
+                data, response, error in
+                if let data = data {
+                    do {
+                        let json = try JSONDecoder().decode(SearchStartResult.self, from: data)
+                        completionHandler(json)
+                    } catch {
+                        print(error)
+                    }
+                }
+        }.resume()
+    }
+    
     static func requestGlobalTransferInfo(request: URLRequest, completionHandler: @escaping (GlobalTransferInfo) -> Void) {
         URLSession.shared.dataTask(with: request) {
                 data, response, error in
