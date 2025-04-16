@@ -11,11 +11,15 @@ class TorrentAddViewModel: ObservableObject {
     @Published var torrentType: TorrentType = .file
     public var torrentUrls: [URL]
     
+    
+    
     @Published var magnetURL: String = ""
     
     @Published var fileURLs: [URL] = []
     @Published var fileNames: [String] = []
     @Published var fileContent: [String: Data] = [:]
+    
+    var magnetOverride: Bool
     
     @Published var isFileImporter = false
     
@@ -44,8 +48,9 @@ class TorrentAddViewModel: ObservableObject {
     
     @Published var isAppeared = false
     
-    init(torrentUrls: [URL]) {
+    init(torrentUrls: [URL], magnetOverride: Bool = false) {
         self.torrentUrls = torrentUrls
+        self.magnetOverride = magnetOverride
     }
     
     func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
@@ -53,7 +58,7 @@ class TorrentAddViewModel: ObservableObject {
     func checkTorrentType() -> Void {
         if torrentUrls.isEmpty { return }
         
-        if torrentUrls.first!.absoluteString.contains("magnet") {
+        if torrentUrls.first!.absoluteString.contains("magnet") || magnetOverride {
             DispatchQueue.main.async {
                 self.torrentType = .magnet
                 self.magnetURL = self.torrentUrls.first!.absoluteString

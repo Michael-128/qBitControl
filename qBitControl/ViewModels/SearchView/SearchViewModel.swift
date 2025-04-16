@@ -6,6 +6,20 @@ class SearchViewModel: ObservableObject {
     
     @Published var searchId: Int?
     
+    @Published var latestResponse: SearchResponse?
+    
+    var latestResults: [SearchResult] {
+        self.latestResponse?.results ?? []
+    }
+    
+    var lastestTotal: Int {
+        self.latestResponse?.total ?? 0
+    }
+    
+    var isResponse: Bool {
+        self.latestResponse != nil
+    }
+    
     var isRunning: Bool {
         searchId != nil
     }
@@ -27,15 +41,25 @@ class SearchViewModel: ObservableObject {
     }
     
     private func endSearch() {
-        self.searchId = nil
+        DispatchQueue.main.async {
+            self.searchId = nil
+        }
     }
     
     private func monitorSearchResults() {
         self.validateTimer()
         
-        print("Do something")
-        
-        self.endSearch()
+        if let searchId = self.searchId {   
+            qBittorrent.getSearchResults(id: searchId, completionHandler: { response in
+                DispatchQueue.main.async {
+                    self.latestResponse = response
+                }
+                
+                if(response.status == "Stopped") {
+                    self.endSearch()
+                }
+            })
+        }
     }
     
     private func validateTimer() {

@@ -17,8 +17,8 @@ struct TorrentAddView: View {
         dismissAction()
     }
     
-    init(torrentUrls: Binding<[URL]> = .constant([])) {
-        _viewModel = StateObject(wrappedValue: TorrentAddViewModel(torrentUrls: torrentUrls.wrappedValue))
+    init(torrentUrls: Binding<[URL]> = .constant([]), magnetOverride: Bool = false) {
+        _viewModel = StateObject(wrappedValue: TorrentAddViewModel(torrentUrls: torrentUrls.wrappedValue, magnetOverride: magnetOverride))
         _torrentUrls = torrentUrls
     }
     

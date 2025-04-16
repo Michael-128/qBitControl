@@ -24,6 +24,14 @@ struct SearchView: View {
                     }
                 }
             }
+            
+            if viewModel.isResponse {
+                Section(header: Text("\(viewModel.lastestTotal)" + " " + "results")) {
+                    ForEach(viewModel.latestResults, id: \.hashValue) { result in
+                        SearchRowView(result: result)
+                    }
+                }
+            }
         }
     }
 }

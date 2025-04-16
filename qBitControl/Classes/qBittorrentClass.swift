@@ -298,6 +298,16 @@ class qBittorrent {
         qBitRequest.requestSearchStart(request: request, completionHandler: completionHandler)
     }
     
+    static func getSearchResults(id: Int, limit: Int = 500, offset: Int = 0, completionHandler: @escaping (SearchResponse) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/results", queryItems: [
+            URLQueryItem(name: "id", value: "\(id)"),
+            URLQueryItem(name: "limit", value: "\(limit)"),
+            URLQueryItem(name: "offset", value: "\(offset)")
+        ])
+        
+        qBitRequest.requestSearchResults(request: request, completionHandler: completionHandler)
+    }
+    
     static func getCategories(completionHandler: @escaping ([String: Category]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/categories")
         
