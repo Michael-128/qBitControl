@@ -26,10 +26,9 @@ struct SearchRowView: View {
                 Spacer()
             }.font(.footnote)
                 .foregroundStyle(Color.gray)
-                .contentShape(Rectangle())
-                .onTapGesture {
-                    self.isTorrentAddSheet.toggle()
-                }
-        }.sheet(isPresented: $isTorrentAddSheet) { if let url = URL(string: result.fileUrl ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
+        }.contentShape(Rectangle())
+            .onTapGesture {
+                self.isTorrentAddSheet.toggle()
+            }.sheet(isPresented: $isTorrentAddSheet) { if let url = URL(string: result.fileUrl ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
     }
 }
