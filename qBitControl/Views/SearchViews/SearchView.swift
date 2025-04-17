@@ -40,6 +40,16 @@ struct SearchView: View {
                     Text("No results")
                 }.foregroundStyle(.gray)
             }
+        }.toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    self.viewModel.isFilterSheet.toggle()
+                } label: {
+                    Image(systemName: "line.3.horizontal.decrease.circle")
+                }
+            }
+        }.sheet(isPresented: $viewModel.isFilterSheet) {
+            SearchFiltersView(viewModel: viewModel)
         }
     }
 }

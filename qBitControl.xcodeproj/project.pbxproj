@@ -74,6 +74,8 @@
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
 		9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4C29082208006C3960 /* qBittorrentClass.swift */; };
 		909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */; };
+		90AB036C2DB16AE6009870BB /* SearchFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB036B2DB16ADD009870BB /* SearchFiltersView.swift */; };
+		90AB036E2DB16D5E009870BB /* SearchSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB036D2DB16D51009870BB /* SearchSortOptions.swift */; };
 		90AE89322CDB6F00000E0276 /* RSSViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */; };
 		90AE89342CDB731A000E0276 /* RSSNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AE89332CDB7316000E0276 /* RSSNode.swift */; };
 		90AE89392CDBEC4D000E0276 /* RSSNodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AE89382CDBEC47000E0276 /* RSSNodeView.swift */; };
@@ -177,6 +179,8 @@
 		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA4C29082208006C3960 /* qBittorrentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClass.swift; sourceTree = "<group>"; };
 		909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNodeViewModel.swift; sourceTree = "<group>"; };
+		90AB036B2DB16ADD009870BB /* SearchFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersView.swift; sourceTree = "<group>"; };
+		90AB036D2DB16D51009870BB /* SearchSortOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSortOptions.swift; sourceTree = "<group>"; };
 		90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSViewModel.swift; sourceTree = "<group>"; };
 		90AE89332CDB7316000E0276 /* RSSNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNode.swift; sourceTree = "<group>"; };
 		90AE89382CDBEC47000E0276 /* RSSNodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNodeView.swift; sourceTree = "<group>"; };
@@ -264,6 +268,7 @@
 		90726B1E2CDA22160032993E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				90AB036D2DB16D51009870BB /* SearchSortOptions.swift */,
 				901230532DB02EAA0022FD4C /* SearchResult.swift */,
 				901230512DB02E870022FD4C /* SearchResponse.swift */,
 				907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */,
@@ -392,6 +397,7 @@
 		907C63272DAED94A004B1F41 /* SearchViews */ = {
 			isa = PBXGroup;
 			children = (
+				90AB036B2DB16ADD009870BB /* SearchFiltersView.swift */,
 				901230552DB0370F0022FD4C /* SearchRowView.swift */,
 				907C63262DAED94A004B1F41 /* SearchView.swift */,
 			);
@@ -650,9 +656,11 @@
 				901230522DB02E8B0022FD4C /* SearchResponse.swift in Sources */,
 				90726B222CDA22160032993E /* File.swift in Sources */,
 				90726B752CDA221B0032993E /* ServerAddViewModel.swift in Sources */,
+				90AB036C2DB16AE6009870BB /* SearchFiltersView.swift in Sources */,
 				90726B762CDA221B0032993E /* TorrentAddViewModel.swift in Sources */,
 				90726B772CDA221B0032993E /* TorrentListHelperViewModel.swift in Sources */,
 				907023342CDA657A007B2199 /* ChangeCategoryView.swift in Sources */,
+				90AB036E2DB16D5E009870BB /* SearchSortOptions.swift in Sources */,
 				905284982D457618000EB12C /* ChangeTagsView.swift in Sources */,
 				90726B782CDA221B0032993E /* MainViewModel.swift in Sources */,
 				90726B7A2CDA24960032993E /* TrackersViewModel.swift in Sources */,
