@@ -308,6 +308,12 @@ class qBittorrent {
         qBitRequest.requestSearchResults(request: request, completionHandler: completionHandler)
     }
     
+    static func getSearchPlugins(completionHandler: @escaping ([SearchPlugin]) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/plugins")
+        
+        qBitRequest.requestSearchPlugins(request: request, completionHandler: completionHandler)
+    }
+    
     static func getCategories(completionHandler: @escaping ([String: Category]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/categories")
         

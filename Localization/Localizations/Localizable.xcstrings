@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    " " : {
+
+    },
     "%@" : {
       "localizations" : {
         "ja" : {
@@ -1088,6 +1091,17 @@
         }
       }
     },
+    "All categories" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wszystkie"
+          }
+        }
+      }
+    },
     "All-Time" : {
       "localizations" : {
         "ja" : {
@@ -1284,6 +1298,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "可用性"
+          }
+        }
+      }
+    },
+    "Books" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Książki"
           }
         }
       }
@@ -3448,6 +3473,17 @@
         }
       }
     },
+    "Games" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gry"
+          }
+        }
+      }
+    },
     "GitHub" : {
       "localizations" : {
         "ja" : {
@@ -3804,6 +3840,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上次活動"
+          }
+        }
+      }
+    },
+    "Leechers" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leecherzy"
           }
         }
       }
@@ -4208,6 +4255,28 @@
         }
       }
     },
+    "Movies" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Filmy"
+          }
+        }
+      }
+    },
+    "Music" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muzyka"
+          }
+        }
+      }
+    },
     "Name" : {
       "localizations" : {
         "ja" : {
@@ -4329,7 +4398,14 @@
       }
     },
     "No results" : {
-
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak wyników"
+          }
+        }
+      }
     },
     "None" : {
       "comment" : "None",
@@ -5698,6 +5774,17 @@
         }
       }
     },
+    "results" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "wyników"
+          }
+        }
+      }
+    },
     "Resume" : {
       "localizations" : {
         "ja" : {
@@ -5899,7 +5986,14 @@
       }
     },
     "Running..." : {
-
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "W trakcie…"
+          }
+        }
+      }
     },
     "Save" : {
       "localizations" : {
@@ -6023,7 +6117,25 @@
       }
     },
     "Search" : {
-
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szukaj"
+          }
+        }
+      }
+    },
+    "Seeders" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seederzy"
+          }
+        }
+      }
     },
     "Seeding" : {
       "localizations" : {
@@ -6665,6 +6777,17 @@
         }
       }
     },
+    "Software" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oprogramowanie"
+          }
+        }
+      }
+    },
     "Sort By" : {
       "localizations" : {
         "ja" : {
@@ -6746,7 +6869,14 @@
       }
     },
     "Start" : {
-
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozpocznij"
+          }
+        }
+      }
     },
     "State" : {
       "localizations" : {
@@ -7305,6 +7435,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "傳輸"
+          }
+        }
+      }
+    },
+    "TV shows" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seriale"
           }
         }
       }

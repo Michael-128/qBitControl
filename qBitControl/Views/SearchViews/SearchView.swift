@@ -24,12 +24,18 @@ struct SearchView: View {
                             }
                         }
                     }
+                    
+                    Picker("Category", selection: $viewModel.category) {
+                        ForEach(self.viewModel.categoriesArray, id: \.self) { category in
+                            Text(LocalizedStringKey(category.name)).tag(category)
+                        }
+                    }
                 }
                 
                 if viewModel.isResponse {
-                    Section(header: Text("\(viewModel.lastestTotal)" + " " + "results")) {
-                        ForEach(viewModel.latestResults, id: \.hashValue) { result in
-                            SearchRowView(result: result)
+                    Section(header: Text("\(viewModel.lastestTotal)") + Text(" ") + Text("results")) {
+                        ForEach(viewModel.latestResults, id: \.id) { result in
+                            SearchRowView(result: result, onTap: self.viewModel.onRowTap)
                         }
                     }
                 }
@@ -50,6 +56,6 @@ struct SearchView: View {
             }
         }.sheet(isPresented: $viewModel.isFilterSheet) {
             SearchFiltersView(viewModel: viewModel)
-        }
+        }.sheet(isPresented: $viewModel.isTorrentAddSheet) { if let url = URL(string: self.viewModel.tappedResult?.fileName ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
     }
 }

@@ -2,18 +2,28 @@ import SwiftUI
 
 class SearchViewModel: ObservableObject {
     @Published var query: String = ""
-    @Published var category: String = "all"
+    @Published var category: SearchCategory = SearchCategory(name: "All categories", id: "all")
     @Published var sortBy: SearchSortOptions = .seeders
     @Published var isDescending: Bool = true
+    
+    @Published var tappedResult: SearchResult?
+    
+    @Published var categories: Set<SearchCategory> = []
+    var categoriesArray: [SearchCategory] {
+        Array(self.categories).sorted { $0.name < $1.name }
+    }
+    
     
     @Published var searchId: Int?
     
     @Published var isFilterSheet: Bool = false
+    @Published var isTorrentAddSheet: Bool = false
     
     @Published var latestResponse: SearchResponse?
     
     init() {
         self.loadFilters()
+        self.fetchCategories()
     }
     
     var latestResults: [SearchResult] {
@@ -45,7 +55,7 @@ class SearchViewModel: ObservableObject {
         if(isRunning) { return }
         if(query.isEmpty) { return }
         
-        qBittorrent.getSearchStart(pattern: self.query, category: self.category, completionHandler: { result in
+        qBittorrent.getSearchStart(pattern: self.query, category: self.category.id, completionHandler: { result in
             DispatchQueue.main.async {
                 self.searchId = result.id
                 
@@ -126,5 +136,24 @@ class SearchViewModel: ObservableObject {
         
         self.isDescending = defaults.bool(forKey: self.prepareKey("isDescending"))
         print(self.isDescending)
+    }
+    
+    private func fetchCategories() {
+        var categories: Set<SearchCategory> = []
+        
+        qBittorrent.getSearchPlugins(completionHandler: { plugins in
+            plugins.forEach { plugin in
+                categories = categories.union(plugin.supportedCategories ?? [])
+            }
+            
+            DispatchQueue.main.async {
+                self.categories = categories
+            }
+        })
+    }
+    
+    func onRowTap(result: SearchResult) {
+        self.tappedResult = result
+        self.isTorrentAddSheet.toggle()
     }
 }

@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SearchRowView: View {
     let result: SearchResult
-    @State private var isTorrentAddSheet: Bool = false
+    let onTap: (SearchResult) -> Void
     
     var body: some View {
         VStack {
@@ -28,7 +28,7 @@ struct SearchRowView: View {
                 .foregroundStyle(Color.gray)
         }.contentShape(Rectangle())
             .onTapGesture {
-                self.isTorrentAddSheet.toggle()
-            }.sheet(isPresented: $isTorrentAddSheet) { if let url = URL(string: result.fileUrl ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
+                self.onTap(result)
+            }
     }
 }
