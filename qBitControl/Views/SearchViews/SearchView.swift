@@ -56,6 +56,6 @@ struct SearchView: View {
             }
         }.sheet(isPresented: $viewModel.isFilterSheet) {
             SearchFiltersView(viewModel: viewModel)
-        }.sheet(isPresented: $viewModel.isTorrentAddSheet) { if let url = URL(string: self.viewModel.tappedResult?.fileName ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
+        }.sheet(isPresented: $viewModel.isTorrentAddSheet) { if let url = URL(string: self.viewModel.tappedResult?.fileUrl ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
     }
 }
