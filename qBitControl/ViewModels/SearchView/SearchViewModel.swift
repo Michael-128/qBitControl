@@ -66,7 +66,7 @@ class SearchViewModel: ObservableObject {
         })
     }
     
-    private func endSearch() {
+    func endSearch() {
         DispatchQueue.main.async {
             self.searchId = nil
         }

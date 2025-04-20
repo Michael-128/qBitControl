@@ -13,14 +13,18 @@ struct SearchView: View {
                             .autocapitalization(.none)
                             .keyboardType(.default)
                         
-                        Button {
-                            viewModel.startSearch()
-                        } label: {
-                            if viewModel.isRunning {
-                                Text("Running...")
-                                    .foregroundStyle(.gray)
-                            } else {
+                        if !viewModel.isRunning {
+                            Button {
+                                viewModel.startSearch()
+                            } label: {
                                 Text("Start")
+                            }
+                        } else {
+                            Button {
+                                viewModel.endSearch()
+                            } label: {
+                                Text("Stop")
+                                    .foregroundStyle(.red)
                             }
                         }
                     }
