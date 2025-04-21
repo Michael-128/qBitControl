@@ -5,8 +5,8 @@ qBittorrent remote client for iOS devices.
 
 <img class="product-img" src="https://github.com/user-attachments/assets/7ece56e7-6062-49a3-8c2b-c17d221a9b55" width="19%"/>
 <img class="product-img" src="https://github.com/user-attachments/assets/ae05c542-2396-4cf3-9a58-a7f15f713ea4" width="19%"/>
-<img class="product-img" src="https://github.com/user-attachments/assets/ebbf8fef-8037-45ec-b6f8-720b28c4786a" width="19%"/>
-<img class="product-img" src="https://github.com/user-attachments/assets/67a0e58c-c986-4c69-9a40-3639395a24c4" width="19%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/a2db5d02-4f21-415b-9f04-85b982faeeac" width="19%"/>
+<img class="product-img" src="https://github.com/user-attachments/assets/a2136751-f70c-439a-b1a8-097ae470285e" width="19%"/>
 <img class="product-img" src="https://github.com/user-attachments/assets/2d862f78-3666-4b77-a328-0d1236f80659" width="19%"/>
 
 
