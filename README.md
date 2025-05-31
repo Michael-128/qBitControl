@@ -23,15 +23,11 @@ Get qBitControl by adding Michael-128 source from the list of recommended source
 - AltStore PAL: `https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json`
 - AltStore: `https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json`
 
-<a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json"><img src="https://github.com/user-attachments/assets/0cadc474-ca12-4b83-b04c-2962087cabcb" alt="Add to AltStore PAL" height="60"></a>
-
-<a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json"><img src="https://github.com/user-attachments/assets/f4b0d41e-6e4a-4cb6-a500-6bbaeaf4b41a" alt="Add to AltStore Classic" height="60"></a>
+<a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json"><img src="https://github.com/user-attachments/assets/0cadc474-ca12-4b83-b04c-2962087cabcb" alt="Add to AltStore PAL" height="50"></a>
 &nbsp;
-<a href="https://intradeus.github.io/http-protocol-redirector?r=sidestore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json"><img src="https://github.com/user-attachments/assets/6e819693-91eb-40d1-b246-7934505623db" alt="Add to SideStore" height="60"></a>
+<a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json"><img src="https://github.com/user-attachments/assets/f4b0d41e-6e4a-4cb6-a500-6bbaeaf4b41a" alt="Add to AltStore Classic" height="50"></a>
 &nbsp;
-<a href="https://intradeus.github.io/http-protocol-redirector?r=feather://source/https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json"><img src="https://github.com/user-attachments/assets/5436ea36-c93b-4477-a663-6cadcfa736a3" alt="Add to Feather" height="60"></a>
-
-<a href="https://github.com/Michael-128/qBitControl/releases/latest"><img src="https://github.com/user-attachments/assets/97353241-36e4-4048-a9e2-f9509d847124" alt="Download from GitHub" height="60"></a>
+<a href="https://github.com/Michael-128/qBitControl/releases/latest"><img src="https://github.com/user-attachments/assets/97353241-36e4-4048-a9e2-f9509d847124" alt="Download from GitHub" height="50"></a>
 
 ## Features ✨
 - Add torrents via .torrent files or magnet links.
