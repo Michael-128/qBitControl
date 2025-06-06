@@ -3,12 +3,8 @@
 
 qBittorrent remote client for iOS devices.
 
-<img class="product-img" src="https://github.com/user-attachments/assets/7ece56e7-6062-49a3-8c2b-c17d221a9b55" width="19%"/>
-<img class="product-img" src="https://github.com/user-attachments/assets/ae05c542-2396-4cf3-9a58-a7f15f713ea4" width="19%"/>
-<img class="product-img" src="https://github.com/user-attachments/assets/a2db5d02-4f21-415b-9f04-85b982faeeac" width="19%"/>
-<img class="product-img" src="https://github.com/user-attachments/assets/a2136751-f70c-439a-b1a8-097ae470285e" width="19%"/>
-<img class="product-img" src="https://github.com/user-attachments/assets/2d862f78-3666-4b77-a328-0d1236f80659" width="19%"/>
-
+| ![](https://github.com/user-attachments/assets/7ece56e7-6062-49a3-8c2b-c17d221a9b55) | ![](https://github.com/user-attachments/assets/ae05c542-2396-4cf3-9a58-a7f15f713ea4) | ![](https://github.com/user-attachments/assets/a2db5d02-4f21-415b-9f04-85b982faeeac) | ![](https://github.com/user-attachments/assets/a2136751-f70c-439a-b1a8-097ae470285e) | ![](https://github.com/user-attachments/assets/2d862f78-3666-4b77-a328-0d1236f80659) |
+|:--:|:--:|:--:|:--:|:--:|
 
 
 <!--<img class="product-img" src="https://github.com/Michael-128/qBitControl/assets/116978510/04fa9256-e5dc-420c-8709-79064bb82044" width="22.5%"/>
@@ -22,6 +18,12 @@ qBitControl is now available on AltStore PAL, allowing users located in the EU t
 Get qBitControl by adding Michael-128 source from the list of recommended sources or via pasting the link below:
 - AltStore PAL: `https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json`
 - AltStore: `https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json`
+
+<a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source.json"><img src="https://github.com/user-attachments/assets/0cadc474-ca12-4b83-b04c-2962087cabcb" alt="Add to AltStore PAL" height="50"></a>
+&nbsp;
+<a href="https://intradeus.github.io/http-protocol-redirector?r=altstore://source?url=https://raw.githubusercontent.com/Michael-128/qBitControl-releases/main/source-classic.json"><img src="https://github.com/user-attachments/assets/f4b0d41e-6e4a-4cb6-a500-6bbaeaf4b41a" alt="Add to AltStore Classic" height="50"></a>
+&nbsp;
+<a href="https://github.com/Michael-128/qBitControl/releases/latest"><img src="https://github.com/user-attachments/assets/97353241-36e4-4048-a9e2-f9509d847124" alt="Download from GitHub" height="50"></a>
 
 ## Features ✨
 - Add torrents via .torrent files or magnet links.
