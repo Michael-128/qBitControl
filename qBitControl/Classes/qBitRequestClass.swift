@@ -7,6 +7,26 @@ import Foundation
 
 
 class qBitRequest {
+    static private var basicAuth: Server.BasicAuth?
+    
+    static func setBasicAuth(auth: Server.BasicAuth?) {
+        self.basicAuth = auth
+    }
+    
+    private static func getSession() -> URLSession {
+        let configuration = URLSessionConfiguration.default
+        
+        if let basicAuth = qBitRequest.basicAuth {
+            // Set the auth header
+            configuration.httpAdditionalHeaders = [
+                "Authorization": "Basic \(basicAuth.getAuthString())"
+            ]
+        }
+        
+        // Return a new session with this configuration
+        return URLSession(configuration: configuration)
+    }
+    
     static func prepareURLRequest(path: String, queryItems: [URLQueryItem]) -> URLRequest {
         let cookie = qBittorrent.getCookie()
         let url = qBittorrent.getURL()
@@ -51,7 +71,7 @@ class qBitRequest {
     }
     
     static func requestTorrentListJSON(request: URLRequest, completionHandler: @escaping ([Torrent]) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -65,13 +85,13 @@ class qBitRequest {
     }
     
     static func requestUniversal(request: URLRequest) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
         }.resume()
     }
     
     static func requestTorrentManagement(request: URLRequest, statusCode: @escaping (Int?) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
             if let response = response as? HTTPURLResponse {
                 statusCode(response.statusCode)
@@ -82,7 +102,7 @@ class qBitRequest {
     }
     
     static func requestPreferencesJSON(request: URLRequest, completionHandler: @escaping (qBitPreferences) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -96,7 +116,7 @@ class qBitRequest {
     }
     
     static func requestSearchStart(request: URLRequest, completionHandler: @escaping (SearchStartResult) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -110,7 +130,7 @@ class qBitRequest {
     }
     
     static func requestSearchResults(request: URLRequest, completionHandler: @escaping (SearchResponse) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -124,7 +144,7 @@ class qBitRequest {
     }
     
     static func requestSearchPlugins(request: URLRequest, completionHandler: @escaping ([SearchPlugin]) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -138,7 +158,7 @@ class qBitRequest {
     }
     
     static func requestGlobalTransferInfo(request: URLRequest, completionHandler: @escaping (GlobalTransferInfo) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -152,7 +172,7 @@ class qBitRequest {
     }
     
     static func requestMainData(request: URLRequest, completionHandler: @escaping (MainData) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -167,7 +187,7 @@ class qBitRequest {
     
     
     static func requestPeersJSON(request: URLRequest, completionHandler: @escaping (Peers) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -181,7 +201,7 @@ class qBitRequest {
     }
     
     static func requestTrackersJSON(request: URLRequest, completionHandler: @escaping ([Tracker]) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -195,7 +215,7 @@ class qBitRequest {
     }
     
     static func requestFilesJSON(request: URLRequest, completionHandler: @escaping ([File]) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -209,7 +229,7 @@ class qBitRequest {
     }
     
     static func requestCategoriesJSON(request: URLRequest, completionHandler: @escaping ([String: Category]) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -223,7 +243,7 @@ class qBitRequest {
     }
     
     static func requestVersion(request: URLRequest, completionHandler: @escaping (Version) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data, let versionData = String(data: data, encoding: .utf8)  {
                     let versionString = versionData.filter { "0123456789.".contains($0) }
@@ -237,7 +257,7 @@ class qBitRequest {
     }
     
     static func requestTagsJSON(request: URLRequest, completionHandler: @escaping ([String]) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
                 data, response, error in
                 if let data = data {
                     do {
@@ -251,7 +271,7 @@ class qBitRequest {
     }
     
     static func requestRSSFeedJSON(request: URLRequest, completion: @escaping (RSSNode) -> Void) {
-        URLSession.shared.dataTask(with: request) {
+        self.getSession().dataTask(with: request) {
             data, response, error in
                 
             if let data = data {

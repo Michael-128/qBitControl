@@ -14,6 +14,7 @@ class ServerAddViewModel: ObservableObject {
     @Published var url = ""
     @Published var username = ""
     @Published var password = ""
+    @Published var basicAuth: Server.BasicAuth?
     @Published var isCheckConnection = true;
     
     @Published var isInvalidAlert = false;
@@ -34,6 +35,7 @@ class ServerAddViewModel: ObservableObject {
             url = server.url
             username = server.username
             password = server.password
+            basicAuth = server.basicAuth
         }
     }
     
@@ -83,7 +85,7 @@ class ServerAddViewModel: ObservableObject {
         if(!validateInputs()) { return; }
         if(!validateIsConnecting()) { return; }
         
-        let server = Server(name: friendlyName, url: url, username: username, password: password)
+        let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth)
         
         if(!isCheckConnection) {
             if let editServerId = self.editServerId { serversHelper.removeServer(id: editServerId) }

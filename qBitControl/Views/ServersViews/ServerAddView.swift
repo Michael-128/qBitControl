@@ -37,6 +37,14 @@ struct ServerAddView: View {
                 }
                 
                 Section {
+                    NavigationLink {
+                        ServerAdvancedView(basicAuth: $viewModel.basicAuth)
+                    } label: {
+                        Text("Advanced")
+                    }
+                }
+                
+                Section {
                     Toggle(isOn: $viewModel.isCheckConnection, label: {
                         Text("Check Connection")
                     })
