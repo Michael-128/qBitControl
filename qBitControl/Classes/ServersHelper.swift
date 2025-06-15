@@ -96,7 +96,7 @@ class ServersHelper: ObservableObject {
     
     func checkConnection(server: Server, result: @escaping (Bool) -> Void) {
         Task {
-            await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
+            await Auth.getCookie(url: server.url, username: server.username, password: server.password, basicAuth: server.basicAuth, isSuccess: {
                 success in
                 result(success);
             }, setCookie: false)
@@ -107,7 +107,7 @@ class ServersHelper: ObservableObject {
         connectingServerId = server.id
         
         Task {
-            await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
+            await Auth.getCookie(url: server.url, username: server.username, password: server.password, basicAuth: server.basicAuth, isSuccess: {
                 success in
                 DispatchQueue.main.async {
                     if let result = result {

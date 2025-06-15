@@ -16,7 +16,7 @@ class Auth {
         cookies[id] = cookie
     }
     
-    static func getCookie(url: String, username: String, password: String, isSuccess: @escaping (Bool) -> Void, setCookie: Bool = true) async {
+    static func getCookie(url: String, username: String, password: String, basicAuth: Server.BasicAuth? = nil, isSuccess: @escaping (Bool) -> Void, setCookie: Bool = true) async {
         let urlString = url
         guard let url = URL(string: "\(url)/api/v2/auth/login") else { return }
 
@@ -37,6 +37,12 @@ class Auth {
 
         let sessionConfiguration = URLSessionConfiguration.default
         sessionConfiguration.timeoutIntervalForRequest = 10
+        if let basicAuth = basicAuth {
+            sessionConfiguration.httpAdditionalHeaders = [
+                "Authorization": "Basic \(basicAuth.getAuthString())"
+            ]
+        }
+        
         let session = URLSession(configuration: sessionConfiguration)
 
         await session.reset()
@@ -48,6 +54,7 @@ class Auth {
                   if setCookie {
                       qBittorrent.setURL(url: urlString)
                       qBittorrent.setCookie(cookie: cookie)
+                      qBitRequest.setBasicAuth(auth: basicAuth)
                   }
                   isSuccess(true)
               } else {
