@@ -52,7 +52,7 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Information")) {
-                    CustomLabelView(label: "Name", value: viewModel.torrent.name)
+                    CustomLabelView(label: "Name",lineLimit: 2, value: viewModel.torrent.name)
                     CustomLabelView(label: "Added On", value: viewModel.getAddedOn())
                     
                     NavigationLink {

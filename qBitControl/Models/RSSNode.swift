@@ -83,3 +83,13 @@ final class RSSNode: Decodable, Identifiable {
         }
     }
 }
+
+extension RSSNode {
+    func getAllFeeds() -> [RSSFeed] {
+        var allFeeds = feeds
+        for node in nodes {
+            allFeeds.append(contentsOf: node.getAllFeeds())
+        }
+        return allFeeds
+    }
+}

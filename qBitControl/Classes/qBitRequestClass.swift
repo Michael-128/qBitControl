@@ -283,5 +283,19 @@ class qBitRequest {
             }
         }.resume()
     }
+    
+    static func requestCommonData(request: URLRequest) async -> QBResult<Data, Error> {
+        do {
+            let response = try await URLSession.shared.data(for: request)
+            return .success(response.0)
+        } catch {
+            return .failure(error)
+        }
+    }
 
+}
+
+enum QBResult<data, error: Error> {
+    case success(data)
+    case failure(error)
 }

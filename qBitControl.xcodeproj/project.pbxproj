@@ -94,6 +94,12 @@
 		90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */; };
 		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
 		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
+		9BAE3A1D2E094E8100678B11 /* Log.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BAE3A1C2E094E8100678B11 /* Log.swift */; };
+		9BCE0C502E0401D600895F02 /* RSSRulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C4F2E0401D600895F02 /* RSSRulesView.swift */; };
+		9BCE0C522E0403AF00895F02 /* RSSRule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C512E0403AF00895F02 /* RSSRule.swift */; };
+		9BCE0C542E04049600895F02 /* RSSRulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C532E04049600895F02 /* RSSRulesViewModel.swift */; };
+		9BCE0C562E041B8C00895F02 /* RSSRuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C552E041B8C00895F02 /* RSSRuleDetailView.swift */; };
+		9BCE0C582E042CCA00895F02 /* PathDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C572E042CCA00895F02 /* PathDefine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -205,6 +211,12 @@
 		90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitRequestClass.swift; sourceTree = "<group>"; };
 		90FA253529190D0400DC8F0B /* FileNodeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNodeClass.swift; sourceTree = "<group>"; };
 		90FF93462C8707BF001CDCE4 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
+		9BAE3A1C2E094E8100678B11 /* Log.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Log.swift; sourceTree = "<group>"; };
+		9BCE0C4F2E0401D600895F02 /* RSSRulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRulesView.swift; sourceTree = "<group>"; };
+		9BCE0C512E0403AF00895F02 /* RSSRule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRule.swift; sourceTree = "<group>"; };
+		9BCE0C532E04049600895F02 /* RSSRulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRulesViewModel.swift; sourceTree = "<group>"; };
+		9BCE0C552E041B8C00895F02 /* RSSRuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRuleDetailView.swift; sourceTree = "<group>"; };
+		9BCE0C572E042CCA00895F02 /* PathDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDefine.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -254,6 +266,8 @@
 				90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */,
 				90DCA7E42B51C393008A9C1B /* ServersHelper.swift */,
 				90FF93462C8707BF001CDCE4 /* AppInfo.swift */,
+				9BCE0C572E042CCA00895F02 /* PathDefine.swift */,
+				9BAE3A1C2E094E8100678B11 /* Log.swift */,
 			);
 			path = Classes;
 			sourceTree = "<group>";
@@ -297,6 +311,7 @@
 				90726B142CDA22160032993E /* Peers.swift */,
 				90726B152CDA22160032993E /* qBitPreferences.swift */,
 				90AE89332CDB7316000E0276 /* RSSNode.swift */,
+				9BCE0C512E0403AF00895F02 /* RSSRule.swift */,
 				90726B162CDA22160032993E /* RSSFeed.swift */,
 				90726B172CDA22160032993E /* Server.swift */,
 				90726B182CDA22160032993E /* ServerAction.swift */,
@@ -316,6 +331,8 @@
 				90726B332CDA22190032993E /* RSSView.swift */,
 				90AE89382CDBEC47000E0276 /* RSSNodeView.swift */,
 				90AE893A2CDBEDF3000E0276 /* RSSFeedView.swift */,
+				9BCE0C4F2E0401D600895F02 /* RSSRulesView.swift */,
+				9BCE0C552E041B8C00895F02 /* RSSRuleDetailView.swift */,
 			);
 			path = RSSViews;
 			sourceTree = "<group>";
@@ -480,6 +497,7 @@
 			children = (
 				909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */,
 				90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */,
+				9BCE0C532E04049600895F02 /* RSSRulesViewModel.swift */,
 			);
 			path = RSSView;
 			sourceTree = "<group>";
@@ -548,7 +566,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1500;
+				LastUpgradeCheck = 1630;
 				TargetAttributes = {
 					9082FA1E29080E53006C3960 = {
 						CreatedOnToolsVersion = 14.0.1;
@@ -625,6 +643,7 @@
 			files = (
 				907C632D2DAEDC28004B1F41 /* SearchViewModel.swift in Sources */,
 				90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */,
+				9BCE0C562E041B8C00895F02 /* RSSRuleDetailView.swift in Sources */,
 				90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */,
 				907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */,
 				90BA88552B2206F100C8A342 /* LocalNetworkPermissionClass.swift in Sources */,
@@ -640,6 +659,7 @@
 				9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */,
 				907C63282DAED94A004B1F41 /* SearchView.swift in Sources */,
 				90726B572CDA22190032993E /* ServerRowView.swift in Sources */,
+				9BCE0C502E0401D600895F02 /* RSSRulesView.swift in Sources */,
 				90726B582CDA22190032993E /* ServersView.swift in Sources */,
 				90726B592CDA22190032993E /* CustomLabelView.swift in Sources */,
 				907023362CDA6592007B2199 /* ChangePathView.swift in Sources */,
@@ -664,6 +684,8 @@
 				907023322CDA62FD007B2199 /* TorrentListView.swift in Sources */,
 				90726B682CDA22190032993E /* TrackersView.swift in Sources */,
 				90726B692CDA22190032993E /* TorrentDetailsView.swift in Sources */,
+				9BAE3A1D2E094E8100678B11 /* Log.swift in Sources */,
+				9BCE0C522E0403AF00895F02 /* RSSRule.swift in Sources */,
 				90726B6A2CDA22190032993E /* FiltersMenuView.swift in Sources */,
 				90726B6B2CDA22190032993E /* PeerDetailsView.swift in Sources */,
 				90726B6C2CDA22190032993E /* TorrentRowView.swift in Sources */,
@@ -687,6 +709,7 @@
 				90726B232CDA22160032993E /* GlobalTransferInfo.swift in Sources */,
 				90726B242CDA22160032993E /* MainData.swift in Sources */,
 				90726B252CDA22160032993E /* PartialServerState.swift in Sources */,
+				9BCE0C542E04049600895F02 /* RSSRulesViewModel.swift in Sources */,
 				90AE89322CDB6F00000E0276 /* RSSViewModel.swift in Sources */,
 				909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */,
 				90726B262CDA22160032993E /* Peer.swift in Sources */,
@@ -697,6 +720,7 @@
 				90726B2B2CDA22160032993E /* ServerAction.swift in Sources */,
 				90726B2C2CDA22160032993E /* ServerState.swift in Sources */,
 				90726B2D2CDA22160032993E /* SheetIdentifier.swift in Sources */,
+				9BCE0C582E042CCA00895F02 /* PathDefine.swift in Sources */,
 				90726B2E2CDA22160032993E /* Torrent.swift in Sources */,
 				90726B2F2CDA22160032993E /* Tracker.swift in Sources */,
 				901230542DB02EAE0022FD4C /* SearchResult.swift in Sources */,
