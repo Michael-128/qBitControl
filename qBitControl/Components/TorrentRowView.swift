@@ -21,7 +21,7 @@ struct TorrentRowView: View {
         VStack {
             HStack(alignment: .bottom) {
                 Text(name)
-                    .lineLimit(1)
+                    .lineLimit(2)
                 Spacer()
             }.padding(.bottom, -1)
             

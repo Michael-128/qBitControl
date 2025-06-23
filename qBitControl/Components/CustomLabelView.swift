@@ -4,6 +4,7 @@ import SwiftUI
 
 struct CustomLabelView: View {
     public var label: LocalizedStringKey
+    public var lineLimit: Int = 1
     public var value: String
     
     var body: some View {
@@ -13,7 +14,7 @@ struct CustomLabelView: View {
                 Spacer()
                 Text(NSLocalizedString(value, comment: ""))
                     .foregroundColor(Color.gray)
-                    .lineLimit(1)
+                    .lineLimit(lineLimit)
             }
         }.foregroundColor(.primary)
     }
