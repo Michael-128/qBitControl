@@ -31,8 +31,15 @@ class qBitData: ObservableObject {
     }
     
     func getMainData() {
-        qBittorrent.getMainData(rid: rid) { mainData in
+        qBittorrent.getMainData(rid: rid) { result in
             DispatchQueue.main.async {
+                guard case .success(let mainData) = result else {
+                    if case .failure(let error) = result {
+                       print("Error: \(error)")
+                    }
+                    return
+                }
+                
                 self.rid = mainData.rid
                 
                 if let partialServerState = mainData.server_state {

@@ -12,6 +12,7 @@ class qBittorrent {
     static private var url = "http://0.0.0.0"
     static private var preferences: qBitPreferences?
     static private var version: Version = Version(major: 0, minor: 0, patch: 0)
+    static private var networkManager: NetworkManager = .init()
     
     static func initialize() {
         self.fetchVersion()
@@ -21,8 +22,13 @@ class qBittorrent {
         if(!isCookie()) { return; }
         
         getPreferences(completionHandler: {
-            preferences in
-            self.preferences = preferences;
+            result in
+            switch(result) {
+            case .success(let preferences):
+                self.preferences = preferences;
+            case .failure(let networkError):
+                print(networkError)
+            }
         })
     }
     
@@ -268,24 +274,16 @@ class qBittorrent {
     }
 
     
-    static func getGlobalTransferInfo(completionHandler: @escaping (GlobalTransferInfo) -> Void) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/info")
-        
-        qBitRequest.requestGlobalTransferInfo(request: request, completionHandler: completionHandler)
+    static func getGlobalTransferInfo(completionHandler: @escaping (Result<GlobalTransferInfo, NetworkError>) -> Void) {
+        networkManager.performDataRequest(path: "/api/v2/transfer/info", decodingType: GlobalTransferInfo.self, completion: completionHandler)
     }
     
-    static func getMainData(rid: Int = 0, completionHandler: @escaping (MainData) -> Void) {
-        let path = "/api/v2/sync/maindata"
-        
-        let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "rid", value: "\(rid)")])
-        
-        qBitRequest.requestMainData(request: request, completionHandler: completionHandler)
+    static func getMainData(rid: Int = 0, completionHandler: @escaping (Result<MainData, NetworkError>) -> Void) {
+        networkManager.performDataRequest(path: "/api/v2/sync/maindata", queryItems: [URLQueryItem(name: "rid", value: "\(rid)")], decodingType: MainData.self, completion: completionHandler)
     }
     
-    static func getPreferences(completionHandler: @escaping (qBitPreferences) -> Void) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/app/preferences")
-        
-        qBitRequest.requestPreferencesJSON(request: request, completionHandler: completionHandler)
+    static func getPreferences(completionHandler: @escaping (Result<qBitPreferences, NetworkError>) -> Void) {
+        networkManager.performDataRequest(path: "/api/v2/app/preferences", decodingType: qBitPreferences.self, completion: completionHandler)
     }
     
     static func getSearchStart(pattern: String, category: String, plugins: Bool = true, completionHandler: @escaping (SearchStartResult) -> Void) {

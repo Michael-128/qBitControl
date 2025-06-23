@@ -129,13 +129,15 @@ class TorrentAddViewModel: ObservableObject {
     func getSavePath() {
         if(!self.savePath.isEmpty) { return; }
         
-        qBittorrent.getPreferences(completionHandler: { preferences in
+        qBittorrent.getPreferences(completionHandler: { result in
             DispatchQueue.main.async {
-                self.autoTmmEnabled = preferences.auto_tmm_enabled ?? false
-                
-                if !self.autoTmmEnabled {
-                    self.savePath = preferences.save_path ?? ""
-                    self.defaultSavePath = preferences.save_path ?? ""
+                if case .success(let preferences) = result {
+                    self.autoTmmEnabled = preferences.auto_tmm_enabled ?? false
+                    
+                    if !self.autoTmmEnabled {
+                        self.savePath = preferences.save_path ?? ""
+                        self.defaultSavePath = preferences.save_path ?? ""
+                    }
                 }
             }
         })
