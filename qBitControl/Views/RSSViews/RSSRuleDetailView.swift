@@ -13,7 +13,6 @@ struct RSSRuleDetailView: View {
     @ObservedObject var rule: RSSRuleModel
     @State private var selectedFeedURLs = Set<String>()
     @State private var savePathEnable = false
-    @State private var editMode: EditMode = .inactive
     @State private var nameValidError: LocalizedStringKey?
     let isAdd: Bool
     var allFeeds = RSSNodeViewModel.shared.rssRootNode.getAllFeeds()
@@ -38,27 +37,44 @@ struct RSSRuleDetailView: View {
                     }
                 }
                 Toggle("Using Regular Expressions",isOn: $rule.rule.useRegex)
-                RSSEditView(title: "Must Contain:", placeholder: "Must Contain:", text: $rule.rule.mustContain)
-                RSSEditView(title: "Must Not Contain:", placeholder: "Must Not Contain:", text: $rule.rule.mustNotContain)
-                RSSEditView(title: "Episode Filter:", placeholder: "Episode Filter:", text: $rule.rule.episodeFilter)
+                
+                if(rule.rule.useRegex) {
+                    TextField("Must Contain", text: $rule.rule.mustContain)
+                    TextField("Must Not Contain", text: $rule.rule.mustNotContain)
+                    TextField("Episode Filter", text: $rule.rule.episodeFilter)
+                }
+                
                 Toggle("Using Smart Filter",isOn: $rule.rule.smartFilter)
                 Toggle("Save Path", isOn: $savePathEnable)
-                TextField("Save To", text: $rule.rule.savePath, axis: .vertical)
-                    .disabled(!savePathEnable)
-                    .opacity(savePathEnable ? 1.0 : 0.6)
-                    .textFieldStyle(.roundedBorder)
+                
+                if(savePathEnable) {
+                    TextField("Save To", text: $rule.rule.savePath)
+                }
             }
             
             Section(header: Text("Rule Settings")) {
                 ForEach(allFeeds) { feed in
-                    VStack(alignment: .leading) {
-                        Text(feed.title.isEmpty ? "Feed" : feed.title)
-                        Text(feed.url ?? "Unknown URL").lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
+                    HStack {
+                        if(selectedFeedURLs.contains(feed.url ?? "")) {
+                            Image(systemName: "checkmark")
+                                .foregroundStyle(Color.accentColor)
+                        }
+                        
+                        VStack(alignment: .leading) {
+                            Text(feed.title.isEmpty ? "Feed" : feed.title)
+                            Text(feed.url ?? "Unknown URL").lineLimit(1)
+                                .foregroundColor(.secondary)
+                        }
+                    }.contentShape(Rectangle())
+                        .onTapGesture {
+                            if(selectedFeedURLs.contains(feed.url ?? "")) {
+                                selectedFeedURLs.remove(feed.url ?? "")
+                            } else {
+                                selectedFeedURLs.insert(feed.url ?? "")
+                            }
+                        }
                 }
             }
-            .environment(\.editMode, $editMode)
             if !isAdd {
                 Section(header: Text("Matching Articles")) {
                     ForEach(rule.filterResult) {
@@ -67,7 +83,6 @@ struct RSSRuleDetailView: View {
                 }
             }
         }
-        .environment(\.editMode, $editMode)
         .navigationTitle(isAdd ? NSLocalizedString("Add RSS Rule", comment: "")  : rule.title)
         .toolbar {
             isAdd ? Button("Add") {
@@ -79,7 +94,6 @@ struct RSSRuleDetailView: View {
         .onAppear {
             savePathEnable = !rule.rule.savePath.isEmpty
             selectedFeedURLs = Set(rule.rule.affectedFeeds)
-            editMode = .active
             loadFilterResult()
         }
         
@@ -105,27 +119,11 @@ struct RSSRuleDetailView: View {
     private func validateName() -> Bool {
         if rule.title.isEmpty {
             nameValidError = "Rule name cannot be empty"
-        } else if viewModel.rssRules.contains(where: { $0.title == rule.title }) {
-            nameValidError = "Rule name already exists"
         } else {
             nameValidError = nil
             return true
         }
         return false
-    }
-}
-
-struct RSSEditView: View {
-    let title: LocalizedStringKey
-    let placeholder: LocalizedStringKey
-    let text: Binding<String>
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-            TextField(placeholder, text: text, axis: .vertical)
-                .textFieldStyle(.roundedBorder)
-        }
     }
 }
 

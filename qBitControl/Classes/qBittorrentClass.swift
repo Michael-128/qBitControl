@@ -888,6 +888,7 @@ extension qBittorrent {
     static func setRSSRule(rule: RSSRuleModel) async -> Bool {
         guard let data = try? JSONEncoder().encode(rule.rule),
               let ruleDef = String(data: data, encoding: .utf8) else { return false }
+
         let request = qBitRequest.prepareURLRequest(path: .rssSetRule, queryItems: [URLQueryItem(name: "ruleName", value: rule.title), URLQueryItem(name: "ruleDef", value: ruleDef)])
         if case .success = await qBitRequest.requestCommonData(request: request) {
             return true

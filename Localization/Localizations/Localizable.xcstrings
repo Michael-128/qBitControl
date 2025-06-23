@@ -3181,7 +3181,11 @@
         }
       }
     },
+    "Episode Filter" : {
+
+    },
     "Episode Filter:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -4632,7 +4636,11 @@
         }
       }
     },
+    "Must Contain" : {
+
+    },
     "Must Contain:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -4654,7 +4662,11 @@
         }
       }
     },
+    "Must Not Contain" : {
+
+    },
     "Must Not Contain:" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -6509,9 +6521,6 @@
           }
         }
       }
-    },
-    "Rule name already exists" : {
-
     },
     "Rule name already exists." : {
       "extractionState" : "stale",
