@@ -575,45 +575,6 @@ class qBittorrent {
         qBitRequest.requestTrackersJSON(request: request, completionHandler: completionHandler)
     }
     
-    static func getRSSFeeds(withDate: Bool = true, completionHandler: @escaping (RSSNode) -> Void) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/items", queryItems: [URLQueryItem(name: "withData", value: "true")])
-        
-        qBitRequest.requestRSSFeedJSON(request: request, completion: { RSSNodes in completionHandler(RSSNodes) })
-    }
-    
-    static func addRSSFeed(url: String, path: String) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/addFeed", queryItems: [URLQueryItem(name: "url", value: url), URLQueryItem(name: "path", value: path)])
-        
-        qBitRequest.requestUniversal(request: request)
-    }
-    
-    static func addRSSFolder(path: String) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/addFolder", queryItems: [URLQueryItem(name: "path", value: path)])
-        
-        qBitRequest.requestUniversal(request: request)
-    }
-    
-    static func addRSSRemoveItem(path: String) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/removeItem", queryItems: [URLQueryItem(name: "path", value: path)])
-        
-        qBitRequest.requestUniversal(request: request)
-    }
-    
-    static func addRSSRefreshItem(path: String) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/refreshItem", queryItems: [URLQueryItem(name: "path", value: path)])
-        
-        qBitRequest.requestUniversal(request: request)
-    }
-    
-    static func moveRSSItem(itemPath: String, destPath: String) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/moveItem", queryItems: [
-            URLQueryItem(name: "itemPath", value: itemPath),
-            URLQueryItem(name: "destPath", value: destPath)
-        ])
-        
-        qBitRequest.requestUniversal(request: request)
-    }
-    
     static func removeTracker(hash: String, url: String) {
         let path = "/api/v2/torrents/removeTrackers"
 
@@ -871,4 +832,98 @@ class qBittorrent {
         
         return torrentsArray
     }*/
+}
+
+// MARK: - RSS
+extension qBittorrent {
+    static func getRSSFeeds(withDate: Bool = true, completionHandler: @escaping (RSSNode) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: .rssItems, queryItems: [URLQueryItem(name: "withData", value: "true")])
+        
+        qBitRequest.requestRSSFeedJSON(request: request, completion: { RSSNodes in completionHandler(RSSNodes) })
+    }
+    
+    static func addRSSFeed(url: String, path: String) {
+        let request = qBitRequest.prepareURLRequest(path: .rssAddFeed, queryItems: [URLQueryItem(name: "url", value: url), URLQueryItem(name: "path", value: path)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func addRSSFolder(path: String) {
+        let request = qBitRequest.prepareURLRequest(path: .rssAddFolder, queryItems: [URLQueryItem(name: "path", value: path)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func addRSSRemoveItem(path: String) {
+        let request = qBitRequest.prepareURLRequest(path: .rssRemoveItem, queryItems: [URLQueryItem(name: "path", value: path)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func addRSSRefreshItem(path: String) {
+        let request = qBitRequest.prepareURLRequest(path: .rssRefreshItem, queryItems: [URLQueryItem(name: "path", value: path)])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func moveRSSItem(itemPath: String, destPath: String) {
+        let request = qBitRequest.prepareURLRequest(path: .rssMoveItem, queryItems: [
+            URLQueryItem(name: "itemPath", value: itemPath),
+            URLQueryItem(name: "destPath", value: destPath)
+        ])
+        
+        qBitRequest.requestUniversal(request: request)
+    }
+    
+    static func getRSSRules() async -> [String: RSSRule] {
+        let request = qBitRequest.prepareURLRequest(path: .rssRules)
+        if case let .success(data) = await qBitRequest.requestCommonData(request: request) {
+            do {
+                return try JSONDecoder().decode([String: RSSRule].self, from: data)
+            } catch {
+                log(error.localizedDescription)
+            }
+        }
+        return [:]
+    }
+    
+    static func setRSSRule(rule: RSSRuleModel) async -> Bool {
+        guard let data = try? JSONEncoder().encode(rule.rule),
+              let ruleDef = String(data: data, encoding: .utf8) else { return false }
+        let request = qBitRequest.prepareURLRequest(path: .rssSetRule, queryItems: [URLQueryItem(name: "ruleName", value: rule.title), URLQueryItem(name: "ruleDef", value: ruleDef)])
+        if case .success = await qBitRequest.requestCommonData(request: request) {
+            return true
+        }
+        return false
+    }
+    
+    static func removeRSSRule(name: String) async -> Bool {
+        let request = qBitRequest.prepareURLRequest(path: .rssRemoveRule, queryItems: [URLQueryItem(name: "ruleName", value: name)])
+        if case .success = await qBitRequest.requestCommonData(request: request) {
+            return true
+        }
+        return false
+    }
+    
+    static func renameRSSRule(name: String, newName: String) async -> Bool {
+        let request = qBitRequest.prepareURLRequest(path: .rssRenameRule, queryItems: [URLQueryItem(name: "ruleName", value: name), URLQueryItem(name: "newRuleName", value: newName)])
+        if case .success = await qBitRequest.requestCommonData(request: request) {
+            return true
+        }
+        return false
+    }
+    
+    static func getArticlesMatching(name: String) async -> [String: [String]] {
+        let request = qBitRequest.prepareURLRequest(path: .rssMatchArticles, queryItems: [URLQueryItem(name: "ruleName", value: name)])
+        if case let .success(data) = await qBitRequest.requestCommonData(request: request) {
+            do {
+                let dic = try JSONDecoder().decode([String: [String]].self, from: data)
+                return dic
+            } catch {
+                log(error.localizedDescription)
+            }
+        }
+        return [:]
+    }
+
 }

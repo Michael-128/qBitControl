@@ -27,11 +27,16 @@ struct RSSNodeView: View {
     var body: some View {
         List {
             if isRootView {
-                Section(header: Text("Search")) {
+                Section(header: Text("Actions")) {
                     NavigationLink {
                         SearchView()
                     } label: {
                         Label("Search", systemImage: "magnifyingglass")
+                    }
+                    NavigationLink {
+                        RSSRulesView()
+                    } label: {
+                        Label("Download Rules", systemImage: "pencil.and.ruler")
                     }
                 }
             }
@@ -139,10 +144,19 @@ struct RSSNodeView: View {
                 self.oldRenamePath = self.getItemPath(item: itemTitle)
                 self.isRenameAlert.toggle()
             } label: { Label("Rename", systemImage: "pencil") }
+            Button {
+                UIPasteboard.general.string = self.feed(for: itemTitle)?.url
+            } label: {
+                Label("Copy URL", systemImage: "arrow.up.page.on.clipboard")
+            }
             Button(role: .destructive) {
                 qBittorrent.addRSSRemoveItem(path: self.getItemPath(item: itemTitle))
             } label: { Label("Remove", systemImage: "trash") }
         }
+    }
+    
+    func feed(for title: String) -> RSSFeed? {
+        return rssNode.feeds.first(where: { $0.title == title })
     }
     
     func refresh() { viewModel.getRssRootNode() }
