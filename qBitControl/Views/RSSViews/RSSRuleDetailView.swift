@@ -100,13 +100,15 @@ struct RSSRuleDetailView: View {
     }
     
     private func saveRule() {
-        guard validateName() else { return }
+        if isAdd, !validateName(){ return }
         rule.rule.affectedFeeds = Array(selectedFeedURLs)
         viewModel.setRSSRule(rule) { success in
-            if success {
+            guard success else { return }
+            viewModel.getRssRules()
+            if isAdd {
+                dismiss()
+            } else {
                 rule.getArticlesMatching()
-                viewModel.getRssRules()
-                if isAdd { dismiss() }
             }
         }
     }

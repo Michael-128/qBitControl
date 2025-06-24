@@ -47,11 +47,11 @@ class RSSRulesViewModel: ObservableObject {
         guard !isLoading else { return }
         isLoading = true
         Task {
-            _ = await qBittorrent.removeRSSRule(name: name)
+            let success = await qBittorrent.removeRSSRule(name: name)
             await MainActor.run {
                 isLoading = false
-                if let index = rssRules.firstIndex(where: { $0.title == name }) {
-                    rssRules.remove(at: index)
+                if success {
+                    rssRules.removeAll { $0.title == name }
                 }
             }
         }

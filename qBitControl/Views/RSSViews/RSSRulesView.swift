@@ -24,10 +24,8 @@ struct RSSRulesView: View {
                             rule.rule.enabled
                         }, set: {
                             rule.rule.enabled = $0
-                        }))
-                        .onChange(of: rule.rule.enabled) { _ in
                             viewModel.setRSSRule(rule)
-                        }
+                        }))
                     }.contextMenu {
                         ruleItemMenu(name: rule.title)
                     }
@@ -47,10 +45,7 @@ struct RSSRulesView: View {
                 content: {
                     NavigationView {
                         RSSRuleDetailView(
-                            rule: RSSRuleModel(
-                                title: "",
-                                rule: .defaultAdd
-                            ),
+                            rule: .defauleAddRule(),
                             isAdd: true
                         )
                     }
