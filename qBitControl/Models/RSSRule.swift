@@ -79,7 +79,7 @@ class RSSRuleModel: ObservableObject, Identifiable {
     
     let id = UUID()
     var title: String = ""
-    var rule: RSSRule
+    @Published var rule: RSSRule
     @Published var filterResult: [RSSMatchItem] = []
     private var isLoading: Bool = false
     
