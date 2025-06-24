@@ -6511,15 +6511,11 @@
       }
     },
     "Rule name already exists" : {
-
-    },
-    "Rule name already exists." : {
-      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ルール名はすでに存在します"
+            "value" : "ルール名はすでに存在します\n"
           }
         },
         "zh-Hans" : {
@@ -6537,15 +6533,11 @@
       }
     },
     "Rule name cannot be empty" : {
-
-    },
-    "Rule name cannot be empty." : {
-      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "ルール名は空にできません"
+            "value" : "ルール名は空欄にできません"
           }
         },
         "zh-Hans" : {

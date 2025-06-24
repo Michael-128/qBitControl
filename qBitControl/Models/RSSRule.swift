@@ -71,6 +71,12 @@ struct RSSRule: Codable {
 }
 
 class RSSRuleModel: ObservableObject, Identifiable {
+    struct RSSMatchItem: Identifiable {
+        let id = UUID()
+        var type: String
+        var title: String
+    }
+    
     let id = UUID()
     var title: String = ""
     var rule: RSSRule
@@ -80,6 +86,10 @@ class RSSRuleModel: ObservableObject, Identifiable {
     init(title: String, rule: RSSRule) {
         self.title = title
         self.rule = rule
+    }
+    
+    static func defauleAddRule() -> RSSRuleModel {
+        RSSRuleModel(title: "", rule: .defaultAdd)
     }
     
     func getArticlesMatching() {
@@ -96,10 +106,4 @@ class RSSRuleModel: ObservableObject, Identifiable {
             }
         }
     }
-}
-
-struct RSSMatchItem: Identifiable {
-    let id = UUID()
-    var type: String
-    var title: String
 }
