@@ -22,37 +22,41 @@ struct MainView: View {
                     }
                     .navigationTitle("qBitControl")
             } else {
-                TabView {
-                    TorrentListView()
-                        .tabItem {
-                            Label("Tasks", systemImage: "square.and.arrow.down.on.square")
-                        }
-                        .onChange(of: scenePhase) { phase in
-                            viewModel.reconnectIfNeeded(on: phase)
-                        }
-                    
-                    RSSView()
-                        .tabItem {
-                            Label("RSS", systemImage: "dot.radiowaves.up.forward")
-                        }
-                    
-                    StatsView()
-                        .tabItem {
-                            Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
-                        }
-                    
-                    ServersView()
-                        .tabItem {
-                            Label("Servers", systemImage: "server.rack")
-                        }
+                if #available(iOS 26.0, *) {
+                    mainTabView()
+                        .tabBarMinimizeBehavior(.onScrollDown)
+                } else {
+                    mainTabView()
                 }
             }
         }
     }
-}
-
-struct MainView_Previews: PreviewProvider {
-    static var previews: some View {
-        MainView()
+    
+    
+    func mainTabView() -> some View {
+        TabView {
+            TorrentListView()
+                .tabItem {
+                    Label("Tasks", systemImage: "square.and.arrow.down.on.square")
+                }
+                .onChange(of: scenePhase) { phase in
+                    viewModel.reconnectIfNeeded(on: phase)
+                }
+            
+            RSSView()
+                .tabItem {
+                    Label("RSS", systemImage: "dot.radiowaves.up.forward")
+                }
+            
+            StatsView()
+                .tabItem {
+                    Label("Stats", systemImage: "chart.line.uptrend.xyaxis")
+                }
+            
+            ServersView()
+                .tabItem {
+                    Label("Servers", systemImage: "server.rack")
+                }
+        }
     }
 }
