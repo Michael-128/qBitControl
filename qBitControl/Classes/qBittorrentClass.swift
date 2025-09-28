@@ -416,7 +416,8 @@ class qBittorrent {
     }
     
     static func pauseTorrents(hashes: [String]) {
-        let path = "/api/v2/torrents/pause"
+        let suffix = self.version.major == 5 ? "stop" : "pause"
+        let path = "/api/v2/torrents/\(suffix)"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))])
         
@@ -438,7 +439,8 @@ class qBittorrent {
     }
     
     static func resumeTorrents(hashes: [String]) {
-        let path = "/api/v2/torrents/resume"
+        let suffix = self.version.major == 5 ? "start" : "resume"
+        let path = "/api/v2/torrents/\(suffix)"
         
         let request = qBitRequest.prepareURLRequest(path: path, queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))])
         

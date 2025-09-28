@@ -16,7 +16,7 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                 Button {
                     selectedTorrents.removeAll()
                 } label: {
-                    Text("Deselect All")
+                    Image(systemName: "checklist.unchecked")
                 }
             } else {
                 Button {
@@ -25,8 +25,71 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                         selectedTorrents.insert(torrent)
                     }
                 } label: {
-                    Text("Select All")
+                    Image(systemName: "checklist.checked")
                 }
+            }
+        }
+        
+        if(selectedTorrents.count > 0 && SystemHelper.instance.isLiquidGlass) {
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    let selectedHashes = selectedTorrents.compactMap {
+                        torrent in
+                        torrent.hash
+                    }
+                    
+                    qBittorrent.resumeTorrents(hashes: selectedHashes)
+                    isSelectionMode = false
+                    selectedTorrents.removeAll()
+                } label: {
+                    Image(systemName: "play.fill")
+                }
+            }
+            
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    let selectedHashes = selectedTorrents.compactMap {
+                        torrent in
+                        torrent.hash
+                    }
+                    
+                    qBittorrent.pauseTorrents(hashes: selectedHashes)
+                    isSelectionMode = false
+                    selectedTorrents.removeAll()
+                } label: {
+                    Image(systemName: "pause.fill")
+                }
+            }
+            
+            ToolbarItem(placement: .topBarLeading) {
+                Button {
+                    isAlertDeleteSelected = true
+                } label: {
+                    Image(systemName: "trash.fill").foregroundStyle(Color(.red))
+                }.alert("Confirm Deletion", isPresented: $isAlertDeleteSelected, actions: {
+                    Button("Delete Selected Tasks", role: .destructive) {
+                        let selectedHashes = selectedTorrents.compactMap {
+                            torrent in
+                            torrent.hash
+                        }
+                        
+                        qBittorrent.deleteTorrents(hashes: selectedHashes)
+                        
+                        isSelectionMode = false
+                        selectedTorrents.removeAll()
+                    }
+                    Button("Delete Selected Tasks with Files", role: .destructive) {
+                        let selectedHashes = selectedTorrents.compactMap {
+                            torrent in
+                            torrent.hash
+                        }
+                        
+                        qBittorrent.deleteTorrents(hashes: selectedHashes, deleteFiles: true)
+                        
+                        isSelectionMode = false
+                        selectedTorrents.removeAll()
+                    }
+                })
             }
         }
         
@@ -38,12 +101,11 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                 
                 selectedTorrents.removeAll()
             } label: {
-                Text("Done")
-                    .fontWeight(.bold)
+                Image(systemName: "checkmark")
             }
         }
         
-        if(selectedTorrents.count > 0) {
+        if(selectedTorrents.count > 0 && !SystemHelper.instance.isLiquidGlass) {
             ToolbarItemGroup(placement: .bottomBar) {
                 HStack {
                     Button {
@@ -110,32 +172,36 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                         isAlertDeleteSelected = true
                     } label: {
                         Image(systemName: "trash.fill").foregroundStyle(Color(.red))
-                    }
-                }.alert("Confirm Deletion", isPresented: $isAlertDeleteSelected, actions: {
-                    Button("Delete Selected Tasks", role: .destructive) {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
+                    }.alert("Confirm Deletion", isPresented: $isAlertDeleteSelected, actions: {
+                        Button("Delete Selected Tasks", role: .destructive) {
+                            let selectedHashes = selectedTorrents.compactMap {
+                                torrent in
+                                torrent.hash
+                            }
+                            
+                            qBittorrent.deleteTorrents(hashes: selectedHashes)
+                            
+                            isSelectionMode = false
+                            selectedTorrents.removeAll()
                         }
-                        
-                        qBittorrent.deleteTorrents(hashes: selectedHashes)
-                        
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
-                    }
-                    Button("Delete Selected Tasks with Files", role: .destructive) {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
+                        Button("Delete Selected Tasks with Files", role: .destructive) {
+                            let selectedHashes = selectedTorrents.compactMap {
+                                torrent in
+                                torrent.hash
+                            }
+                            
+                            qBittorrent.deleteTorrents(hashes: selectedHashes, deleteFiles: true)
+                            
+                            isSelectionMode = false
+                            selectedTorrents.removeAll()
                         }
-                        
-                        qBittorrent.deleteTorrents(hashes: selectedHashes, deleteFiles: true)
-                        
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
-                    }
-                })
+                    })
+                }
             }
         }
+    }
+    
+    func removeButton() {
+        
     }
 }

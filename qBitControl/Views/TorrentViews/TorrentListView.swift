@@ -30,6 +30,8 @@ struct TorrentListView: View {
                 TorrentListHelperView(viewModel: torrentListHelperViewModel)
                     .navigationTitle(torrentListHelperViewModel.category == "All" ? NSLocalizedString("Tasks", comment: "Tasks") : torrentListHelperViewModel.category.capitalized)
             }
+            .toolbar(.visible, for: .tabBar)
+            .toolbarBackground(.visible, for: .bottomBar)
             .toolbar() {
                 TorrentListToolbar(torrents: $torrentListHelperViewModel.torrents, category: $torrentListHelperViewModel.category, isSelectionMode: $torrentListHelperViewModel.isSelectionMode, isFilterView: $isFilterView, selectedTorrents: $torrentListHelperViewModel.selectedTorrents)
             }

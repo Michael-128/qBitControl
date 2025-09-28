@@ -2534,6 +2534,7 @@
       }
     },
     "Deselect All" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -6709,6 +6710,7 @@
       }
     },
     "Select All" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

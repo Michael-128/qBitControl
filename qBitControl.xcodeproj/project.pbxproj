@@ -85,6 +85,7 @@
 		90BA88552B2206F100C8A342 /* LocalNetworkPermissionClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */; };
 		90BCFE8D2DB4262400A54003 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 90BCFE8C2DB4262400A54003 /* Localizable.xcstrings */; };
 		90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DCA7E42B51C393008A9C1B /* ServersHelper.swift */; };
+		90DF6C6F2E89BF21004562C1 /* SystemHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90DF6C6E2E89BF1E004562C1 /* SystemHelper.swift */; };
 		90E1D0542D30438F00B81F12 /* Version.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E1D0532D30438C00B81F12 /* Version.swift */; };
 		90E6DD6F2DFF407000BC1D76 /* ServerAdvancedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E6DD6E2DFF406A00BC1D76 /* ServerAdvancedView.swift */; };
 		90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */; };
@@ -194,6 +195,7 @@
 		90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNetworkPermissionClass.swift; sourceTree = "<group>"; };
 		90BCFE8C2DB4262400A54003 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		90DCA7E42B51C393008A9C1B /* ServersHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersHelper.swift; sourceTree = "<group>"; };
+		90DF6C6E2E89BF1E004562C1 /* SystemHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SystemHelper.swift; sourceTree = "<group>"; };
 		90E1D0532D30438C00B81F12 /* Version.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Version.swift; sourceTree = "<group>"; };
 		90E6DD6E2DFF406A00BC1D76 /* ServerAdvancedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAdvancedView.swift; sourceTree = "<group>"; };
 		90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitDataClass.swift; sourceTree = "<group>"; };
@@ -241,6 +243,7 @@
 		903DED2C290A8A2000FB36D6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				90DF6C6E2E89BF1E004562C1 /* SystemHelper.swift */,
 				90EF6A482909267A001E9E7F /* AuthClass.swift */,
 				9082FA4C29082208006C3960 /* qBittorrentClass.swift */,
 				90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */,
@@ -683,6 +686,7 @@
 				909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */,
 				90726B262CDA22160032993E /* Peer.swift in Sources */,
 				90726B272CDA22160032993E /* Peers.swift in Sources */,
+				90DF6C6F2E89BF21004562C1 /* SystemHelper.swift in Sources */,
 				90726B282CDA22160032993E /* qBitPreferences.swift in Sources */,
 				90726B292CDA22160032993E /* RSSFeed.swift in Sources */,
 				90726B2A2CDA22160032993E /* Server.swift in Sources */,
@@ -856,7 +860,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 626XV358Y5;
 				ENABLE_PREVIEWS = YES;
@@ -874,7 +878,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitManager;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -892,7 +896,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 17;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = 626XV358Y5;
 				ENABLE_PREVIEWS = YES;
@@ -910,7 +914,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.3;
+				MARKETING_VERSION = 1.3.4;
 				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
 				PRODUCT_NAME = qBitManager;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
