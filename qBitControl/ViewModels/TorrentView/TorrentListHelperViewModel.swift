@@ -22,6 +22,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     @Published var scenePhase: ScenePhase = .active
     @Published var isDeleteAlert: Bool = false
+    @Published var isDeleteSelectedAlert: Bool = false
     var timer: Timer?
     var hash = ""
     
@@ -93,6 +94,66 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func deleteTorrent(torrent: Torrent) {
         self.hash = torrent.hash
-        isDeleteAlert.toggle()
+        isDeleteSelectedAlert.toggle()
+    }
+    
+    func quitSelectionMode() {
+        self.isSelectionMode = false
+        self.uncheckAllTorrents()
+    }
+    
+    func uncheckAllTorrents() {
+        self.selectedTorrents.removeAll()
+    }
+    
+    func checkAllTorrents() {
+        self.torrents.forEach {
+            torrent in
+            self.selectedTorrents.insert(torrent)
+        }
+    }
+    
+    func doForSelectedTorrents(action: ([String]) -> Void) {
+        let selectedHashes = self.selectedTorrents.compactMap {
+            torrent in
+            torrent.hash
+        }
+        
+        action(selectedHashes)
+        self.quitSelectionMode()
+    }
+    
+    func resumeSelectedTorrents() {
+        self.doForSelectedTorrents { hashes in
+            qBittorrent.resumeTorrents(hashes: hashes)
+        }
+    }
+    
+    func pauseSelectedTorrents() {
+        self.doForSelectedTorrents { hashes in
+            qBittorrent.pauseTorrents(hashes: hashes)
+        }
+    }
+    
+    func deleteSelectedTorrents(isDeleteFiles: Bool = false) {
+        self.doForSelectedTorrents { hashes in
+            qBittorrent.deleteTorrents(hashes: hashes, deleteFiles: isDeleteFiles)
+        }
+    }
+    
+    func recheckSelectedTorrents() {
+        self.doForSelectedTorrents { hashes in
+            qBittorrent.recheckTorrents(hashes: hashes)
+        }
+    }
+    
+    func reannounceSelectedTorrents() {
+        self.doForSelectedTorrents { hashes in
+            qBittorrent.reannounceTorrents(hashes: hashes)
+        }
+    }
+    
+    func showDeleteSelectedAlert() {
+        self.isDeleteSelectedAlert = true
     }
 }

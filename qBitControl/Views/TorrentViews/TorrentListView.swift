@@ -33,8 +33,10 @@ struct TorrentListView: View {
             .toolbar(.visible, for: .tabBar)
             .toolbarBackground(.visible, for: .bottomBar)
             .toolbar() {
-                TorrentListToolbar(torrents: $torrentListHelperViewModel.torrents, category: $torrentListHelperViewModel.category, isSelectionMode: $torrentListHelperViewModel.isSelectionMode, isFilterView: $isFilterView, selectedTorrents: $torrentListHelperViewModel.selectedTorrents)
-            }
+                TorrentListToolbar(torrents: $torrentListHelperViewModel.torrents, category: $torrentListHelperViewModel.category, isSelectionMode: $torrentListHelperViewModel.isSelectionMode, isFilterView: $isFilterView, selectedTorrents: $torrentListHelperViewModel.selectedTorrents, viewModel: torrentListHelperViewModel)
+            }.alert("Confirm Deletion", isPresented: $torrentListHelperViewModel.isDeleteSelectedAlert, actions: {
+                deleteAlert()
+            })
             .sheet(isPresented: $isFilterView, content: {
                 FiltersMenuView(sort: $torrentListHelperViewModel.sort, reverse: $torrentListHelperViewModel.reverse, filter: $torrentListHelperViewModel.filter, category: $torrentListHelperViewModel.category, tag: $torrentListHelperViewModel.tag)
             })
@@ -42,6 +44,16 @@ struct TorrentListView: View {
                 TorrentAddView(torrentUrls: $torrentUrls)
             })
             .onOpenURL(perform: openUrl)
+        }
+    }
+    
+    @ViewBuilder
+    func deleteAlert() -> some View {
+        Button("Delete Selected Tasks", role: .destructive) {
+            torrentListHelperViewModel.deleteSelectedTorrents(isDeleteFiles: false)
+        }
+        Button("Delete Selected Tasks with Files", role: .destructive) {
+            torrentListHelperViewModel.deleteSelectedTorrents(isDeleteFiles: true)
         }
     }
 }

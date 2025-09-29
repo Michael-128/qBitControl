@@ -3,44 +3,29 @@
 import SwiftUI
 
 struct TorrentListSelectionToolbar: ToolbarContent {
-    @Binding public var torrents: [Torrent]
-    
-    @Binding public var isSelectionMode: Bool
-    @State private var isAlertDeleteSelected: Bool = false
-    
-    @Binding public var selectedTorrents: Set<Torrent>
+    @ObservedObject public var viewModel: TorrentListHelperViewModel
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            if(selectedTorrents.count == torrents.count) {
+            if(viewModel.selectedTorrents.count == viewModel.torrents.count) {
                 Button {
-                    selectedTorrents.removeAll()
+                    viewModel.uncheckAllTorrents()
                 } label: {
                     Image(systemName: "checklist.unchecked")
                 }
             } else {
                 Button {
-                    torrents.forEach {
-                        torrent in
-                        selectedTorrents.insert(torrent)
-                    }
+                    viewModel.checkAllTorrents()
                 } label: {
                     Image(systemName: "checklist.checked")
                 }
             }
         }
         
-        if(selectedTorrents.count > 0 && SystemHelper.instance.isLiquidGlass) {
+        if(viewModel.selectedTorrents.count > 0 && SystemHelper.instance.isLiquidGlass) {
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    let selectedHashes = selectedTorrents.compactMap {
-                        torrent in
-                        torrent.hash
-                    }
-                    
-                    qBittorrent.resumeTorrents(hashes: selectedHashes)
-                    isSelectionMode = false
-                    selectedTorrents.removeAll()
+                    viewModel.resumeSelectedTorrents()
                 } label: {
                     Image(systemName: "play.fill")
                 }
@@ -48,14 +33,7 @@ struct TorrentListSelectionToolbar: ToolbarContent {
             
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    let selectedHashes = selectedTorrents.compactMap {
-                        torrent in
-                        torrent.hash
-                    }
-                    
-                    qBittorrent.pauseTorrents(hashes: selectedHashes)
-                    isSelectionMode = false
-                    selectedTorrents.removeAll()
+                    viewModel.pauseSelectedTorrents()
                 } label: {
                     Image(systemName: "pause.fill")
                 }
@@ -63,60 +41,26 @@ struct TorrentListSelectionToolbar: ToolbarContent {
             
             ToolbarItem(placement: .topBarLeading) {
                 Button {
-                    isAlertDeleteSelected = true
+                    viewModel.showDeleteSelectedAlert()
                 } label: {
                     Image(systemName: "trash.fill").foregroundStyle(Color(.red))
-                }.alert("Confirm Deletion", isPresented: $isAlertDeleteSelected, actions: {
-                    Button("Delete Selected Tasks", role: .destructive) {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
-                        }
-                        
-                        qBittorrent.deleteTorrents(hashes: selectedHashes)
-                        
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
-                    }
-                    Button("Delete Selected Tasks with Files", role: .destructive) {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
-                        }
-                        
-                        qBittorrent.deleteTorrents(hashes: selectedHashes, deleteFiles: true)
-                        
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
-                    }
-                })
+                }
             }
         }
         
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                isSelectionMode = false
-                
-                // do something
-                
-                selectedTorrents.removeAll()
+                viewModel.quitSelectionMode()
             } label: {
                 Image(systemName: "checkmark")
             }
         }
         
-        if(selectedTorrents.count > 0 && !SystemHelper.instance.isLiquidGlass) {
+        if(viewModel.selectedTorrents.count > 0 && !SystemHelper.instance.isLiquidGlass) {
             ToolbarItemGroup(placement: .bottomBar) {
                 HStack {
                     Button {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
-                        }
-                        
-                        qBittorrent.resumeTorrents(hashes: selectedHashes)
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
+                        viewModel.resumeSelectedTorrents()
                     } label: {
                         Image(systemName: "play.fill")
                     }
@@ -124,14 +68,7 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                     Spacer()
                     
                     Button {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
-                        }
-                        
-                        qBittorrent.pauseTorrents(hashes: selectedHashes)
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
+                        viewModel.pauseSelectedTorrents()
                     } label: {
                         Image(systemName: "pause.fill")
                     }
@@ -139,14 +76,7 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                     Spacer()
                     
                     Button {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
-                        }
-                        
-                        qBittorrent.recheckTorrents(hashes: selectedHashes)
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
+                        viewModel.recheckSelectedTorrents()
                     } label: {
                         Image(systemName: "magnifyingglass")
                     }
@@ -154,14 +84,7 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                     Spacer()
                     
                     Button {
-                        let selectedHashes = selectedTorrents.compactMap {
-                            torrent in
-                            torrent.hash
-                        }
-                        
-                        qBittorrent.reannounceTorrents(hashes: selectedHashes)
-                        isSelectionMode = false
-                        selectedTorrents.removeAll()
+                        viewModel.reannounceSelectedTorrents()
                     } label: {
                         Image(systemName: "circle.dashed")
                     }
@@ -169,39 +92,12 @@ struct TorrentListSelectionToolbar: ToolbarContent {
                     Spacer()
                     
                     Button {
-                        isAlertDeleteSelected = true
+                        viewModel.showDeleteSelectedAlert()
                     } label: {
                         Image(systemName: "trash.fill").foregroundStyle(Color(.red))
-                    }.alert("Confirm Deletion", isPresented: $isAlertDeleteSelected, actions: {
-                        Button("Delete Selected Tasks", role: .destructive) {
-                            let selectedHashes = selectedTorrents.compactMap {
-                                torrent in
-                                torrent.hash
-                            }
-                            
-                            qBittorrent.deleteTorrents(hashes: selectedHashes)
-                            
-                            isSelectionMode = false
-                            selectedTorrents.removeAll()
-                        }
-                        Button("Delete Selected Tasks with Files", role: .destructive) {
-                            let selectedHashes = selectedTorrents.compactMap {
-                                torrent in
-                                torrent.hash
-                            }
-                            
-                            qBittorrent.deleteTorrents(hashes: selectedHashes, deleteFiles: true)
-                            
-                            isSelectionMode = false
-                            selectedTorrents.removeAll()
-                        }
-                    })
+                    }
                 }
             }
         }
-    }
-    
-    func removeButton() {
-        
     }
 }
