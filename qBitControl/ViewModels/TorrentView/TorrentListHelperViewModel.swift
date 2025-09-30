@@ -23,8 +23,21 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published var scenePhase: ScenePhase = .active
     @Published var isDeleteAlert: Bool = false
     @Published var isDeleteSelectedAlert: Bool = false
+    
+    @Published var isAlertClearCompleted: Bool = false
+    @Published var isFilterView: Bool = false
+    @Published var alertIdentifier: AlertIdentifier?
+    @Published var sheetIdentifier: SheetIdentifier?
+    
     var timer: Timer?
     var hash = ""
+    
+    public var categoryName: String {
+        if(category == "All") {
+            return NSLocalizedString("All", comment: "Pause All/Resume All")
+        }
+        return category.capitalized
+    }
     
     init() {}
     
@@ -102,6 +115,10 @@ class TorrentListHelperViewModel: ObservableObject {
         self.uncheckAllTorrents()
     }
     
+    func enterSelectionMode() {
+        self.isSelectionMode = true
+    }
+    
     func uncheckAllTorrents() {
         self.selectedTorrents.removeAll()
     }
@@ -155,5 +172,38 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func showDeleteSelectedAlert() {
         self.isDeleteSelectedAlert = true
+    }
+    
+    func doForTorrentsInCategory(action: ([String]) -> Void) {
+        let torrentsInCategory = torrents.filter {
+            torrent in
+            return torrent.category == category
+        }
+        
+        let hashes = torrentsInCategory.compactMap {
+            torrent in
+            torrent.hash
+        }
+
+        action(hashes)
+    }
+    
+    func resumeCurrentCategoryTorrents() {
+        self.doForTorrentsInCategory { hashes in
+            qBittorrent.resumeTorrents(hashes: hashes)
+        }
+    }
+    
+    func pauseCurrentCategoryTorrents() {
+        self.doForTorrentsInCategory { hashes in
+            qBittorrent.pauseTorrents(hashes: hashes)
+        }
+    }
+    
+    func deleteCompletedTorrents(isDeleteFiles: Bool = false) {
+        let completedTorrents = torrents.filter {torrent in torrent.progress == 1}
+        let completedHashes = completedTorrents.compactMap {torrent in torrent.hash}
+        
+        qBittorrent.deleteTorrents(hashes: completedHashes, deleteFiles: isDeleteFiles)
     }
 }

@@ -8,7 +8,6 @@ import SwiftUI
     
 struct TorrentListView: View {
     @StateObject var torrentListHelperViewModel: TorrentListHelperViewModel = .init()
-    @State private var isFilterView = false
     @State private var torrentUrls: [URL] = []
     
     func openUrl(url: URL) {
@@ -33,11 +32,11 @@ struct TorrentListView: View {
             .toolbar(.visible, for: .tabBar)
             .toolbarBackground(.visible, for: .bottomBar)
             .toolbar() {
-                TorrentListToolbar(torrents: $torrentListHelperViewModel.torrents, category: $torrentListHelperViewModel.category, isSelectionMode: $torrentListHelperViewModel.isSelectionMode, isFilterView: $isFilterView, selectedTorrents: $torrentListHelperViewModel.selectedTorrents, viewModel: torrentListHelperViewModel)
+                TorrentListToolbar(viewModel: torrentListHelperViewModel)
             }.alert("Confirm Deletion", isPresented: $torrentListHelperViewModel.isDeleteSelectedAlert, actions: {
                 deleteAlert()
             })
-            .sheet(isPresented: $isFilterView, content: {
+            .sheet(isPresented: $torrentListHelperViewModel.isFilterView, content: {
                 FiltersMenuView(sort: $torrentListHelperViewModel.sort, reverse: $torrentListHelperViewModel.reverse, filter: $torrentListHelperViewModel.filter, category: $torrentListHelperViewModel.category, tag: $torrentListHelperViewModel.tag)
             })
             .sheet(isPresented: $torrentListHelperViewModel.isTorrentAddView, content: {

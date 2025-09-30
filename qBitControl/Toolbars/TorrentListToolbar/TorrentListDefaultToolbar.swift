@@ -3,69 +3,43 @@
 import SwiftUI
 
 struct TorrentListDefaultToolbar: ToolbarContent {
-    @Binding public var torrents: [Torrent]
-    
-    @Binding public var category: String
-    
-    @Binding public var isSelectionMode: Bool
-    @Binding public var isFilterView: Bool
-    
-    @State private var alertIdentifier: AlertIdentifier?
-    @State private var sheetIdentifier: SheetIdentifier?
-    @State private var isAlertClearCompleted: Bool = false
-    
-    private var categoryName: String {
-        if(category == "All") {
-            return NSLocalizedString("All", comment: "Pause All/Resume All")
-        }
-        return category.capitalized
-    }
+    @ObservedObject public var viewModel: TorrentListHelperViewModel
     
     var body: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
             Menu {
                 Section {
                     Button {
-                        isSelectionMode = true
+                        viewModel.enterSelectionMode()
                     } label: {
                         Image(systemName: "checkmark.circle")
                         Text("Select")
                     }
                 }
                 
-                if(category != "None") {
+                if(viewModel.category != "All") {
                     Section {
                         Button {
-                            let torrentsInCategory = torrents.filter {
-                                torrent in
-                                return torrent.category == category
-                            }
-                            
-                            qBittorrent.resumeTorrents(hashes: torrentsInCategory.compactMap { torrent in torrent.hash })
+                            viewModel.resumeCurrentCategoryTorrents()
                         } label: {
                             Image(systemName: "play")
                                 .rotationEffect(.degrees(180))
-                            Text(NSLocalizedString("Resume", comment: "") + " " + self.categoryName)
+                            Text(NSLocalizedString("Resume", comment: "") + " " + viewModel.categoryName)
                         }
                         
                         Button {
-                            let torrentsInCategory = torrents.filter {
-                                torrent in
-                                return torrent.category == category
-                            }
-                            
-                            qBittorrent.pauseTorrents(hashes: torrentsInCategory.compactMap { torrent in torrent.hash })
+                            viewModel.pauseCurrentCategoryTorrents()
                         } label: {
                             Image(systemName: "pause")
                                 .rotationEffect(.degrees(180))
-                            Text(NSLocalizedString("Pause", comment: "") + " " + self.categoryName)
+                            Text(NSLocalizedString("Pause", comment: "") + " " + viewModel.categoryName)
                         }
                     }
                 }
                 
                 Section {
                     Button {
-                        alertIdentifier = AlertIdentifier(id: .resumeAll)
+                        viewModel.alertIdentifier = AlertIdentifier(id: .resumeAll)
                     } label: {
                         Image(systemName: "play")
                             .rotationEffect(.degrees(180))
@@ -73,7 +47,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                     }
                     
                     Button {
-                        alertIdentifier = AlertIdentifier(id: .pauseAll)
+                        viewModel.alertIdentifier = AlertIdentifier(id: .pauseAll)
                     } label: {
                         Image(systemName: "pause")
                             .rotationEffect(.degrees(180))
@@ -83,7 +57,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 
                 Section {
                     Button(role: .destructive) {
-                        isAlertClearCompleted = true
+                        viewModel.isAlertClearCompleted = true
                     } label: {
                         Image(systemName: "trash")
                             .rotationEffect(.degrees(180))
@@ -93,7 +67,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 
                 Section {
                     Button {
-                        sheetIdentifier = SheetIdentifier(id: .showAbout)
+                        viewModel.sheetIdentifier = SheetIdentifier(id: .showAbout)
                     } label: {
                         Image(systemName: "info.circle")
                         Text("About")
@@ -101,7 +75,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
-            }.alert(item: $alertIdentifier) { alert in
+            }.alert(item: $viewModel.alertIdentifier) { alert in
                 switch(alert.id) {
                 case .resumeAll:
                     return Alert(title: Text("Confirm Resume All"), message: Text("Are you sure you want to resume all tasks?"), primaryButton: .default(Text("Resume")) {
@@ -112,22 +86,15 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         qBittorrent.pauseAllTorrents()
                     }, secondaryButton: .cancel())
                 }
-            }.alert("Confirm Deletion", isPresented: $isAlertClearCompleted, actions: {
+            }.alert("Confirm Deletion", isPresented: $viewModel.isAlertClearCompleted, actions: {
                 Button("Delete Completed Tasks", role: .destructive) {
-                    let completedTorrents = torrents.filter {torrent in torrent.progress == 1}
-                    let completedHashes = completedTorrents.compactMap {torrent in torrent.hash}
-                    
-                    qBittorrent.deleteTorrents(hashes: completedHashes)
+                    viewModel.deleteCompletedTorrents()
                 }
                 Button("Delete Completed Tasks with Files", role: .destructive) {
-                    let completedTorrents = torrents.filter {torrent in torrent.progress == 1}
-                    let completedHashes = completedTorrents.compactMap {torrent in torrent.hash}
-                    
-                    
-                    qBittorrent.deleteTorrents(hashes: completedHashes, deleteFiles: true)
+                    viewModel.deleteCompletedTorrents(isDeleteFiles: true)
                 }
             })
-            .sheet(item: $sheetIdentifier) {
+            .sheet(item: $viewModel.sheetIdentifier) {
                 sheet in
                 switch sheet.id {
                 case .showAbout:
@@ -138,7 +105,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
         
         ToolbarItem(placement: .topBarTrailing) {
             Button {
-                isFilterView.toggle()
+                viewModel.isFilterView.toggle()
             } label: {
                 Image(systemName: "line.3.horizontal.decrease.circle")
             }
