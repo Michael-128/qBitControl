@@ -56,10 +56,27 @@ struct TorrentListHelperView: View {
         let isTorrentSelected = viewModel.selectedTorrents.contains(torrent)
         
         return HStack {
-            Image(systemName: isTorrentSelected ? "checkmark.circle.fill" : "circle").scaleEffect(1.25).foregroundStyle(isTorrentSelected ? Color(.blue) : Color(.gray))
-            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
-        }.onTapGesture {
-            if(isTorrentSelected) { viewModel.selectedTorrents.remove(torrent) } else { viewModel.selectedTorrents.insert(torrent) }
+            Image(systemName: isTorrentSelected ? "checkmark.circle.fill" : "circle")
+                .scaleEffect(1.25)
+                .foregroundStyle(isTorrentSelected ? Color(.blue) : Color(.gray))
+            
+            TorrentRowView(
+                name: torrent.name,
+                progress: torrent.progress,
+                state: torrent.state,
+                dlspeed: torrent.dlspeed,
+                upspeed: torrent.upspeed,
+                ratio: torrent.ratio
+            )
+        }
+        .onTapGesture {
+            withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
+                if isTorrentSelected {
+                    viewModel.selectedTorrents.remove(torrent)
+                } else {
+                    viewModel.selectedTorrents.insert(torrent)
+                }
+            }
         }
     }
     
