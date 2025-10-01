@@ -13,6 +13,7 @@
 		90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
+		9023703F2E8DAD150048F5E1 /* TabItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9023703E2E8DAD130048F5E1 /* TabItem.swift */; };
 		9042ABDF2DB2CC05003584EF /* SearchPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9042ABDE2DB2CC02003584EF /* SearchPlugin.swift */; };
 		9042ABE12DB2CC8F003584EF /* SearchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9042ABE02DB2CC8A003584EF /* SearchCategory.swift */; };
 		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
@@ -120,6 +121,7 @@
 		90200BA42B44BA6E00D3BA55 /* logo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo1.png; path = qBitControl/Assets.xcassets/AppIcon.appiconset/logo1.png; sourceTree = "<group>"; };
 		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
+		9023703E2E8DAD130048F5E1 /* TabItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItem.swift; sourceTree = "<group>"; };
 		9042ABDE2DB2CC02003584EF /* SearchPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlugin.swift; sourceTree = "<group>"; };
 		9042ABE02DB2CC8A003584EF /* SearchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategory.swift; sourceTree = "<group>"; };
 		905284972D457618000EB12C /* ChangeTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTagsView.swift; sourceTree = "<group>"; };
@@ -279,6 +281,7 @@
 		90726B1E2CDA22160032993E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				9023703E2E8DAD130048F5E1 /* TabItem.swift */,
 				9042ABE02DB2CC8A003584EF /* SearchCategory.swift */,
 				9042ABDE2DB2CC02003584EF /* SearchPlugin.swift */,
 				90AB036D2DB16D51009870BB /* SearchSortOptions.swift */,
@@ -673,6 +676,7 @@
 				90726B692CDA22190032993E /* TorrentDetailsView.swift in Sources */,
 				90726B6A2CDA22190032993E /* FiltersMenuView.swift in Sources */,
 				90726B6B2CDA22190032993E /* PeerDetailsView.swift in Sources */,
+				9023703F2E8DAD150048F5E1 /* TabItem.swift in Sources */,
 				90726B6C2CDA22190032993E /* TorrentRowView.swift in Sources */,
 				90726B6D2CDA22190032993E /* MainView.swift in Sources */,
 				90AE893D2CDBEF1C000E0276 /* RSSArticleView.swift in Sources */,
