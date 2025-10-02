@@ -9,5 +9,14 @@ import SwiftUI
 struct TabItem {
     let label: String
     let systemImage: String
+    let value: Tab
     let content: () -> AnyView
+    
+    enum Tab {
+        case tasks
+        case rss
+        case stats
+        case servers
+        case search
+    }
 }

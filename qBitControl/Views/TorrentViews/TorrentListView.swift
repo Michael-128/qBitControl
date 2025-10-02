@@ -23,7 +23,6 @@ struct TorrentListView: View {
                 Section(header: Text("Manage")) {
                     Button { torrentListHelperViewModel.isTorrentAddView.toggle() }
                     label: { Label("Add Task", systemImage: "plus.circle") }
-                    .searchable(text: $torrentListHelperViewModel.searchQuery)
                 }
     
                 TorrentListHelperView(viewModel: torrentListHelperViewModel)
@@ -43,6 +42,7 @@ struct TorrentListView: View {
                 TorrentAddView(torrentUrls: $torrentUrls)
             })
             .onOpenURL(perform: openUrl)
+            .searchable(text: $torrentListHelperViewModel.searchQuery)
         }
     }
     

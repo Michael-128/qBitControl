@@ -4,12 +4,13 @@ struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @ObservedObject var serversHelper = ServersHelper.shared
     @Environment(\.scenePhase) var scenePhase
+    @State var selectedTab: TabItem.Tab = .search
     
     let tabs = [
-        TabItem(label: "Tasks", systemImage: "square.and.arrow.down.on.square") { AnyView(TorrentListView()) },
-        TabItem(label: "RSS", systemImage: "dot.radiowaves.up.forward") { AnyView(RSSView()) },
-        TabItem(label: "Stats", systemImage: "chart.line.uptrend.xyaxis") { AnyView(StatsView()) },
-        TabItem(label: "Servers", systemImage: "server.rack") { AnyView(ServersView()) },
+        TabItem(label: "Tasks", systemImage: "square.and.arrow.down.on.square", value: .tasks) { AnyView(TorrentListView()) },
+        TabItem(label: "RSS", systemImage: "dot.radiowaves.up.forward", value: .rss) { AnyView(RSSView()) },
+        TabItem(label: "Stats", systemImage: "chart.line.uptrend.xyaxis", value: .stats) { AnyView(StatsView()) },
+        TabItem(label: "Servers", systemImage: "server.rack", value: .servers) { AnyView(ServersView()) },
     ]
     
     func mainTabView() -> some View {
@@ -22,6 +23,21 @@ struct MainView: View {
             }
         }.onChange(of: scenePhase) { phase in
             viewModel.reconnectIfNeeded(on: phase)
+        }
+    }
+    
+    @ViewBuilder
+    func mainTabViewLG() -> some View {
+        if #available(iOS 26.0, *) {
+            TabView(selection: $selectedTab) {
+                ForEach(tabs, id: \.label) { tab in
+                    Tab(tab.label, systemImage: tab.systemImage, value: tab.value) {
+                        tab.content()
+                    }
+                }
+            }.onChange(of: scenePhase) { phase in
+                viewModel.reconnectIfNeeded(on: phase)
+            }
         }
     }
     
@@ -43,7 +59,7 @@ struct MainView: View {
                     .navigationTitle("qBitControl")
             } else {
                 if #available(iOS 26.0, *) {
-                    mainTabView()
+                    mainTabViewLG()
                         .tabBarMinimizeBehavior(.onScrollDown)
                 } else {
                     mainTabView()
