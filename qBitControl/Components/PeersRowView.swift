@@ -12,7 +12,9 @@ struct PeerRowView: View {
     func emojiFlag(regionCode: String) -> String? {
         let code = regionCode.uppercased()
 
-        guard Locale.isoRegionCodes.contains(code) else {
+        let validRegionCodes = Set(Locale.Region.isoRegions.map { $0.identifier })
+            
+        guard validRegionCodes.contains(code) else {
             return nil
         }
 
