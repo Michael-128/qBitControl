@@ -84,6 +84,7 @@ class ServerAddViewModel: ObservableObject {
     func addServer(dismiss: DismissAction) -> Void {
         if(!validateInputs()) { return; }
         if(!validateIsConnecting()) { return; }
+        sanitizeInputs()
         
         let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth)
         
@@ -108,5 +109,9 @@ class ServerAddViewModel: ObservableObject {
                 self.isCheckingConnection = false
             }
         })
+    }
+    
+    private func sanitizeInputs() {
+        url = url.replacingOccurrences(of: "/+$", with: "", options: .regularExpression)
     }
 }
