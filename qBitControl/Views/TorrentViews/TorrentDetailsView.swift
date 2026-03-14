@@ -100,7 +100,7 @@ struct TorrentDetailsView: View {
                     }
                     
                     NavigationLink {
-                        FilesView(torrentHash: .constant(viewModel.torrent.hash))
+                        FilesView(torrentHash: viewModel.torrent.hash)
                     } label: {
                         Text("Files")
                     }
