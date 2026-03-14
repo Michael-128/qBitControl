@@ -104,23 +104,27 @@ class FilesViewModel: ObservableObject {
         return fileNode.getPriority() > 0 ? Color.primary : Color.gray
     }
     
-    func setPriority(indexes: String, priority: Int, onComplete: @escaping (Bool) -> Void) {
+    func setPriority(child: FileNode, priority: FilePriority) {
+        let stringArr = child.getIndexes().map { String($0) }
+        let indexes = stringArr.joined(separator: "|")
+        
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/filePrio", queryItems: [
             URLQueryItem(name: "hash", value: torrentHash),
             URLQueryItem(name: "id", value: indexes),
-            URLQueryItem(name: "priority", value: "\(priority)")
+            URLQueryItem(name: "priority", value: "\(priority.rawValue)")
         ])
         
         qBitRequest.requestTorrentManagement(request: request, statusCode: {
             code in
             if let code = code {
                 if code == 200 {
-                    onComplete(true)
-                } else {
-                    onComplete(false)
+                    for index in child.getIndexes() {
+                        if let childOfChild = child.search(index: index) {
+                            childOfChild.setPriority(priority: Int(priority.rawValue))
+                            self.refresh()
+                        }
+                    }
                 }
-            } else {
-                onComplete(false)
             }
         })
     }
