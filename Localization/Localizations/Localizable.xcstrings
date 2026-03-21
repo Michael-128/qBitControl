@@ -1329,6 +1329,9 @@
         }
       }
     },
+    "Are you sure you want to resume current tasks?" : {
+
+    },
     "Availability" : {
       "localizations" : {
         "ja" : {
@@ -1932,6 +1935,9 @@
           }
         }
       }
+    },
+    "Confirm Resume Current" : {
+
     },
     "Connected Leeches" : {
       "localizations" : {
@@ -6145,6 +6151,9 @@
           }
         }
       }
+    },
+    "Resume Current Tasks" : {
+
     },
     "Resume Task" : {
       "localizations" : {
