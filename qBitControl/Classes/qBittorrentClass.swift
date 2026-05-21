@@ -6,6 +6,37 @@
 import Foundation
 import SwiftUI
 
+struct LogEntry: Decodable, Identifiable {
+    let id: Int
+    let message: String
+    let timestamp: Int
+    let type: Int
+
+    var logLevel: String {
+        switch type {
+        case 1: return "INFO"
+        case 2: return "WARNING"
+        case 4: return "CRITICAL"
+        default: return "NORMAL"
+        }
+    }
+
+    var logColor: Color {
+        switch type {
+        case 2: return .orange
+        case 4: return .red
+        default: return .primary
+        }
+    }
+
+    var formattedDate: String {
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp) / 1000)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MM-dd HH:mm:ss"
+        return formatter.string(from: date)
+    }
+}
+
 
 class qBittorrent {
     static private var cookie = "n/a"
@@ -866,6 +897,27 @@ class qBittorrent {
     }*/
 }
 
+// MARK: - Logs
+extension qBittorrent {
+    static func getLogs(normal: Bool = true, info: Bool = true, warning: Bool = true, critical: Bool = true, lastKnownId: Int = -1) async -> [LogEntry] {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/log/main", queryItems: [
+            URLQueryItem(name: "normal", value: String(normal)),
+            URLQueryItem(name: "info", value: String(info)),
+            URLQueryItem(name: "warning", value: String(warning)),
+            URLQueryItem(name: "critical", value: String(critical)),
+            URLQueryItem(name: "last_known_id", value: String(lastKnownId))
+        ])
+        if case let .success(data) = await qBitRequest.requestCommonData(request: request) {
+            do {
+                return try JSONDecoder().decode([LogEntry].self, from: data)
+            } catch {
+                log(error.localizedDescription)
+            }
+        }
+        return []
+    }
+}
+
 // MARK: - Torrent Limits & Rename
 extension qBittorrent {
     static func setDownloadLimit(hashes: [String], limit: Int) {
@@ -915,6 +967,30 @@ extension qBittorrent {
             URLQueryItem(name: "hash", value: hash),
             URLQueryItem(name: "id", value: fileIds.map { String($0) }.joined(separator: "|")),
             URLQueryItem(name: "priority", value: String(priority))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func setCategoryBatch(hashes: [String], category: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setCategory", queryItems: [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "category", value: category)
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func addTagsBatch(hashes: [String], tags: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/addTags", queryItems: [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "tags", value: tags)
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func setLocationBatch(hashes: [String], location: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setLocation", queryItems: [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "location", value: location)
         ])
         qBitRequest.requestUniversal(request: request)
     }

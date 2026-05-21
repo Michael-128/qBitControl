@@ -45,72 +45,73 @@ struct TorrentSelectionBottomBar: View {
     @Binding var selectedTorrents: Set<Torrent>
     @Binding var isSelectionMode: Bool
     @State private var isAlertDeleteSelected = false
+    @State private var showCategorySheet = false
+    @State private var showMoveAlert = false
+    @State private var movePath = ""
 
     private var selectedHashes: [String] {
         selectedTorrents.compactMap { $0.hash }
     }
 
     var body: some View {
-        HStack {
-            Button {
-                qBittorrent.resumeTorrents(hashes: selectedHashes)
-                isSelectionMode = false
-                selectedTorrents.removeAll()
-            } label: {
-                VStack(spacing: 2) {
-                    Image(systemName: "play.fill")
-                    Text("Resume").font(.caption2)
+        VStack(spacing: 8) {
+            HStack {
+                Button {
+                    qBittorrent.resumeTorrents(hashes: selectedHashes)
+                    isSelectionMode = false
+                    selectedTorrents.removeAll()
+                } label: {
+                    VStack(spacing: 2) {
+                        Image(systemName: "play.fill")
+                        Text("Resume").font(.caption2)
+                    }
                 }
-            }
 
-            Spacer()
+                Spacer()
 
-            Button {
-                qBittorrent.pauseTorrents(hashes: selectedHashes)
-                isSelectionMode = false
-                selectedTorrents.removeAll()
-            } label: {
-                VStack(spacing: 2) {
-                    Image(systemName: "pause.fill")
-                    Text("Pause").font(.caption2)
+                Button {
+                    qBittorrent.pauseTorrents(hashes: selectedHashes)
+                    isSelectionMode = false
+                    selectedTorrents.removeAll()
+                } label: {
+                    VStack(spacing: 2) {
+                        Image(systemName: "pause.fill")
+                        Text("Pause").font(.caption2)
+                    }
                 }
-            }
 
-            Spacer()
+                Spacer()
 
-            Button {
-                qBittorrent.recheckTorrents(hashes: selectedHashes)
-                isSelectionMode = false
-                selectedTorrents.removeAll()
-            } label: {
-                VStack(spacing: 2) {
-                    Image(systemName: "arrow.clockwise")
-                    Text("Recheck").font(.caption2)
+                Button {
+                    showCategorySheet = true
+                } label: {
+                    VStack(spacing: 2) {
+                        Image(systemName: "folder")
+                        Text("Category").font(.caption2)
+                    }
                 }
-            }
 
-            Spacer()
+                Spacer()
 
-            Button {
-                qBittorrent.reannounceTorrents(hashes: selectedHashes)
-                isSelectionMode = false
-                selectedTorrents.removeAll()
-            } label: {
-                VStack(spacing: 2) {
-                    Image(systemName: "antenna.radiowaves.left.and.right")
-                    Text("Announce").font(.caption2)
+                Button {
+                    showMoveAlert = true
+                } label: {
+                    VStack(spacing: 2) {
+                        Image(systemName: "arrow.right.doc.on.clipboard")
+                        Text("Move").font(.caption2)
+                    }
                 }
-            }
 
-            Spacer()
+                Spacer()
 
-            Button {
-                isAlertDeleteSelected = true
-            } label: {
-                VStack(spacing: 2) {
-                    Image(systemName: "trash.fill")
-                    Text("Delete").font(.caption2)
-                }.foregroundStyle(.red)
+                Button {
+                    isAlertDeleteSelected = true
+                } label: {
+                    VStack(spacing: 2) {
+                        Image(systemName: "trash.fill")
+                        Text("Delete").font(.caption2)
+                    }.foregroundStyle(.red)
+                }
             }
         }
         .padding(.horizontal, 24)
@@ -130,6 +131,31 @@ struct TorrentSelectionBottomBar: View {
                 selectedTorrents.removeAll()
             }
             Button("Cancel", role: .cancel) {}
+        }
+        .alert("Move Torrents", isPresented: $showMoveAlert) {
+            TextField("Save Path", text: $movePath)
+            Button("Move") {
+                guard !movePath.isEmpty else { return }
+                qBittorrent.setLocationBatch(hashes: selectedHashes, location: movePath)
+                isSelectionMode = false
+                selectedTorrents.removeAll()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .sheet(isPresented: $showCategorySheet) {
+            NavigationView {
+                ChangeCategoryView(category: "", onCategorySelected: { category in
+                    qBittorrent.setCategoryBatch(hashes: selectedHashes, category: category.name)
+                    showCategorySheet = false
+                    isSelectionMode = false
+                    selectedTorrents.removeAll()
+                })
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") { showCategorySheet = false }
+                    }
+                }
+            }
         }
     }
 }
