@@ -866,6 +866,94 @@ class qBittorrent {
     }*/
 }
 
+// MARK: - Torrent Limits & Rename
+extension qBittorrent {
+    static func setDownloadLimit(hashes: [String], limit: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setDownloadLimit", queryItems: [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "limit", value: String(limit))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func setUploadLimit(hashes: [String], limit: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setUploadLimit", queryItems: [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "limit", value: String(limit))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setShareLimits", queryItems: [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "ratioLimit", value: String(ratioLimit)),
+            URLQueryItem(name: "seedingTimeLimit", value: String(seedingTimeLimit))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func renameTorrent(hash: String, name: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/rename", queryItems: [
+            URLQueryItem(name: "hash", value: hash),
+            URLQueryItem(name: "name", value: name)
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func renameFile(hash: String, oldPath: String, newPath: String) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/renameFile", queryItems: [
+            URLQueryItem(name: "hash", value: hash),
+            URLQueryItem(name: "oldPath", value: oldPath),
+            URLQueryItem(name: "newPath", value: newPath)
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func setFilePriority(hash: String, fileIds: [Int], priority: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/filePrio", queryItems: [
+            URLQueryItem(name: "hash", value: hash),
+            URLQueryItem(name: "id", value: fileIds.map { String($0) }.joined(separator: "|")),
+            URLQueryItem(name: "priority", value: String(priority))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+}
+
+// MARK: - Global Transfer
+extension qBittorrent {
+    static func toggleSpeedLimitsMode() {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/toggleSpeedLimitsMode")
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func getSpeedLimitsMode(completionHandler: @escaping (Bool) -> Void) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/speedLimitsMode")
+        Task {
+            if case let .success(data) = await qBitRequest.requestCommonData(request: request),
+               let str = String(data: data, encoding: .utf8) {
+                await MainActor.run {
+                    completionHandler(str.trimmingCharacters(in: .whitespacesAndNewlines) == "1")
+                }
+            }
+        }
+    }
+
+    static func setGlobalDownloadLimit(limit: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/setDownloadLimit", queryItems: [
+            URLQueryItem(name: "limit", value: String(limit))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func setGlobalUploadLimit(limit: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/setUploadLimit", queryItems: [
+            URLQueryItem(name: "limit", value: String(limit))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+}
+
 // MARK: - RSS
 extension qBittorrent {
     static func getRSSFeeds(withDate: Bool = true, completionHandler: @escaping (RSSNode) -> Void) {

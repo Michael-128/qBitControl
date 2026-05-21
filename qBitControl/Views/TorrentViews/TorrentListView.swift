@@ -10,6 +10,7 @@ struct TorrentListView: View {
     @StateObject var torrentListHelperViewModel: TorrentListHelperViewModel = .init()
     @State private var isFilterView = false
     @State private var torrentUrls: [URL] = []
+    @State private var isAltSpeedEnabled = false
     
     func openUrl(url: URL) {
         if url.absoluteString.contains("file") || url.absoluteString.contains("magnet") {
@@ -24,6 +25,13 @@ struct TorrentListView: View {
                 Section(header: Text("Manage")) {
                     Button { torrentListHelperViewModel.isTorrentAddView.toggle() }
                     label: { Label("Add Task", systemImage: "plus.circle") }
+                    Button {
+                        qBittorrent.toggleSpeedLimitsMode()
+                        isAltSpeedEnabled.toggle()
+                    } label: {
+                        Label(isAltSpeedEnabled ? "Disable Alt Speed" : "Enable Alt Speed",
+                              systemImage: isAltSpeedEnabled ? "tortoise.fill" : "tortoise")
+                    }
                 }
 
                 TorrentListHelperView(viewModel: torrentListHelperViewModel)
@@ -48,6 +56,11 @@ struct TorrentListView: View {
                 TorrentAddView(torrentUrls: $torrentUrls)
             })
             .onOpenURL(perform: openUrl)
+            .onAppear {
+                qBittorrent.getSpeedLimitsMode { enabled in
+                    isAltSpeedEnabled = enabled
+                }
+            }
         }
     }
 }

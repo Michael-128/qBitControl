@@ -41,6 +41,16 @@
         }
       }
     },
+    "-1 for global setting, -2 for unlimited." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "-1 使用全局设置，-2 为无限制。"
+          }
+        }
+      }
+    },
     ":" : {
 
     },
@@ -2847,6 +2857,16 @@
         }
       }
     },
+    "Disable Alt Speed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "禁用备用限速"
+          }
+        }
+      }
+    },
     "Disable Encryption" : {
       "localizations" : {
         "zh-Hans" : {
@@ -2938,6 +2958,7 @@
       }
     },
     "Do not download" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -2973,6 +2994,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "不要下載"
+          }
+        }
+      }
+    },
+    "Do Not Download" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "不下载"
           }
         }
       }
@@ -3063,6 +3094,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下載"
+          }
+        }
+      }
+    },
+    "Download (KB/s)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下载 (KB/s)"
           }
         }
       }
@@ -3362,6 +3403,16 @@
     "Edit Category" : {
 
     },
+    "Edit Limits" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑限制"
+          }
+        }
+      }
+    },
     "Edit Tracker" : {
       "localizations" : {
         "ja" : {
@@ -3398,6 +3449,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "修改 Tracker"
+          }
+        }
+      }
+    },
+    "Enable Alt Speed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用备用限速"
           }
         }
       }
@@ -3644,6 +3705,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "檔案"
+          }
+        }
+      }
+    },
+    "File Name" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件名"
           }
         }
       }
@@ -4079,6 +4150,16 @@
         }
       }
     },
+    "Global" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "全局"
+          }
+        }
+      }
+    },
     "Help with translation" : {
       "localizations" : {
         "ja" : {
@@ -4121,6 +4202,16 @@
     },
     "HH" : {
 
+    },
+    "High" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高"
+          }
+        }
+      }
     },
     "http(s)://IP:PORT" : {
       "localizations" : {
@@ -4411,6 +4502,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上次活動"
+          }
+        }
+      }
+    },
+    "Leave empty or 0 for unlimited." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "留空或填 0 表示无限制。"
           }
         }
       }
@@ -4784,6 +4885,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "每 Torrent 最大上传槽位"
+          }
+        }
+      }
+    },
+    "Maximum" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最高"
           }
         }
       }
@@ -5342,6 +5453,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無"
+          }
+        }
+      }
+    },
+    "Normal" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正常"
           }
         }
       }
@@ -6701,13 +6822,23 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "改名"
+            "value" : "重命名"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Rename"
+          }
+        }
+      }
+    },
+    "Rename File" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重命名文件"
           }
         }
       }
@@ -6730,6 +6861,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重命名規則"
+          }
+        }
+      }
+    },
+    "Rename Torrent" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重命名 Torrent"
           }
         }
       }
@@ -7901,6 +8042,16 @@
         }
       }
     },
+    "Share Limits" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享限制"
+          }
+        }
+      }
+    },
     "Show Advanced Options" : {
       "localizations" : {
         "ja" : {
@@ -9006,6 +9157,16 @@
         }
       }
     },
+    "Unlimited" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无限制"
+          }
+        }
+      }
+    },
     "Untagged" : {
       "localizations" : {
         "ja" : {
@@ -9162,6 +9323,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "上載"
+          }
+        }
+      }
+    },
+    "Upload (KB/s)" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "上传 (KB/s)"
           }
         }
       }

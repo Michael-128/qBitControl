@@ -11,9 +11,13 @@ struct FilesView: View {
     @State private var sortedFiles: [Dictionary<String, [FileNode]>.Element] = []
     @State private var rootFileNodes: [FileNode] = []
     @StateObject private var rootFileNode = FileNode(name: "")
-    
+
     @State private var isLoaded = false
     @State private var searchQuery = ""
+    @State private var renameTarget: FileNode?
+    @State private var showRenameAlert = false
+    @State private var renameText = ""
+    @State private var filePathMap: [Int: String] = [:]
     
     // Max dirs loaded at a time
     let step = 50
@@ -32,17 +36,20 @@ struct FilesView: View {
         
         qBitRequest.requestFilesJSON(request: request, completionHandler: {
             files in
-            
+
             var filesWithCommonPaths: [String: [FileNode]] = ["":[]]
-            
+            var pathMap: [Int: String] = [:]
+
             for file in files {
+                pathMap[file.index] = file.name
                 var fileComponents = file.name.components(separatedBy: "/")
                 let actualFilename = fileComponents.last!
                 let _ = fileComponents.popLast()
                 let path = fileComponents.joined(separator: "/")
                 filesWithCommonPaths[path, default: []].append(FileNode(index: file.index, name: actualFilename, size: file.size, progress: file.progress, priority: file.priority, is_seed: file.is_seed, availability: file.availability))
             }
-            
+
+            self.filePathMap = pathMap
             self.sortedFiles = filesWithCommonPaths.sorted(by: { $0.0 < $1.0 })
             getNextFileNodes(startIndex: curStep, endIndex: getNextStep(currentStep: curStep))
         })
@@ -146,46 +153,37 @@ struct FilesView: View {
                         Text("\(qBittorrent.getFormatedSize(size: child.getSize()))")
                             .foregroundColor(Color.gray)
                     }.contextMenu() {
-                        if child.getPriority() < 1 {
+                        Section("Priority") {
                             Button {
-                                let stringArr = child.getIndexes().map { String($0) }
-                                let indexes = stringArr.joined(separator: "|")
-                                
-                                setPriority(indexes: indexes, priority: 1, onComplete: {
-                                    success in
-                                    if success {
-                                        for index in child.getIndexes() {
-                                            if let childOfChild = child.search(index: index) {
-                                                childOfChild.setPriority(priority: 1)
-                                                refresh()
-                                            }
-                                        }
-                                    }
-                                })
+                                setChildPriority(child: child, priority: 7)
                             } label: {
-                                Text("Download")
-                                Image(systemName: "arrow.down")
+                                Label("Maximum", systemImage: "arrow.up.to.line")
                             }
-                        } else {
                             Button {
-                                let childIndexes = child.getIndexes()
-                                let stringArr = childIndexes.map { String($0) }
-                                let indexes = stringArr.joined(separator: "|")
-                                
-                                setPriority(indexes: indexes, priority: 0, onComplete: {
-                                    success in
-                                    if success {
-                                        for index in childIndexes {
-                                            if let childOfChild = child.search(index: index) {
-                                                childOfChild.setPriority(priority: 0)
-                                                refresh()
-                                            }
-                                        }
-                                    }
-                                })
+                                setChildPriority(child: child, priority: 6)
                             } label: {
-                                Text("Do not download")
-                                Image(systemName: "xmark")
+                                Label("High", systemImage: "arrow.up")
+                            }
+                            Button {
+                                setChildPriority(child: child, priority: 1)
+                            } label: {
+                                Label("Normal", systemImage: "arrow.down")
+                            }
+                            Button(role: .destructive) {
+                                setChildPriority(child: child, priority: 0)
+                            } label: {
+                                Label("Do Not Download", systemImage: "xmark")
+                            }
+                        }
+                        if !child.isDir {
+                            Section {
+                                Button {
+                                    renameTarget = child
+                                    renameText = child.name
+                                    showRenameAlert = true
+                                } label: {
+                                    Label("Rename", systemImage: "pencil")
+                                }
                             }
                         }
                     }
@@ -200,13 +198,42 @@ struct FilesView: View {
             
         }
         .searchable(text: $searchQuery)
-            .onAppear() {
-            getFiles()
-            }.onSubmit(of: .search, search)
-            .onChange(of: searchQuery) {
-            _ in
-            if searchQuery.isEmpty {search()}
+        .onAppear() { getFiles() }
+        .onSubmit(of: .search, search)
+        .onChange(of: searchQuery) { _ in
+            if searchQuery.isEmpty { search() }
         }
+        .alert("Rename File", isPresented: $showRenameAlert) {
+            TextField("File Name", text: $renameText)
+            Button("Rename") {
+                guard let target = renameTarget,
+                      let fileIndex = target.index,
+                      let oldPath = filePathMap[fileIndex],
+                      !renameText.isEmpty, renameText != target.name else { return }
+                let pathComponents = oldPath.components(separatedBy: "/")
+                let newPath = pathComponents.dropLast().joined(separator: "/") + (pathComponents.count > 1 ? "/" : "") + renameText
+                qBittorrent.renameFile(hash: torrentHash, oldPath: oldPath, newPath: newPath)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { getFiles() }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+    }
+
+    private func setChildPriority(child: FileNode, priority: Int) {
+        let childIndexes = child.getIndexes()
+        let stringArr = childIndexes.map { String($0) }
+        let indexes = stringArr.joined(separator: "|")
+
+        setPriority(indexes: indexes, priority: priority, onComplete: { success in
+            if success {
+                for index in childIndexes {
+                    if let childOfChild = child.search(index: index) {
+                        childOfChild.setPriority(priority: priority)
+                        refresh()
+                    }
+                }
+            }
+        })
     }
 }
 

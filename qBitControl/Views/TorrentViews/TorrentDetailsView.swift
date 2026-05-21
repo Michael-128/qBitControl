@@ -12,6 +12,9 @@ struct TorrentDetailsView: View {
     @StateObject private var trackersViewModel: TrackersViewModel
     @StateObject private var viewModel: TorrentDetailsViewModel
     @State private var showCategorySheet = false
+    @State private var showLimitsSheet = false
+    @State private var showRenameAlert = false
+    @State private var renameText = ""
     
     init(torrent: Torrent) {
         _viewModel = StateObject(wrappedValue: TorrentDetailsViewModel(torrent: torrent))
@@ -53,7 +56,13 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Information")) {
-                    CustomLabelView(label: "Name",lineLimit: 2, value: viewModel.torrent.name)
+                    Button {
+                        renameText = viewModel.torrent.name
+                        showRenameAlert = true
+                    } label: {
+                        CustomLabelView(label: "Name", lineLimit: 2, value: viewModel.torrent.name)
+                    }
+                    .buttonStyle(.plain)
                     CustomLabelView(label: "Added On", value: viewModel.getAddedOn())
                     
                     Button {
@@ -114,9 +123,16 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Limits")) {
-                    CustomLabelView(label: "Maximum Ratio", value: viewModel.getMaxRatio())
-                    CustomLabelView(label: "Download Limit", value: viewModel.getDownloadLimit())
-                    CustomLabelView(label: "Upload Limit", value: viewModel.getUploadLimit())
+                    Button {
+                        showLimitsSheet = true
+                    } label: {
+                        VStack(alignment: .leading, spacing: 8) {
+                            CustomLabelView(label: "Download Limit", value: viewModel.getDownloadLimit())
+                            CustomLabelView(label: "Upload Limit", value: viewModel.getUploadLimit())
+                            CustomLabelView(label: "Maximum Ratio", value: viewModel.getMaxRatio())
+                        }
+                    }
+                    .buttonStyle(.plain)
                 }
                 
             }
@@ -143,6 +159,112 @@ struct TorrentDetailsView: View {
             Button("Delete Task", role: .destructive) { viewModel.deleteTorrent(then: self.dismiss) }
             Button("Delete Task with Files", role: .destructive) { viewModel.deleteTorrentWithFiles(then: self.dismiss) }
             Button("Cancel", role: .cancel) { }
-        }.refreshable() { viewModel.getTorrent() }
+        }
+        .sheet(isPresented: $showLimitsSheet) {
+            ChangeLimitsView(
+                torrentHash: viewModel.torrent.hash,
+                dlLimit: viewModel.torrent.dl_limit,
+                upLimit: viewModel.torrent.up_limit,
+                ratioLimit: viewModel.torrent.ratio_limit,
+                seedingTimeLimit: viewModel.torrent.seeding_time_limit
+            )
+        }
+        .alert("Rename Torrent", isPresented: $showRenameAlert) {
+            TextField("Name", text: $renameText)
+            Button("Rename") {
+                guard !renameText.isEmpty else { return }
+                qBittorrent.renameTorrent(hash: viewModel.torrent.hash, name: renameText)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    viewModel.getTorrent()
+                }
+            }
+            Button("Cancel", role: .cancel) {}
+        }
+        .refreshable() { viewModel.getTorrent() }
+    }
+}
+
+struct ChangeLimitsView: View {
+    @Environment(\.dismiss) var dismiss
+    let torrentHash: String
+
+    @State var dlLimit: String
+    @State var upLimit: String
+    @State var ratioLimit: String
+    @State var seedingTimeLimit: String
+
+    init(torrentHash: String, dlLimit: Int64, upLimit: Int64, ratioLimit: Float, seedingTimeLimit: Int) {
+        self.torrentHash = torrentHash
+        _dlLimit = State(initialValue: dlLimit > 0 ? String(dlLimit / 1024) : "")
+        _upLimit = State(initialValue: upLimit > 0 ? String(upLimit / 1024) : "")
+        _ratioLimit = State(initialValue: ratioLimit > 0 ? String(format: "%.2f", ratioLimit) : "")
+        _seedingTimeLimit = State(initialValue: seedingTimeLimit > 0 ? String(seedingTimeLimit) : "")
+    }
+
+    var body: some View {
+        NavigationView {
+            Form {
+                Section(header: Text("Speed Limits"), footer: Text("Leave empty or 0 for unlimited.")) {
+                    HStack {
+                        Text("Download (KB/s)")
+                        Spacer()
+                        TextField("Unlimited", text: $dlLimit)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 100)
+                    }
+                    HStack {
+                        Text("Upload (KB/s)")
+                        Spacer()
+                        TextField("Unlimited", text: $upLimit)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 100)
+                    }
+                }
+
+                Section(header: Text("Share Limits"), footer: Text("-1 for global setting, -2 for unlimited.")) {
+                    HStack {
+                        Text("Max Ratio")
+                        Spacer()
+                        TextField("Global", text: $ratioLimit)
+                            .keyboardType(.decimalPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 100)
+                    }
+                    HStack {
+                        Text("Max Seeding Time (min)")
+                        Spacer()
+                        TextField("Global", text: $seedingTimeLimit)
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 100)
+                    }
+                }
+            }
+            .navigationTitle("Edit Limits")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button("Save") { saveLimits() }
+                }
+            }
+        }
+    }
+
+    private func saveLimits() {
+        let dlBytes = (Int(dlLimit) ?? 0) * 1024
+        let upBytes = (Int(upLimit) ?? 0) * 1024
+        qBittorrent.setDownloadLimit(hashes: [torrentHash], limit: dlBytes)
+        qBittorrent.setUploadLimit(hashes: [torrentHash], limit: upBytes)
+
+        let ratio = Float(ratioLimit) ?? -1
+        let seedTime = Int(seedingTimeLimit) ?? -1
+        qBittorrent.setShareLimits(hashes: [torrentHash], ratioLimit: ratio, seedingTimeLimit: seedTime)
+
+        dismiss()
     }
 }
