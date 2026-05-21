@@ -8,7 +8,7 @@ class RSSNodeViewModel: ObservableObject {
     
     init() {
         self.getRssRootNode()
-        self.startTimer()
+//        self.startTimer()
     }
     
     deinit {

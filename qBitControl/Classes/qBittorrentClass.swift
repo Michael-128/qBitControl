@@ -285,7 +285,23 @@ class qBittorrent {
     static func getPreferences(completionHandler: @escaping (Result<qBitPreferences, NetworkError>) -> Void) {
         networkManager.performDataRequest(path: "/api/v2/app/preferences", decodingType: qBitPreferences.self, completion: completionHandler)
     }
-    
+
+    static func setPreferences(_ prefs: [String: Any], then callback: ((Int) -> Void)?) {
+        guard let jsonData = try? JSONSerialization.data(withJSONObject: prefs),
+              let jsonString = String(data: jsonData, encoding: .utf8) else {
+            callback?(0)
+            return
+        }
+
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/app/setPreferences", queryItems: [
+            URLQueryItem(name: "json", value: jsonString)
+        ])
+
+        qBitRequest.requestTorrentManagement(request: request, statusCode: { status in
+            callback?(status ?? 0)
+        })
+    }
+
     static func getSearchStart(pattern: String, category: String, plugins: Bool = true, completionHandler: @escaping (SearchStartResult) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/start", queryItems: [
             URLQueryItem(name: "pattern", value: pattern),
@@ -347,14 +363,32 @@ class qBittorrent {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/removeCategories", queryItems: [
             URLQueryItem(name: "categories", value: category)
         ])
-        
+
         if let callback = callback {
             qBitRequest.requestTorrentManagement(request: request, statusCode: {status in callback(status ?? 0)})
         } else {
             qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
         }
     }
-    
+
+    static func editCategory(name: String, newName: String?, newSavePath: String?, then callback: ((Int) -> Void)?) {
+        var params = [URLQueryItem(name: "category", value: name)]
+        if let newName = newName {
+            params.append(URLQueryItem(name: "name", value: newName))
+        }
+        if let newSavePath = newSavePath {
+            params.append(URLQueryItem(name: "savePath", value: newSavePath))
+        }
+
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/editCategory", queryItems: params)
+
+        if let callback = callback {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {status in callback(status ?? 0)})
+        } else {
+            qBitRequest.requestTorrentManagement(request: request, statusCode: {_ in})
+        }
+    }
+
     static func getTags(completionHandler: @escaping ([String]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/tags")
         
@@ -884,7 +918,7 @@ extension qBittorrent {
         }
         return [:]
     }
-    
+
     static func setRSSRule(rule: RSSRuleModel) async -> Bool {
         guard let data = try? JSONEncoder().encode(rule.rule),
               let ruleDef = String(data: data, encoding: .utf8) else { return false }
@@ -916,8 +950,7 @@ extension qBittorrent {
         let request = qBitRequest.prepareURLRequest(path: .rssMatchArticles, queryItems: [URLQueryItem(name: "ruleName", value: name)])
         if case let .success(data) = await qBitRequest.requestCommonData(request: request) {
             do {
-                let dic = try JSONDecoder().decode([String: [String]].self, from: data)
-                return dic
+                return try JSONDecoder().decode([String: [String]].self, from: data)
             } catch {
                 log(error.localizedDescription)
             }

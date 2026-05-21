@@ -67,7 +67,7 @@ struct RSSRule: Codable {
         self.savePath = try container.decodeIfPresent(String.self, forKey: .savePath) ?? ""
     }
     
-    static let defaultAdd = RSSRule(enabled: true)
+    static let defaultAdd = RSSRule(enabled: true, useRegex: true)
 }
 
 class RSSRuleModel: ObservableObject, Identifiable {

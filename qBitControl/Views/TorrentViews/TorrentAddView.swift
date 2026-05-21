@@ -9,6 +9,7 @@ import SwiftUI
 struct TorrentAddView: View {
     @Environment(\.dismiss) var dismissAction
     @StateObject var viewModel: TorrentAddViewModel
+    @State private var showCategorySheet = false
     
     @Binding var torrentUrls: [URL]
     
@@ -44,10 +45,24 @@ struct TorrentAddView: View {
             }
             .onAppear() {
                 viewModel.getSavePath()
-                
-                if(!viewModel.isAppeared) {
-                    viewModel.isAppeared.toggle()
-                    viewModel.checkTorrentType()
+                viewModel.checkTorrentType()
+            }
+            .sheet(isPresented: $showCategorySheet) {
+                NavigationView {
+                    ChangeCategoryView(category: viewModel.category.name, onCategorySelected: { category in
+                        DispatchQueue.main.async {
+                            viewModel.category = category
+                            if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
+                            showCategorySheet = false
+                        }
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .cancellationAction) {
+                            Button("Cancel") {
+                                showCategorySheet = false
+                            }
+                        }
+                    }
                 }
             }
             .toolbar() {
@@ -107,18 +122,13 @@ struct TorrentAddView: View {
             Section(header: Text("Save Path")) { TextField("Path", text: $viewModel.savePath) }
             
             Group {
-                Section(header: Text("Info")) {          
-                    NavigationLink {
-                        ChangeCategoryView(category: viewModel.category.name, onCategoryChange: { category in
-                            DispatchQueue.main.async {
-                                viewModel.category = category
-                                if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
-                                print(viewModel.savePath)
-                            }
-                        })
+                Section(header: Text("Info")) {
+                    Button {
+                        showCategorySheet = true
                     } label: {
                         CustomLabelView(label: "Category", value: viewModel.category.name)
                     }
+                    .buttonStyle(.plain)
                     
                     NavigationLink {
                         ChangeTagsView(selectedTags: viewModel.selectedTags, onTagsChange: { selectedTags in

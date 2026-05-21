@@ -13,12 +13,13 @@ struct RSSRuleDetailView: View {
     @ObservedObject var rule: RSSRuleModel
     @State private var selectedFeedURLs = Set<String>()
     @State private var savePathEnable = false
+    @State private var showCategorySheet = false
     @State private var nameValidError: LocalizedStringKey?
     let isAdd: Bool
     var allFeeds = RSSNodeViewModel.shared.rssRootNode.getAllFeeds()
     
     var body: some View {
-        List(selection: $selectedFeedURLs) {
+        List {
             Section(header: Text("Rule Definition")) {
                 if isAdd {
                     VStack(alignment: .leading) {
@@ -37,16 +38,31 @@ struct RSSRuleDetailView: View {
                     }
                 }
                 Toggle("Using Regular Expressions",isOn: $rule.rule.useRegex)
-                
+
+                TextField("Must Contain", text: $rule.rule.mustContain)
+                TextField("Must Not Contain", text: $rule.rule.mustNotContain)
                 if(rule.rule.useRegex) {
-                    TextField("Must Contain", text: $rule.rule.mustContain)
-                    TextField("Must Not Contain", text: $rule.rule.mustNotContain)
                     TextField("Episode Filter", text: $rule.rule.episodeFilter)
                 }
                 
                 Toggle("Using Smart Filter",isOn: $rule.rule.smartFilter)
+                Button {
+                    showCategorySheet = true
+                } label: {
+                    HStack {
+                        Text("Category")
+                        Spacer()
+                        Text(rule.rule.assignedCategory.isEmpty ? NSLocalizedString("Uncategorized", comment: "") : rule.rule.assignedCategory)
+                            .foregroundColor(.secondary)
+                        Image(systemName: "chevron.right")
+                            .font(.caption)
+                            .foregroundColor(.secondary)
+                    }
+                }
+                .buttonStyle(.plain)
+
                 Toggle("Save Path", isOn: $savePathEnable)
-                
+
                 if(savePathEnable) {
                     TextField("Save To", text: $rule.rule.savePath)
                 }
@@ -95,6 +111,27 @@ struct RSSRuleDetailView: View {
             savePathEnable = !rule.rule.savePath.isEmpty
             selectedFeedURLs = Set(rule.rule.affectedFeeds)
             loadFilterResult()
+        }
+        .sheet(isPresented: $showCategorySheet) {
+            NavigationView {
+                ChangeCategoryView(category: rule.rule.assignedCategory, onCategorySelected: { category in
+                    DispatchQueue.main.async {
+                        rule.rule.assignedCategory = category.name
+                        rule.rule.savePath = category.savePath
+                        if !category.savePath.isEmpty {
+                            savePathEnable = true
+                        }
+                        showCategorySheet = false
+                    }
+                })
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            showCategorySheet = false
+                        }
+                    }
+                }
+            }
         }
         
     }

@@ -8,9 +8,10 @@ import SwiftUI
 
 struct TorrentDetailsView: View {
     @Environment(\.dismiss) var dismiss
-    
+
     @StateObject private var trackersViewModel: TrackersViewModel
     @StateObject private var viewModel: TorrentDetailsViewModel
+    @State private var showCategorySheet = false
     
     init(torrent: Torrent) {
         _viewModel = StateObject(wrappedValue: TorrentDetailsViewModel(torrent: torrent))
@@ -55,13 +56,12 @@ struct TorrentDetailsView: View {
                     CustomLabelView(label: "Name",lineLimit: 2, value: viewModel.torrent.name)
                     CustomLabelView(label: "Added On", value: viewModel.getAddedOn())
                     
-                    NavigationLink {
-                        ChangeCategoryView(torrentHash: viewModel.torrent.hash, category: viewModel.torrent.category, onCategoryChange: {_ in
-                            viewModel.getTorrent()
-                        })
+                    Button {
+                        showCategorySheet = true
                     } label: {
                         CustomLabelView(label: "Categories", value: viewModel.getCategory())
                     }
+                    .buttonStyle(.plain)
                     
                     NavigationLink{
                         ChangeTagsView(torrentHash: viewModel.torrent.hash, selectedTags: viewModel.getTags())
@@ -124,6 +124,21 @@ struct TorrentDetailsView: View {
         }
         .onAppear() { viewModel.setRefreshTimer() }
         .onDisappear() { viewModel.removeRefreshTimer() }
+        .sheet(isPresented: $showCategorySheet) {
+            NavigationView {
+                ChangeCategoryView(torrentHash: viewModel.torrent.hash, category: viewModel.torrent.category, onCategorySelected: { _ in
+                    viewModel.getTorrent()
+                    showCategorySheet = false
+                })
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            showCategorySheet = false
+                        }
+                    }
+                }
+            }
+        }
         .confirmationDialog("Delete Task", isPresented: $viewModel.isDeleteAlert) {
             Button("Delete Task", role: .destructive) { viewModel.deleteTorrent(then: self.dismiss) }
             Button("Delete Task with Files", role: .destructive) { viewModel.deleteTorrentWithFiles(then: self.dismiss) }

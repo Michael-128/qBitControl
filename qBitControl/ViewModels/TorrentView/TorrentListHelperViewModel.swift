@@ -27,6 +27,10 @@ class TorrentListHelperViewModel: ObservableObject {
     
     init() {}
     
+    func updateFilteredTorrents() {
+        filteredTorrents = getFilteredTorrents(torrents: torrents)
+    }
+    
     func getTorrents() {
         if(scenePhase != .active || isTorrentAddView || isSelectionMode) { return }
         
@@ -44,7 +48,7 @@ class TorrentListHelperViewModel: ObservableObject {
                 if(self.sort == "priority") { self.torrents = self.getTorrentsSortedByPriority(torrents: _torrents) }
                 else { self.torrents = _torrents }
                 
-                self.filteredTorrents = self.getFilteredTorrents(torrents: self.torrents)
+                self.updateFilteredTorrents()
             }
         }
     }
@@ -71,6 +75,7 @@ class TorrentListHelperViewModel: ObservableObject {
     }
     
     func startTimer() {
+        stopTimer()
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
             timer in
             self.getTorrents()

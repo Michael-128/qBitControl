@@ -18,6 +18,8 @@
 		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
 		906913CC2E01ECD100027DBE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906913CB2E01ECBC00027DBE /* NetworkManager.swift */; };
 		906913CE2E01F17300027DBE /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906913CD2E01F16F00027DBE /* NetworkError.swift */; };
+		ABCD0003ABCD00030032993E /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0001ABCD00010032993E /* PreferencesView.swift */; };
+		ABCD0004ABCD00040032993E /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */; };
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
 		907023322CDA62FD007B2199 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907023312CDA62FD007B2199 /* TorrentListView.swift */; };
@@ -218,6 +220,8 @@
 		9BCE0C552E041B8C00895F02 /* RSSRuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRuleDetailView.swift; sourceTree = "<group>"; };
 		9BCE0C572E042CCA00895F02 /* PathDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDefine.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
+		ABCD0001ABCD00010032993E /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -344,6 +348,7 @@
 				90726B352CDA22190032993E /* ServerAddView.swift */,
 				90726B362CDA22190032993E /* ServerRowView.swift */,
 				90726B372CDA22190032993E /* ServersView.swift */,
+				ABCD0001ABCD00010032993E /* PreferencesView.swift */,
 			);
 			path = ServersViews;
 			sourceTree = "<group>";
@@ -398,6 +403,7 @@
 			isa = PBXGroup;
 			children = (
 				90726B6E2CDA221B0032993E /* ServerAddViewModel.swift */,
+				ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */,
 			);
 			path = ServersView;
 			sourceTree = "<group>";
@@ -677,6 +683,8 @@
 				90726B642CDA22190032993E /* FilesView.swift in Sources */,
 				907C632A2DAEDACA004B1F41 /* SearchStartResult.swift in Sources */,
 				906913CE2E01F17300027DBE /* NetworkError.swift in Sources */,
+				ABCD0003ABCD00030032993E /* PreferencesView.swift in Sources */,
+				ABCD0004ABCD00040032993E /* PreferencesViewModel.swift in Sources */,
 				90726B652CDA22190032993E /* PeersRowView.swift in Sources */,
 				90726B662CDA22190032993E /* PeersView.swift in Sources */,
 				90E6DD6F2DFF407000BC1D76 /* ServerAdvancedView.swift in Sources */,
@@ -887,10 +895,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 626XV358Y5;
+				DEVELOPMENT_TEAM = R3C2Y7VA37;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = qBitControl/Info.plist;
@@ -907,8 +916,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3.3;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
+				PRODUCT_BUNDLE_IDENTIFIER = lee.qBitControl;
 				PRODUCT_NAME = qBitManager;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -923,10 +933,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = qBitControl/qBitControl.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "";
-				DEVELOPMENT_TEAM = 626XV358Y5;
+				DEVELOPMENT_TEAM = R3C2Y7VA37;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = qBitControl/Info.plist;
@@ -943,8 +954,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.3.3;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael225.qBitControl;
+				PRODUCT_BUNDLE_IDENTIFIER = lee.qBitControl;
 				PRODUCT_NAME = qBitManager;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;

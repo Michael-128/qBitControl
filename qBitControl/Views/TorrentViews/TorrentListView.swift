@@ -24,14 +24,22 @@ struct TorrentListView: View {
                 Section(header: Text("Manage")) {
                     Button { torrentListHelperViewModel.isTorrentAddView.toggle() }
                     label: { Label("Add Task", systemImage: "plus.circle") }
-                    .searchable(text: $torrentListHelperViewModel.searchQuery)
                 }
-    
+
                 TorrentListHelperView(viewModel: torrentListHelperViewModel)
-                    .navigationTitle(torrentListHelperViewModel.category == "All" ? NSLocalizedString("Tasks", comment: "Tasks") : torrentListHelperViewModel.category.capitalized)
             }
+            .navigationTitle(torrentListHelperViewModel.category == "All" ? NSLocalizedString("Tasks", comment: "Tasks") : torrentListHelperViewModel.category.capitalized)
+            .searchable(text: $torrentListHelperViewModel.searchQuery)
             .toolbar() {
                 TorrentListToolbar(torrents: $torrentListHelperViewModel.torrents, category: $torrentListHelperViewModel.category, isSelectionMode: $torrentListHelperViewModel.isSelectionMode, isFilterView: $isFilterView, selectedTorrents: $torrentListHelperViewModel.selectedTorrents)
+            }
+            .safeAreaInset(edge: .bottom) {
+                if torrentListHelperViewModel.isSelectionMode && !torrentListHelperViewModel.selectedTorrents.isEmpty {
+                    TorrentSelectionBottomBar(
+                        selectedTorrents: $torrentListHelperViewModel.selectedTorrents,
+                        isSelectionMode: $torrentListHelperViewModel.isSelectionMode
+                    )
+                }
             }
             .sheet(isPresented: $isFilterView, content: {
                 FiltersMenuView(sort: $torrentListHelperViewModel.sort, reverse: $torrentListHelperViewModel.reverse, filter: $torrentListHelperViewModel.filter, category: $torrentListHelperViewModel.category, tag: $torrentListHelperViewModel.tag)
@@ -44,4 +52,3 @@ struct TorrentListView: View {
     }
 }
     
-

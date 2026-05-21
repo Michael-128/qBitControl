@@ -16,18 +16,19 @@ enum ActiveSheet: Identifiable {
 
 struct ServersView: View {
     @ObservedObject var serversHelper = ServersHelper.shared
-    
+
     @State var activeSheet: ActiveSheet?
     @State var isTroubleConnecting = false
-    
+    @State var showPreferences = false
+
     func setActiveSheet(sheet: ActiveSheet) {
         activeSheet = sheet
     }
-    
+
     func sortServers(server1: Server, server2: Server) -> Bool {
         let name1 = server1.name.isEmpty ? server1.url : server1.name
         let name2 = server2.name.isEmpty ? server2.url : server2.name
-        
+
         return name1 < name2
     }
 
@@ -41,6 +42,14 @@ struct ServersView: View {
                         HStack {
                             Image(systemName: "plus.circle")
                             Text("Add Server")
+                        }
+                    }
+                    Button {
+                        showPreferences = true
+                    } label: {
+                        HStack {
+                            Image(systemName: "gear")
+                            Text("Server Preferences")
                         }
                     }
                 }
@@ -59,6 +68,9 @@ struct ServersView: View {
                 }
             }
             .navigationTitle("Servers")
+            .sheet(isPresented: $showPreferences) {
+                PreferencesView()
+            }
         }
         .sheet(item: $activeSheet) { item in
             switch item {
