@@ -897,6 +897,31 @@ class qBittorrent {
     }*/
 }
 
+// MARK: - Search Plugins
+extension qBittorrent {
+    static func enableSearchPlugin(plugins: [String], enable: Bool) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/enablePlugin", queryItems: [
+            URLQueryItem(name: "plugins", value: plugins.joined(separator: "|")),
+            URLQueryItem(name: "enable", value: String(enable))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func installSearchPlugin(sources: [String]) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/installPlugin", queryItems: [
+            URLQueryItem(name: "sources", value: sources.joined(separator: "|"))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func uninstallSearchPlugin(names: [String]) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/uninstallPlugin", queryItems: [
+            URLQueryItem(name: "names", value: names.joined(separator: "|"))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+}
+
 // MARK: - Logs
 extension qBittorrent {
     static func getLogs(normal: Bool = true, info: Bool = true, warning: Bool = true, critical: Bool = true, lastKnownId: Int = -1) async -> [LogEntry] {

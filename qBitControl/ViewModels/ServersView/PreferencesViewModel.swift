@@ -76,6 +76,12 @@ class PreferencesViewModel: ObservableObject {
     @Published var slowTorrentUlRateThreshold: String = ""
     @Published var slowTorrentInactiveTimer: String = ""
 
+    // IP Filter
+    @Published var ipFilterEnabled: Bool = false
+    @Published var ipFilterPath: String = ""
+    @Published var ipFilterTrackers: Bool = false
+    @Published var bannedIPs: String = ""
+
     func load() {
         isLoading = true
         qBittorrent.getPreferences { [weak self] result in
@@ -148,6 +154,11 @@ class PreferencesViewModel: ObservableObject {
         slowTorrentDlRateThreshold = prefs.slow_torrent_dl_rate_threshold.map { String($0) } ?? ""
         slowTorrentUlRateThreshold = prefs.slow_torrent_ul_rate_threshold.map { String($0) } ?? ""
         slowTorrentInactiveTimer = prefs.slow_torrent_inactive_timer.map { String($0) } ?? ""
+
+        ipFilterEnabled = prefs.ip_filter_enabled ?? false
+        ipFilterPath = prefs.ip_filter_path ?? ""
+        ipFilterTrackers = prefs.ip_filter_trackers ?? false
+        bannedIPs = prefs.banned_IPs ?? ""
     }
 
     func save(completion: @escaping (Bool) -> Void) {
@@ -212,6 +223,11 @@ class PreferencesViewModel: ObservableObject {
         if !slowTorrentDlRateThreshold.isEmpty, let v = Int(slowTorrentDlRateThreshold) { prefsDict["slow_torrent_dl_rate_threshold"] = v }
         if !slowTorrentUlRateThreshold.isEmpty, let v = Int(slowTorrentUlRateThreshold) { prefsDict["slow_torrent_ul_rate_threshold"] = v }
         if !slowTorrentInactiveTimer.isEmpty, let v = Int(slowTorrentInactiveTimer) { prefsDict["slow_torrent_inactive_timer"] = v }
+
+        prefsDict["ip_filter_enabled"] = ipFilterEnabled
+        if !ipFilterPath.isEmpty { prefsDict["ip_filter_path"] = ipFilterPath }
+        prefsDict["ip_filter_trackers"] = ipFilterTrackers
+        if !bannedIPs.isEmpty { prefsDict["banned_IPs"] = bannedIPs }
 
         qBittorrent.setPreferences(prefsDict) { [weak self] status in
             DispatchQueue.main.async {

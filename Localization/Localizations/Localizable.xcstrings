@@ -299,6 +299,7 @@
         }
       }
     },
+    "%lld entries": {},
     "•": {
       "localizations": {
         "ja": {
@@ -1348,7 +1349,6 @@
         }
       }
     },
-    "Announce": {},
     "Anonymous Mode": {
       "localizations": {
         "zh-Hans": {
@@ -1365,6 +1365,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "添加 .!qB 扩展名"
+          }
+        }
+      }
+    },
+    "Application Logs": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用日志"
           }
         }
       }
@@ -2349,6 +2359,17 @@
           "stringUnit": {
             "state": "translated",
             "value": "國家/地區"
+          }
+        }
+      }
+    },
+    "Critical": {},
+    "CRITICAL": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "严重"
           }
         }
       }
@@ -3467,6 +3488,17 @@
         }
       }
     },
+    "entries": {
+      "extractionState": "stale",
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "条目"
+          }
+        }
+      }
+    },
     "Episode Filter": {},
     "Episode Filter:": {
       "extractionState": "stale",
@@ -4303,6 +4335,16 @@
         }
       }
     },
+    "INFO": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "信息"
+          }
+        }
+      }
+    },
     "Information": {
       "localizations": {
         "ja": {
@@ -4563,6 +4605,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "监听端口"
+          }
+        }
+      }
+    },
+    "Logs": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日志"
           }
         }
       }
@@ -4910,6 +4962,16 @@
         }
       }
     },
+    "Move": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移动"
+          }
+        }
+      }
+    },
     "Move Down": {
       "localizations": {
         "ja": {
@@ -5026,6 +5088,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "移到頂端"
+          }
+        }
+      }
+    },
+    "Move Torrents": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移动 Torrent"
           }
         }
       }
@@ -5417,6 +5489,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "正常"
+          }
+        }
+      }
+    },
+    "NORMAL": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "普通"
           }
         }
       }
@@ -9609,6 +9691,17 @@
         }
       }
     },
+    "Warning": {},
+    "WARNING": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "警告"
+          }
+        }
+      }
+    },
     "Wednesday": {
       "localizations": {
         "zh-Hans": {
@@ -9679,92 +9772,132 @@
         }
       }
     },
-    "Application Logs": {
+    "Search Plugins": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "应用日志"
+            "value": "搜索插件"
           }
         }
       }
     },
-    "Logs": {
+    "Install Plugin": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "日志"
+            "value": "安装插件"
           }
         }
       }
     },
-    "entries": {
+    "Plugin URL": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "条目"
+            "value": "插件 URL"
           }
         }
       }
     },
-    "INFO": {
+    "Install": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "信息"
+            "value": "安装"
           }
         }
       }
     },
-    "WARNING": {
+    "Enter the URL of the plugin to install.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "警告"
+            "value": "输入要安装的插件 URL。"
           }
         }
       }
     },
-    "CRITICAL": {
+    "Uninstall": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "严重"
+            "value": "卸载"
           }
         }
       }
     },
-    "NORMAL": {
+    "Plugins": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "普通"
+            "value": "插件"
           }
         }
       }
     },
-    "Move Torrents": {
+    "IP Filter": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "移动 Torrent"
+            "value": "IP 过滤"
           }
         }
       }
     },
-    "Move": {
+    "Enable IP Filtering": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "移动"
+            "value": "启用 IP 过滤"
+          }
+        }
+      }
+    },
+    "Filter Path": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "过滤规则路径"
+          }
+        }
+      }
+    },
+    "Apply to Trackers": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用到 Tracker"
+          }
+        }
+      }
+    },
+    "Banned IPs": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "封禁 IP"
+          }
+        }
+      }
+    },
+    "One IP per line": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "每行一个 IP"
           }
         }
       }

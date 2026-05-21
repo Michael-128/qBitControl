@@ -20,6 +20,7 @@ struct PreferencesView: View {
                 connectionLimitsSection
                 networkSection
                 dhtSection
+                ipFilterSection
                 rssSection
             }
             .navigationTitle("Server Preferences")
@@ -364,6 +365,30 @@ struct PreferencesView: View {
             Toggle("DHT", isOn: $viewModel.dhtEnabled)
             Toggle("PEX", isOn: $viewModel.pexEnabled)
             Toggle("LSD", isOn: $viewModel.lsdEnabled)
+        }
+    }
+
+    // MARK: - IP Filter
+
+    private var ipFilterSection: some View {
+        Section(header: Text("IP Filter")) {
+            Toggle("Enable IP Filtering", isOn: $viewModel.ipFilterEnabled)
+            if viewModel.ipFilterEnabled {
+                HStack {
+                    Text("Filter Path")
+                    Spacer()
+                    TextField("ipfilter.dat", text: $viewModel.ipFilterPath)
+                        .multilineTextAlignment(.trailing)
+                }
+                Toggle("Apply to Trackers", isOn: $viewModel.ipFilterTrackers)
+            }
+            VStack(alignment: .leading) {
+                Text("Banned IPs")
+                TextField("One IP per line", text: $viewModel.bannedIPs, axis: .vertical)
+                    .lineLimit(3...6)
+                    .textFieldStyle(.roundedBorder)
+                    .font(.caption)
+            }
         }
     }
 
