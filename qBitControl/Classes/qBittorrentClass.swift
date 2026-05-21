@@ -14,23 +14,24 @@ struct LogEntry: Decodable, Identifiable {
 
     var logLevel: String {
         switch type {
-        case 1: return "INFO"
-        case 2: return "WARNING"
-        case 4: return "CRITICAL"
+        case 1: return "NORMAL"
+        case 2: return "INFO"
+        case 4: return "WARNING"
+        case 8: return "CRITICAL"
         default: return "NORMAL"
         }
     }
 
     var logColor: Color {
         switch type {
-        case 2: return .orange
-        case 4: return .red
+        case 4: return .orange
+        case 8: return .red
         default: return .primary
         }
     }
 
     var formattedDate: String {
-        let date = Date(timeIntervalSince1970: TimeInterval(timestamp) / 1000)
+        let date = Date(timeIntervalSince1970: TimeInterval(timestamp))
         let formatter = DateFormatter()
         formatter.dateFormat = "MM-dd HH:mm:ss"
         return formatter.string(from: date)

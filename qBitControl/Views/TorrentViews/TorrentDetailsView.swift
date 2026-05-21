@@ -197,8 +197,8 @@ struct ChangeLimitsView: View {
         self.torrentHash = torrentHash
         _dlLimit = State(initialValue: dlLimit > 0 ? String(dlLimit / 1024) : "")
         _upLimit = State(initialValue: upLimit > 0 ? String(upLimit / 1024) : "")
-        _ratioLimit = State(initialValue: ratioLimit > 0 ? String(format: "%.2f", ratioLimit) : "")
-        _seedingTimeLimit = State(initialValue: seedingTimeLimit > 0 ? String(seedingTimeLimit) : "")
+        _ratioLimit = State(initialValue: ratioLimit >= 0 ? String(format: "%.2f", ratioLimit) : "")
+        _seedingTimeLimit = State(initialValue: seedingTimeLimit >= 0 ? String(seedingTimeLimit) : "")
     }
 
     var body: some View {

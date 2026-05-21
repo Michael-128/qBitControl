@@ -13,6 +13,14 @@ struct StatsView: View {
         NavigationStack {
             VStack {
                 List {
+                    Section {
+                        NavigationLink {
+                            LogsView()
+                        } label: {
+                            Label("Application Logs", systemImage: "doc.text")
+                        }
+                    }
+
                     Section(header: Text("Download")) {
                         CustomLabelView(label: "Session Download", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.dl_info_data ?? 0))")
                         CustomLabelView(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.dl_info_speed ?? 0))/s")
@@ -33,14 +41,6 @@ struct StatsView: View {
                         CustomLabelView(label: "Upload", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.alltime_ul ?? 0))")
                         CustomLabelView(label: "Download", value: "\(qBittorrent.getFormatedSize(size: qBitDataShared.serverState?.alltime_dl ?? 0))")
                         CustomLabelView(label: "Ratio", value: "\(qBitDataShared.serverState?.global_ratio ?? "0.00")")
-                    }
-
-                    Section {
-                        NavigationLink {
-                            LogsView()
-                        } label: {
-                            Label("Application Logs", systemImage: "doc.text")
-                        }
                     }
                 }
             }.navigationTitle("Statistics")
