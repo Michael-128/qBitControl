@@ -44,12 +44,14 @@ struct ServersView: View {
                             Text("Add Server")
                         }
                     }
-                    Button {
-                        showPreferences = true
-                    } label: {
-                        HStack {
-                            Image(systemName: "gear")
-                            Text("Server Preferences")
+                    if serversHelper.isLoggedIn {
+                        Button {
+                            showPreferences = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "gear")
+                                Text("Server Preferences")
+                            }
                         }
                     }
                 }

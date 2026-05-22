@@ -20,6 +20,16 @@ struct qBitPreferences: Decodable {
     //let scan_dirs: [Any]
     let export_dir: String?
     let export_dir_fin: String?
+    // 5.0+ Downloads
+    let torrent_content_layout: String?
+    let add_stopped_enabled: Bool?
+    let add_to_top_of_queue: Bool?
+    let torrent_stop_condition: String?
+    let excluded_file_names_enabled: Bool?
+    let excluded_file_names: String?
+    let merge_trackers: Bool?
+    let autorun_on_torrent_added_enabled: Bool?
+    let autorun_on_torrent_added_program: String?
     let mail_notification_enabled: Bool?
     let mail_notification_sender: String?
     let mail_notification_email: String?
@@ -69,7 +79,7 @@ struct qBitPreferences: Decodable {
     let lsd: Bool?
     let encryption: Int?
     let anonymous_mode: Bool?
-    //let proxy_type: String?
+    let proxy_type: String?
     let proxy_ip: String?
     let proxy_port: Int?
     let proxy_peer_connections: Bool?
@@ -77,6 +87,10 @@ struct qBitPreferences: Decodable {
     let proxy_username: String?
     let proxy_password: String?
     let proxy_torrents_only: Bool?
+    let proxy_hostname_lookup: Bool?
+    let proxy_bittorrent: Bool?
+    let proxy_rss: Bool?
+    let proxy_misc: Bool?
     let ip_filter_enabled: Bool?
     let ip_filter_path: String?
     let ip_filter_trackers: Bool?
@@ -116,6 +130,15 @@ struct qBitPreferences: Decodable {
     let rss_smart_episode_filters: String?
     let add_trackers_enabled: Bool?
     let add_trackers: String?
+    let add_trackers_from_url_enabled: Bool?
+    let add_trackers_url: String?
+    let add_trackers_url_list: String?
+    let use_subcategories: Bool?
+    let max_active_checking_torrents: Int?
+    let max_inactive_seeding_time_enabled: Bool?
+    let max_inactive_seeding_time: Int?
+    let reannounce_when_address_changed: Bool?
+    let validate_https_tracker_certificate: Bool?
     let web_ui_use_custom_http_headers_enabled: Bool?
     let web_ui_custom_http_headers: String?
     let max_seeding_time_enabled: Bool?
