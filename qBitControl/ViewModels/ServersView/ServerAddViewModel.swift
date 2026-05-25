@@ -82,9 +82,11 @@ class ServerAddViewModel: ObservableObject {
     }
     
     func addServer(dismiss: DismissAction) -> Void {
+        sanitizeInputs()
+        
         if(!validateInputs()) { return; }
         if(!validateIsConnecting()) { return; }
-        sanitizeInputs()
+        
         
         let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth)
         
