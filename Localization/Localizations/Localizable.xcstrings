@@ -1300,7 +1300,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Czy napewno chcesz wznowić wszystkie zadania?"
+            "value" : "Czy na pewno chcesz wznowić wszystkie zadania?"
           }
         },
         "ru" : {
@@ -1330,7 +1330,20 @@
       }
     },
     "Are you sure you want to resume current tasks?" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在のタスクを再開してもよろしいですか？"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czy na pewno chcesz wznosić obecnie wyświetlane zadania?"
+          }
+        }
+      }
     },
     "Availability" : {
       "localizations" : {
@@ -1937,7 +1950,20 @@
       }
     },
     "Confirm Resume Current" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在のタスクを再開するか確認しますか？"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potwierdź Wznowienie Zadań"
+          }
+        }
+      }
     },
     "Connected Leeches" : {
       "localizations" : {
@@ -6153,7 +6179,20 @@
       }
     },
     "Resume Current Tasks" : {
-
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現在のタスクを再開"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wznów Wyświetlone Zadania"
+          }
+        }
+      }
     },
     "Resume Task" : {
       "localizations" : {
