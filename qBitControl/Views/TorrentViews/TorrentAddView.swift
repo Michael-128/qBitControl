@@ -52,7 +52,9 @@ struct TorrentAddView: View {
                     ChangeCategoryView(category: viewModel.category.name, onCategorySelected: { category in
                         DispatchQueue.main.async {
                             viewModel.category = category
-                            if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
+                            if !category.savePath.isEmpty {
+                                viewModel.savePath = category.savePath
+                            }
                             showCategorySheet = false
                         }
                     })
@@ -68,6 +70,9 @@ struct TorrentAddView: View {
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button { dismiss() } label: { Text("Cancel") }
+                }
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { viewModel.addTorrent(then: dismiss) } label: { Text("Add").fontWeight(.semibold) }
                 }
             }
         }
@@ -161,10 +166,6 @@ struct TorrentAddView: View {
                     limitField(title: "Seeding Time Limit", placeholder: "Time Limit", content: $viewModel.seedingTimeLimit)
                 }
             }
-            
-            Section {
-                Button { viewModel.addTorrent(then: dismiss) } label: { Text("ADD").frame(maxWidth: .infinity).fontWeight(.bold) }.buttonStyle(.borderedProminent)
-            }.listRowBackground(Color.blue)
         }
     }
 }

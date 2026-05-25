@@ -54,7 +54,27 @@ struct RSSNodeView: View {
                     NavigationLink {
                         RSSFeedView(rssFeed: feed)
                     } label: {
-                        Label(feed.title.isEmpty ? "Feed" : feed.title, systemImage: "dot.radiowaves.up.forward").contextMenu(menuItems: { itemContextMenu(itemTitle: feed.title) })
+                        HStack {
+                            if feed.hasError == true {
+                                Image(systemName: "exclamationmark.triangle.fill")
+                                    .foregroundStyle(.red)
+                                    .font(.caption)
+                            } else {
+                                Image(systemName: "dot.radiowaves.up.forward")
+                                    .foregroundStyle(.secondary)
+                                    .font(.caption)
+                            }
+                            VStack(alignment: .leading, spacing: 2) {
+                                Text(feed.title.isEmpty ? "Feed" : feed.title)
+                                if let lastBuild = feed.lastBuildDate, !lastBuild.isEmpty {
+                                    Text(lastBuild)
+                                        .font(.caption2)
+                                        .foregroundStyle(.secondary)
+                                        .lineLimit(1)
+                                }
+                            }
+                        }
+                        .contextMenu(menuItems: { itemContextMenu(itemTitle: feed.title) })
                     }
                 }
             }
@@ -64,6 +84,17 @@ struct RSSNodeView: View {
             .alert("Add Feed", isPresented: $isAddFeedAlert, actions: { addFeedAlert() })
             .alert("Add Folder", isPresented: $isAddFolderAlert, actions: { addFolderAlert() })
             .alert("New Name", isPresented: $isRenameAlert, actions: { renameAlert() })
+            .overlay(alignment: .bottom) {
+                if viewModel.showToast, let message = viewModel.toastMessage {
+                    Text(message)
+                        .font(.subheadline)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(.ultraThinMaterial, in: Capsule())
+                        .padding(.bottom, 20)
+                }
+            }
+            .animation(.easeInOut, value: viewModel.showToast)
     }
     
     func sectionHeader() -> Text {
@@ -137,6 +168,7 @@ struct RSSNodeView: View {
             if !isFolder {
                 Button {
                     qBittorrent.addRSSRefreshItem(path: self.getItemPath(item: itemTitle))
+                    viewModel.pollUntilLoaded()
                 } label: { Label("Refresh", systemImage: "arrow.clockwise") }
             }
             Button {

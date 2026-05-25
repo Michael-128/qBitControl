@@ -19,6 +19,11 @@ struct StatsView: View {
                         } label: {
                             Label("Application Logs", systemImage: "doc.text")
                         }
+                        NavigationLink {
+                            PeerLogsView()
+                        } label: {
+                            Label("Peer Logs", systemImage: "person.2")
+                        }
                     }
 
                     Section(header: Text("Download")) {
@@ -90,6 +95,7 @@ struct LogsView: View {
         .overlay {
             if isLoading { ProgressView() }
         }
+        .refreshable { fetchLogs() }
         .onAppear { fetchLogs() }
         .onChange(of: showNormal) { _ in fetchLogs() }
         .onChange(of: showInfo) { _ in fetchLogs() }
@@ -108,6 +114,64 @@ struct LogsView: View {
                 logs = result.reversed()
                 isLoading = false
             }
+        }
+    }
+}
+
+struct PeerLogsView: View {
+    @State private var logs: [PeerLogEntry] = []
+    @State private var isLoading = true
+
+    var body: some View {
+        List {
+            Section(header: Text("\(logs.count) entries")) {
+                ForEach(logs) { entry in
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Image(systemName: entry.blocked ? "xmark.shield.fill" : "checkmark.shield")
+                                .foregroundColor(entry.blocked ? .red : .green)
+                                .font(.caption)
+                            Text(entry.ip)
+                                .font(.subheadline.monospaced())
+                            Spacer()
+                            Text(entry.formattedDate)
+                                .font(.caption2)
+                                .foregroundColor(.secondary)
+                        }
+                        if let reason = entry.reason, !reason.isEmpty {
+                            Text(reason)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+                    }
+                    .padding(.vertical, 2)
+                    .contextMenu {
+                        Button {
+                            qBittorrent.banPeers(peers: ["\(entry.ip):0"])
+                        } label: {
+                            Label("Ban IP", systemImage: "hand.raised")
+                        }
+                        Button {
+                            UIPasteboard.general.string = entry.ip
+                        } label: {
+                            Label("Copy IP", systemImage: "doc.on.doc")
+                        }
+                    }
+                }
+            }
+        }
+        .navigationTitle("Peer Logs")
+        .overlay { if isLoading { ProgressView() } }
+        .refreshable { await fetchPeerLogs() }
+        .task { await fetchPeerLogs() }
+    }
+
+    private func fetchPeerLogs() async {
+        isLoading = true
+        let result = await qBittorrent.getPeerLog()
+        await MainActor.run {
+            logs = result.reversed()
+            isLoading = false
         }
     }
 }

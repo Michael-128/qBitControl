@@ -48,17 +48,17 @@ struct TorrentListHelperView: View {
         NavigationLink {
             TorrentDetailsView(torrent: torrent)
         } label: {
-            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+            TorrentRowView(torrent: torrent)
             .contextMenu() { torrentRowContextMenu(torrent: torrent) }
         }
     }
-    
+
     func torrentSelectionModeRowView(torrent: Torrent) -> some View {
         let isTorrentSelected = viewModel.selectedTorrents.contains(torrent)
-        
+
         return HStack {
             Image(systemName: isTorrentSelected ? "checkmark.circle.fill" : "circle").scaleEffect(1.25).foregroundStyle(isTorrentSelected ? Color(.blue) : Color(.gray))
-            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio)
+            TorrentRowView(torrent: torrent)
         }.onTapGesture {
             if(isTorrentSelected) { viewModel.selectedTorrents.remove(torrent) } else { viewModel.selectedTorrents.insert(torrent) }
         }

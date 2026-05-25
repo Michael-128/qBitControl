@@ -273,13 +273,15 @@ class qBitRequest {
     static func requestRSSFeedJSON(request: URLRequest, completion: @escaping (RSSNode) -> Void) {
         self.getSession().dataTask(with: request) {
             data, response, error in
-                
+
             if let data = data {
                 do {
                     try completion(JSONDecoder().decode(RSSNode.self, from: data))
                 } catch {
-                    print(error)
+                    print("[RSS] Decode error: \(error)")
                 }
+            } else if let error = error {
+                print("[RSS] Network error: \(error)")
             }
         }.resume()
     }

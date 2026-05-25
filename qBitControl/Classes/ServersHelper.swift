@@ -3,6 +3,7 @@
 import Foundation
 
 
+@MainActor
 class ServersHelper: ObservableObject {
     static public var shared = ServersHelper()
     

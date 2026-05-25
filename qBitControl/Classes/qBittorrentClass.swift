@@ -334,6 +334,49 @@ class qBittorrent {
         })
     }
 
+    static func getTorrentProperties(hash: String, completionHandler: @escaping (Result<TorrentProperties, NetworkError>) -> Void) {
+        networkManager.performDataRequest(
+            path: "/api/v2/torrents/properties",
+            queryItems: [URLQueryItem(name: "hash", value: hash)],
+            decodingType: TorrentProperties.self,
+            completion: completionHandler
+        )
+    }
+
+    static func banPeers(peers: [String]) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/transfer/banPeers", queryItems: [
+            URLQueryItem(name: "peers", value: peers.joined(separator: "|"))
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func shutdownApp() {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/app/shutdown")
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func markRSSAsRead(itemPath: String, articleId: String? = nil) {
+        var queryItems = [URLQueryItem(name: "itemPath", value: itemPath)]
+        if let articleId = articleId {
+            queryItems.append(URLQueryItem(name: "articleId", value: articleId))
+        }
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/rss/markAsRead", queryItems: queryItems)
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func getPeerLog(lastKnownId: Int = -1) async -> [PeerLogEntry] {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/log/peers", queryItems: [
+            URLQueryItem(name: "last_known_id", value: "\(lastKnownId)")
+        ])
+        let result = await qBitRequest.requestCommonData(request: request)
+        switch result {
+        case .success(let data):
+            return (try? JSONDecoder().decode([PeerLogEntry].self, from: data)) ?? []
+        case .failure:
+            return []
+        }
+    }
+
     static func getSearchStart(pattern: String, category: String, plugins: Bool = true, completionHandler: @escaping (SearchStartResult) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/start", queryItems: [
             URLQueryItem(name: "pattern", value: pattern),
@@ -356,10 +399,24 @@ class qBittorrent {
     
     static func getSearchPlugins(completionHandler: @escaping ([SearchPlugin]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/plugins")
-        
+
         qBitRequest.requestSearchPlugins(request: request, completionHandler: completionHandler)
     }
-    
+
+    static func stopSearch(id: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/stop", queryItems: [
+            URLQueryItem(name: "id", value: "\(id)")
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
+    static func deleteSearch(id: Int) {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/delete", queryItems: [
+            URLQueryItem(name: "id", value: "\(id)")
+        ])
+        qBitRequest.requestUniversal(request: request)
+    }
+
     static func getCategories(completionHandler: @escaping ([String: Category]) -> Void) {
         let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/categories")
         
@@ -921,6 +978,11 @@ extension qBittorrent {
         ])
         qBitRequest.requestUniversal(request: request)
     }
+
+    static func updateSearchPlugins() {
+        let request = qBitRequest.prepareURLRequest(path: "/api/v2/search/updatePlugins")
+        qBitRequest.requestUniversal(request: request)
+    }
 }
 
 // MARK: - Logs
@@ -1083,9 +1145,12 @@ extension qBittorrent {
     }
     
     static func addRSSRefreshItem(path: String) {
-        let request = qBitRequest.prepareURLRequest(path: .rssRefreshItem, queryItems: [URLQueryItem(name: "path", value: path)])
-        
-        qBitRequest.requestUniversal(request: request)
+        print("[RSS] Refresh request path: '\(path)'")
+        let request = qBitRequest.prepareURLRequest(path: .rssRefreshItem, queryItems: [URLQueryItem(name: "itemPath", value: path)])
+
+        qBitRequest.requestTorrentManagement(request: request, statusCode: { status in
+            print("[RSS] Refresh response status: \(status ?? -1)")
+        })
     }
     
     static func moveRSSItem(itemPath: String, destPath: String) {

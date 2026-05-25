@@ -20,6 +20,7 @@ struct ServersView: View {
     @State var activeSheet: ActiveSheet?
     @State var isTroubleConnecting = false
     @State var showPreferences = false
+    @State var showShutdownConfirm = false
 
     func setActiveSheet(sheet: ActiveSheet) {
         activeSheet = sheet
@@ -53,6 +54,14 @@ struct ServersView: View {
                                 Text("Server Preferences")
                             }
                         }
+                        Button(role: .destructive) {
+                            showShutdownConfirm = true
+                        } label: {
+                            HStack {
+                                Image(systemName: "power")
+                                Text("Shutdown qBittorrent")
+                            }
+                        }
                     }
                 }
                 if !serversHelper.servers.isEmpty {
@@ -84,6 +93,14 @@ struct ServersView: View {
         }
         .alert(isPresented: $isTroubleConnecting) {
             Alert(title: Text("Couldn't connect to the server."), message: Text("Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"))
+        }
+        .confirmationDialog("Shutdown qBittorrent", isPresented: $showShutdownConfirm) {
+            Button("Shutdown", role: .destructive) {
+                qBittorrent.shutdownApp()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("This will shut down the qBittorrent server. You won't be able to reconnect until it's manually restarted.")
         }
     }
 }

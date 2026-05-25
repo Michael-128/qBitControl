@@ -36,9 +36,23 @@ struct PeersView: View {
                         ForEach($peers, id: \.ip) {
                             peer in
                             PeerRowView(peer: peer)
+                                .contextMenu {
+                                    Button(role: .destructive) {
+                                        let peerStr = "\(peer.wrappedValue.ip):\(peer.wrappedValue.port)"
+                                        qBittorrent.banPeers(peers: [peerStr])
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 1) { getPeers() }
+                                    } label: {
+                                        Label("Ban Peer", systemImage: "hand.raised")
+                                    }
+                                    Button {
+                                        UIPasteboard.general.string = peer.wrappedValue.ip
+                                    } label: {
+                                        Label("Copy IP", systemImage: "doc.on.doc")
+                                    }
+                                }
                         }
                     }
-                    
+
                     .navigationTitle("Peers")
                 }
             } else {

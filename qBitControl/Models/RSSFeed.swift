@@ -10,6 +10,7 @@ struct RSSFeed: Decodable, Identifiable {
     let isLoading: Bool?
     let title: String
     let hasError: Bool?
+    let lastBuildDate: String?
     let articles: [Article]
     
     struct Article: Decodable, Identifiable {

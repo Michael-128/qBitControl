@@ -57,6 +57,9 @@
     ":" : {
 
     },
+    "·" : {
+
+    },
     "*.txt\n*.nfo" : {
 
     },
@@ -330,6 +333,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld 个插件"
+          }
+        }
+      }
+    },
+    "%lld↑ %lld↓" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$lld↑ %2$lld↓"
           }
         }
       }
@@ -873,6 +886,7 @@
       }
     },
     "Add New Category" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1789,6 +1803,46 @@
         }
       }
     },
+    "Avg Download Speed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均下载速度"
+          }
+        }
+      }
+    },
+    "Avg Upload Speed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "平均上传速度"
+          }
+        }
+      }
+    },
+    "Ban IP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "封禁 IP"
+          }
+        }
+      }
+    },
+    "Ban Peer" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "封禁节点"
+          }
+        }
+      }
+    },
     "Banned IPs" : {
       "localizations" : {
         "zh-Hans" : {
@@ -2110,6 +2164,16 @@
         }
       }
     },
+    "Clear" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清除"
+          }
+        }
+      }
+    },
     "Clear Completed" : {
       "localizations" : {
         "ja" : {
@@ -2200,6 +2264,16 @@
         }
       }
     },
+    "Comment" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "评论"
+          }
+        }
+      }
+    },
     "Completed" : {
       "localizations" : {
         "ja" : {
@@ -2236,6 +2310,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已完成"
+          }
+        }
+      }
+    },
+    "Completed On" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "完成时间"
           }
         }
       }
@@ -2569,7 +2653,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "连接数"
+            "value" : "连接"
           }
         },
         "zh-Hant" : {
@@ -2596,6 +2680,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "复制 .torrent 文件到"
+          }
+        }
+      }
+    },
+    "Copy IP" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制 IP"
+          }
+        }
+      }
+    },
+    "Copy Link" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制链接"
           }
         }
       }
@@ -2718,6 +2822,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "创建子文件夹"
+          }
+        }
+      }
+    },
+    "Created By" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建者"
+          }
+        }
+      }
+    },
+    "Creation Date" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建日期"
           }
         }
       }
@@ -4131,6 +4255,9 @@
         }
       }
     },
+    "Existing Paths" : {
+
+    },
     "Export .torrent" : {
       "localizations" : {
         "zh-Hans" : {
@@ -4693,6 +4820,16 @@
         }
       }
     },
+    "General" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "通用"
+          }
+        }
+      }
+    },
     "GitHub" : {
       "localizations" : {
         "ja" : {
@@ -5240,6 +5377,16 @@
         }
       }
     },
+    "Last Seen Complete" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最后完整可见"
+          }
+        }
+      }
+    },
     "Leave empty or 0 for unlimited." : {
       "localizations" : {
         "zh-Hans" : {
@@ -5508,6 +5655,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "手动封禁指定 IP 地址（每行一个）"
+          }
+        }
+      }
+    },
+    "Mark as Read" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标记已读"
           }
         }
       }
@@ -6291,7 +6448,18 @@
         }
       }
     },
+    "Next Announce" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下次汇报"
+          }
+        }
+      }
+    },
     "No results" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -6327,6 +6495,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "No results"
+          }
+        }
+      }
+    },
+    "No results found" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未找到结果"
           }
         }
       }
@@ -6609,6 +6787,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "開啟檔案..."
+          }
+        }
+      }
+    },
+    "Open in Browser" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在浏览器中打开"
           }
         }
       }
@@ -6988,6 +7176,16 @@
         }
       }
     },
+    "Peer Logs" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peer 日志"
+          }
+        }
+      }
+    },
     "Peers" : {
       "localizations" : {
         "ja" : {
@@ -7094,6 +7292,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PEX"
+          }
+        }
+      }
+    },
+    "Piece Size" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分片大小"
+          }
+        }
+      }
+    },
+    "Pieces" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分片"
           }
         }
       }
@@ -7239,6 +7457,16 @@
         }
       }
     },
+    "Private" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "私有"
+          }
+        }
+      }
+    },
     "Process RSS feeds and apply download rules" : {
       "localizations" : {
         "zh-Hans" : {
@@ -7285,6 +7513,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "當前進度"
+          }
+        }
+      }
+    },
+    "Properties" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "属性"
           }
         }
       }
@@ -7767,6 +8005,16 @@
         }
       }
     },
+    "Recent Searches" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "最近搜索"
+          }
+        }
+      }
+    },
     "Recheck" : {
       "localizations" : {
         "ja" : {
@@ -7883,6 +8131,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更新"
+          }
+        }
+      }
+    },
+    "Refresh completed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刷新完成"
+          }
+        }
+      }
+    },
+    "Refresh failed" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "刷新失败"
           }
         }
       }
@@ -8773,6 +9041,16 @@
         }
       }
     },
+    "Search for torrents" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索种子"
+          }
+        }
+      }
+    },
     "Search Plugins" : {
       "localizations" : {
         "zh-Hans" : {
@@ -8782,6 +9060,19 @@
           }
         }
       }
+    },
+    "Searching..." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索中..."
+          }
+        }
+      }
+    },
+    "Searching... (%lld results)" : {
+
     },
     "Seeders" : {
       "extractionState" : "manual",
@@ -8950,6 +9241,16 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Seeding Time Limit"
+          }
+        }
+      }
+    },
+    "Seeds" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "种子"
           }
         }
       }
@@ -9396,6 +9697,16 @@
         }
       }
     },
+    "Share Ratio" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "分享率"
+          }
+        }
+      }
+    },
     "Show Advanced Options" : {
       "localizations" : {
         "ja" : {
@@ -9432,6 +9743,26 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "顯示進階設定"
+          }
+        }
+      }
+    },
+    "Shutdown" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
+          }
+        }
+      }
+    },
+    "Shutdown qBittorrent" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭 qBittorrent"
           }
         }
       }
@@ -10240,6 +10571,16 @@
         }
       }
     },
+    "This will shut down the qBittorrent server. You won't be able to reconnect until it's manually restarted." : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这将关闭 qBittorrent 服务端。在手动重启之前将无法重新连接。"
+          }
+        }
+      }
+    },
     "Thursday" : {
       "localizations" : {
         "zh-Hans" : {
@@ -10319,7 +10660,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "活动时间"
+            "value" : "活跃时间"
           }
         },
         "zh-Hant" : {
@@ -10340,12 +10681,32 @@
         }
       }
     },
+    "Torrent Properties" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "种子属性"
+          }
+        }
+      }
+    },
     "Torrent Queueing" : {
       "localizations" : {
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "种子队列"
+          }
+        }
+      }
+    },
+    "Total Downloaded" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总下载量"
           }
         }
       }
@@ -10386,6 +10747,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "總體大小"
+          }
+        }
+      }
+    },
+    "Total Uploaded" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "总上传量"
           }
         }
       }
@@ -10469,7 +10840,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "转移"
+            "value" : "传输"
           }
         },
         "zh-Hant" : {
@@ -10730,6 +11101,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "更新"
+          }
+        }
+      }
+    },
+    "Update All Plugins" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新全部插件"
           }
         }
       }
@@ -11183,6 +11564,16 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "警告"
+          }
+        }
+      }
+    },
+    "Wasted" : {
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "浪费"
           }
         }
       }

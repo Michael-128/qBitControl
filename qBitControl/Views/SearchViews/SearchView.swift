@@ -11,7 +11,7 @@ struct SearchView: View {
                         TextField("Search", text: $viewModel.query)
                             .autocorrectionDisabled(true)
                             .autocapitalization(.none)
-                            .keyboardType(.default)
+                            .onSubmit { viewModel.startSearch() }
 
                         if !viewModel.isRunning {
                             Button {
@@ -36,6 +36,21 @@ struct SearchView: View {
                     }
                 }
 
+                if !viewModel.searchStatus.isEmpty {
+                    Section {
+                        HStack {
+                            if viewModel.isRunning {
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                                    .padding(.trailing, 4)
+                            }
+                            Text(viewModel.searchStatus)
+                                .font(.subheadline)
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+
                 if viewModel.isResponse {
                     Section(header: Text("\(viewModel.lastestTotal)") + Text(" ") + Text("results")) {
                         ForEach(viewModel.latestResults, id: \.id) { result in
@@ -43,12 +58,35 @@ struct SearchView: View {
                         }
                     }
                 }
+
+                if !viewModel.isResponse && !viewModel.isRunning && !viewModel.searchHistory.isEmpty {
+                    Section(header: HStack {
+                        Text("Recent Searches")
+                        Spacer()
+                        Button("Clear") { viewModel.clearHistory() }
+                            .font(.caption)
+                    }) {
+                        ForEach(viewModel.searchHistory, id: \.self) { query in
+                            Button {
+                                viewModel.query = query
+                                viewModel.startSearch()
+                            } label: {
+                                Label(query, systemImage: "clock")
+                                    .foregroundStyle(.primary)
+                            }
+                        }
+                    }
+                }
             }
 
-            if !viewModel.isResponse {
+            if !viewModel.isResponse && !viewModel.isRunning && viewModel.searchHistory.isEmpty {
                 VStack {
-                    Text("No results")
-                }.foregroundStyle(.gray)
+                    Image(systemName: "magnifyingglass")
+                        .font(.largeTitle)
+                        .foregroundStyle(.tertiary)
+                    Text("Search for torrents")
+                        .foregroundStyle(.secondary)
+                }
             }
         }.toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -67,7 +105,11 @@ struct SearchView: View {
             }
         }.sheet(isPresented: $viewModel.isFilterSheet) {
             SearchFiltersView(viewModel: viewModel)
-        }.sheet(isPresented: $viewModel.isTorrentAddSheet) { if let url = URL(string: self.viewModel.tappedResult?.fileUrl ?? "") { TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true) } }
+        }.sheet(isPresented: $viewModel.isTorrentAddSheet) {
+            if let url = URL(string: self.viewModel.tappedResult?.fileUrl ?? "") {
+                TorrentAddView(torrentUrls: .constant([url]), magnetOverride: true)
+            }
+        }
     }
 }
 
@@ -84,6 +126,12 @@ struct SearchPluginsView: View {
                     showInstallAlert = true
                 } label: {
                     Label("Install Plugin", systemImage: "plus.circle")
+                }
+                Button {
+                    qBittorrent.updateSearchPlugins()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2) { loadPlugins() }
+                } label: {
+                    Label("Update All Plugins", systemImage: "arrow.clockwise")
                 }
             }
 
@@ -125,6 +173,7 @@ struct SearchPluginsView: View {
         }
         .navigationTitle("Search Plugins")
         .overlay { if isLoading { ProgressView() } }
+        .refreshable { loadPlugins() }
         .onAppear { loadPlugins() }
         .alert("Install Plugin", isPresented: $showInstallAlert) {
             TextField("Plugin URL", text: $installURL)

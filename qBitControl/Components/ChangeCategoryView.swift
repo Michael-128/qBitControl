@@ -10,8 +10,9 @@ struct ChangeCategoryView: View {
         return currentCategory == defaultCategory.name && category == ""
     }
 
-    @State private var showAddCategoryAlert = false
+    @State private var showAddCategorySheet = false
     @State private var newCategoryName = ""
+    @State private var newCategorySavePath = "/downloads"
 
     @State private var showEditSheet = false
     @State private var editingCategory: Category?
@@ -20,6 +21,13 @@ struct ChangeCategoryView: View {
 
     public var onCategoryChange: ((Category) -> Void)?
     public var onCategorySelected: ((Category) -> Void)?
+
+    private var existingPaths: [String] {
+        let paths = categories
+            .map { $0.savePath }
+            .filter { !$0.isEmpty }
+        return Array(Set(paths)).sorted()
+    }
 
     private func getCategories() {
         qBittorrent.getCategories(completionHandler: { _categories in
@@ -76,23 +84,10 @@ struct ChangeCategoryView: View {
             Form {
                 Section(header: Text("Add Category")) {
                     Button {
-                        showAddCategoryAlert = true
+                        showAddCategorySheet = true
                     } label: {
                         Label("Add Category", systemImage: "plus.circle")
-                    }.alert("Add New Category", isPresented: $showAddCategoryAlert, actions: {
-                        TextField("Category Name", text: $newCategoryName)
-                        Button("Add", action: {
-                            qBittorrent.addCategory(category: newCategoryName, savePath: nil, then: { status in
-                                if status == 200 {
-                                    self.getCategories()
-                                }
-                            })
-                            newCategoryName = ""
-                        })
-                        Button("Cancel", role: .cancel, action: {
-                            newCategoryName = ""
-                        })
-                    })
+                    }
                 }
 
                 if categories.count > 1 {
@@ -177,6 +172,65 @@ struct ChangeCategoryView: View {
                         Button("Save") {
                             saveEdit()
                         }
+                    }
+                }
+            }
+        }
+        .sheet(isPresented: $showAddCategorySheet) {
+            NavigationView {
+                Form {
+                    Section(header: Text("Category Name")) {
+                        TextField("Name", text: $newCategoryName)
+                    }
+                    Section(header: Text("Save Path")) {
+                        TextField("/downloads", text: $newCategorySavePath)
+                    }
+                    if !existingPaths.isEmpty {
+                        Section(header: Text("Existing Paths")) {
+                            ForEach(existingPaths, id: \.self) { (path: String) in
+                                Button {
+                                    newCategorySavePath = path
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "folder")
+                                            .foregroundStyle(.secondary)
+                                        Text(path)
+                                            .foregroundStyle(.primary)
+                                        Spacer()
+                                        if newCategorySavePath == path {
+                                            Image(systemName: "checkmark")
+                                                .foregroundColor(.accentColor)
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Add Category")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            newCategoryName = ""
+                            newCategorySavePath = "/downloads"
+                            showAddCategorySheet = false
+                        }
+                    }
+                    ToolbarItem(placement: .confirmationAction) {
+                        Button("Add") {
+                            guard !newCategoryName.isEmpty else { return }
+                            let path = newCategorySavePath.isEmpty ? nil : newCategorySavePath
+                            qBittorrent.addCategory(category: newCategoryName, savePath: path, then: { status in
+                                if status == 200 {
+                                    DispatchQueue.main.async { self.getCategories() }
+                                }
+                            })
+                            newCategoryName = ""
+                            newCategorySavePath = "/downloads"
+                            showAddCategorySheet = false
+                        }
+                        .disabled(newCategoryName.isEmpty)
                     }
                 }
             }

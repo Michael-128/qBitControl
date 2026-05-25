@@ -121,6 +121,14 @@ struct TorrentDetailsView: View {
                     Toggle(isOn: $viewModel.isFLPiecesFirst, label: { Text("First & Last Pieces First") })
                         .onChange(of: viewModel.isFLPiecesFirst, perform: { _ in viewModel.toggleFLPiecesFirst() })
                 }
+
+                Section(header: Text("Properties")) {
+                    NavigationLink {
+                        TorrentPropertiesView(hash: viewModel.torrent.hash)
+                    } label: {
+                        Text("Torrent Properties")
+                    }
+                }
                 
                 Section(header: Text("Limits")) {
                     Button {

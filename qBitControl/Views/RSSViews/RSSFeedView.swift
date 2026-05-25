@@ -18,12 +18,21 @@ struct RSSFeedView: View {
         List {
             Section(header: Text("\(rssFeed.articles.count) Articles") ) {
                 ForEach(searchResults, id: \.id) { article in
-                    RSSArticleView(article: article)
+                    RSSArticleView(article: article, feedTitle: rssFeed.title)
                 }
             }
         }
         .navigationTitle(rssFeed.title)
         .searchable(text: $searchQuery)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    qBittorrent.markRSSAsRead(itemPath: rssFeed.title)
+                } label: {
+                    Image(systemName: "envelope.open")
+                }
+            }
+        }
         .onAppear { if self.rssFeed.title.isEmpty { rssNodeViewModel.getRssRootNode() } }
     }
 }

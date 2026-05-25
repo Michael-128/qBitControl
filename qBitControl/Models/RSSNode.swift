@@ -44,7 +44,7 @@ final class RSSNode: Decodable, Identifiable {
                 switch value {
                 case .feed(let feed):
                     // The feed's title is not changing after renaming in qBittorrent, the correct value is the key
-                    let newFeed = RSSFeed(url: feed.url, uid: feed.uid, isLoading: feed.isLoading, title: key, hasError: feed.hasError, articles: feed.articles)
+                    let newFeed = RSSFeed(url: feed.url, uid: feed.uid, isLoading: feed.isLoading, title: key, hasError: feed.hasError, lastBuildDate: feed.lastBuildDate, articles: feed.articles)
                     feeds.append(newFeed)
                 case .node(let node):
                     node.title = key
