@@ -18,6 +18,9 @@ jobs:
     - uses: maxim-lobanov/setup-xcode@v1
       with:
         xcode-version: '26.0'
+    - name: Download Missing iOS Simulator Components
+      run: |
+        sudo xcodebuild -downloadPlatform iOS
     - uses: yukiarrr/ios-build-action@v1.11.2
       with:
         project-path: qBitControl.xcodeproj
