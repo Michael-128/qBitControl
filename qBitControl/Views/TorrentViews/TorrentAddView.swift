@@ -10,6 +10,7 @@ struct TorrentAddView: View {
     @Environment(\.dismiss) var dismissAction
     @StateObject var viewModel: TorrentAddViewModel
     @State private var showCategorySheet = false
+    @State private var showTagsSheet = false
     
     @Binding var torrentUrls: [URL]
     
@@ -62,6 +63,22 @@ struct TorrentAddView: View {
                         ToolbarItem(placement: .cancellationAction) {
                             Button("Cancel") {
                                 showCategorySheet = false
+                            }
+                        }
+                    }
+                }
+            }
+            .sheet(isPresented: $showTagsSheet) {
+                NavigationView {
+                    ChangeTagsView(selectedTags: viewModel.selectedTags, onTagsChange: { selectedTags in
+                        DispatchQueue.main.async {
+                            viewModel.selectedTags = selectedTags
+                        }
+                    })
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Done") {
+                                showTagsSheet = false
                             }
                         }
                     }
@@ -135,15 +152,12 @@ struct TorrentAddView: View {
                     }
                     .buttonStyle(.plain)
                     
-                    NavigationLink {
-                        ChangeTagsView(selectedTags: viewModel.selectedTags, onTagsChange: { selectedTags in
-                            DispatchQueue.main.async {
-                                viewModel.selectedTags = selectedTags
-                            }
-                        })
+                    Button {
+                        showTagsSheet = true
                     } label: {
                         CustomLabelView(label: "Tags", value: viewModel.getTag())
                     }
+                    .buttonStyle(.plain)
                 }
             }
             

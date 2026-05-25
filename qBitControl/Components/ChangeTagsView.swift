@@ -82,63 +82,62 @@ struct ChangeTagsView: View {
     }
     
     
+    @Environment(\.dismiss) var dismiss
+
     var body: some View {
-        VStack {
-            Form {
-                Section(header: Text("Add Tag")) {
-                    Button {
-                        showAddTagAlert = true
-                    } label: {
-                        Label("Add Tag", systemImage: "plus.circle")
-                    }.alert("Add New Tag", isPresented: $showAddTagAlert, actions: {
-                        TextField("Tag Name", text: $newTagName)
-                        Button("Add", action: {
-                            self.addTag()
-                            newTagName = ""
-                        })
-                        Button("Cancel", role: .cancel, action: {
-                            newTagName = ""
-                        })
-                    })
-                }
-                
-                if allTags.count > 1 {
-                    Section {
-                        List {
-                            ForEach(allTags, id: \.self) { tag in
-                                Button {
-                                    if selectedTags.contains(tag) {
-                                        unsetTag(tag: tag)
-                                    } else {
-                                        setTag(tag: tag)
-                                    }
-                                } label: {
-                                    HStack {
-                                        Text(tag)
-                                            .foregroundStyle(.foreground)
-                                        Spacer()
-                                        if selectedTags.contains(tag) {
-                                            Image(systemName: "checkmark")
-                                                .foregroundColor(.accentColor)
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            .onDelete(perform: { atOffsets in
-                                atOffsets.forEach { index in
-                                    self.removeTag(tag: self.allTags[index])
-                                }
-                                
-                                self.allTags.remove(atOffsets: atOffsets)
-                            })
-                        }
-                    }
+        Form {
+            Section(header: Text("Add Tag")) {
+                Button {
+                    showAddTagAlert = true
+                } label: {
+                    Label("Add Tag", systemImage: "plus.circle")
                 }
             }
-            .navigationTitle("Tags")
-        }.onAppear() {
+
+            if allTags.count > 1 {
+                Section {
+                    ForEach(allTags, id: \.self) { tag in
+                        Button {
+                            if selectedTags.contains(tag) {
+                                unsetTag(tag: tag)
+                            } else {
+                                setTag(tag: tag)
+                            }
+                        } label: {
+                            HStack {
+                                Text(tag)
+                                    .foregroundStyle(.foreground)
+                                Spacer()
+                                if selectedTags.contains(tag) {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(.accentColor)
+                                }
+                            }
+                            .contentShape(Rectangle())
+                        }
+                    }
+                    .onDelete(perform: { atOffsets in
+                        atOffsets.forEach { index in
+                            self.removeTag(tag: self.allTags[index])
+                        }
+                        self.allTags.remove(atOffsets: atOffsets)
+                    })
+                }
+            }
+        }
+        .navigationTitle("Tags")
+        .onAppear() {
             self.getTags()
+        }
+        .alert("Add New Tag", isPresented: $showAddTagAlert) {
+            TextField("Tag Name", text: $newTagName)
+            Button("Add") {
+                self.addTag()
+                newTagName = ""
+            }
+            Button("Cancel", role: .cancel) {
+                newTagName = ""
+            }
         }
     }
 }

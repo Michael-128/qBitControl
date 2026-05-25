@@ -58,6 +58,7 @@ struct RSSRuleDetailView: View {
                             .font(.caption)
                             .foregroundColor(.secondary)
                     }
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
 

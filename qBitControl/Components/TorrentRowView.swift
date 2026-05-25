@@ -11,106 +11,117 @@ struct TorrentRowView: View {
     private var stateColor: Color { qBittorrent.getStateColor(state: torrent.state) }
     private var stateText: String { qBittorrent.getState(state: torrent.state) }
     private var stateIcon: String { qBittorrent.getStateIcon(state: torrent.state) }
+    private var isSeeding: Bool { torrent.progress >= 1.0 }
+    private var trackerDomain: String {
+        guard let url = URL(string: torrent.tracker), let host = url.host else { return "" }
+        return host.replacingOccurrences(of: "tracker.", with: "").replacingOccurrences(of: "www.", with: "")
+    }
 
     var body: some View {
-        HStack(spacing: 10) {
-            // Left accent bar
-            RoundedRectangle(cornerRadius: 2)
-                .fill(stateColor)
-                .frame(width: 4)
-                .padding(.vertical, 2)
-
-            VStack(alignment: .leading, spacing: 6) {
-                // Title
+        VStack(alignment: .leading, spacing: 6) {
+            // Row 1: Name + state icon
+            HStack(alignment: .top) {
                 Text(torrent.name)
                     .font(.subheadline)
                     .fontWeight(.medium)
                     .lineLimit(2)
+                Spacer()
+                Image(systemName: stateIcon)
+                    .font(.caption)
+                    .foregroundColor(stateColor)
+            }
 
-                // Progress bar
+            // Row 2: Progress bar + percentage
+            HStack(spacing: 6) {
                 GeometryReader { geo in
                     ZStack(alignment: .leading) {
-                        RoundedRectangle(cornerRadius: 2)
+                        RoundedRectangle(cornerRadius: 1.5)
                             .fill(Color(.systemGray5))
-                            .frame(height: 4)
-                        RoundedRectangle(cornerRadius: 2)
+                        RoundedRectangle(cornerRadius: 1.5)
                             .fill(stateColor)
-                            .frame(width: geo.size.width * CGFloat(min(torrent.progress, 1.0)), height: 4)
+                            .frame(width: geo.size.width * CGFloat(min(torrent.progress, 1.0)))
                     }
                 }
-                .frame(height: 4)
+                .frame(height: 3)
 
-                // Status line
-                HStack(spacing: 4) {
-                    Image(systemName: stateIcon)
-                        .foregroundColor(stateColor)
-                    Text(stateText)
-                        .foregroundColor(stateColor)
+                Text("\(Int(torrent.progress * 100))%")
+                    .font(.caption2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(stateColor)
+                    .frame(width: 32, alignment: .trailing)
+            }
 
-                    Text("·")
-                        .foregroundStyle(.tertiary)
+            // Row 3: State + size + ETA
+            HStack(spacing: 4) {
+                Text(stateText)
+                    .foregroundColor(stateColor)
+                    .fontWeight(.medium)
+                Text("·").foregroundStyle(.tertiary)
 
-                    Text(progressText)
-
-                    if torrent.eta > 0 && torrent.eta < 8640000 && torrent.progress < 1.0 {
-                        Text("·")
-                            .foregroundStyle(.tertiary)
+                if torrent.progress < 1.0 {
+                    Text("\(qBittorrent.getFormatedSize(size: torrent.downloaded))/\(qBittorrent.getFormatedSize(size: torrent.size))")
+                    if torrent.eta > 0 && torrent.eta < 8640000 {
+                        Text("·").foregroundStyle(.tertiary)
                         Image(systemName: "clock")
                         Text(formatETA(torrent.eta))
                     }
+                } else {
+                    Text(qBittorrent.getFormatedSize(size: torrent.size))
+                    Text("·").foregroundStyle(.tertiary)
+                    Text("↑\(qBittorrent.getFormatedSize(size: torrent.uploaded))")
+                    Text("·").foregroundStyle(.tertiary)
+                    Text("R:\(String(format: "%.2f", torrent.ratio))")
                 }
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
+            }
+            .font(.caption)
+            .foregroundStyle(.secondary)
+            .lineLimit(1)
 
-                // Speed & info line
-                HStack(spacing: 4) {
-                    if torrent.dlspeed > 0 {
-                        Image(systemName: "arrow.down")
-                            .foregroundColor(.green)
-                        Text("\(qBittorrent.getFormatedSize(size: torrent.dlspeed))/s")
-                    }
-                    if torrent.upspeed > 0 {
-                        if torrent.dlspeed > 0 { Text("·").foregroundStyle(.tertiary) }
-                        Image(systemName: "arrow.up")
-                            .foregroundColor(.blue)
-                        Text("\(qBittorrent.getFormatedSize(size: torrent.upspeed))/s")
-                    }
-                    if torrent.dlspeed == 0 && torrent.upspeed == 0 {
-                        Image(systemName: "arrow.up.arrow.down")
-                        Text(String(format: "%.2f", torrent.ratio))
-                    }
+            // Row 4: Speed chips + peers + tags
+            HStack(spacing: 5) {
+                if torrent.dlspeed > 0 {
+                    SpeedChip(icon: "arrow.down", speed: torrent.dlspeed, color: .green)
+                }
+                if torrent.upspeed > 0 {
+                    SpeedChip(icon: "arrow.up", speed: torrent.upspeed, color: .blue)
+                }
 
-                    Text("·")
-                        .foregroundStyle(.tertiary)
+                HStack(spacing: 2) {
                     Image(systemName: "person.2")
-                    Text("\(torrent.num_seeds)↑ \(torrent.num_leechs)↓")
-
-                    Spacer()
-
-                    if !torrent.category.isEmpty {
-                        Text(torrent.category)
-                            .font(.caption2)
-                            .padding(.horizontal, 6)
-                            .padding(.vertical, 2)
-                            .background(Color(.systemGray5))
-                            .clipShape(Capsule())
-                    }
+                    Text("\(torrent.num_seeds)/\(torrent.num_leechs)")
                 }
-                .font(.caption)
-                .foregroundStyle(.secondary)
-                .lineLimit(1)
+                .font(.caption2)
+                .foregroundStyle(.tertiary)
+
+                if isSeeding, let seedingTime = torrent.seeding_time, seedingTime > 0 {
+                    HStack(spacing: 2) {
+                        Image(systemName: "timer")
+                        Text(formatDuration(seedingTime))
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(.tertiary)
+                }
+
+                if !isSeeding && torrent.availability > 0 && torrent.availability < 1.0 {
+                    HStack(spacing: 2) {
+                        Image(systemName: "chart.pie")
+                        Text(String(format: "%.0f%%", torrent.availability * 100))
+                    }
+                    .font(.caption2)
+                    .foregroundStyle(.orange)
+                }
+
+                Spacer()
+
+                if !trackerDomain.isEmpty {
+                    TagChip(text: trackerDomain, color: .purple)
+                }
+                if !torrent.category.isEmpty {
+                    TagChip(text: torrent.category, color: .indigo)
+                }
             }
         }
-        .padding(.vertical, 2)
-    }
-
-    private var progressText: String {
-        if torrent.progress >= 1.0 {
-            return qBittorrent.getFormatedSize(size: torrent.size)
-        } else {
-            return "\(qBittorrent.getFormatedSize(size: torrent.downloaded)) / \(qBittorrent.getFormatedSize(size: torrent.size))"
-        }
+        .padding(.vertical, 3)
     }
 
     private func formatETA(_ seconds: Int) -> String {
@@ -120,5 +131,50 @@ struct TorrentRowView: View {
         if days > 0 { return "\(days)d \(hours)h" }
         if hours > 0 { return "\(hours)h \(mins)m" }
         return "\(mins)m"
+    }
+
+    private func formatDuration(_ seconds: Int) -> String {
+        let days = seconds / 86400
+        let hours = (seconds % 86400) / 3600
+        if days > 0 { return "\(days)d" }
+        if hours > 0 { return "\(hours)h" }
+        return "\(seconds / 60)m"
+    }
+}
+
+struct SpeedChip: View {
+    let icon: String
+    let speed: Int64
+    let color: Color
+
+    var body: some View {
+        HStack(spacing: 2) {
+            Image(systemName: icon)
+                .font(.system(size: 8, weight: .bold))
+            Text("\(qBittorrent.getFormatedSize(size: speed))/s")
+                .font(.caption2)
+                .fontWeight(.medium)
+        }
+        .foregroundColor(color)
+        .padding(.horizontal, 5)
+        .padding(.vertical, 2)
+        .background(color.opacity(0.1))
+        .clipShape(Capsule())
+    }
+}
+
+struct TagChip: View {
+    let text: String
+    let color: Color
+
+    var body: some View {
+        Text(text)
+            .font(.system(size: 10))
+            .foregroundColor(color)
+            .padding(.horizontal, 5)
+            .padding(.vertical, 1.5)
+            .background(color.opacity(0.1))
+            .clipShape(Capsule())
+            .lineLimit(1)
     }
 }

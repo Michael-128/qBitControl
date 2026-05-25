@@ -6,7 +6,7 @@ struct CustomLabelView: View {
     public var label: LocalizedStringKey
     public var lineLimit: Int = 1
     public var value: String
-    
+
     var body: some View {
         Button(action: {UIPasteboard.general.string = "\(value)"}) {
             HStack {
@@ -16,6 +16,7 @@ struct CustomLabelView: View {
                     .foregroundColor(Color.gray)
                     .lineLimit(lineLimit)
             }
+            .contentShape(Rectangle())
         }.foregroundColor(.primary)
     }
 }

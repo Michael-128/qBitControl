@@ -13,6 +13,7 @@ struct TorrentDetailsView: View {
     @StateObject private var viewModel: TorrentDetailsViewModel
     @State private var showCategorySheet = false
     @State private var showLimitsSheet = false
+    @State private var showTagsSheet = false
     @State private var showRenameAlert = false
     @State private var renameText = ""
     
@@ -72,11 +73,12 @@ struct TorrentDetailsView: View {
                     }
                     .buttonStyle(.plain)
                     
-                    NavigationLink{
-                        ChangeTagsView(torrentHash: viewModel.torrent.hash, selectedTags: viewModel.getTags())
+                    Button {
+                        showTagsSheet = true
                     } label: {
                         CustomLabelView(label: "Tags", value: viewModel.getTag())
                     }
+                    .buttonStyle(.plain)
                     
                     CustomLabelView(label: "Size", value: viewModel.getSize())
                     CustomLabelView(label: "Total Size", value: viewModel.getTotalSize())
@@ -139,6 +141,7 @@ struct TorrentDetailsView: View {
                             CustomLabelView(label: "Upload Limit", value: viewModel.getUploadLimit())
                             CustomLabelView(label: "Maximum Ratio", value: viewModel.getMaxRatio())
                         }
+                        .contentShape(Rectangle())
                     }
                     .buttonStyle(.plain)
                 }
@@ -176,6 +179,20 @@ struct TorrentDetailsView: View {
                 ratioLimit: viewModel.torrent.ratio_limit,
                 seedingTimeLimit: viewModel.torrent.seeding_time_limit
             )
+        }
+        .sheet(isPresented: $showTagsSheet) {
+            NavigationView {
+                ChangeTagsView(torrentHash: viewModel.torrent.hash, selectedTags: viewModel.getTags())
+                    .toolbar {
+                        ToolbarItem(placement: .confirmationAction) {
+                            Button("Done") {
+                                showTagsSheet = false
+                                viewModel.getTorrent()
+                            }
+                        }
+                    }
+            }
+            .interactiveDismissDisabled(false)
         }
         .alert("Rename Torrent", isPresented: $showRenameAlert) {
             TextField("Name", text: $renameText)

@@ -51,7 +51,19 @@ struct Torrent: Decodable, Hashable {
     var upspeed: Int64
 
     static func == (lhs: Torrent, rhs: Torrent) -> Bool {
-        lhs.hash == rhs.hash
+        lhs.hash == rhs.hash &&
+        lhs.dlspeed == rhs.dlspeed &&
+        lhs.upspeed == rhs.upspeed &&
+        lhs.progress == rhs.progress &&
+        lhs.state == rhs.state &&
+        lhs.eta == rhs.eta &&
+        lhs.num_seeds == rhs.num_seeds &&
+        lhs.num_leechs == rhs.num_leechs &&
+        lhs.ratio == rhs.ratio &&
+        lhs.uploaded == rhs.uploaded &&
+        lhs.downloaded == rhs.downloaded &&
+        lhs.category == rhs.category &&
+        lhs.tags == rhs.tags
     }
 
     func hash(into hasher: inout Hasher) {

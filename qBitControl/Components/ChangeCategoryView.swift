@@ -121,6 +121,7 @@ struct ChangeCategoryView: View {
                                                     .foregroundColor(.accentColor)
                                             }
                                         }
+                                        .contentShape(Rectangle())
                                     }
                                     .buttonStyle(.plain)
 
