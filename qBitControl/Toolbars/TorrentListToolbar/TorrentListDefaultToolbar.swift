@@ -39,6 +39,14 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 
                 Section {
                     Button {
+                        viewModel.alertIdentifier = AlertIdentifier(id: .resumeCurrent)
+                    } label: {
+                        Image(systemName: "play")
+                            .rotationEffect(.degrees(180))
+                        Text("Resume Current Tasks")
+                    }
+
+                    Button {
                         viewModel.alertIdentifier = AlertIdentifier(id: .resumeAll)
                     } label: {
                         Image(systemName: "play")
@@ -77,6 +85,10 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 Image(systemName: "ellipsis.circle")
             }.alert(item: $viewModel.alertIdentifier) { alert in
                 switch(alert.id) {
+                case .resumeCurrent:
+                    return Alert(title: Text("Confirm Resume Current"), message: Text("Are you sure you want to resume current tasks?"), primaryButton: .default(Text("Resume")) {
+                        qBittorrent.resumeTorrents(hashes: viewModel.filteredTorrents.map { $0.hash })
+                    }, secondaryButton: .cancel())
                 case .resumeAll:
                     return Alert(title: Text("Confirm Resume All"), message: Text("Are you sure you want to resume all tasks?"), primaryButton: .default(Text("Resume")) {
                         qBittorrent.resumeAllTorrents()
