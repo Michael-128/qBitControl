@@ -28,16 +28,10 @@ class RSSNodeViewModel: ObservableObject {
     }
 
     func pollUntilLoaded() {
-        print("[RSS] pollUntilLoaded started, will fetch in 5s")
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            print("[RSS] Fetching RSS data after refresh...")
             self.getRssRootNode()
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 let feeds = self.rssRootNode.getAllFeeds()
-                print("[RSS] Poll result: \(feeds.count) feeds")
-                for feed in feeds {
-                    print("[RSS]   '\(feed.title)': hasError=\(feed.hasError ?? false), isLoading=\(feed.isLoading ?? false)")
-                }
                 let hasError = feeds.contains { $0.hasError == true }
                 if hasError {
                     self.toastMessage = String(localized: "Refresh failed")
@@ -45,7 +39,6 @@ class RSSNodeViewModel: ObservableObject {
                     self.toastMessage = String(localized: "Refresh completed")
                 }
                 withAnimation { self.showToast = true }
-                print("[RSS] Toast message set to: \(self.toastMessage ?? "nil")")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                     withAnimation { self.showToast = false }
                 }

@@ -183,6 +183,17 @@ struct PrefBitTorrentView: View {
                         TextField("https://example.com/trackers.txt", text: $vm.addTrackersUrlList)
                             .font(.caption.monospaced())
                             .textFieldStyle(.roundedBorder)
+                            .autocapitalization(.none)
+                            .autocorrectionDisabled()
+                        Button {
+                            vm.fetchAndMergeTrackersFromUrl()
+                        } label: {
+                            HStack {
+                                Image(systemName: "arrow.down.circle")
+                                Text("Fetch Now")
+                            }
+                        }
+                        .disabled(vm.addTrackersUrlList.isEmpty)
                     }
                 }
             } header: {

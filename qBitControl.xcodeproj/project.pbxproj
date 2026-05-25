@@ -18,13 +18,6 @@
 		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
 		906913CC2E01ECD100027DBE /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906913CB2E01ECBC00027DBE /* NetworkManager.swift */; };
 		906913CE2E01F17300027DBE /* NetworkError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 906913CD2E01F16F00027DBE /* NetworkError.swift */; };
-		ABCD0003ABCD00030032993E /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0001ABCD00010032993E /* PreferencesView.swift */; };
-		ABCD000AABCD000A0032993E /* PrefDownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0005ABCD00050032993E /* PrefDownloadsView.swift */; };
-		ABCD000BABCD000B0032993E /* PrefConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0006ABCD00060032993E /* PrefConnectionView.swift */; };
-		ABCD000CABCD000C0032993E /* PrefSpeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0007ABCD00070032993E /* PrefSpeedView.swift */; };
-		ABCD000DABCD000D0032993E /* PrefBitTorrentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0008ABCD00080032993E /* PrefBitTorrentView.swift */; };
-		ABCD000EABCD000E0032993E /* PrefRSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0009ABCD00090032993E /* PrefRSSView.swift */; };
-		ABCD0004ABCD00040032993E /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */; };
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
 		907023322CDA62FD007B2199 /* TorrentListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907023312CDA62FD007B2199 /* TorrentListView.swift */; };
@@ -107,6 +100,15 @@
 		9BCE0C542E04049600895F02 /* RSSRulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C532E04049600895F02 /* RSSRulesViewModel.swift */; };
 		9BCE0C562E041B8C00895F02 /* RSSRuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C552E041B8C00895F02 /* RSSRuleDetailView.swift */; };
 		9BCE0C582E042CCA00895F02 /* PathDefine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9BCE0C572E042CCA00895F02 /* PathDefine.swift */; };
+		ABCD0003ABCD00030032993E /* PreferencesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0001ABCD00010032993E /* PreferencesView.swift */; };
+		ABCD0004ABCD00040032993E /* PreferencesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */; };
+		ABCD000AABCD000A0032993E /* PrefDownloadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0005ABCD00050032993E /* PrefDownloadsView.swift */; };
+		ABCD000BABCD000B0032993E /* PrefConnectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0006ABCD00060032993E /* PrefConnectionView.swift */; };
+		ABCD000CABCD000C0032993E /* PrefSpeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0007ABCD00070032993E /* PrefSpeedView.swift */; };
+		ABCD000DABCD000D0032993E /* PrefBitTorrentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0008ABCD00080032993E /* PrefBitTorrentView.swift */; };
+		ABCD000EABCD000E0032993E /* PrefRSSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0009ABCD00090032993E /* PrefRSSView.swift */; };
+		ABCD0012ABCD00120032993E /* TorrentProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0010ABCD00100032993E /* TorrentProperties.swift */; };
+		ABCD0013ABCD00130032993E /* TorrentPropertiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABCD0011ABCD00110032993E /* TorrentPropertiesView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -224,14 +226,16 @@
 		9BCE0C532E04049600895F02 /* RSSRulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRulesViewModel.swift; sourceTree = "<group>"; };
 		9BCE0C552E041B8C00895F02 /* RSSRuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSRuleDetailView.swift; sourceTree = "<group>"; };
 		9BCE0C572E042CCA00895F02 /* PathDefine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathDefine.swift; sourceTree = "<group>"; };
-		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
 		ABCD0001ABCD00010032993E /* PreferencesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesView.swift; sourceTree = "<group>"; };
+		ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
 		ABCD0005ABCD00050032993E /* PrefDownloadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefDownloadsView.swift; sourceTree = "<group>"; };
 		ABCD0006ABCD00060032993E /* PrefConnectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefConnectionView.swift; sourceTree = "<group>"; };
 		ABCD0007ABCD00070032993E /* PrefSpeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefSpeedView.swift; sourceTree = "<group>"; };
 		ABCD0008ABCD00080032993E /* PrefBitTorrentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefBitTorrentView.swift; sourceTree = "<group>"; };
 		ABCD0009ABCD00090032993E /* PrefRSSView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrefRSSView.swift; sourceTree = "<group>"; };
-		ABCD0002ABCD00020032993E /* PreferencesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreferencesViewModel.swift; sourceTree = "<group>"; };
+		ABCD0010ABCD00100032993E /* TorrentProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentProperties.swift; sourceTree = "<group>"; };
+		ABCD0011ABCD00110032993E /* TorrentPropertiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentPropertiesView.swift; sourceTree = "<group>"; };
+		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -315,6 +319,7 @@
 				901230512DB02E870022FD4C /* SearchResponse.swift */,
 				907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */,
 				90E1D0532D30438C00B81F12 /* Version.swift */,
+				ABCD0010ABCD00100032993E /* TorrentProperties.swift */,
 				90726B0C2CDA22160032993E /* AlertIdentifier.swift */,
 				90726B0E2CDA22160032993E /* Category.swift */,
 				90726B0F2CDA22160032993E /* File.swift */,
@@ -398,6 +403,7 @@
 				90726B492CDA22190032993E /* PeersView.swift */,
 				90726B4B2CDA22190032993E /* TrackersView.swift */,
 				90726B4E2CDA22190032993E /* PeerDetailsView.swift */,
+				ABCD0011ABCD00110032993E /* TorrentPropertiesView.swift */,
 			);
 			path = TorrentViews;
 			sourceTree = "<group>";
@@ -587,7 +593,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1400;
-				LastUpgradeCheck = 1630;
+				LastUpgradeCheck = 2630;
 				TargetAttributes = {
 					9082FA1E29080E53006C3960 = {
 						CreatedOnToolsVersion = 14.0.1;
@@ -670,6 +676,8 @@
 				90BA88552B2206F100C8A342 /* LocalNetworkPermissionClass.swift in Sources */,
 				90AE89392CDBEC4D000E0276 /* RSSNodeView.swift in Sources */,
 				90E1D0542D30438F00B81F12 /* Version.swift in Sources */,
+				ABCD0012ABCD00120032993E /* TorrentProperties.swift in Sources */,
+				ABCD0013ABCD00130032993E /* TorrentPropertiesView.swift in Sources */,
 				901230562DB037120022FD4C /* SearchRowView.swift in Sources */,
 				90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */,
 				90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */,
@@ -794,6 +802,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -847,6 +856,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -857,6 +867,7 @@
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
@@ -903,6 +914,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -920,6 +932,8 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = R3C2Y7VA37;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = qBitControl/Info.plist;
@@ -958,6 +972,8 @@
 				CURRENT_PROJECT_VERSION = 17;
 				DEVELOPMENT_ASSET_PATHS = "";
 				DEVELOPMENT_TEAM = R3C2Y7VA37;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = qBitControl/Info.plist;
@@ -988,7 +1004,6 @@
 		9082FA4729080E55006C3960 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1010,7 +1025,6 @@
 		9082FA4829080E55006C3960 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1031,7 +1045,6 @@
 		9082FA4A29080E55006C3960 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1051,7 +1064,6 @@
 		9082FA4B29080E55006C3960 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;

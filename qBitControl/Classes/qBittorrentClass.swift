@@ -1145,12 +1145,8 @@ extension qBittorrent {
     }
     
     static func addRSSRefreshItem(path: String) {
-        print("[RSS] Refresh request path: '\(path)'")
         let request = qBitRequest.prepareURLRequest(path: .rssRefreshItem, queryItems: [URLQueryItem(name: "itemPath", value: path)])
-
-        qBitRequest.requestTorrentManagement(request: request, statusCode: { status in
-            print("[RSS] Refresh response status: \(status ?? -1)")
-        })
+        qBitRequest.requestUniversal(request: request)
     }
     
     static func moveRSSItem(itemPath: String, destPath: String) {

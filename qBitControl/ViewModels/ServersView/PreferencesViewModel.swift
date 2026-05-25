@@ -100,6 +100,7 @@ class PreferencesViewModel: ObservableObject {
     @Published var addTrackers: String = ""
     @Published var addTrackersFromUrlEnabled: Bool = false
     @Published var addTrackersUrlList: String = ""
+    var serverSupportsTrackersFromUrl: Bool = false
     @Published var reannounceWhenAddressChanged: Bool = false
     @Published var validateHttpsTrackerCertificate: Bool = false
 
@@ -122,7 +123,6 @@ class PreferencesViewModel: ObservableObject {
                     self?.loadFailed = false
                     self?.syncFromPreferences(prefs)
                 case .failure(let error):
-                    print("[Preferences] Load failed: \(error)")
                     self?.loadFailed = true
                     self?.saveError = error.localizedDescription
                 }
@@ -221,7 +221,14 @@ class PreferencesViewModel: ObservableObject {
         addTrackersEnabled = prefs.add_trackers_enabled ?? false
         addTrackers = prefs.add_trackers ?? ""
         addTrackersFromUrlEnabled = prefs.add_trackers_from_url_enabled ?? false
-        addTrackersUrlList = prefs.add_trackers_url_list ?? prefs.add_trackers_url ?? ""
+        serverSupportsTrackersFromUrl = prefs.add_trackers_from_url_enabled != nil
+        if serverSupportsTrackersFromUrl {
+            addTrackersUrlList = prefs.add_trackers_url_list ?? prefs.add_trackers_url ?? ""
+        } else {
+            // Load from local storage when server doesn't support this feature
+            addTrackersUrlList = UserDefaults.standard.string(forKey: "addTrackersUrlList") ?? ""
+            addTrackersFromUrlEnabled = !addTrackersUrlList.isEmpty
+        }
         reannounceWhenAddressChanged = prefs.reannounce_when_address_changed ?? false
         validateHttpsTrackerCertificate = prefs.validate_https_tracker_certificate ?? false
 
@@ -234,9 +241,80 @@ class PreferencesViewModel: ObservableObject {
         rssSmartEpisodeFilters = prefs.rss_smart_episode_filters ?? ""
     }
 
+    func fetchAndMergeTrackersFromUrl() {
+        guard let url = URL(string: addTrackersUrlList), !addTrackersUrlList.isEmpty else { return }
+
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            guard let self = self, let data = data, error == nil,
+                  let content = String(data: data, encoding: .utf8) else { return }
+
+            DispatchQueue.main.async {
+                self.mergeTrackers(from: content)
+            }
+        }.resume()
+    }
+
     func save(completion: @escaping (Bool) -> Void) {
         isSaving = true
         saveError = nil
+
+        // If server doesn't support native URL fetch, do it locally before saving
+        // Save tracker URL locally when server doesn't support it
+        if !serverSupportsTrackersFromUrl {
+            if addTrackersFromUrlEnabled && !addTrackersUrlList.isEmpty {
+                UserDefaults.standard.set(addTrackersUrlList, forKey: "addTrackersUrlList")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "addTrackersUrlList")
+            }
+        }
+
+        if addTrackersFromUrlEnabled && !addTrackersUrlList.isEmpty && !serverSupportsTrackersFromUrl {
+            fetchTrackersFromUrl { [weak self] in
+                self?.performSave(completion: completion)
+            }
+        } else {
+            performSave(completion: completion)
+        }
+    }
+
+    private func fetchTrackersFromUrl(then: @escaping () -> Void) {
+        guard let url = URL(string: addTrackersUrlList) else { then(); return }
+
+        URLSession.shared.dataTask(with: url) { [weak self] data, _, error in
+            DispatchQueue.main.async {
+                if let data = data, error == nil,
+                   let content = String(data: data, encoding: .utf8) {
+                    self?.mergeTrackers(from: content)
+                }
+                then()
+            }
+        }.resume()
+    }
+
+    private func mergeTrackers(from content: String) {
+        let fetchedTrackers = content.components(separatedBy: .newlines)
+            .map { $0.trimmingCharacters(in: .whitespaces) }
+            .filter { !$0.isEmpty }
+
+        let existingTrackers = Set(
+            addTrackers.components(separatedBy: .newlines)
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .filter { !$0.isEmpty }
+        )
+
+        var addedCount = 0
+        for tracker in fetchedTrackers {
+            if !existingTrackers.contains(tracker) {
+                if !addTrackers.isEmpty && !addTrackers.hasSuffix("\n") {
+                    addTrackers += "\n"
+                }
+                addTrackers += "\n" + tracker
+                addedCount += 1
+            }
+        }
+    }
+
+    private func performSave(completion: @escaping (Bool) -> Void) {
         var d: [String: Any] = [:]
 
         // Downloads
@@ -330,6 +408,7 @@ class PreferencesViewModel: ObservableObject {
         d["add_trackers"] = addTrackers
         d["add_trackers_from_url_enabled"] = addTrackersFromUrlEnabled
         d["add_trackers_url_list"] = addTrackersUrlList
+        d["add_trackers_url"] = addTrackersUrlList
         d["reannounce_when_address_changed"] = reannounceWhenAddressChanged
         d["validate_https_tracker_certificate"] = validateHttpsTrackerCertificate
 
