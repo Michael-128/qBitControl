@@ -1157,14 +1157,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All categories"
+            "state" : "translated",
+            "value" : "全部分类"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "All categories"
+            "state" : "translated",
+            "value" : "全部分類"
           }
         }
       }
@@ -1342,6 +1342,18 @@
             "state" : "translated",
             "value" : "Czy na pewno chcesz wznosić obecnie wyświetlane zadania?"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确定要恢复当前任务吗？"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確定要恢復當前任務嗎？"
+          }
         }
       }
     },
@@ -1386,7 +1398,20 @@
       }
     },
     "Basic Authentication" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "基本认证"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "基本驗證"
+          }
+        }
+      }
     },
     "Books" : {
       "extractionState" : "manual",
@@ -1417,14 +1442,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Books"
+            "state" : "translated",
+            "value" : "图书"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Books"
+            "state" : "translated",
+            "value" : "圖書"
           }
         }
       }
@@ -1961,6 +1986,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Potwierdź Wznowienie Zadań"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "确认恢复当前任务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "確認恢復當前任務"
           }
         }
       }
@@ -2561,47 +2598,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "遞減"
-          }
-        }
-      }
-    },
-    "Deselect All" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "すべて選択解除"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odznacz Wszystkie"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Deselect All"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Deselect All"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消全部"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "取消選取"
           }
         }
       }
@@ -3635,14 +3631,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Games"
+            "state" : "translated",
+            "value" : "游戏"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Games"
+            "state" : "translated",
+            "value" : "遊戲"
           }
         }
       }
@@ -4036,14 +4032,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Leechers"
+            "state" : "translated",
+            "value" : "下载者"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Leechers"
+            "state" : "translated",
+            "value" : "下載者"
           }
         }
       }
@@ -4477,14 +4473,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Movies"
+            "state" : "translated",
+            "value" : "电影"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Movies"
+            "state" : "translated",
+            "value" : "電影"
           }
         }
       }
@@ -4518,14 +4514,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Music"
+            "state" : "translated",
+            "value" : "音乐"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Music"
+            "state" : "translated",
+            "value" : "音樂"
           }
         }
       }
@@ -4678,14 +4674,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "No results"
+            "state" : "translated",
+            "value" : "无结果"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "No results"
+            "state" : "translated",
+            "value" : "無結果"
           }
         }
       }
@@ -6086,14 +6082,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "results"
+            "state" : "translated",
+            "value" : "个结果"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "results"
+            "state" : "translated",
+            "value" : "個結果"
           }
         }
       }
@@ -6190,6 +6186,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Wznów Wyświetlone Zadania"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恢复当前任务"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "恢復當前任務"
           }
         }
       }
@@ -6314,47 +6322,6 @@
         }
       }
     },
-    "Running..." : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "実行中..."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "W trakcie..."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Running..."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Running..."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Running..."
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Running..."
-          }
-        }
-      }
-    },
     "Save" : {
       "localizations" : {
         "ja" : {
@@ -6379,47 +6346,6 @@
           "stringUnit" : {
             "state" : "new",
             "value" : "Save"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "儲存"
-          }
-        }
-      }
-    },
-    "SAVE" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "保存"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ZAPISZ"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "SAVE"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "SAVE"
           }
         },
         "zh-Hans" : {
@@ -6504,14 +6430,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search"
+            "state" : "translated",
+            "value" : "搜索"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Search"
+            "state" : "translated",
+            "value" : "搜尋"
           }
         }
       }
@@ -6545,14 +6471,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Seeders"
+            "state" : "translated",
+            "value" : "做种者"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Seeders"
+            "state" : "translated",
+            "value" : "做種者"
           }
         }
       }
@@ -6753,47 +6679,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "選取"
-          }
-        }
-      }
-    },
-    "Select All" : {
-      "extractionState" : "stale",
-      "localizations" : {
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "すべて選択"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wybierz Wszystko"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select All"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "new",
-            "value" : "Select All"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "选择全部"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "選取所有"
           }
         }
       }
@@ -7227,14 +7112,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Software"
+            "state" : "translated",
+            "value" : "软件"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Software"
+            "state" : "translated",
+            "value" : "軟體"
           }
         }
       }
@@ -7347,14 +7232,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Start"
+            "state" : "translated",
+            "value" : "开始"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Start"
+            "state" : "translated",
+            "value" : "開始"
           }
         }
       }
@@ -7520,7 +7405,20 @@
       }
     },
     "Stop" : {
-
+      "localizations" : {
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "停止"
+          }
+        }
+      }
     },
     "Stop Force Start" : {
       "localizations" : {
@@ -7952,14 +7850,14 @@
         },
         "zh-Hans" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "TV shows"
+            "state" : "translated",
+            "value" : "电视剧"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "TV shows"
+            "state" : "translated",
+            "value" : "電視劇"
           }
         }
       }
