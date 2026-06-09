@@ -2795,13 +2795,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已完成"
+            "value" : "完成"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已完成"
+            "value" : "完成"
           }
         }
       }
