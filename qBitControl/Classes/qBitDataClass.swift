@@ -41,9 +41,9 @@ class qBitData: ObservableObject {
                         var updatedServerState = existingServerState
                         updatedServerState.update(from: partialServerState)
                         self.serverState = updatedServerState
-                    } else if let newServerState = ServerState(from: partialServerState) {
+                    } else {
                         // Create a new ServerState if none exists
-                        self.serverState = newServerState
+                        self.serverState = ServerState(from: partialServerState)
                     }
                     
                     
