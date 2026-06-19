@@ -13,7 +13,7 @@ struct PeerDetailsView: View {
         List {
             Section(header: Text("Information")) {
                 CustomLabelView(label: "Client", value: peer.client)
-                CustomLabelView(label: "Country", value: peer.country)
+                CustomLabelView(label: "Country", value: peer.country ?? "-")
                 CustomLabelView(label: "IP", value: peer.ip)
                 CustomLabelView(label: "Port", value: "\(peer.port)")
                 CustomLabelView(label: "Connection", value: peer.connection)

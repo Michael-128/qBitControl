@@ -6,8 +6,8 @@ import Foundation
 struct Peer: Decodable {
     let client: String
     let connection: String
-    let country: String
-    let country_code: String
+    let country: String?
+    let country_code: String?
     let dl_speed: Int64
     let downloaded: Int64
     let files: String
