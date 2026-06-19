@@ -34,7 +34,7 @@ struct PeerRowView: View {
         } label: {
             VStack {
                 HStack {
-                    Text("\(emojiFlag(regionCode:peer.country_code) ?? "")")
+                    Text("\(emojiFlag(regionCode:peer.country_code ?? "") ?? "")")
                     Text("\(peer.ip)")
                     Spacer()
                 }
