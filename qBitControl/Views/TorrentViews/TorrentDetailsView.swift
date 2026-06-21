@@ -124,7 +124,7 @@ struct TorrentDetailsView: View {
         }
         .onAppear() { viewModel.setRefreshTimer() }
         .onDisappear() { viewModel.removeRefreshTimer() }
-        .confirmationDialog("Delete Task", isPresented: $viewModel.isDeleteAlert) {
+        .alert("Delete Task", isPresented: $viewModel.isDeleteAlert) {
             Button("Delete Task", role: .destructive) { viewModel.deleteTorrent(then: self.dismiss) }
             Button("Delete Task with Files", role: .destructive) { viewModel.deleteTorrentWithFiles(then: self.dismiss) }
             Button("Cancel", role: .cancel) { }

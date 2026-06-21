@@ -15,7 +15,7 @@ struct TorrentListHelperView: View {
         .onAppear { viewModel.getInitialTorrents() }
         .onDisappear { viewModel.stopTimer() }
         .onChange(of: scenePhaseEnv) { phase in viewModel.scenePhase = phase }
-        .confirmationDialog("Delete Task", isPresented: $viewModel.isDeleteAlert) { deleteAlertView() }
+        .alert("Delete Task", isPresented: $viewModel.isDeleteAlert) { deleteAlertView() }
     }
     
     // Helper Views

@@ -107,7 +107,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func deleteTorrent(torrent: Torrent) {
         self.hash = torrent.hash
-        isDeleteSelectedAlert.toggle()
+        isDeleteAlert.toggle()
     }
     
     func quitSelectionMode() {
