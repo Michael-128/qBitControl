@@ -95,6 +95,7 @@
 		90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */; };
 		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
 		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
+		90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B892CDA22190032993F /* TorrentFormatter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -208,6 +209,7 @@
 		90FA253529190D0400DC8F0B /* FileNodeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNodeClass.swift; sourceTree = "<group>"; };
 		90FF93462C8707BF001CDCE4 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
+		90726B892CDA22190032993F /* TorrentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFormatter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -453,6 +455,7 @@
 		9082FA2129080E53006C3960 /* qBitControl */ = {
 			isa = PBXGroup;
 			children = (
+				90726B882CDA22190032993F /* Helpers */,
 				90726B1E2CDA22160032993E /* Models */,
 				90726B742CDA221B0032993E /* ViewModels */,
 				90726B522CDA22190032993E /* Views */,
@@ -493,6 +496,14 @@
 				90EE84852E8AEB26009C2D7F /* TorrentListSelectionToolbarViewModel.swift */,
 			);
 			path = Toolbars;
+			sourceTree = "<group>";
+		};
+		90726B882CDA22190032993F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				90726B892CDA22190032993F /* TorrentFormatter.swift */,
+			);
+			path = Helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -715,6 +726,7 @@
 				90726B302CDA22160032993E /* TransferInfo.swift in Sources */,
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
 				9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */,
+				90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

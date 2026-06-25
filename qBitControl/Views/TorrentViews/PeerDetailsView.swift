@@ -25,11 +25,11 @@ struct PeerDetailsView: View {
                 CustomLabelView(label: "Progress", value: "\(String(format: "%.1f", peer.progress*100))%")
                 CustomLabelView(label: "Relevance", value: "\(String(format: "%.1f", peer.relevance*100))%")
                 
-                CustomLabelView(label: "Download Speed", value: "\(qBittorrent.getFormatedSize(size: peer.dl_speed))/s")
-                CustomLabelView(label: "Downloaded", value: "\(qBittorrent.getFormatedSize(size: peer.downloaded))")
+                CustomLabelView(label: "Download Speed", value: "\(TorrentFormatter.getFormatedSize(size: peer.dl_speed))/s")
+                CustomLabelView(label: "Downloaded", value: "\(TorrentFormatter.getFormatedSize(size: peer.downloaded))")
                 
-                CustomLabelView(label: "Upload Speed", value: "\(qBittorrent.getFormatedSize(size: peer.up_speed))/s")
-                CustomLabelView(label: "Uploaded", value: "\(qBittorrent.getFormatedSize(size: peer.uploaded))")
+                CustomLabelView(label: "Upload Speed", value: "\(TorrentFormatter.getFormatedSize(size: peer.up_speed))/s")
+                CustomLabelView(label: "Uploaded", value: "\(TorrentFormatter.getFormatedSize(size: peer.uploaded))")
             }
             
             .navigationTitle("Peer Details")

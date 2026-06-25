@@ -39,7 +39,7 @@ struct StatsChartView: View {
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel {
-                            Text("\(qBittorrent.getFormatedSize(size: value.as(Int64.self)!))/s")
+                            Text("\(TorrentFormatter.getFormatedSize(size: value.as(Int64.self)!))/s")
                         }
                     }
                 }

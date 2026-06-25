@@ -143,7 +143,7 @@ struct FilesView: View {
                         }
                         Text("\(child.name)")
                         Spacer()
-                        Text("\(qBittorrent.getFormatedSize(size: child.getSize()))")
+                        Text("\(TorrentFormatter.getFormatedSize(size: child.getSize()))")
                             .foregroundColor(Color.gray)
                     }.contextMenu() {
                         if child.getPriority() < 1 {

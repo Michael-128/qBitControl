@@ -44,10 +44,10 @@ struct PeerRowView: View {
                         Text("•")
                     }
                     Image(systemName: "arrow.down")
-                    Text("\(qBittorrent.getFormatedSize(size: peer.dl_speed))/s")
+                    Text("\(TorrentFormatter.getFormatedSize(size: peer.dl_speed))/s")
                     Text("•")
                     Image(systemName: "arrow.up")
-                    Text("\(qBittorrent.getFormatedSize(size: peer.up_speed))/s")
+                    Text("\(TorrentFormatter.getFormatedSize(size: peer.up_speed))/s")
                     Spacer()
                 }.font(.footnote)
                     .foregroundColor(Color.gray)

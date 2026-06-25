@@ -26,14 +26,14 @@ struct TorrentRowView: View {
             }.padding(.bottom, -1)
             
             ProgressView(value: progress)
-                .progressViewStyle(LinearProgressViewStyle(tint: qBittorrent.getStateColor(state: state)))
+                .progressViewStyle(LinearProgressViewStyle(tint: TorrentFormatter.getStateColor(state: state)))
             
             HStack(spacing: 3.5) {
                 Group {
-                    Image(systemName: "\(qBittorrent.getStateIcon(state: state))")
-                        .foregroundColor(qBittorrent.getStateColor(state: state))
+                    Image(systemName: "\(TorrentFormatter.getStateIcon(state: state))")
+                        .foregroundColor(TorrentFormatter.getStateColor(state: state))
                         .font(.footnote)
-                    //Text("\(qBittorrent.getState(state: state))")
+                    //Text("\(TorrentFormatter.getState(state: state))")
                         .lineLimit(1)
                 }
                 Group {
@@ -42,12 +42,12 @@ struct TorrentRowView: View {
                 }
                 Group {
                     Image(systemName: "arrow.down")
-                    Text("\(qBittorrent.getFormatedSize(size: dlspeed))/s")
+                    Text("\(TorrentFormatter.getFormatedSize(size: dlspeed))/s")
                     Text("•")
                 }
                 Group {
                     Image(systemName: "arrow.up")
-                    Text("\(qBittorrent.getFormatedSize(size: upspeed))/s")
+                    Text("\(TorrentFormatter.getFormatedSize(size: upspeed))/s")
                     Text("•")
                 }
                 Group {

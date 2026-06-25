@@ -12,7 +12,7 @@ struct SearchRowView: View {
                 Spacer()
             }
             HStack(spacing: 3) {
-                Text(qBittorrent.getFormatedSize(size: result.fileSize ?? 0))
+                Text(TorrentFormatter.getFormatedSize(size: result.fileSize ?? 0))
                 Text("•")
                 Group {
                     Image(systemName: "square.and.arrow.up")
