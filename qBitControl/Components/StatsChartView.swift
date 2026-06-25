@@ -7,6 +7,7 @@ struct StatsChartView: View {
     
     @Binding public var transferData: [TransferInfo]
     public var color: Color = .blue
+    var formatter: TorrentFormatting = TorrentFormatter()
     
     var body: some View {
         VStack {
@@ -39,7 +40,7 @@ struct StatsChartView: View {
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel {
-                            Text("\(TorrentFormatter.getFormatedSize(size: value.as(Int64.self)!))/s")
+                            Text("\(formatter.getFormatedSize(size: value.as(Int64.self)!))/s")
                         }
                     }
                 }

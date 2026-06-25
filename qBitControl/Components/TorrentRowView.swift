@@ -13,6 +13,8 @@ struct TorrentRowView: View {
     let upspeed: Int64
     let ratio: Float
     
+    var formatter: TorrentFormatting = TorrentFormatter()
+    
     let iconLeftPadding = -5.0
     
     let screenWidth = UIScreen.main.bounds.width
@@ -26,14 +28,14 @@ struct TorrentRowView: View {
             }.padding(.bottom, -1)
             
             ProgressView(value: progress)
-                .progressViewStyle(LinearProgressViewStyle(tint: TorrentFormatter.getStateColor(state: state)))
+                .progressViewStyle(LinearProgressViewStyle(tint: formatter.getStateColor(state: state)))
             
             HStack(spacing: 3.5) {
                 Group {
-                    Image(systemName: "\(TorrentFormatter.getStateIcon(state: state))")
-                        .foregroundColor(TorrentFormatter.getStateColor(state: state))
+                    Image(systemName: "\(formatter.getStateIcon(state: state))")
+                        .foregroundColor(formatter.getStateColor(state: state))
                         .font(.footnote)
-                    //Text("\(TorrentFormatter.getState(state: state))")
+                    //Text("\(formatter.getState(state: state))")
                         .lineLimit(1)
                 }
                 Group {
@@ -42,12 +44,12 @@ struct TorrentRowView: View {
                 }
                 Group {
                     Image(systemName: "arrow.down")
-                    Text("\(TorrentFormatter.getFormatedSize(size: dlspeed))/s")
+                    Text("\(formatter.getFormatedSize(size: dlspeed))/s")
                     Text("•")
                 }
                 Group {
                     Image(systemName: "arrow.up")
-                    Text("\(TorrentFormatter.getFormatedSize(size: upspeed))/s")
+                    Text("\(formatter.getFormatedSize(size: upspeed))/s")
                     Text("•")
                 }
                 Group {

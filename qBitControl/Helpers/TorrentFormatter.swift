@@ -6,8 +6,18 @@
 import Foundation
 import SwiftUI
 
-struct TorrentFormatter {
-    static func getState(state: String) -> String {
+protocol TorrentFormatting {
+    func getState(state: String) -> String
+    func getStateIcon(state: String) -> String
+    func getStateColor(state: String) -> Color
+    func getFormatedSize(size: Int64) -> String
+    func getFormatedSize(size: Int) -> String
+    func getFormatedDate(date: Int) -> String
+    func getFormattedTime(time: Int) -> String
+}
+
+struct TorrentFormatter: TorrentFormatting {
+    func getState(state: String) -> String {
         switch state {
         case "error":
             return "Error"
@@ -50,7 +60,7 @@ struct TorrentFormatter {
         }
     }
     
-    static func getStateIcon(state: String) -> String {
+    func getStateIcon(state: String) -> String {
         let errorIcon = "multiply.circle"
         let downloadIcon = "arrow.down.circle"
         let uploadIcon = "arrow.up.circle"
@@ -102,7 +112,7 @@ struct TorrentFormatter {
         }
     }
     
-    static func getStateColor(state: String) -> Color {
+    func getStateColor(state: String) -> Color {
         let errorColor = Color.red
         let pausedColor = Color.yellow
         let seedingColor = Color.blue
@@ -152,28 +162,28 @@ struct TorrentFormatter {
         }
     }
     
-    static func getFormatedSize(size: Int64) -> String {
+    func getFormatedSize(size: Int64) -> String {
         let formater = ByteCountFormatter()
         formater.isAdaptive = true
         formater.countStyle = ByteCountFormatter.CountStyle.binary
         return formater.string(fromByteCount: size)
     }
     
-    static func getFormatedSize(size: Int) -> String {
+    func getFormatedSize(size: Int) -> String {
         let formater = ByteCountFormatter()
         formater.isAdaptive = true
         formater.countStyle = ByteCountFormatter.CountStyle.binary
         return formater.string(fromByteCount: Int64(size))
     }
     
-    static func getFormatedDate(date: Int) -> String {
+    func getFormatedDate(date: Int) -> String {
         let fullDate = Date(timeIntervalSince1970: TimeInterval(date))
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy/MM/dd HH:mm"
         return formatter.string(from: fullDate)
     }
     
-    static func getFormattedTime(time: Int) -> String {
+    func getFormattedTime(time: Int) -> String {
         let days = time / (24 * 60 * 60)
         let hours = (time / (60 * 60)) % 24
         let minutes = (time / 60) % 60

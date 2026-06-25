@@ -7,6 +7,7 @@ struct TorrentListHelperView: View {
     @Environment(\.scenePhase) var scenePhaseEnv
     
     @ObservedObject var viewModel: TorrentListHelperViewModel
+    var formatter: TorrentFormatting = TorrentFormatter()
     
     var body: some View {
         Section(header: torrentListHeader()) {
@@ -27,10 +28,10 @@ struct TorrentListHelperView: View {
             Text("\(viewModel.filteredTorrents.count) " + NSLocalizedString("Tasks", comment: ""))
             Text("•")
             Image(systemName: "arrow.down")
-            Text("\( TorrentFormatter.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
+            Text("\( formatter.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
             Text("•")
             Image(systemName: "arrow.up")
-            Text("\( TorrentFormatter.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
+            Text("\( formatter.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
         }
         .lineLimit(1)
     }
@@ -102,7 +103,7 @@ struct TorrentListHelperView: View {
     }
     
     func torrentRowManageControls(torrent: Torrent) -> some View {
-        let isTorrentPaused = TorrentFormatter.getState(state: torrent.state).contains("Paused")
+        let isTorrentPaused = formatter.getState(state: torrent.state).contains("Paused")
         
         return Section(header: Text("Manage")) {
             Button { if isTorrentPaused { qBittorrent.resumeTorrent(hash: torrent.hash) } else { qBittorrent.pauseTorrent(hash: torrent.hash) } }

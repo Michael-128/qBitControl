@@ -8,6 +8,7 @@ import SwiftUI
 struct PeerRowView: View {
     
     @Binding var peer: Peer
+    var formatter: TorrentFormatting = TorrentFormatter()
     
     func emojiFlag(regionCode: String) -> String? {
         let code = regionCode.uppercased()
@@ -44,10 +45,10 @@ struct PeerRowView: View {
                         Text("•")
                     }
                     Image(systemName: "arrow.down")
-                    Text("\(TorrentFormatter.getFormatedSize(size: peer.dl_speed))/s")
+                    Text("\(formatter.getFormatedSize(size: peer.dl_speed))/s")
                     Text("•")
                     Image(systemName: "arrow.up")
-                    Text("\(TorrentFormatter.getFormatedSize(size: peer.up_speed))/s")
+                    Text("\(formatter.getFormatedSize(size: peer.up_speed))/s")
                     Spacer()
                 }.font(.footnote)
                     .foregroundColor(Color.gray)

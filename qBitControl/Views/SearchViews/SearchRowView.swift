@@ -3,6 +3,7 @@ import SwiftUI
 struct SearchRowView: View {
     let result: SearchResult
     let onTap: (SearchResult) -> Void
+    var formatter: TorrentFormatting = TorrentFormatter()
     
     var body: some View {
         VStack {
@@ -12,7 +13,7 @@ struct SearchRowView: View {
                 Spacer()
             }
             HStack(spacing: 3) {
-                Text(TorrentFormatter.getFormatedSize(size: result.fileSize ?? 0))
+                Text(formatter.getFormatedSize(size: result.fileSize ?? 0))
                 Text("•")
                 Group {
                     Image(systemName: "square.and.arrow.up")

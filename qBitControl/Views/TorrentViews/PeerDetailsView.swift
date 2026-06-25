@@ -8,6 +8,7 @@ import SwiftUI
 struct PeerDetailsView: View {
     
     @Binding var peer: Peer
+    var formatter: TorrentFormatting = TorrentFormatter()
     
     var body: some View {
         List {
@@ -25,11 +26,11 @@ struct PeerDetailsView: View {
                 CustomLabelView(label: "Progress", value: "\(String(format: "%.1f", peer.progress*100))%")
                 CustomLabelView(label: "Relevance", value: "\(String(format: "%.1f", peer.relevance*100))%")
                 
-                CustomLabelView(label: "Download Speed", value: "\(TorrentFormatter.getFormatedSize(size: peer.dl_speed))/s")
-                CustomLabelView(label: "Downloaded", value: "\(TorrentFormatter.getFormatedSize(size: peer.downloaded))")
+                CustomLabelView(label: "Download Speed", value: "\(formatter.getFormatedSize(size: peer.dl_speed))/s")
+                CustomLabelView(label: "Downloaded", value: "\(formatter.getFormatedSize(size: peer.downloaded))")
                 
-                CustomLabelView(label: "Upload Speed", value: "\(TorrentFormatter.getFormatedSize(size: peer.up_speed))/s")
-                CustomLabelView(label: "Uploaded", value: "\(TorrentFormatter.getFormatedSize(size: peer.uploaded))")
+                CustomLabelView(label: "Upload Speed", value: "\(formatter.getFormatedSize(size: peer.up_speed))/s")
+                CustomLabelView(label: "Uploaded", value: "\(formatter.getFormatedSize(size: peer.uploaded))")
             }
             
             .navigationTitle("Peer Details")
