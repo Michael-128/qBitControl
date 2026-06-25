@@ -54,6 +54,10 @@ struct TorrentAddView: View {
                 ToolbarItem(placement: .navigationBarLeading) {
                     Button { dismiss() } label: { Text("Cancel") }
                 }
+                
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button { viewModel.addTorrent(then: dismiss) } label: { Text("Add") }
+                }
             }
         }
     }
@@ -151,10 +155,7 @@ struct TorrentAddView: View {
                     limitField(title: "Seeding Time Limit", placeholder: "Time Limit", content: $viewModel.seedingTimeLimit)
                 }
             }
-            
-            Section {
-                Button { viewModel.addTorrent(then: dismiss) } label: { Text("ADD").frame(maxWidth: .infinity).fontWeight(.bold) }.buttonStyle(.borderedProminent)
-            }.listRowBackground(Color.blue)
+
         }
     }
 }
