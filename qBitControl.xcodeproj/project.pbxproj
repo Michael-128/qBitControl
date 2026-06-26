@@ -96,6 +96,10 @@
 		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
 		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
 		90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B892CDA22190032993F /* TorrentFormatter.swift */; };
+		90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4C29093142001E9EF0 /* NetworkClient.swift */; };
+		90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */; };
+		90EF6A5129093142001E9EF5 /* qBitControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */; };
+		90EF6A5329093142001E9EF7 /* qBitControlUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -210,6 +214,10 @@
 		90FF93462C8707BF001CDCE4 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
 		90726B892CDA22190032993F /* TorrentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFormatter.swift; sourceTree = "<group>"; };
+		90EF6A4C29093142001E9EF0 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientTests.swift; sourceTree = "<group>"; };
+		90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITests.swift; sourceTree = "<group>"; };
+		90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -253,6 +261,7 @@
 				90EF6A482909267A001E9E7F /* AuthClass.swift */,
 				9082FA4C29082208006C3960 /* qBittorrentClass.swift */,
 				90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */,
+				90EF6A4C29093142001E9EF0 /* NetworkClient.swift */,
 				90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */,
 				90FA253529190D0400DC8F0B /* FileNodeClass.swift */,
 				90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */,
@@ -438,6 +447,8 @@
 				90200BA42B44BA6E00D3BA55 /* logo1.png */,
 				9006B5212C186974002DDD4E /* Localizations */,
 				9082FA2129080E53006C3960 /* qBitControl */,
+				90EF6A5029093142001E9EF4 /* qBitControlTests */,
+				90EF6A5529093142001E9EF9 /* qBitControlUITests */,
 				9082FA2029080E53006C3960 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -450,6 +461,23 @@
 				9082FA3929080E55006C3960 /* qBitControlUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		90EF6A5029093142001E9EF4 /* qBitControlTests */ = {
+			isa = PBXGroup;
+			children = (
+				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
+			);
+			path = qBitControlTests;
+			sourceTree = "<group>";
+		};
+		90EF6A5529093142001E9EF9 /* qBitControlUITests */ = {
+			isa = PBXGroup;
+			children = (
+				90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */,
+				90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */,
+			);
+			path = qBitControlUITests;
 			sourceTree = "<group>";
 		};
 		9082FA2129080E53006C3960 /* qBitControl */ = {
@@ -728,6 +756,7 @@
 				9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */,
 				90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
+				90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,6 +764,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -742,6 +772,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90EF6A5129093142001E9EF5 /* qBitControlUITests.swift in Sources */,
+				90EF6A5329093142001E9EF7 /* qBitControlUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -972,7 +1004,7 @@
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitControl";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitManager.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitManager";
 			};
 			name = Debug;
 		};
@@ -993,7 +1025,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlTests-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitControl.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitControl";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/qBitManager.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/qBitManager";
 			};
 			name = Release;
 		};
