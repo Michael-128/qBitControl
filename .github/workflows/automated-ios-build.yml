@@ -32,6 +32,7 @@ jobs:
     - name: Download Missing iOS Simulator Components
       if: steps.cache-ios-platform.outputs.cache-hit != 'true'
       run: |
+        xcrun simctl list > /dev/null
         sudo xcodebuild -downloadPlatform iOS
     # ----------------------------------
 
