@@ -37,11 +37,12 @@ actor NetworkClient {
     ///                 with form-urlencoded body payload. If empty, the request executes as a GET request.
     ///   - cookie: Optional cookie header string.
     /// - Returns: The decoded response of type `T`.
-    func sendRequest<T: Decodable>(
+    /// Sends an HTTP request and returns both the decoded response and the HTTPURLResponse.
+    func sendRequestWithResponse<T: Decodable>(
         path: String,
         queryItems: [URLQueryItem],
         cookie: String?
-    ) async throws -> T {
+    ) async throws -> (T, HTTPURLResponse) {
         // 1. Construct the complete URL
         guard let url = URL(string: "\(baseURL)\(path)") else {
             throw NetworkError.invalidURL
@@ -117,16 +118,33 @@ actor NetworkClient {
         do {
             if T.self == String.self {
                 if let decoded = try? JSONDecoder().decode(T.self, from: data) {
-                    return decoded
+                    return (decoded, httpResponse)
                 }
                 if let rawString = String(data: data, encoding: .utf8) as? T {
-                    return rawString
+                    return (rawString, httpResponse)
                 }
             }
-            return try JSONDecoder().decode(T.self, from: data)
+            let decoded = try JSONDecoder().decode(T.self, from: data)
+            return (decoded, httpResponse)
         } catch {
             // Throw decoding errors directly to be handled natively
             throw error
         }
+    }
+
+    /// Sends an HTTP request and decodes the response to a generic `Decodable` type.
+    /// - Parameters:
+    ///   - path: The URL path relative to the base URL.
+    ///   - queryItems: An array of URL query items. If not empty, the request will be executed as a POST request
+    ///                 with form-urlencoded body payload. If empty, the request executes as a GET request.
+    ///   - cookie: Optional cookie header string.
+    /// - Returns: The decoded response of type `T`.
+    func sendRequest<T: Decodable>(
+        path: String,
+        queryItems: [URLQueryItem],
+        cookie: String?
+    ) async throws -> T {
+        let (decoded, _): (T, HTTPURLResponse) = try await sendRequestWithResponse(path: path, queryItems: queryItems, cookie: cookie)
+        return decoded
     }
 }

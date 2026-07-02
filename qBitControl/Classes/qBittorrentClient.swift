@@ -7,13 +7,15 @@ import Foundation
 
 class qBittorrentClient: TorrentClientProtocol {
     private let networkClient: NetworkClient
+    private(set) var cookie: String?
     
     enum ClientError: Error {
         case notImplemented
     }
     
-    init(networkClient: NetworkClient) {
+    init(networkClient: NetworkClient, cookie: String? = nil) {
         self.networkClient = networkClient
+        self.cookie = cookie
     }
     
     // MARK: - TorrentTaskActions
@@ -225,6 +227,30 @@ class qBittorrentClient: TorrentClientProtocol {
     }
     
     // MARK: - TorrentServerActions
+    
+    func login(username: String, password: String) async throws {
+        let (_, response): (String, HTTPURLResponse) = try await networkClient.sendRequestWithResponse(
+            path: "/api/v2/auth/login",
+            queryItems: [
+                URLQueryItem(name: "username", value: username),
+                URLQueryItem(name: "password", value: password)
+            ],
+            cookie: nil
+        )
+        
+        if let setCookieHeader = response.value(forHTTPHeaderField: "Set-Cookie") {
+            let components = setCookieHeader.split(separator: ";")
+            if let firstComponent = components.first {
+                let cookieStr = String(firstComponent)
+                if cookieStr.contains("SID") {
+                    self.cookie = cookieStr
+                    return
+                }
+            }
+        }
+        
+        throw NetworkError.unauthorized
+    }
     
     func fetchVersion() async throws -> Version {
         throw ClientError.notImplemented

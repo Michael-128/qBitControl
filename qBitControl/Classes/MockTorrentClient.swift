@@ -183,6 +183,8 @@ class MockTorrentClient: TorrentClientProtocol {
     
     // MARK: - TorrentServerActions
     
+    func login(username: String, password: String) async throws {}
+    
     func fetchVersion() async throws -> Version {
         return Self.mockVersion
     }
