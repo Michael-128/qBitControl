@@ -1,8 +1,14 @@
 //
+//  TorrentListHelperViewModel.swift
+//  qBitControl
+//
+
 import SwiftUI
 
+@MainActor
 class TorrentListHelperViewModel: ObservableObject {
     let defaults = UserDefaults.standard
+    private let client: TorrentClientProtocol
     
     @Published public var torrents: [Torrent] = []
     
@@ -29,7 +35,7 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published var alertIdentifier: AlertIdentifier?
     @Published var sheetIdentifier: SheetIdentifier?
     
-    var timer: Timer?
+    private var pollingTask: Task<Void, Never>?
     var hash = ""
     
     public var categoryName: String {
@@ -39,27 +45,33 @@ class TorrentListHelperViewModel: ObservableObject {
         return category.capitalized
     }
     
-    init() {}
+    init(client: TorrentClientProtocol) {
+        self.client = client
+    }
     
-    func getTorrents() {
+    func getTorrents() async {
         if(scenePhase != .active || isTorrentAddView || isSelectionMode) { return }
         
-        var queryItems = [URLQueryItem(name: "sort", value: sort), URLQueryItem(name: "filter", value: filter), URLQueryItem(name: "reverse", value: String(reverse))]
-        
-        if category != "All" { queryItems.append(URLQueryItem(name: "category", value: category)) }
-        if tag != "All" { queryItems.append(URLQueryItem(name: "tag", value: tag)) }
-        
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: queryItems)
-        
-        qBitRequest.requestTorrentListJSON(request: request) {
-            _torrents in
+        do {
+            let catParam = category == "All" ? nil : category
+            let tagParam = tag == "All" ? nil : tag
             
-            DispatchQueue.main.async {
-                if(self.sort == "priority") { self.torrents = self.getTorrentsSortedByPriority(torrents: _torrents) }
-                else { self.torrents = _torrents }
-                
-                self.filteredTorrents = self.getFilteredTorrents(torrents: self.torrents)
+            let _torrents = try await client.fetchTorrents(
+                filter: filter,
+                category: catParam,
+                tag: tagParam,
+                sort: sort,
+                reverse: reverse
+            )
+            
+            if self.sort == "priority" {
+                self.torrents = self.getTorrentsSortedByPriority(torrents: _torrents)
+            } else {
+                self.torrents = _torrents
             }
+            self.filteredTorrents = self.getFilteredTorrents(torrents: self.torrents)
+        } catch {
+            print("Failed to fetch torrents: \(error)")
         }
     }
     
@@ -70,11 +82,11 @@ class TorrentListHelperViewModel: ObservableObject {
             if(reverse) {
                 if(tor2.priority <= 0) { return false }
                 if(tor1.priority < tor2.priority) { return false }
-                return true;
+                return true
             } else {
                 if(tor2.priority <= 0) { return true }
-                if(tor1.priority < tor2.priority) { return true; }
-                return false;
+                if(tor1.priority < tor2.priority) { return true }
+                return false
             }
         })
     }
@@ -84,15 +96,32 @@ class TorrentListHelperViewModel: ObservableObject {
         return torrents.filter { torrent in torrent.name.lowercased().contains(searchQuery.lowercased()) }
     }
     
-    func startTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
-            timer in
-            self.getTorrents()
+    func startPolling() {
+        pollingTask?.cancel()
+        pollingTask = Task {
+            while !Task.isCancelled {
+                await getTorrents()
+                do {
+                    // Sleep for 2 seconds (2,000,000,000 nanoseconds)
+                    try await Task.sleep(nanoseconds: 2_000_000_000)
+                } catch {
+                    break
+                }
+            }
         }
     }
     
+    func stopPolling() {
+        pollingTask?.cancel()
+        pollingTask = nil
+    }
+    
+    func startTimer() {
+        startPolling()
+    }
+    
     func stopTimer() {
-        timer?.invalidate()
+        stopPolling()
     }
     
     func getInitialTorrents() {
@@ -100,9 +129,7 @@ class TorrentListHelperViewModel: ObservableObject {
         sort = defaults.string(forKey: "sort") ?? sort
         filter = defaults.string(forKey: "filter") ?? filter
         
-        getTorrents()
-        
-        startTimer()
+        startPolling()
     }
     
     func deleteTorrent(torrent: Torrent) {
@@ -142,31 +169,61 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func resumeSelectedTorrents() {
         self.doForSelectedTorrents { hashes in
-            qBittorrent.resumeTorrents(hashes: hashes)
+            Task {
+                do {
+                    try await client.resumeTorrents(hashes: hashes)
+                } catch {
+                    print("Failed to resume torrents: \(error)")
+                }
+            }
         }
     }
     
     func pauseSelectedTorrents() {
         self.doForSelectedTorrents { hashes in
-            qBittorrent.pauseTorrents(hashes: hashes)
+            Task {
+                do {
+                    try await client.pauseTorrents(hashes: hashes)
+                } catch {
+                    print("Failed to pause torrents: \(error)")
+                }
+            }
         }
     }
     
     func deleteSelectedTorrents(isDeleteFiles: Bool = false) {
         self.doForSelectedTorrents { hashes in
-            qBittorrent.deleteTorrents(hashes: hashes, deleteFiles: isDeleteFiles)
+            Task {
+                do {
+                    try await client.deleteTorrents(hashes: hashes, deleteFiles: isDeleteFiles)
+                } catch {
+                    print("Failed to delete torrents: \(error)")
+                }
+            }
         }
     }
     
     func recheckSelectedTorrents() {
         self.doForSelectedTorrents { hashes in
-            qBittorrent.recheckTorrents(hashes: hashes)
+            Task {
+                do {
+                    try await client.recheckTorrents(hashes: hashes)
+                } catch {
+                    print("Failed to recheck torrents: \(error)")
+                }
+            }
         }
     }
     
     func reannounceSelectedTorrents() {
         self.doForSelectedTorrents { hashes in
-            qBittorrent.reannounceTorrents(hashes: hashes)
+            Task {
+                do {
+                    try await client.reannounceTorrents(hashes: hashes)
+                } catch {
+                    print("Failed to reannounce torrents: \(error)")
+                }
+            }
         }
     }
     
@@ -190,13 +247,25 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func resumeCurrentCategoryTorrents() {
         self.doForTorrentsInCategory { hashes in
-            qBittorrent.resumeTorrents(hashes: hashes)
+            Task {
+                do {
+                    try await client.resumeTorrents(hashes: hashes)
+                } catch {
+                    print("Failed to resume category torrents: \(error)")
+                }
+            }
         }
     }
     
     func pauseCurrentCategoryTorrents() {
         self.doForTorrentsInCategory { hashes in
-            qBittorrent.pauseTorrents(hashes: hashes)
+            Task {
+                do {
+                    try await client.pauseTorrents(hashes: hashes)
+                } catch {
+                    print("Failed to pause category torrents: \(error)")
+                }
+            }
         }
     }
     
@@ -204,6 +273,12 @@ class TorrentListHelperViewModel: ObservableObject {
         let completedTorrents = torrents.filter {torrent in torrent.progress == 1}
         let completedHashes = completedTorrents.compactMap {torrent in torrent.hash}
         
-        qBittorrent.deleteTorrents(hashes: completedHashes, deleteFiles: isDeleteFiles)
+        Task {
+            do {
+                try await client.deleteTorrents(hashes: completedHashes, deleteFiles: isDeleteFiles)
+            } catch {
+                print("Failed to delete completed torrents: \(error)")
+            }
+        }
     }
 }

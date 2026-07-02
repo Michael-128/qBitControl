@@ -7,8 +7,13 @@ import SwiftUI
 
     
 struct TorrentListView: View {
-    @StateObject var torrentListHelperViewModel: TorrentListHelperViewModel = .init()
+    @StateObject var torrentListHelperViewModel: TorrentListHelperViewModel
     @State private var torrentUrls: [URL] = []
+    
+    init() {
+        let client = ServersHelper.shared.client ?? MockTorrentClient()
+        _torrentListHelperViewModel = StateObject(wrappedValue: TorrentListHelperViewModel(client: client))
+    }
     
     func openUrl(url: URL) {
         if url.absoluteString.contains("file") || url.absoluteString.contains("magnet") {
