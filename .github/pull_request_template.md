@@ -1,5 +1,5 @@
 ## Description
-<!-- Briefly describe your changes / Co zmienia ten PR? -->
+<!-- Briefly describe your changes -->
 
 
 ## Visual Changes (Optional)
