@@ -105,6 +105,7 @@ protocol TorrentSearchActions {
 
 // MARK: - TorrentServerActions
 protocol TorrentServerActions {
+    func login(username: String, password: String) async throws
     func fetchVersion() async throws -> Version
     func getGlobalTransferInfo() async throws -> GlobalTransferInfo
     func getMainData(rid: Int) async throws -> MainData

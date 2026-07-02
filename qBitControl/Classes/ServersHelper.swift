@@ -15,6 +15,7 @@ class ServersHelper: ObservableObject {
     @Published public var connectingServerId: String?
     
     @Published public var isLoggedIn = false
+    @Published public var client: TorrentClientProtocol?
     
     init() {
         getServerList()
@@ -89,6 +90,7 @@ class ServersHelper: ObservableObject {
         if(id == activeServerId) {
             activeServerId = nil
             isLoggedIn = false
+            client = nil
         }
         
         saveSeverList()
@@ -96,10 +98,14 @@ class ServersHelper: ObservableObject {
     
     func checkConnection(server: Server, result: @escaping (Bool) -> Void) {
         Task {
-            await Auth.getCookie(url: server.url, username: server.username, password: server.password, basicAuth: server.basicAuth, isSuccess: {
-                success in
-                result(success);
-            }, setCookie: false)
+            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+            let tempClient = qBittorrentClient(networkClient: networkClient)
+            do {
+                try await tempClient.login(username: server.username, password: server.password)
+                result(true)
+            } catch {
+                result(false)
+            }
         }
     }
     
@@ -107,22 +113,28 @@ class ServersHelper: ObservableObject {
         connectingServerId = server.id
         
         Task {
-            await Auth.getCookie(url: server.url, username: server.username, password: server.password, basicAuth: server.basicAuth, isSuccess: {
-                success in
-                DispatchQueue.main.async {
-                    if let result = result {
-                        result(success)
-                    }
-                    
-                    if(success) {
-                        self.setActiveServer(id: server.id)
-                        qBittorrent.initialize()
-                        self.isLoggedIn = true
-                    }
-                    
-                    self.connectingServerId = nil
+            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+            let newClient = qBittorrentClient(networkClient: networkClient)
+            do {
+                try await newClient.login(username: server.username, password: server.password)
+                
+                self.client = newClient
+                self.setActiveServer(id: server.id)
+                
+                // Compatibility bridge
+                qBittorrent.setURL(url: server.url)
+                if let cookie = newClient.cookie {
+                    qBittorrent.setCookie(cookie: cookie)
                 }
-            })
+                qBitRequest.setBasicAuth(auth: server.basicAuth)
+                qBittorrent.initialize()
+                
+                self.isLoggedIn = true
+                result?(true)
+            } catch {
+                result?(false)
+            }
+            self.connectingServerId = nil
         }
     }
     
@@ -130,18 +142,27 @@ class ServersHelper: ObservableObject {
         connectingServerId = server.id
         
         Task {
-            await Auth.getCookie(url: server.url, username: server.username, password: server.password, isSuccess: {
-                success in
-                DispatchQueue.main.async {
-                    if(success) {
-                        self.setActiveServer(id: server.id)
-                        qBittorrent.initialize()
-                        self.isLoggedIn = true
-                    }
-                    
-                    self.connectingServerId = nil
+            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+            let newClient = qBittorrentClient(networkClient: networkClient)
+            do {
+                try await newClient.login(username: server.username, password: server.password)
+                
+                self.client = newClient
+                self.setActiveServer(id: server.id)
+                
+                // Compatibility bridge
+                qBittorrent.setURL(url: server.url)
+                if let cookie = newClient.cookie {
+                    qBittorrent.setCookie(cookie: cookie)
                 }
-            })
+                qBitRequest.setBasicAuth(auth: server.basicAuth)
+                qBittorrent.initialize()
+                
+                self.isLoggedIn = true
+            } catch {
+                print("Auto-connect failed: \(error)")
+            }
+            self.connectingServerId = nil
         }
     }
 }
