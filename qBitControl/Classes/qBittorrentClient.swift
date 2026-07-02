@@ -1,0 +1,244 @@
+//
+//  qBittorrentClient.swift
+//  qBitControl
+//
+
+import Foundation
+
+class qBittorrentClient: TorrentClientProtocol {
+    private let networkClient: NetworkClient
+    
+    enum ClientError: Error {
+        case notImplemented
+    }
+    
+    init(networkClient: NetworkClient) {
+        self.networkClient = networkClient
+    }
+    
+    // MARK: - TorrentTaskActions
+    
+    func pauseTorrent(hash: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func pauseTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func pauseAllTorrents() async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func resumeTorrent(hash: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func resumeTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func resumeAllTorrents() async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func recheckTorrent(hash: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func recheckTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func reannounceTorrent(hash: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func reannounceTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func deleteTorrent(hash: String, deleteFiles: Bool) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func deleteTorrents(hashes: [String], deleteFiles: Bool) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func increasePriorityTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func decreasePriorityTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func topPriorityTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func bottomPriorityTorrents(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func toggleSequentialDownload(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func toggleFLPiecesFirst(hashes: [String]) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func setForceStart(hashes: [String], value: Bool) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func addMagnetTorrent(
+        torrent: URLQueryItem,
+        savePath: String = "",
+        cookie: String = "",
+        category: String = "",
+        tags: String = "",
+        skipChecking: Bool = false,
+        paused: Bool = false,
+        sequentialDownload: Bool = false,
+        dlLimit: Int = -1,
+        upLimit: Int = -1,
+        ratioLimit: Float = -1.0,
+        seedingTimeLimit: Int = -1
+    ) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func addFileTorrent(
+        torrents: [String: Data],
+        savePath: String = "",
+        cookie: String = "",
+        category: String = "",
+        tags: String = "",
+        skipChecking: Bool = false,
+        paused: Bool = false,
+        sequentialDownload: Bool = false,
+        dlLimit: Int = -1,
+        upLimit: Int = -1,
+        ratioLimit: Float = -1.0,
+        seedingTimeLimit: Int = -1
+    ) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    // MARK: - TorrentRSSActions
+    
+    func getRSSFeeds(withDate: Bool = true) async throws -> RSSNode {
+        throw ClientError.notImplemented
+    }
+    
+    func addRSSFeed(url: String, path: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func addRSSFolder(path: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func addRSSRemoveItem(path: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func addRSSRefreshItem(path: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func moveRSSItem(itemPath: String, destPath: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    // MARK: - TorrentCategoryTagActions
+    
+    func getCategories() async throws -> [String: Category] {
+        throw ClientError.notImplemented
+    }
+    
+    func setCategory(hash: String, category: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func addCategory(category: String, savePath: String?) async throws -> Int {
+        throw ClientError.notImplemented
+    }
+    
+    func removeCategory(category: String) async throws -> Int {
+        throw ClientError.notImplemented
+    }
+    
+    func getTags() async throws -> [String] {
+        throw ClientError.notImplemented
+    }
+    
+    func setTag(hash: String, tag: String) async throws -> Bool {
+        throw ClientError.notImplemented
+    }
+    
+    func unsetTag(hash: String, tag: String) async throws -> Bool {
+        throw ClientError.notImplemented
+    }
+    
+    func removeTag(tag: String) async throws -> Int {
+        throw ClientError.notImplemented
+    }
+    
+    func addTag(tag: String) async throws -> Int {
+        throw ClientError.notImplemented
+    }
+    
+    // MARK: - TorrentTrackerActions
+    
+    func getTrackers(hash: String) async throws -> [Tracker] {
+        throw ClientError.notImplemented
+    }
+    
+    func addTrackerURL(hash: String, urls: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func editTrackerURL(hash: String, origUrl: String, newURL: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    func removeTracker(hash: String, url: String) async throws {
+        throw ClientError.notImplemented
+    }
+    
+    // MARK: - TorrentSearchActions
+    
+    func getSearchStart(pattern: String, category: String, plugins: Bool = true) async throws -> SearchStartResult {
+        throw ClientError.notImplemented
+    }
+    
+    func getSearchResults(id: Int, limit: Int = 500, offset: Int = 0) async throws -> SearchResponse {
+        throw ClientError.notImplemented
+    }
+    
+    func getSearchPlugins() async throws -> [SearchPlugin] {
+        throw ClientError.notImplemented
+    }
+    
+    // MARK: - TorrentServerActions
+    
+    func fetchVersion() async throws -> Version {
+        throw ClientError.notImplemented
+    }
+    
+    func getGlobalTransferInfo() async throws -> GlobalTransferInfo {
+        throw ClientError.notImplemented
+    }
+    
+    func getMainData(rid: Int = 0) async throws -> MainData {
+        throw ClientError.notImplemented
+    }
+    
+    func getPreferences() async throws -> qBitPreferences {
+        throw ClientError.notImplemented
+    }
+}
