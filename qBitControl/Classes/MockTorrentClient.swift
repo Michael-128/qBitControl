@@ -49,9 +49,121 @@ class MockTorrentClient: TorrentClientProtocol {
         return try! JSONDecoder().decode(qBitPreferences.self, from: json.data(using: .utf8)!)
     }
     
+    static let mockTorrents: [Torrent] = {
+        let json = """
+        [
+            {
+                "added_on": 1682347623,
+                "amount_left": 0,
+                "auto_tmm": false,
+                "availability": 1.0,
+                "category": "Movies",
+                "completed": 1000000000,
+                "completion_on": 1682348000,
+                "content_path": "/Downloads/Movies/ubuntu.iso",
+                "dl_limit": -1,
+                "dlspeed": 0,
+                "downloaded": 1000000000,
+                "downloaded_session": 1000000000,
+                "eta": 8640000,
+                "f_l_piece_prio": false,
+                "force_start": false,
+                "hash": "1a2b3c4d5e6f7g8h9i0j",
+                "last_activity": 1682348000,
+                "magnet_uri": "magnet:?xt=urn:btih:1a2b3c4d5e6f7g8h9i0j",
+                "max_ratio": -1.0,
+                "max_seeding_time": -1,
+                "name": "Ubuntu 22.04 LTS Desktop",
+                "num_complete": 150,
+                "num_incomplete": 5,
+                "num_leechs": 5,
+                "num_seeds": 150,
+                "priority": 1,
+                "progress": 1.0,
+                "ratio": 1.5,
+                "ratio_limit": -1.0,
+                "save_path": "/Downloads/Movies",
+                "seeding_time": 3600,
+                "seeding_time_limit": -1,
+                "seen_complete": 1682348000,
+                "seq_dl": false,
+                "size": 1000000000,
+                "state": "seeding",
+                "super_seeding": false,
+                "tags": "linux,os",
+                "time_active": 7200,
+                "total_size": 1000000000,
+                "tracker": "udp://tracker.opentrackr.org:1337/announce",
+                "up_limit": -1,
+                "uploaded": 1500000000,
+                "uploaded_session": 1500000000,
+                "upspeed": 512000
+            },
+            {
+                "added_on": 1682349000,
+                "amount_left": 500000000,
+                "auto_tmm": false,
+                "availability": 0.8,
+                "category": "All",
+                "completed": 500000000,
+                "completion_on": 0,
+                "content_path": "/Downloads/debian.iso",
+                "dl_limit": -1,
+                "dlspeed": 1024000,
+                "downloaded": 500000000,
+                "downloaded_session": 500000000,
+                "eta": 488,
+                "f_l_piece_prio": false,
+                "force_start": false,
+                "hash": "2b3c4d5e6f7g8h9i0j1a",
+                "last_activity": 1682349500,
+                "magnet_uri": "magnet:?xt=urn:btih:2b3c4d5e6f7g8h9i0j1a",
+                "max_ratio": -1.0,
+                "max_seeding_time": -1,
+                "name": "Debian GNU/Linux 12 NetInstall",
+                "num_complete": 80,
+                "num_incomplete": 12,
+                "num_leechs": 12,
+                "num_seeds": 80,
+                "priority": 2,
+                "progress": 0.5,
+                "ratio": 0.0,
+                "ratio_limit": -1.0,
+                "save_path": "/Downloads",
+                "seeding_time": 0,
+                "seeding_time_limit": -1,
+                "seen_complete": 0,
+                "seq_dl": false,
+                "size": 1000000000,
+                "state": "downloading",
+                "super_seeding": false,
+                "tags": "linux,debian",
+                "time_active": 500,
+                "total_size": 1000000000,
+                "tracker": "udp://tracker.opentrackr.org:1337/announce",
+                "up_limit": -1,
+                "uploaded": 0,
+                "uploaded_session": 0,
+                "upspeed": 0
+            }
+        ]
+        """
+        return try! JSONDecoder().decode([Torrent].self, from: json.data(using: .utf8)!)
+    }()
+    
     init() {}
     
     // MARK: - TorrentTaskActions
+    
+    func fetchTorrents(
+        filter: String?,
+        category: String?,
+        tag: String?,
+        sort: String?,
+        reverse: Bool?
+    ) async throws -> [Torrent] {
+        return Self.mockTorrents
+    }
     
     func pauseTorrent(hash: String) async throws {}
     func pauseTorrents(hashes: [String]) async throws {}

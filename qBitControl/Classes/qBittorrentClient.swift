@@ -20,6 +20,23 @@ class qBittorrentClient: TorrentClientProtocol {
     
     // MARK: - TorrentTaskActions
     
+    func fetchTorrents(
+        filter: String?,
+        category: String?,
+        tag: String?,
+        sort: String?,
+        reverse: Bool?
+    ) async throws -> [Torrent] {
+        var queryItems: [URLQueryItem] = []
+        if let filter = filter { queryItems.append(URLQueryItem(name: "filter", value: filter)) }
+        if let category = category { queryItems.append(URLQueryItem(name: "category", value: category)) }
+        if let tag = tag { queryItems.append(URLQueryItem(name: "tag", value: tag)) }
+        if let sort = sort { queryItems.append(URLQueryItem(name: "sort", value: sort)) }
+        if let reverse = reverse { queryItems.append(URLQueryItem(name: "reverse", value: String(reverse))) }
+        
+        return try await networkClient.sendRequest(path: "/api/v2/torrents/info", queryItems: queryItems, cookie: self.cookie)
+    }
+    
     func pauseTorrent(hash: String) async throws {
         throw ClientError.notImplemented
     }

@@ -1,5 +1,6 @@
 import SwiftUI
 
+@MainActor
 class TorrentListViewModel: ObservableObject {
     @ObservedObject private var torrentListHelperViewModel: TorrentListHelperViewModel
     

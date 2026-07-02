@@ -7,6 +7,14 @@ import Foundation
 
 // MARK: - TorrentTaskActions
 protocol TorrentTaskActions {
+    func fetchTorrents(
+        filter: String?,
+        category: String?,
+        tag: String?,
+        sort: String?,
+        reverse: Bool?
+    ) async throws -> [Torrent]
+    
     func pauseTorrent(hash: String) async throws
     func pauseTorrents(hashes: [String]) async throws
     func pauseAllTorrents() async throws
@@ -114,3 +122,15 @@ protocol TorrentServerActions {
 
 // MARK: - TorrentClientProtocol
 typealias TorrentClientProtocol = TorrentTaskActions & TorrentRSSActions & TorrentCategoryTagActions & TorrentTrackerActions & TorrentSearchActions & TorrentServerActions
+
+extension TorrentTaskActions {
+    func fetchTorrents(
+        filter: String? = nil,
+        category: String? = nil,
+        tag: String? = nil,
+        sort: String? = nil,
+        reverse: Bool? = nil
+    ) async throws -> [Torrent] {
+        try await fetchTorrents(filter: filter, category: category, tag: tag, sort: sort, reverse: reverse)
+    }
+}
