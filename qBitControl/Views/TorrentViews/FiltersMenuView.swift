@@ -18,9 +18,11 @@ struct FiltersMenuView: View {
     @Binding var category: String
     @Binding var tag: String
     
-    
     private let defaults = UserDefaults.standard
-
+    
+    private var client: TorrentClientProtocol {
+        ServersHelper.shared.client ?? MockTorrentClient()
+    }
     
     var body: some View {
         NavigationView {
@@ -81,12 +83,10 @@ struct FiltersMenuView: View {
                     Group {
                         Text("Added On").tag("added_on")
                         Text("Amount Left").tag("amount_left")
-                        //Text("Auto Torrent Management").tag("auto_tmm")
                         Text("Availability").tag("availability")
                         Text("Category").tag("category")
                         Text("Completed").tag("completed")
                         Text("Completion On").tag("completion_on")
-                        //Text("Content Path").tag("content_path")
                         Text("Download Limit").tag("dl_limit")
                         Text("Download Speed").tag("dlspeed")
                     }
@@ -95,11 +95,7 @@ struct FiltersMenuView: View {
                         Text("Downloaded").tag("downloaded")
                         Text("Downloaded Session").tag("downloaded_session")
                         Text("ETA").tag("eta")
-                        //Text("FL Piece Ratio").tag("f_l_piece_prio")
-                        //Text("Force Start").tag("force_start")
-                        //Text("Hash").tag("hash")
                         Text("Last Activity").tag("last_activity")
-                        //Text("Magnet URI").tag("magnet_uri")
                         Text("Max Ratio").tag("max_ratio")
                         Text("Max Seeding Time").tag("max_seeding_time")
                     }
@@ -117,21 +113,16 @@ struct FiltersMenuView: View {
                     }
                     
                     Group {
-                        //Text("Save Path").tag("save_path")
                         Text("Seeding Time").tag("seeding_time")
                         Text("Seeding Time Limit").tag("seeding_time_limit")
-                        //Text("Seen Complete").tag("seen_complete")
-                        //Text("Seq DL").tag("seq_dl")
                         Text("Size").tag("size")
                         Text("State").tag("state")
-                        //Text("Super Seeding").tag("super_seeding")
                         Text("Tags").tag("tags")
                         Text("Time Active").tag("time_active")
                         Text("Total Size").tag("total_size")
                     }
                     
                     Group {
-                        //Text("Tracker").tag("tracker")
                         Text("Upload Limit").tag("up_limit")
                         Text("Uploaded").tag("uploaded")
                         Text("Uploaded Session").tag("uploaded_session")
@@ -153,29 +144,22 @@ struct FiltersMenuView: View {
                     }
                 }
             }.onAppear() {
-                qBittorrent.getCategories(completionHandler: { response in
-                    // Append sorted list of Category objects to ensure "None" always appears at the top
-                    self.categories.append(contentsOf: response.map { $1 }.sorted { $0.name < $1.name })
-                })
-                qBittorrent.getTags(completionHandler: {
-                    tags in
-                    tags.forEach({
-                        tag in
-                        tagsArr.append(tag)
-                    })
-                })
+                Task {
+                    do {
+                        let fetchedCategories = try await client.getCategories()
+                        self.categories = fetchedCategories.map { $1 }.sorted { $0.name < $1.name }
+                    } catch {
+                        print("Failed to fetch categories: \(error)")
+                    }
+                    
+                    do {
+                        let fetchedTags = try await client.getTags()
+                        self.tagsArr = fetchedTags
+                    } catch {
+                        print("Failed to fetch tags: \(error)")
+                    }
+                }
             }
         }
     }
 }
-
-/*struct TorrentFilterView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationView {
-            VStack {}
-                .sheet(isPresented: .constant(true), content: {
-                    TorrentFilterView(sort: .constant("name"), reverse: .constant(false), filter: .constant("all"))
-                })
-        }
-    }
-}*/

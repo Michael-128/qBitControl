@@ -206,6 +206,17 @@ class qBittorrentClient: TorrentClientProtocol {
         )
     }
     
+    func setLocation(hashes: [String], location: String) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/setLocation",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+                URLQueryItem(name: "location", value: location)
+            ],
+            cookie: self.cookie
+        )
+    }
+    
     func addMagnetTorrent(
         torrent: URLQueryItem,
         savePath: String = "",
@@ -285,6 +296,14 @@ class qBittorrentClient: TorrentClientProtocol {
         )
     }
     
+    func getPeers(hash: String) async throws -> Peers {
+        return try await networkClient.sendRequest(
+            path: "/api/v2/sync/torrentPeers",
+            queryItems: [URLQueryItem(name: "hash", value: hash)],
+            cookie: self.cookie
+        )
+    }
+    
     func setFilePriority(hash: String, ids: String, priority: Int) async throws {
         let _: String = try await networkClient.sendRequest(
             path: "/api/v2/torrents/filePrio",
@@ -356,39 +375,94 @@ class qBittorrentClient: TorrentClientProtocol {
     // MARK: - TorrentCategoryTagActions
     
     func getCategories() async throws -> [String: Category] {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/torrents/categories",
+            queryItems: [],
+            cookie: self.cookie
+        )
     }
     
     func setCategory(hash: String, category: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/setCategory",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hash),
+                URLQueryItem(name: "category", value: category)
+            ],
+            cookie: self.cookie
+        )
     }
     
     func addCategory(category: String, savePath: String?) async throws -> Int {
-        throw ClientError.notImplemented
+        var queryItems = [URLQueryItem(name: "category", value: category)]
+        if let savePath = savePath {
+            queryItems.append(URLQueryItem(name: "savePath", value: savePath))
+        }
+        let (_, response): (String, HTTPURLResponse) = try await networkClient.sendRequestWithResponse(
+            path: "/api/v2/torrents/createCategory",
+            queryItems: queryItems,
+            cookie: self.cookie
+        )
+        return response.statusCode
     }
     
     func removeCategory(category: String) async throws -> Int {
-        throw ClientError.notImplemented
+        let (_, response): (String, HTTPURLResponse) = try await networkClient.sendRequestWithResponse(
+            path: "/api/v2/torrents/removeCategories",
+            queryItems: [URLQueryItem(name: "categories", value: category)],
+            cookie: self.cookie
+        )
+        return response.statusCode
     }
     
     func getTags() async throws -> [String] {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/torrents/tags",
+            queryItems: [],
+            cookie: self.cookie
+        )
     }
     
     func setTag(hash: String, tag: String) async throws -> Bool {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/addTags",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hash),
+                URLQueryItem(name: "tags", value: tag)
+            ],
+            cookie: self.cookie
+        )
+        return true
     }
     
     func unsetTag(hash: String, tag: String) async throws -> Bool {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/removeTags",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hash),
+                URLQueryItem(name: "tags", value: tag)
+            ],
+            cookie: self.cookie
+        )
+        return true
     }
     
     func removeTag(tag: String) async throws -> Int {
-        throw ClientError.notImplemented
+        let (_, response): (String, HTTPURLResponse) = try await networkClient.sendRequestWithResponse(
+            path: "/api/v2/torrents/deleteTags",
+            queryItems: [URLQueryItem(name: "tags", value: tag)],
+            cookie: self.cookie
+        )
+        return response.statusCode
     }
     
     func addTag(tag: String) async throws -> Int {
-        throw ClientError.notImplemented
+        let (_, response): (String, HTTPURLResponse) = try await networkClient.sendRequestWithResponse(
+            path: "/api/v2/torrents/createTags",
+            queryItems: [URLQueryItem(name: "tags", value: tag)],
+            cookie: self.cookie
+        )
+        return response.statusCode
     }
     
     // MARK: - TorrentTrackerActions
@@ -481,25 +555,41 @@ class qBittorrentClient: TorrentClientProtocol {
             cookie: nil
         )
         
+        // Accept any 2xx status code
+        guard (200...299).contains(response.statusCode) else {
+            throw NetworkError.unauthorized
+        }
+        
+        // Extract cookie on a best-effort basis
+        var parsedCookie: String? = nil
+        
+        // 1. Check Set-Cookie response header
         if let setCookieHeader = response.value(forHTTPHeaderField: "Set-Cookie") {
             let components = setCookieHeader.split(separator: ";")
             if let firstComponent = components.first {
                 let cookieStr = String(firstComponent)
                 if cookieStr.contains("SID") {
-                    self.cookie = cookieStr
-                    
-                    // Fetch and store version after successful login
-                    do {
-                        self.version = try await fetchVersion()
-                    } catch {
-                        print("Failed to fetch version on login: \(error)")
-                    }
-                    return
+                    parsedCookie = cookieStr
                 }
             }
         }
         
-        throw NetworkError.unauthorized
+        // 2. Check shared HTTPCookieStorage fallback
+        if parsedCookie == nil,
+           let url = URL(string: networkClient.baseURL),
+           let cookies = HTTPCookieStorage.shared.cookies(for: url),
+           let sidCookie = cookies.first(where: { $0.name == "SID" }) {
+            parsedCookie = "SID=\(sidCookie.value)"
+        }
+        
+        self.cookie = parsedCookie
+        
+        // 3. Verification Call: Confirm that the session is authorized and active
+        do {
+            self.version = try await fetchVersion()
+        } catch {
+            throw NetworkError.unauthorized
+        }
     }
     
     func fetchVersion() async throws -> Version {

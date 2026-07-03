@@ -15,7 +15,7 @@ enum NetworkError: Error, Equatable {
 
 /// A stateless actor responsible for executing generic asynchronous HTTP requests.
 actor NetworkClient {
-    private let baseURL: String
+    nonisolated let baseURL: String
     private let basicAuth: Server.BasicAuth?
     private let session: URLSession
 

@@ -77,7 +77,6 @@
 		9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA2229080E53006C3960 /* qBitControlApp.swift */; };
 		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
-		9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA4C29082208006C3960 /* qBittorrentClass.swift */; };
 		909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */; };
 		90AB036C2DB16AE6009870BB /* SearchFiltersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB036B2DB16ADD009870BB /* SearchFiltersView.swift */; };
 		90AB036E2DB16D5E009870BB /* SearchSortOptions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90AB036D2DB16D51009870BB /* SearchSortOptions.swift */; };
@@ -94,8 +93,6 @@
 		90E6DD6F2DFF407000BC1D76 /* ServerAdvancedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E6DD6E2DFF406A00BC1D76 /* ServerAdvancedView.swift */; };
 		90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */; };
 		90EE84862E8AEB2B009C2D7F /* TorrentListSelectionToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EE84852E8AEB26009C2D7F /* TorrentListSelectionToolbarViewModel.swift */; };
-		90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A482909267A001E9E7F /* AuthClass.swift */; };
-		90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */; };
 		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
 		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
 		90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B892CDA22190032993F /* TorrentFormatter.swift */; };
@@ -196,7 +193,6 @@
 		9082FA2929080E55006C3960 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9082FA2F29080E55006C3960 /* qBitControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		9082FA4C29082208006C3960 /* qBittorrentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClass.swift; sourceTree = "<group>"; };
 		909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNodeViewModel.swift; sourceTree = "<group>"; };
 		90AB036B2DB16ADD009870BB /* SearchFiltersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFiltersView.swift; sourceTree = "<group>"; };
 		90AB036D2DB16D51009870BB /* SearchSortOptions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchSortOptions.swift; sourceTree = "<group>"; };
@@ -214,8 +210,6 @@
 		90E6DD6E2DFF406A00BC1D76 /* ServerAdvancedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAdvancedView.swift; sourceTree = "<group>"; };
 		90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitDataClass.swift; sourceTree = "<group>"; };
 		90EE84852E8AEB26009C2D7F /* TorrentListSelectionToolbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListSelectionToolbarViewModel.swift; sourceTree = "<group>"; };
-		90EF6A482909267A001E9E7F /* AuthClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthClass.swift; sourceTree = "<group>"; };
-		90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitRequestClass.swift; sourceTree = "<group>"; };
 		90FA253529190D0400DC8F0B /* FileNodeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNodeClass.swift; sourceTree = "<group>"; };
 		90FF93462C8707BF001CDCE4 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
@@ -267,9 +261,6 @@
 				90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */,
 				90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */,
 				90DF6C6E2E89BF1E004562C1 /* SystemHelper.swift */,
-				90EF6A482909267A001E9E7F /* AuthClass.swift */,
-				9082FA4C29082208006C3960 /* qBittorrentClass.swift */,
-				90EF6A4C29093142001E9E7F /* qBitRequestClass.swift */,
 				90EF6A4C29093142001E9EF0 /* NetworkClient.swift */,
 				90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */,
 				90FA253529190D0400DC8F0B /* FileNodeClass.swift */,
@@ -687,7 +678,6 @@
 				90EF6A4D29093142001E9F06 /* MockTorrentClient.swift in Sources */,
 				907C632D2DAEDC28004B1F41 /* SearchViewModel.swift in Sources */,
 				90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */,
-				90EF6A4D29093142001E9E7F /* qBitRequestClass.swift in Sources */,
 				907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */,
 				90BA88552B2206F100C8A342 /* LocalNetworkPermissionClass.swift in Sources */,
 				90AE89392CDBEC4D000E0276 /* RSSNodeView.swift in Sources */,
@@ -695,7 +685,6 @@
 				901230562DB037120022FD4C /* SearchRowView.swift in Sources */,
 				90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */,
 				90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */,
-				90EF6A492909267A001E9E7F /* AuthClass.swift in Sources */,
 				90726B1F2CDA22160032993E /* AlertIdentifier.swift in Sources */,
 				90726B552CDA22190032993E /* RSSView.swift in Sources */,
 				90726B562CDA22190032993E /* ServerAddView.swift in Sources */,
@@ -765,7 +754,6 @@
 				901230542DB02EAE0022FD4C /* SearchResult.swift in Sources */,
 				90726B302CDA22160032993E /* TransferInfo.swift in Sources */,
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
-				9082FA4D29082208006C3960 /* qBittorrentClass.swift in Sources */,
 				90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
 				90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */,

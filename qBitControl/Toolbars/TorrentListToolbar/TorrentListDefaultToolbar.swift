@@ -87,15 +87,15 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 switch(alert.id) {
                 case .resumeCurrent:
                     return Alert(title: Text("Confirm Resume Current"), message: Text("Are you sure you want to resume current tasks?"), primaryButton: .default(Text("Resume")) {
-                        qBittorrent.resumeTorrents(hashes: viewModel.filteredTorrents.map { $0.hash })
+                        viewModel.resumeTorrents(hashes: viewModel.filteredTorrents.map { $0.hash })
                     }, secondaryButton: .cancel())
                 case .resumeAll:
                     return Alert(title: Text("Confirm Resume All"), message: Text("Are you sure you want to resume all tasks?"), primaryButton: .default(Text("Resume")) {
-                        qBittorrent.resumeAllTorrents()
+                        viewModel.resumeAllTorrents()
                     }, secondaryButton: .cancel())
                 case .pauseAll:
                     return Alert(title: Text("Confirm Pause All"), message: Text("Are you sure you want to pause all tasks?"), primaryButton: .default(Text("Pause")) {
-                        qBittorrent.pauseAllTorrents()
+                        viewModel.pauseAllTorrents()
                     }, secondaryButton: .cancel())
                 }
             }.alert("Confirm Deletion", isPresented: $viewModel.isAlertClearCompleted, actions: {

@@ -9,23 +9,51 @@ struct PeersView: View {
     @Binding var torrentHash: String
     
     @State private var peers: [Peer] = []
-    @State private var timer: Timer?
+    @State private var pollingTask: Task<Void, Never>?
     @State private var isLoaded = false
     
+    private var client: TorrentClientProtocol {
+        ServersHelper.shared.client ?? MockTorrentClient()
+    }
+    
     func getPeers() {
-        var refreshedPeers: [Peer] = []
-        
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/sync/torrentPeers", queryItems: [URLQueryItem(name: "hash", value: torrentHash)])
-        
-        qBitRequest.requestPeersJSON(request: request, completionHandler: {
-            peers in
-            for (_, value) in peers.peers {
+        Task {
+            await getPeersAsync()
+        }
+    }
+    
+    private func getPeersAsync() async {
+        do {
+            let response = try await client.getPeers(hash: torrentHash)
+            var refreshedPeers: [Peer] = []
+            for (_, value) in response.peers {
                 refreshedPeers.append(value)
             }
-            refreshedPeers.sort(by: {$0.dl_speed > $1.dl_speed})
+            refreshedPeers.sort(by: { $0.dl_speed > $1.dl_speed })
             self.peers = refreshedPeers
             self.isLoaded = true
-        })
+        } catch {
+            print("Failed to get peers: \(error)")
+        }
+    }
+    
+    func startPolling() {
+        pollingTask?.cancel()
+        pollingTask = Task {
+            while !Task.isCancelled {
+                await getPeersAsync()
+                do {
+                    try await Task.sleep(nanoseconds: 2_000_000_000)
+                } catch {
+                    break
+                }
+            }
+        }
+    }
+    
+    func stopPolling() {
+        pollingTask?.cancel()
+        pollingTask = nil
     }
     
     var body: some View {
@@ -38,21 +66,18 @@ struct PeersView: View {
                             PeerRowView(peer: peer)
                         }
                     }
-                    
                     .navigationTitle("Peers")
                 }
             } else {
                 ProgressView().progressViewStyle(.circular)
                     .navigationTitle("Peers")
             }
-        }.onAppear() {
-            getPeers()
-            timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) {
-                timer in
-                getPeers()
-            }
-        }.onDisappear() {
-            timer?.invalidate()
+        }
+        .onAppear() {
+            startPolling()
+        }
+        .onDisappear() {
+            stopPolling()
         }
     }
 }

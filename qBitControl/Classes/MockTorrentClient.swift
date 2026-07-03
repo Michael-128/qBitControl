@@ -203,6 +203,7 @@ class MockTorrentClient: TorrentClientProtocol {
     func toggleSequentialDownload(hashes: [String]) async throws {}
     func toggleFLPiecesFirst(hashes: [String]) async throws {}
     func setForceStart(hashes: [String], value: Bool) async throws {}
+    func setLocation(hashes: [String], location: String) async throws {}
     
     func addMagnetTorrent(
         torrent: URLQueryItem,
@@ -236,6 +237,10 @@ class MockTorrentClient: TorrentClientProtocol {
     
     func getFiles(hash: String) async throws -> [File] {
         return Self.mockFiles
+    }
+    
+    func getPeers(hash: String) async throws -> Peers {
+        return Peers(full_update: true, peers: [:])
     }
     
     func setFilePriority(hash: String, ids: String, priority: Int) async throws {}
