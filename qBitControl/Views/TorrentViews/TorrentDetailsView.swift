@@ -13,8 +13,9 @@ struct TorrentDetailsView: View {
     @StateObject private var viewModel: TorrentDetailsViewModel
     
     init(torrent: Torrent) {
-        _viewModel = StateObject(wrappedValue: TorrentDetailsViewModel(torrent: torrent))
-        _trackersViewModel = StateObject(wrappedValue: TrackersViewModel(torrentHash: torrent.hash))
+        let client = ServersHelper.shared.client ?? MockTorrentClient()
+        _viewModel = StateObject(wrappedValue: TorrentDetailsViewModel(torrent: torrent, client: client))
+        _trackersViewModel = StateObject(wrappedValue: TrackersViewModel(torrentHash: torrent.hash, client: client))
     }
     
     var body: some View {
@@ -100,7 +101,7 @@ struct TorrentDetailsView: View {
                     }
                     
                     NavigationLink {
-                        FilesView(torrentHash: .constant(viewModel.torrent.hash))
+                        FilesView(torrentHash: .constant(viewModel.torrent.hash), client: ServersHelper.shared.client ?? MockTorrentClient())
                     } label: {
                         Text("Files")
                     }

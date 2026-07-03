@@ -1,7 +1,15 @@
+//
+//  TrackersViewModel.swift
+//  qBitControl
+//
+
 import SwiftUI
 
+@MainActor
 class TrackersViewModel: ObservableObject {
     private var torrentHash: String
+    private let client: TorrentClientProtocol
+    
     @Published public var trackers: [Tracker] = []
     
     @Published public var isEditTrackerAlert: Bool = false
@@ -12,8 +20,9 @@ class TrackersViewModel: ObservableObject {
     
     @Published private var timer: Timer?
     
-    init(torrentHash: String) {
+    init(torrentHash: String, client: TorrentClientProtocol) {
         self.torrentHash = torrentHash
+        self.client = client
         self.getTrackers()
     }
     
@@ -24,7 +33,14 @@ class TrackersViewModel: ObservableObject {
     }
     
     func editTracker() {
-        qBittorrent.editTrackerURL(hash: torrentHash, origUrl: origURL, newURL: newURL)
+        Task {
+            do {
+                try await client.editTrackerURL(hash: torrentHash, origUrl: origURL, newURL: newURL)
+                getTrackers()
+            } catch {
+                print("Failed to edit tracker: \(error)")
+            }
+        }
     }
     
     func showAddTrackerPopover() {
@@ -34,25 +50,43 @@ class TrackersViewModel: ObservableObject {
     }
     
     func addTracker() {
-        qBittorrent.addTrackerURL(hash: torrentHash, urls: newURL)
+        Task {
+            do {
+                try await client.addTrackerURL(hash: torrentHash, urls: newURL)
+                getTrackers()
+            } catch {
+                print("Failed to add tracker: \(error)")
+            }
+        }
     }
     
     func removeTracker(tracker: Tracker) {
-        qBittorrent.removeTracker(hash: torrentHash, url: tracker.url)
+        Task {
+            do {
+                try await client.removeTracker(hash: torrentHash, url: tracker.url)
+                getTrackers()
+            } catch {
+                print("Failed to remove tracker: \(error)")
+            }
+        }
     }
     
     func getTrackers() {
-        qBittorrent.getTrackers(hash: torrentHash) {
-            trackers in
-            DispatchQueue.main.async {
-                self.trackers = trackers
+        Task {
+            do {
+                let trackersList = try await client.getTrackers(hash: torrentHash)
+                self.trackers = trackersList
+            } catch {
+                print("Failed to fetch trackers: \(error)")
             }
         }
     }
     
     func setRefreshTimer() {
-        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { _ in
-            self.getTrackers()
+        timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                self?.getTrackers()
+            }
         }
     }
     

@@ -1,5 +1,11 @@
+//
+//  TorrentDetailsViewModel.swift
+//  qBitControl
+//
+
 import SwiftUI
 
+@MainActor
 class TorrentDetailsViewModel: ObservableObject {
     @Published public var torrent: Torrent
     
@@ -11,23 +17,27 @@ class TorrentDetailsViewModel: ObservableObject {
     @Published public var state: State = .resumed
     
     public let formatter: TorrentFormatting
+    private let client: TorrentClientProtocol
     
     private var tags: [String] { torrent.tags.split(separator: ", ").map { String($0) } }
     
     let haptics = UIImpactFeedbackGenerator(style: .medium)
     private var timer: Timer?
     
-    init(torrent: Torrent, formatter: TorrentFormatting = TorrentFormatter()) {
+    init(torrent: Torrent, formatter: TorrentFormatting = TorrentFormatter(), client: TorrentClientProtocol) {
         self.torrent = torrent
         self.formatter = formatter
+        self.client = client
         self.isSequentialDownload = torrent.seq_dl
         self.isFLPiecesFirst = torrent.f_l_piece_prio
         self.fetchState(state: torrent.state)
     }
     
     func setRefreshTimer() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { timer in
-            self.getTorrent()
+        self.timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] timer in
+            Task { @MainActor in
+                self?.getTorrent()
+            }
         }
     }
     
@@ -36,17 +46,17 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func getTorrent() {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/info", queryItems: [URLQueryItem(name:"hashes", value: torrent.hash)])
-        
-        qBitRequest.requestTorrentListJSON(request: request) {
-            torrent in
-            if let torrent = torrent.first {
-                DispatchQueue.main.async {
-                    self.torrent = torrent
-                    self.isSequentialDownload = torrent.seq_dl
-                    self.isFLPiecesFirst = torrent.f_l_piece_prio
-                    self.fetchState(state: torrent.state)
+        Task {
+            do {
+                let list = try await client.fetchTorrents()
+                if let matchingTorrent = list.first(where: { $0.hash == torrent.hash }) {
+                    self.torrent = matchingTorrent
+                    self.isSequentialDownload = matchingTorrent.seq_dl
+                    self.isFLPiecesFirst = matchingTorrent.f_l_piece_prio
+                    self.fetchState(state: matchingTorrent.state)
                 }
+            } catch {
+                print("Failed to fetch torrent details: \(error)")
             }
         }
     }
@@ -60,7 +70,7 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func getCategory() -> String { torrent.category != "" ? torrent.category : "Uncategorized" }
     func getTags() -> [String] { tags }
-    func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
+    func getTag() -> String { tags.count > 1 ? "\(tags.count) Tags" : (tags.first ?? "Untagged") }
     func getAddedOn() -> String { formatter.getFormatedDate(date: torrent.added_on) }
     func getSize() -> String { "\(formatter.getFormatedSize(size: torrent.size))" }
     func getTotalSize() -> String { "\(formatter.getFormatedSize(size: torrent.total_size))" }
@@ -79,40 +89,75 @@ class TorrentDetailsViewModel: ObservableObject {
     func getUploadLimit() -> String { "\(torrent.up_limit > 0 ? formatter.getFormatedSize(size: torrent.up_limit)+"/s" : NSLocalizedString("None", comment: "None"))" }
     func getETA() -> String { torrent.progress < 1 ? formatter.getFormattedTime(time: torrent.eta) : "-" }
     
-    
     func isPaused() -> Bool { state == .paused }
     func isForceStart() -> Bool { state == .forceStart }
     
     func toggleTorrentPause() {
         haptics.impactOccurred()
-        if self.isPaused() {
-            qBittorrent.resumeTorrent(hash: torrent.hash)
-        } else {
-            qBittorrent.pauseTorrent(hash: torrent.hash)
+        Task {
+            do {
+                if self.isPaused() {
+                    try await client.resumeTorrent(hash: torrent.hash)
+                } else {
+                    try await client.pauseTorrent(hash: torrent.hash)
+                }
+                getTorrent()
+            } catch {
+                print("Failed to toggle torrent pause: \(error)")
+            }
         }
-        getTorrent()
     }
     
     func toggleSequentialDownload() {
-        qBittorrent.toggleSequentialDownload(hashes: [torrent.hash])
+        Task {
+            do {
+                try await client.toggleSequentialDownload(hashes: [torrent.hash])
+            } catch {
+                print("Failed to toggle sequential download: \(error)")
+            }
+        }
     }
     
     func toggleFLPiecesFirst() {
-        qBittorrent.toggleFLPiecesFirst(hashes: [torrent.hash])
+        Task {
+            do {
+                try await client.toggleFLPiecesFirst(hashes: [torrent.hash])
+            } catch {
+                print("Failed to toggle first/last pieces first: \(error)")
+            }
+        }
     }
     
     func setForceStart(value: Bool) {
-        qBittorrent.setForceStart(hashes: [torrent.hash], value: value)
+        Task {
+            do {
+                try await client.setForceStart(hashes: [torrent.hash], value: value)
+            } catch {
+                print("Failed to set force start: \(error)")
+            }
+        }
     }
     
     func recheckTorrent() {
         haptics.impactOccurred()
-        qBittorrent.recheckTorrent(hash: torrent.hash)
+        Task {
+            do {
+                try await client.recheckTorrent(hash: torrent.hash)
+            } catch {
+                print("Failed to recheck torrent: \(error)")
+            }
+        }
     }
     
     func reannounceTorrent() {
         haptics.impactOccurred()
-        qBittorrent.reannounceTorrent(hash: torrent.hash)
+        Task {
+            do {
+                try await client.reannounceTorrent(hash: torrent.hash)
+            } catch {
+                print("Failed to reannounce torrent: \(error)")
+            }
+        }
     }
     
     func deleteTorrent() {
@@ -122,32 +167,68 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func moveToTopPriority() {
         haptics.impactOccurred()
-        qBittorrent.topPriorityTorrents(hashes: [torrent.hash])
+        Task {
+            do {
+                try await client.topPriorityTorrents(hashes: [torrent.hash])
+            } catch {
+                print("Failed to move to top priority: \(error)")
+            }
+        }
     }
     
     func moveToBottomPriority() {
         haptics.impactOccurred()
-        qBittorrent.bottomPriorityTorrents(hashes: [torrent.hash])
+        Task {
+            do {
+                try await client.bottomPriorityTorrents(hashes: [torrent.hash])
+            } catch {
+                print("Failed to move to bottom priority: \(error)")
+            }
+        }
     }
     
     func increasePriority() {
         haptics.impactOccurred()
-        qBittorrent.increasePriorityTorrents(hashes: [torrent.hash])
+        Task {
+            do {
+                try await client.increasePriorityTorrents(hashes: [torrent.hash])
+            } catch {
+                print("Failed to increase priority: \(error)")
+            }
+        }
     }
     
     func decreasePriority() {
         haptics.impactOccurred()
-        qBittorrent.decreasePriorityTorrents(hashes: [torrent.hash])
+        Task {
+            do {
+                try await client.decreasePriorityTorrents(hashes: [torrent.hash])
+            } catch {
+                print("Failed to decrease priority: \(error)")
+            }
+        }
     }
     
     func deleteTorrent(then dismiss: DismissAction) {
-        qBittorrent.deleteTorrent(hash: torrent.hash)
-        dismiss()
+        Task {
+            do {
+                try await client.deleteTorrent(hash: torrent.hash, deleteFiles: false)
+                dismiss()
+            } catch {
+                print("Failed to delete torrent: \(error)")
+            }
+        }
     }
     
     func deleteTorrentWithFiles(then dismiss: DismissAction) {
-        qBittorrent.deleteTorrent(hash: torrent.hash, deleteFiles: true)
-        dismiss()
+        Task {
+            do {
+                try await client.deleteTorrent(hash: torrent.hash, deleteFiles: true)
+                dismiss()
+            } catch {
+                print("Failed to delete torrent with files: \(error)")
+            }
+        }
     }
     
     enum State {

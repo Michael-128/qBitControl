@@ -8,6 +8,7 @@ import Foundation
 class qBittorrentClient: TorrentClientProtocol {
     private let networkClient: NetworkClient
     private(set) var cookie: String?
+    private var version = Version(major: 0, minor: 0, patch: 0)
     
     enum ClientError: Error {
         case notImplemented
@@ -16,6 +17,17 @@ class qBittorrentClient: TorrentClientProtocol {
     init(networkClient: NetworkClient, cookie: String? = nil) {
         self.networkClient = networkClient
         self.cookie = cookie
+        
+        // Prefetch version in background if cookie is already present
+        if cookie != nil {
+            Task {
+                do {
+                    self.version = try await fetchVersion()
+                } catch {
+                    print("Failed to prefetch version: \(error)")
+                }
+            }
+        }
     }
     
     // MARK: - TorrentTaskActions
@@ -38,79 +50,160 @@ class qBittorrentClient: TorrentClientProtocol {
     }
     
     func pauseTorrent(hash: String) async throws {
-        throw ClientError.notImplemented
+        let suffix = self.version.major == 5 ? "stop" : "pause"
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/\(suffix)",
+            queryItems: [URLQueryItem(name: "hashes", value: hash)],
+            cookie: self.cookie
+        )
     }
     
     func pauseTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let suffix = self.version.major == 5 ? "stop" : "pause"
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/\(suffix)",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func pauseAllTorrents() async throws {
-        throw ClientError.notImplemented
+        try await pauseTorrent(hash: "all")
     }
     
     func resumeTorrent(hash: String) async throws {
-        throw ClientError.notImplemented
+        let suffix = self.version.major == 5 ? "start" : "resume"
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/\(suffix)",
+            queryItems: [URLQueryItem(name: "hashes", value: hash)],
+            cookie: self.cookie
+        )
     }
     
     func resumeTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let suffix = self.version.major == 5 ? "start" : "resume"
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/\(suffix)",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func resumeAllTorrents() async throws {
-        throw ClientError.notImplemented
+        try await resumeTorrent(hash: "all")
     }
     
     func recheckTorrent(hash: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/recheck",
+            queryItems: [URLQueryItem(name: "hashes", value: hash)],
+            cookie: self.cookie
+        )
     }
     
     func recheckTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/recheck",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func reannounceTorrent(hash: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/reannounce",
+            queryItems: [URLQueryItem(name: "hashes", value: hash)],
+            cookie: self.cookie
+        )
     }
     
     func reannounceTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/reannounce",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func deleteTorrent(hash: String, deleteFiles: Bool) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/delete",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hash),
+                URLQueryItem(name: "deleteFiles", value: String(deleteFiles))
+            ],
+            cookie: self.cookie
+        )
     }
     
     func deleteTorrents(hashes: [String], deleteFiles: Bool) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/delete",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+                URLQueryItem(name: "deleteFiles", value: String(deleteFiles))
+            ],
+            cookie: self.cookie
+        )
     }
     
     func increasePriorityTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/increasePrio",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func decreasePriorityTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/decreasePrio",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func topPriorityTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/topPrio",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func bottomPriorityTorrents(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/bottomPrio",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func toggleSequentialDownload(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/toggleSequentialDownload",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func toggleFLPiecesFirst(hashes: [String]) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/toggleFirstLastPiecePrio",
+            queryItems: [URLQueryItem(name: "hashes", value: hashes.joined(separator: "|"))],
+            cookie: self.cookie
+        )
     }
     
     func setForceStart(hashes: [String], value: Bool) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/setForceStart",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+                URLQueryItem(name: "value", value: String(value))
+            ],
+            cookie: self.cookie
+        )
     }
     
     func addMagnetTorrent(
@@ -145,6 +238,26 @@ class qBittorrentClient: TorrentClientProtocol {
         seedingTimeLimit: Int = -1
     ) async throws {
         throw ClientError.notImplemented
+    }
+    
+    func getFiles(hash: String) async throws -> [File] {
+        return try await networkClient.sendRequest(
+            path: "/api/v2/torrents/files",
+            queryItems: [URLQueryItem(name: "hash", value: hash)],
+            cookie: self.cookie
+        )
+    }
+    
+    func setFilePriority(hash: String, ids: String, priority: Int) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/filePrio",
+            queryItems: [
+                URLQueryItem(name: "hash", value: hash),
+                URLQueryItem(name: "id", value: ids),
+                URLQueryItem(name: "priority", value: String(priority))
+            ],
+            cookie: self.cookie
+        )
     }
     
     // MARK: - TorrentRSSActions
@@ -214,19 +327,45 @@ class qBittorrentClient: TorrentClientProtocol {
     // MARK: - TorrentTrackerActions
     
     func getTrackers(hash: String) async throws -> [Tracker] {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/torrents/trackers",
+            queryItems: [URLQueryItem(name: "hash", value: hash)],
+            cookie: self.cookie
+        )
     }
     
     func addTrackerURL(hash: String, urls: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/addTrackers",
+            queryItems: [
+                URLQueryItem(name: "hash", value: hash),
+                URLQueryItem(name: "urls", value: urls)
+            ],
+            cookie: self.cookie
+        )
     }
     
     func editTrackerURL(hash: String, origUrl: String, newURL: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/editTracker",
+            queryItems: [
+                URLQueryItem(name: "hash", value: hash),
+                URLQueryItem(name: "origUrl", value: origUrl),
+                URLQueryItem(name: "newUrl", value: newURL)
+            ],
+            cookie: self.cookie
+        )
     }
     
     func removeTracker(hash: String, url: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/removeTrackers",
+            queryItems: [
+                URLQueryItem(name: "hash", value: hash),
+                URLQueryItem(name: "urls", value: url)
+            ],
+            cookie: self.cookie
+        )
     }
     
     // MARK: - TorrentSearchActions
@@ -261,6 +400,13 @@ class qBittorrentClient: TorrentClientProtocol {
                 let cookieStr = String(firstComponent)
                 if cookieStr.contains("SID") {
                     self.cookie = cookieStr
+                    
+                    // Fetch and store version after successful login
+                    do {
+                        self.version = try await fetchVersion()
+                    } catch {
+                        print("Failed to fetch version on login: \(error)")
+                    }
                     return
                 }
             }
@@ -270,18 +416,40 @@ class qBittorrentClient: TorrentClientProtocol {
     }
     
     func fetchVersion() async throws -> Version {
-        throw ClientError.notImplemented
+        let versionStr: String = try await networkClient.sendRequest(
+            path: "/api/v2/app/version",
+            queryItems: [],
+            cookie: self.cookie
+        )
+        let cleaned = versionStr.hasPrefix("v") ? String(versionStr.dropFirst()) : versionStr
+        let components = cleaned.split(separator: ".").compactMap { Int($0) }
+        let major = components.count > 0 ? components[0] : 0
+        let minor = components.count > 1 ? components[1] : 0
+        let patch = components.count > 2 ? components[2] : 0
+        return Version(major: major, minor: minor, patch: patch)
     }
     
     func getGlobalTransferInfo() async throws -> GlobalTransferInfo {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/transfer/info",
+            queryItems: [],
+            cookie: self.cookie
+        )
     }
     
     func getMainData(rid: Int = 0) async throws -> MainData {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/sync/maindata",
+            queryItems: [URLQueryItem(name: "rid", value: "\(rid)")],
+            cookie: self.cookie
+        )
     }
     
     func getPreferences() async throws -> qBitPreferences {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/app/preferences",
+            queryItems: [],
+            cookie: self.cookie
+        )
     }
 }

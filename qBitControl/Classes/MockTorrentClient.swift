@@ -44,6 +44,19 @@ class MockTorrentClient: TorrentClientProtocol {
         version: "1.2.3"
     )
     
+    static let mockFile = File(
+        index: 0,
+        name: "debian-12.0.0-amd64-netinst.iso",
+        size: 397410304,
+        progress: 1.0,
+        priority: 1,
+        is_seed: true,
+        piece_range: [0, 100],
+        availability: 1.0
+    )
+    
+    static let mockFiles = [mockFile]
+    
     static func mockPreferences() -> qBitPreferences {
         let json = "{}"
         return try! JSONDecoder().decode(qBitPreferences.self, from: json.data(using: .utf8)!)
@@ -220,6 +233,12 @@ class MockTorrentClient: TorrentClientProtocol {
         ratioLimit: Float = -1.0,
         seedingTimeLimit: Int = -1
     ) async throws {}
+    
+    func getFiles(hash: String) async throws -> [File] {
+        return Self.mockFiles
+    }
+    
+    func setFilePriority(hash: String, ids: String, priority: Int) async throws {}
     
     // MARK: - TorrentRSSActions
     

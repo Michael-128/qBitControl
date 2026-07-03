@@ -70,6 +70,9 @@ protocol TorrentTaskActions {
         ratioLimit: Float,
         seedingTimeLimit: Int
     ) async throws
+    
+    func getFiles(hash: String) async throws -> [File]
+    func setFilePriority(hash: String, ids: String, priority: Int) async throws
 }
 
 // MARK: - TorrentRSSActions

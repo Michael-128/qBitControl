@@ -5,8 +5,10 @@
 
 import SwiftUI
 
+@MainActor
 struct FilesView: View {
     @Binding var torrentHash: String
+    private let client: TorrentClientProtocol
     var formatter: TorrentFormatting = TorrentFormatter()
 
     @State private var sortedFiles: [Dictionary<String, [FileNode]>.Element] = []
@@ -20,6 +22,11 @@ struct FilesView: View {
     let step = 50
     @State private var curStep = 0
     
+    init(torrentHash: Binding<String>, client: TorrentClientProtocol) {
+        self._torrentHash = torrentHash
+        self.client = client
+    }
+    
     func getNextStep(currentStep: Int) -> Int {
         let nextStep = currentStep + step
         self.curStep = nextStep + 1
@@ -29,24 +36,34 @@ struct FilesView: View {
     func getFiles() {
         isLoaded = false
         
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/files", queryItems: [URLQueryItem(name: "hash", value: torrentHash)])
-        
-        qBitRequest.requestFilesJSON(request: request, completionHandler: {
-            files in
-            
-            var filesWithCommonPaths: [String: [FileNode]] = ["":[]]
-            
-            for file in files {
-                var fileComponents = file.name.components(separatedBy: "/")
-                let actualFilename = fileComponents.last!
-                let _ = fileComponents.popLast()
-                let path = fileComponents.joined(separator: "/")
-                filesWithCommonPaths[path, default: []].append(FileNode(index: file.index, name: actualFilename, size: file.size, progress: file.progress, priority: file.priority, is_seed: file.is_seed, availability: file.availability))
+        Task {
+            do {
+                let files = try await client.getFiles(hash: torrentHash)
+                var filesWithCommonPaths: [String: [FileNode]] = ["":[]]
+                
+                for file in files {
+                    let fileComponents = file.name.components(separatedBy: "/")
+                    let actualFilename = fileComponents.last!
+                    let path = fileComponents.dropLast().joined(separator: "/")
+                    filesWithCommonPaths[path, default: []].append(
+                        FileNode(
+                            index: file.index,
+                            name: actualFilename,
+                            size: file.size,
+                            progress: file.progress,
+                            priority: file.priority,
+                            is_seed: file.is_seed,
+                            availability: file.availability
+                        )
+                    )
+                }
+                
+                self.sortedFiles = filesWithCommonPaths.sorted(by: { $0.0 < $1.0 })
+                getNextFileNodes(startIndex: curStep, endIndex: getNextStep(currentStep: curStep))
+            } catch {
+                print("Failed to get files: \(error)")
             }
-            
-            self.sortedFiles = filesWithCommonPaths.sorted(by: { $0.0 < $1.0 })
-            getNextFileNodes(startIndex: curStep, endIndex: getNextStep(currentStep: curStep))
-        })
+        }
     }
     
     func getNextFileNodes(startIndex: Int, endIndex: Int) {
@@ -58,16 +75,13 @@ struct FilesView: View {
             return
         }
         
-        
         let rootFileNode = self.rootFileNode
         
         for index in startIndex...newEndIndex {
             let path = sortedFiles[index].key
             let files = sortedFiles[index].value
             
-            
             let pathComponents = path.components(separatedBy: "/")
-            
             
             var lastFileNode = rootFileNode
             
@@ -95,25 +109,16 @@ struct FilesView: View {
         return fileNode.getPriority() > 0 ? Color.primary : Color.gray
     }
     
-    func setPriority(indexes: String, priority: Int, onComplete: @escaping (Bool) -> Void) {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/filePrio", queryItems: [
-            URLQueryItem(name: "hash", value: torrentHash),
-            URLQueryItem(name: "id", value: indexes),
-            URLQueryItem(name: "priority", value: "\(priority)")
-        ])
-        
-        qBitRequest.requestTorrentManagement(request: request, statusCode: {
-            code in
-            if let code = code {
-                if code == 200 {
-                    onComplete(true)
-                } else {
-                    onComplete(false)
-                }
-            } else {
+    func setPriority(indexes: String, priority: Int, onComplete: @escaping @MainActor (Bool) -> Void) {
+        Task {
+            do {
+                try await client.setFilePriority(hash: torrentHash, ids: indexes, priority: priority)
+                onComplete(true)
+            } catch {
+                print("Failed to set priority: \(error)")
                 onComplete(false)
             }
-        })
+        }
     }
     
     func refresh() {
@@ -132,7 +137,7 @@ struct FilesView: View {
     var body: some View {
         VStack {
             if rootFileNodes.count > 0 {
-                List(rootFileNodes, children: \.children/*, selection: $selection*/) {
+                List(rootFileNodes, children: \.children) {
                     child in
                     HStack {
                         if child.isDir {
@@ -193,7 +198,6 @@ struct FilesView: View {
                 }.navigationTitle("Files")
             }
             
-            
             if !isLoaded {
                 ProgressView().progressViewStyle(.circular)
                     .navigationTitle("Files")
@@ -201,12 +205,12 @@ struct FilesView: View {
             
         }
         .searchable(text: $searchQuery)
-            .onAppear() {
+        .onAppear() {
             getFiles()
-            }.onSubmit(of: .search, search)
-            .onChange(of: searchQuery) {
-            _ in
-            if searchQuery.isEmpty {search()}
+        }
+        .onSubmit(of: .search, search)
+        .onChange(of: searchQuery) { _ in
+            if searchQuery.isEmpty { search() }
         }
     }
 }
