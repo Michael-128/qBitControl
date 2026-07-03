@@ -18,7 +18,8 @@ struct TorrentAddView: View {
     }
     
     init(torrentUrls: Binding<[URL]> = .constant([]), magnetOverride: Bool = false) {
-        _viewModel = StateObject(wrappedValue: TorrentAddViewModel(torrentUrls: torrentUrls.wrappedValue, magnetOverride: magnetOverride))
+        let client = ServersHelper.shared.client ?? MockTorrentClient()
+        _viewModel = StateObject(wrappedValue: TorrentAddViewModel(torrentUrls: torrentUrls.wrappedValue, magnetOverride: magnetOverride, client: client))
         _torrentUrls = torrentUrls
     }
     

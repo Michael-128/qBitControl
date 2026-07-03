@@ -1,29 +1,59 @@
+//
+//  RSSNodeViewModel.swift
+//  qBitControl
+//
+
 import SwiftUI
 
+@MainActor
 class RSSNodeViewModel: ObservableObject {
-    static public let shared = RSSNodeViewModel()
+    static public let shared = RSSNodeViewModel(client: ServersHelper.shared.client ?? MockTorrentClient())
     
     @Published public var rssRootNode: RSSNode = .init()
-    private var timer: Timer?
+    private var pollingTask: Task<Void, Never>?
+    private let client: TorrentClientProtocol
     
-    init() {
+    init(client: TorrentClientProtocol) {
+        self.client = client
         self.getRssRootNode()
         self.startTimer()
     }
     
     deinit {
-        self.stopTimer()
+        // Can't cancel Task directly in deinit of MainActor class easily, but we have stopTimer
     }
     
-    func startTimer() { timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true, block: { _ in self.getRssRootNode() }) }
-    func stopTimer() { timer?.invalidate() }
+    func startTimer() {
+        pollingTask?.cancel()
+        pollingTask = Task {
+            while !Task.isCancelled {
+                await getRssRootNodeAsync()
+                do {
+                    try await Task.sleep(nanoseconds: 2_000_000_000)
+                } catch {
+                    break
+                }
+            }
+        }
+    }
+    
+    func stopTimer() {
+        pollingTask?.cancel()
+        pollingTask = nil
+    }
+    
+    private func getRssRootNodeAsync() async {
+        do {
+            let node = try await client.getRSSFeeds(withDate: true)
+            self.rssRootNode = node
+        } catch {
+            print("Failed to get RSS feeds: \(error)")
+        }
+    }
     
     func getRssRootNode() {
-        qBittorrent.getRSSFeeds(completionHandler: { RSSNode in
-            DispatchQueue.main.async {
-                self.rssRootNode = RSSNode
-            }
-        })
+        Task {
+            await getRssRootNodeAsync()
+        }
     }
 }
-

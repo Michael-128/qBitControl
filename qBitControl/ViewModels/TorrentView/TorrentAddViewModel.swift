@@ -1,17 +1,22 @@
+//
+//  TorrentAddViewModel.swift
+//  qBitControl
+//
+
 import SwiftUI
 
 enum TorrentType {
     case magnet, file
 }
 
+@MainActor
 class TorrentAddViewModel: ObservableObject {
     static let defaultCategory = Category(name: "Uncategorized", savePath: "")
     static let defaultTag = "Untagged"
 
     @Published var torrentType: TorrentType = .file
     public var torrentUrls: [URL]
-    
-    
+    private let client: TorrentClientProtocol
     
     @Published var magnetURL: String = ""
     
@@ -48,9 +53,10 @@ class TorrentAddViewModel: ObservableObject {
     
     @Published var isAppeared = false
     
-    init(torrentUrls: [URL], magnetOverride: Bool = false) {
+    init(torrentUrls: [URL], magnetOverride: Bool = false, client: TorrentClientProtocol) {
         self.torrentUrls = torrentUrls
         self.magnetOverride = magnetOverride
+        self.client = client
     }
     
     func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
@@ -59,17 +65,12 @@ class TorrentAddViewModel: ObservableObject {
         if torrentUrls.isEmpty { return }
         
         if torrentUrls.first!.absoluteString.contains("magnet") || magnetOverride {
-            DispatchQueue.main.async {
-                self.torrentType = .magnet
-                self.magnetURL = self.torrentUrls.first!.absoluteString
-            }
+            self.torrentType = .magnet
+            self.magnetURL = self.torrentUrls.first!.absoluteString
         } else {
-            DispatchQueue.main.async {
-                self.torrentType = .file
-                self.fileURLs = self.torrentUrls
-                
-                self.handleTorrentFiles(fileURLs: self.fileURLs)
-            }
+            self.torrentType = .file
+            self.fileURLs = self.torrentUrls
+            self.handleTorrentFiles(fileURLs: self.fileURLs)
         }
     }
     
@@ -80,17 +81,13 @@ class TorrentAddViewModel: ObservableObject {
         
         let fileName = fileURL.lastPathComponent
         
-        DispatchQueue.main.async {
-            self.fileNames.append(fileName)
-        }
+        self.fileNames.append(fileName)
         
         if fileURL.startAccessingSecurityScopedResource() || isRemote {
             Task {
                 do {
                     let data = try Data(contentsOf: fileURL)
-                    DispatchQueue.main.async {
-                        self.fileContent[fileName] = data
-                    }
+                    self.fileContent[fileName] = data
                 } catch {
                     print(error)
                 }
@@ -114,30 +111,62 @@ class TorrentAddViewModel: ObservableObject {
     }
     
     func addTorrent(then dismiss: () -> Void) {
-        DispatchQueue.main.async {
-            let category = self.category == Self.defaultCategory ? "" : self.category.name
-            
-            if self.torrentType == .magnet {
-                qBittorrent.addMagnetTorrent(torrent: URLQueryItem(name: "urls", value: self.magnetURL), savePath: self.savePath, cookie: self.cookie, category: category, tags: self.tagsString, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
-            } else {
-                qBittorrent.addFileTorrent(torrents: self.fileContent, savePath: self.savePath, cookie: self.cookie, category: category, tags: self.tagsString, skipChecking: self.skipChecking, paused: self.paused, sequentialDownload: self.sequentialDownload, dlLimit: Int(self.downloadLimit) ?? -1, upLimit: Int(self.uploadLimit) ?? -1, ratioLimit: Float(self.ratioLimit) ?? -1.0, seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1)
+        let category = self.category == Self.defaultCategory ? "" : self.category.name
+        
+        Task {
+            do {
+                if self.torrentType == .magnet {
+                    try await client.addMagnetTorrent(
+                        torrent: URLQueryItem(name: "urls", value: self.magnetURL),
+                        savePath: self.savePath,
+                        cookie: self.cookie,
+                        category: category,
+                        tags: self.tagsString,
+                        skipChecking: self.skipChecking,
+                        paused: self.paused,
+                        sequentialDownload: self.sequentialDownload,
+                        dlLimit: Int(self.downloadLimit) ?? -1,
+                        upLimit: Int(self.uploadLimit) ?? -1,
+                        ratioLimit: Float(self.ratioLimit) ?? -1.0,
+                        seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
+                    )
+                } else {
+                    try await client.addFileTorrent(
+                        torrents: self.fileContent,
+                        savePath: self.savePath,
+                        cookie: self.cookie,
+                        category: category,
+                        tags: self.tagsString,
+                        skipChecking: self.skipChecking,
+                        paused: self.paused,
+                        sequentialDownload: self.sequentialDownload,
+                        dlLimit: Int(self.downloadLimit) ?? -1,
+                        upLimit: Int(self.uploadLimit) ?? -1,
+                        ratioLimit: Float(self.ratioLimit) ?? -1.0,
+                        seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
+                    )
+                }
+            } catch {
+                print("Failed to add torrent: \(error)")
             }
         }
         dismiss()
     }
     
     func getSavePath() {
-        if(!self.savePath.isEmpty) { return; }
+        if(!self.savePath.isEmpty) { return }
         
-        qBittorrent.getPreferences(completionHandler: { preferences in
-            DispatchQueue.main.async {
+        Task {
+            do {
+                let preferences = try await client.getPreferences()
                 self.autoTmmEnabled = preferences.auto_tmm_enabled ?? false
-                
                 if !self.autoTmmEnabled {
                     self.savePath = preferences.save_path ?? ""
                     self.defaultSavePath = preferences.save_path ?? ""
                 }
+            } catch {
+                print("Failed to get preferences for save path: \(error)")
             }
-        })
+        }
     }
 }
