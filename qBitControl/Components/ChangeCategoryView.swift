@@ -50,6 +50,22 @@ struct ChangeCategoryView: View {
         }
     }
     
+    private func addCategory(name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        
+        Task {
+            do {
+                let status = try await client.addCategory(category: trimmed, savePath: nil)
+                if status == 200 || status == 204 {
+                    self.getCategories()
+                }
+            } catch {
+                print("Failed to add category: \(error)")
+            }
+        }
+    }
+    
     var body: some View {
         VStack {
             Form {
@@ -61,16 +77,7 @@ struct ChangeCategoryView: View {
                     }.alert("Add New Category", isPresented: $showAddCategoryAlert, actions: {
                         TextField("Category Name", text: $newCategoryName)
                         Button("Add", action: {
-                            Task {
-                                do {
-                                    let status = try await client.addCategory(category: newCategoryName, savePath: nil)
-                                    if status == 200 {
-                                        self.getCategories()
-                                    }
-                                } catch {
-                                    print("Failed to add category: \(error)")
-                                }
-                            }
+                            self.addCategory(name: newCategoryName)
                             newCategoryName = ""
                         })
                         Button("Cancel", role: .cancel, action: {
