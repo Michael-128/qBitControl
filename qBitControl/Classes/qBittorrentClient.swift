@@ -220,7 +220,23 @@ class qBittorrentClient: TorrentClientProtocol {
         ratioLimit: Float = -1.0,
         seedingTimeLimit: Int = -1
     ) async throws {
-        throw ClientError.notImplemented
+        var queryItems: [URLQueryItem] = [torrent]
+        if savePath != "" { queryItems.append(URLQueryItem(name: "savepath", value: savePath)) }
+        if cookie != "" { queryItems.append(URLQueryItem(name: "cookie", value: cookie)) }
+        if category != "" { queryItems.append(URLQueryItem(name: "category", value: category)) }
+        if tags != "" { queryItems.append(URLQueryItem(name: "tags", value: tags)) }
+        if skipChecking { queryItems.append(URLQueryItem(name: "skip_checking", value: "true")) }
+        if paused {
+            let suffix = self.version.major == 5 ? "stopped" : "paused"
+            queryItems.append(URLQueryItem(name: suffix, value: "true"))
+        }
+        if dlLimit > 0 { queryItems.append(URLQueryItem(name: "dlLimit", value: "\(dlLimit)")) }
+        if upLimit > 0 { queryItems.append(URLQueryItem(name: "upLimit", value: "\(upLimit)")) }
+        if ratioLimit > 0 { queryItems.append(URLQueryItem(name: "ratioLimit", value: "\(ratioLimit)")) }
+        if seedingTimeLimit > 0 { queryItems.append(URLQueryItem(name: "seedingTimeLimit", value: "\(seedingTimeLimit)")) }
+        if sequentialDownload { queryItems.append(URLQueryItem(name: "sequentialDownload", value: "true")) }
+        
+        let _: String = try await networkClient.sendRequest(path: "/api/v2/torrents/add", queryItems: queryItems, cookie: self.cookie)
     }
     
     func addFileTorrent(
@@ -237,7 +253,28 @@ class qBittorrentClient: TorrentClientProtocol {
         ratioLimit: Float = -1.0,
         seedingTimeLimit: Int = -1
     ) async throws {
-        throw ClientError.notImplemented
+        var params: [String: String] = [:]
+        if savePath != "" { params["savepath"] = savePath }
+        if cookie != "" { params["cookie"] = cookie }
+        if category != "" { params["category"] = category }
+        if tags != "" { params["tags"] = tags }
+        if skipChecking { params["skip_checking"] = "true" }
+        if paused {
+            let suffix = self.version.major == 5 ? "stopped" : "paused"
+            params[suffix] = "true"
+        }
+        if dlLimit > 0 { params["dlLimit"] = "\(dlLimit)" }
+        if upLimit > 0 { params["upLimit"] = "\(upLimit)" }
+        if ratioLimit > 0 { params["ratioLimit"] = "\(ratioLimit)" }
+        if seedingTimeLimit > 0 { params["seedingTimeLimit"] = "\(seedingTimeLimit)" }
+        if sequentialDownload { params["sequentialDownload"] = "true" }
+
+        let _: String = try await networkClient.uploadMultipart(
+            path: "/api/v2/torrents/add",
+            files: torrents,
+            params: params,
+            cookie: self.cookie
+        )
     }
     
     func getFiles(hash: String) async throws -> [File] {
@@ -263,27 +300,57 @@ class qBittorrentClient: TorrentClientProtocol {
     // MARK: - TorrentRSSActions
     
     func getRSSFeeds(withDate: Bool = true) async throws -> RSSNode {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/rss/items",
+            queryItems: [URLQueryItem(name: "withData", value: String(withDate))],
+            cookie: self.cookie
+        )
     }
     
     func addRSSFeed(url: String, path: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/rss/addFeed",
+            queryItems: [
+                URLQueryItem(name: "url", value: url),
+                URLQueryItem(name: "path", value: path)
+            ],
+            cookie: self.cookie
+        )
     }
     
     func addRSSFolder(path: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/rss/addFolder",
+            queryItems: [URLQueryItem(name: "path", value: path)],
+            cookie: self.cookie
+        )
     }
     
     func addRSSRemoveItem(path: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/rss/removeItem",
+            queryItems: [URLQueryItem(name: "path", value: path)],
+            cookie: self.cookie
+        )
     }
     
     func addRSSRefreshItem(path: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/rss/refreshItem",
+            queryItems: [URLQueryItem(name: "path", value: path)],
+            cookie: self.cookie
+        )
     }
     
     func moveRSSItem(itemPath: String, destPath: String) async throws {
-        throw ClientError.notImplemented
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/rss/moveItem",
+            queryItems: [
+                URLQueryItem(name: "itemPath", value: itemPath),
+                URLQueryItem(name: "destPath", value: destPath)
+            ],
+            cookie: self.cookie
+        )
     }
     
     // MARK: - TorrentCategoryTagActions
@@ -371,15 +438,35 @@ class qBittorrentClient: TorrentClientProtocol {
     // MARK: - TorrentSearchActions
     
     func getSearchStart(pattern: String, category: String, plugins: Bool = true) async throws -> SearchStartResult {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/search/start",
+            queryItems: [
+                URLQueryItem(name: "pattern", value: pattern),
+                URLQueryItem(name: "category", value: category),
+                URLQueryItem(name: "plugins", value: String(plugins))
+            ],
+            cookie: self.cookie
+        )
     }
     
     func getSearchResults(id: Int, limit: Int = 500, offset: Int = 0) async throws -> SearchResponse {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/search/results",
+            queryItems: [
+                URLQueryItem(name: "id", value: String(id)),
+                URLQueryItem(name: "limit", value: String(limit)),
+                URLQueryItem(name: "offset", value: String(offset))
+            ],
+            cookie: self.cookie
+        )
     }
     
     func getSearchPlugins() async throws -> [SearchPlugin] {
-        throw ClientError.notImplemented
+        return try await networkClient.sendRequest(
+            path: "/api/v2/search/plugins",
+            queryItems: [],
+            cookie: self.cookie
+        )
     }
     
     // MARK: - TorrentServerActions

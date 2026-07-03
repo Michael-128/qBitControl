@@ -147,4 +147,119 @@ actor NetworkClient {
         let (decoded, _): (T, HTTPURLResponse) = try await sendRequestWithResponse(path: path, queryItems: queryItems, cookie: cookie)
         return decoded
     }
+
+    /// Uploads files using multipart/form-data asynchronously without loading massive files entirely into memory.
+    func uploadMultipart<T: Decodable>(
+        path: String,
+        files: [String: Data],
+        params: [String: String],
+        cookie: String?
+    ) async throws -> T {
+        guard let url = URL(string: "\(baseURL)\(path)") else {
+            throw NetworkError.invalidURL
+        }
+
+        let boundary = "Boundary-\(UUID().uuidString.replacingOccurrences(of: "-", with: ""))"
+        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        
+        FileManager.default.createFile(atPath: fileURL.path, contents: nil, attributes: nil)
+        let fileHandle = try FileHandle(forWritingTo: fileURL)
+
+        // 1. Write params
+        for (name, value) in params {
+            let paramStr = "--\(boundary)\r\nContent-Disposition: form-data; name=\"\(name)\"\r\n\r\n\(value)\r\n"
+            if let paramData = paramStr.data(using: .utf8) {
+                fileHandle.write(paramData)
+            }
+        }
+
+        // 2. Write files
+        for (fileName, fileData) in files {
+            let header = "--\(boundary)\r\nContent-Disposition: form-data; name=\"torrents\"; filename=\"\(fileName)\"\r\nContent-Type: application/x-bittorrent\r\n\r\n"
+            if let headerData = header.data(using: .utf8) {
+                fileHandle.write(headerData)
+            }
+            fileHandle.write(fileData)
+            if let boundaryEndData = "\r\n".data(using: .utf8) {
+                fileHandle.write(boundaryEndData)
+            }
+        }
+
+        // 3. Write footer
+        let footer = "--\(boundary)--\r\n"
+        if let footerData = footer.data(using: .utf8) {
+            fileHandle.write(footerData)
+        }
+        
+        if #available(macOS 10.15, iOS 13.0, *) {
+            try fileHandle.close()
+        } else {
+            fileHandle.closeFile()
+        }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        // 4. Configure headers: Basic Auth and Cookies
+        if let basicAuth = basicAuth {
+            request.setValue("Basic \(basicAuth.getAuthString())", forHTTPHeaderField: "Authorization")
+        }
+
+        if let cookie = cookie {
+            request.setValue(cookie, forHTTPHeaderField: "Cookie")
+        }
+
+        // 5. Execute upload
+        let data: Data
+        let response: URLResponse
+        do {
+            if #available(macOS 12.0, iOS 15.0, *) {
+                (data, response) = try await session.upload(for: request, fromFile: fileURL)
+            } else {
+                (data, response) = try await withCheckedThrowingContinuation { continuation in
+                    let task = session.uploadTask(with: request, fromFile: fileURL) { data, response, error in
+                        if let error = error {
+                            continuation.resume(throwing: error)
+                        } else if let data = data, let response = response {
+                            continuation.resume(returning: (data, response))
+                        } else {
+                            continuation.resume(throwing: URLError(.unknown))
+                        }
+                    }
+                    task.resume()
+                }
+            }
+        } catch {
+            try? FileManager.default.removeItem(at: fileURL)
+            throw error
+        }
+
+        try? FileManager.default.removeItem(at: fileURL)
+
+        // 6. Handle HTTP response and status codes
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw NetworkError.invalidResponse
+        }
+
+        let statusCode = httpResponse.statusCode
+        if statusCode == 401 || statusCode == 403 {
+            throw NetworkError.unauthorized
+        }
+        guard (200...299).contains(statusCode) else {
+            throw NetworkError.httpError(statusCode: statusCode)
+        }
+
+        // 7. Decode response (specifically handle raw String fallback if T is String)
+        if T.self == String.self {
+            if let decoded = try? JSONDecoder().decode(T.self, from: data) {
+                return decoded
+            }
+            if let rawString = String(data: data, encoding: .utf8) as? T {
+                return rawString
+            }
+        }
+
+        return try JSONDecoder().decode(T.self, from: data)
+    }
 }

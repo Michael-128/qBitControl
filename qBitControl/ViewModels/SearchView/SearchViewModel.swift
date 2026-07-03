@@ -1,5 +1,11 @@
+//
+//  SearchViewModel.swift
+//  qBitControl
+//
+
 import SwiftUI
 
+@MainActor
 class SearchViewModel: ObservableObject {
     @Published var query: String = ""
     @Published var category: SearchCategory = SearchCategory(name: "All categories", id: "all")
@@ -13,7 +19,6 @@ class SearchViewModel: ObservableObject {
         Array(self.categories).sorted { $0.name < $1.name }
     }
     
-    
     @Published var searchId: Int?
     
     @Published var isFilterSheet: Bool = false
@@ -21,7 +26,11 @@ class SearchViewModel: ObservableObject {
     
     @Published var latestResponse: SearchResponse?
     
-    init() {
+    private let client: TorrentClientProtocol
+    private var searchPollingTask: Task<Void, Never>?
+    
+    init(client: TorrentClientProtocol) {
+        self.client = client
         self.loadFilters()
         self.fetchCategories()
     }
@@ -49,48 +58,60 @@ class SearchViewModel: ObservableObject {
         searchId != nil
     }
     
-    private var timer: Timer?
-    
     func startSearch() {
         if(isRunning) { return }
         if(query.isEmpty) { return }
         
-        qBittorrent.getSearchStart(pattern: self.query, category: self.category.id, completionHandler: { result in
-            DispatchQueue.main.async {
+        Task {
+            do {
+                let result = try await client.getSearchStart(pattern: self.query, category: self.category.id, plugins: true)
                 self.searchId = result.id
                 
-                self.timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { timer in
-                    self.monitorSearchResults()
-                }
+                startPolling()
+            } catch {
+                print("Failed to start search: \(error)")
             }
-        })
+        }
     }
     
     func endSearch() {
-        DispatchQueue.main.async {
-            self.searchId = nil
+        self.searchId = nil
+        stopPolling()
+    }
+    
+    private func startPolling() {
+        searchPollingTask?.cancel()
+        searchPollingTask = Task {
+            while !Task.isCancelled {
+                await monitorSearchResults()
+                do {
+                    try await Task.sleep(nanoseconds: 2_000_000_000)
+                } catch {
+                    break
+                }
+            }
         }
     }
     
-    private func monitorSearchResults() {
-        self.validateTimer()
+    private func stopPolling() {
+        searchPollingTask?.cancel()
+        searchPollingTask = nil
+    }
+    
+    private func monitorSearchResults() async {
+        guard let searchId = self.searchId else {
+            stopPolling()
+            return
+        }
         
-        if let searchId = self.searchId {   
-            qBittorrent.getSearchResults(id: searchId, completionHandler: { response in
-                DispatchQueue.main.async {
-                    self.latestResponse = response
-                }
-                
-                if(response.status == "Stopped") {
-                    self.endSearch()
-                }
-            })
-        }
-    }
-    
-    private func validateTimer() {
-        if(searchId == nil) {
-            self.timer?.invalidate()
+        do {
+            let response = try await client.getSearchResults(id: searchId, limit: 500, offset: 0)
+            self.latestResponse = response
+            if response.status == "Stopped" {
+                self.endSearch()
+            }
+        } catch {
+            print("Failed to get search results: \(error)")
         }
     }
     
@@ -139,17 +160,18 @@ class SearchViewModel: ObservableObject {
     }
     
     private func fetchCategories() {
-        var categories: Set<SearchCategory> = []
-        
-        qBittorrent.getSearchPlugins(completionHandler: { plugins in
-            plugins.forEach { plugin in
-                categories = categories.union(plugin.supportedCategories ?? [])
+        Task {
+            do {
+                let plugins = try await client.getSearchPlugins()
+                var categoriesSet: Set<SearchCategory> = []
+                plugins.forEach { plugin in
+                    categoriesSet = categoriesSet.union(plugin.supportedCategories ?? [])
+                }
+                self.categories = categoriesSet
+            } catch {
+                print("Failed to fetch search plugins: \(error)")
             }
-            
-            DispatchQueue.main.async {
-                self.categories = categories
-            }
-        })
+        }
     }
     
     func onRowTap(result: SearchResult) {

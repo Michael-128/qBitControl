@@ -1,7 +1,12 @@
 import SwiftUI
 
 struct SearchView: View {
-    @StateObject var viewModel = SearchViewModel()
+    @StateObject var viewModel: SearchViewModel
+    
+    init() {
+        let client = ServersHelper.shared.client ?? MockTorrentClient()
+        _viewModel = StateObject(wrappedValue: SearchViewModel(client: client))
+    }
     
     var body: some View {
         ZStack {
