@@ -10,8 +10,12 @@ struct ChangeCategoryView: View {
     }
     
     let defaultCategory: Category = Category(name: NSLocalizedString("Uncategorized", comment: ""), savePath: "")
-    func isDefaultCategorySelected(currentCategory: String) -> Bool {
-        return currentCategory == defaultCategory.name && category == ""
+    func isRowSelected(index: Int, categoryName: String) -> Bool {
+        if index == 0 {
+            return self.category == ""
+        } else {
+            return self.category == categoryName
+        }
     }
     
     @State private var showAddCategoryAlert = false
@@ -89,15 +93,18 @@ struct ChangeCategoryView: View {
                 if categories.count > 1 {
                     Section(header: Text("Categories")) {
                         List {
-                            ForEach(categories, id: \.self) { category in
+                            ForEach(Array(categories.enumerated()), id: \.offset) { index, category in
                                 Button {
-                                    if(self.category != category.name) { self.category = category.name }
+                                    let targetCategory = (index == 0) ? "" : category.name
+                                    if self.category != targetCategory {
+                                        self.category = targetCategory
+                                    }
                                 } label: {
                                     HStack {
                                         Text(category.name)
                                             .foregroundStyle(.foreground)
                                         Spacer()
-                                        if(self.category == category.name || isDefaultCategorySelected(currentCategory: category.name)) {
+                                        if isRowSelected(index: index, categoryName: category.name) {
                                             Image(systemName: "checkmark")
                                                 .foregroundColor(.accentColor)
                                         }
@@ -128,11 +135,17 @@ struct ChangeCategoryView: View {
         }.onAppear() {
             self.getCategories()
         }.onChange(of: category) { category in
-            if let onCategoryChange = self.onCategoryChange, let categoryObj = categories.first(where: { $0.name == category }) { onCategoryChange(categoryObj) }
+            if let onCategoryChange = self.onCategoryChange {
+                if category.isEmpty {
+                    onCategoryChange(defaultCategory)
+                } else if let categoryObj = categories.first(where: { $0.name == category }) {
+                    onCategoryChange(categoryObj)
+                }
+            }
             if let hash = self.torrentHash {
                 Task {
                     do {
-                        try await client.setCategory(hash: hash, category: category == defaultCategory.name ? "" : category)
+                        try await client.setCategory(hash: hash, category: category)
                     } catch {
                         print("Failed to set category: \(error)")
                     }
