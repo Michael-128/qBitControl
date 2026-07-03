@@ -84,15 +84,19 @@ struct ChangeTagsView: View {
         }
     }
     
-    func addTag() {
+    func addTag(name: String) {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+        
         Task {
             do {
-                let status = try await client.addTag(tag: newTagName)
-                if status == 200 {
+                let status = try await client.addTag(tag: trimmed)
+                print("[ChangeTagsView] addTag returned status: \(status) for tag: \(trimmed)")
+                if status == 200 || status == 204 {
                     self.getTags()
                 }
             } catch {
-                print("Failed to add tag: \(error)")
+                print("[ChangeTagsView] Failed to add tag: \(error)")
             }
         }
     }
@@ -101,11 +105,12 @@ struct ChangeTagsView: View {
         Task {
             do {
                 let status = try await client.removeTag(tag: tag)
-                if status == 200 {
+                print("[ChangeTagsView] removeTag returned status: \(status) for tag: \(tag)")
+                if status == 200 || status == 204 {
                     self.getTags()
                 }
             } catch {
-                print("Failed to remove tag: \(error)")
+                print("[ChangeTagsView] Failed to remove tag: \(error)")
             }
         }
     }
@@ -130,7 +135,7 @@ struct ChangeTagsView: View {
                     }.alert("Add New Tag", isPresented: $showAddTagAlert, actions: {
                         TextField("Tag Name", text: $newTagName)
                         Button("Add", action: {
-                            self.addTag()
+                            self.addTag(name: newTagName)
                             newTagName = ""
                         })
                         Button("Cancel", role: .cancel, action: {
