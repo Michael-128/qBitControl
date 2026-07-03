@@ -1,4 +1,7 @@
 //
+//  ServersHelper.swift
+//  qBitControl
+//
 
 import Foundation
 
@@ -16,6 +19,10 @@ class ServersHelper: ObservableObject {
     
     @Published public var isLoggedIn = false
     @Published public var client: TorrentClientProtocol?
+    
+    @Published public var preferences: qBitPreferences?
+    @Published public var categories: [String: Category] = [:]
+    @Published public var tags: [String] = []
     
     init() {
         getServerList()
@@ -91,6 +98,9 @@ class ServersHelper: ObservableObject {
             activeServerId = nil
             isLoggedIn = false
             client = nil
+            preferences = nil
+            categories = [:]
+            tags = []
         }
         
         saveSeverList()
@@ -121,13 +131,7 @@ class ServersHelper: ObservableObject {
                 self.client = newClient
                 self.setActiveServer(id: server.id)
                 
-                // Compatibility bridge
-                qBittorrent.setURL(url: server.url)
-                if let cookie = newClient.cookie {
-                    qBittorrent.setCookie(cookie: cookie)
-                }
-                qBitRequest.setBasicAuth(auth: server.basicAuth)
-                qBittorrent.initialize()
+                await fetchMetadata()
                 
                 self.isLoggedIn = true
                 result?(true)
@@ -150,19 +154,56 @@ class ServersHelper: ObservableObject {
                 self.client = newClient
                 self.setActiveServer(id: server.id)
                 
-                // Compatibility bridge
-                qBittorrent.setURL(url: server.url)
-                if let cookie = newClient.cookie {
-                    qBittorrent.setCookie(cookie: cookie)
-                }
-                qBitRequest.setBasicAuth(auth: server.basicAuth)
-                qBittorrent.initialize()
+                await fetchMetadata()
                 
                 self.isLoggedIn = true
             } catch {
                 print("Auto-connect failed: \(error)")
             }
             self.connectingServerId = nil
+        }
+    }
+    
+    func fetchMetadata() async {
+        guard let client = client else { return }
+        do {
+            self.preferences = try await client.getPreferences()
+        } catch {
+            print("Failed to fetch preferences: \(error)")
+        }
+        do {
+            self.categories = try await client.getCategories()
+        } catch {
+            print("Failed to fetch categories: \(error)")
+        }
+        do {
+            self.tags = try await client.getTags()
+        } catch {
+            print("Failed to fetch tags: \(error)")
+        }
+    }
+    
+    func refreshCategories() {
+        Task {
+            do {
+                if let client = client {
+                    self.categories = try await client.getCategories()
+                }
+            } catch {
+                print("Failed to refresh categories: \(error)")
+            }
+        }
+    }
+    
+    func refreshTags() {
+        Task {
+            do {
+                if let client = client {
+                    self.tags = try await client.getTags()
+                }
+            } catch {
+                print("Failed to refresh tags: \(error)")
+            }
         }
     }
 }

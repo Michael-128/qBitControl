@@ -3,13 +3,16 @@ import SwiftUI
 struct ChangeTagsView: View {
     @State var torrentHash: String?
     @State var selectedTags: Set<String>
-    
     @State private var allTags: [String] = []
     
     public var onTagsChange: ((Set<String>) -> Void)?
     
     @State private var showAddTagAlert = false
     @State private var newTagName = ""
+    
+    private var client: TorrentClientProtocol {
+        ServersHelper.shared.client ?? MockTorrentClient()
+    }
     
     init(torrentHash: String, selectedTags: [String]) {
         self.torrentHash = torrentHash
@@ -22,54 +25,89 @@ struct ChangeTagsView: View {
     }
     
     func getTags() {
-        qBittorrent.getTags(completionHandler: { tags in
-            self.allTags = tags.sorted()
-            self.clearSelectedTags()
-        })
+        Task {
+            do {
+                let tags = try await client.getTags()
+                self.allTags = tags.sorted()
+                self.clearSelectedTags()
+                // Update global metadata cache
+                ServersHelper.shared.tags = tags
+            } catch {
+                print("Failed to get tags: \(error)")
+            }
+        }
     }
     
     func unsetTag(tag: String) {
         if let hash = self.torrentHash {
-            qBittorrent.unsetTag(hash: hash, tag: tag, result: { isSuccess in
-                if(isSuccess) { selectedTags.remove(tag) }
-            })
+            Task {
+                do {
+                    let success = try await client.unsetTag(hash: hash, tag: tag)
+                    if success {
+                        selectedTags.remove(tag)
+                        if let onTagsChange = self.onTagsChange {
+                            onTagsChange(selectedTags)
+                        }
+                    }
+                } catch {
+                    print("Failed to unset tag: \(error)")
+                }
+            }
         } else {
             selectedTags.remove(tag)
-        }
-        
-        if let onTagsChange = self.onTagsChange {
-            onTagsChange(selectedTags)
+            if let onTagsChange = self.onTagsChange {
+                onTagsChange(selectedTags)
+            }
         }
     }
     
     func setTag(tag: String) {
         if let hash = self.torrentHash {
-            qBittorrent.setTag(hash: hash, tag: tag, result: { isSuccess in
-                if(isSuccess) { selectedTags.insert(tag) }
-            })
+            Task {
+                do {
+                    let success = try await client.setTag(hash: hash, tag: tag)
+                    if success {
+                        selectedTags.insert(tag)
+                        if let onTagsChange = self.onTagsChange {
+                            onTagsChange(selectedTags)
+                        }
+                    }
+                } catch {
+                    print("Failed to set tag: \(error)")
+                }
+            }
         } else {
             selectedTags.insert(tag)
-        }
-        
-        if let onTagsChange = self.onTagsChange {
-            onTagsChange(selectedTags)
+            if let onTagsChange = self.onTagsChange {
+                onTagsChange(selectedTags)
+            }
         }
     }
     
     func addTag() {
-        qBittorrent.addTag(tag: newTagName, then: { status in
-            if(status == 200) {
-                self.getTags()
+        Task {
+            do {
+                let status = try await client.addTag(tag: newTagName)
+                if status == 200 {
+                    self.getTags()
+                }
+            } catch {
+                print("Failed to add tag: \(error)")
             }
-        })
+        }
     }
     
     func removeTag(tag: String) {
-        qBittorrent.removeTag(tag: tag, then: { status in
-            if(status == 200) {
-                self.getTags()
+        Task {
+            do {
+                let status = try await client.removeTag(tag: tag)
+                if status == 200 {
+                    self.getTags()
+                }
+            } catch {
+                print("Failed to remove tag: \(error)")
             }
-        })
+        }
     }
     
     func clearSelectedTags() {
@@ -80,7 +118,6 @@ struct ChangeTagsView: View {
             onTagsChange(selectedTags)
         }
     }
-    
     
     var body: some View {
         VStack {
@@ -124,12 +161,10 @@ struct ChangeTagsView: View {
                                     }
                                 }
                             }
-                            
                             .onDelete(perform: { atOffsets in
                                 atOffsets.forEach { index in
                                     self.removeTag(tag: self.allTags[index])
                                 }
-                                
                                 self.allTags.remove(atOffsets: atOffsets)
                             })
                         }

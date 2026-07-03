@@ -1,7 +1,12 @@
 //
+//  qBitDataClass.swift
+//  qBitControl
+//
+
 import SwiftUI
 import Foundation
 
+@MainActor
 class qBitData: ObservableObject {
     static let shared = qBitData()
     
@@ -10,56 +15,71 @@ class qBitData: ObservableObject {
     @Published var dlTransferData: [TransferInfo] = []
     @Published var upTransferData: [TransferInfo] = []
     
-    private var timer: Timer?
-    private var fetchInterval: TimeInterval = 2
+    private var pollingTask: Task<Void, Never>?
+    private var fetchInterval: UInt64 = 2_000_000_000 // 2 seconds
     
     init() {
         let date = Date()
         
         for n in stride(from: -30, to: 0, by: 2) {
             dlTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
-            
             upTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
         }
         
-        self.getMainData()
-        
-        timer = Timer.scheduledTimer(withTimeInterval: fetchInterval, repeats: true) {
-            _ in
-            self.getMainData()
+        self.startPolling()
+    }
+    
+    func startPolling() {
+        pollingTask?.cancel()
+        pollingTask = Task {
+            while !Task.isCancelled {
+                await self.getMainData()
+                do {
+                    try await Task.sleep(nanoseconds: fetchInterval)
+                } catch {
+                    break
+                }
+            }
         }
     }
     
-    func getMainData() {
-        qBittorrent.getMainData(rid: rid) { mainData in
-            DispatchQueue.main.async {
-                self.rid = mainData.rid
-                
-                if let partialServerState = mainData.server_state {
-                    if let existingServerState = self.serverState {
-                        // Update existing ServerState with new data
-                        var updatedServerState = existingServerState
-                        updatedServerState.update(from: partialServerState)
-                        self.serverState = updatedServerState
-                    } else {
-                        // Create a new ServerState if none exists
-                        self.serverState = ServerState(from: partialServerState)
-                    }
-                    
-                    
-                    let newDlTransferInfo = TransferInfo(fetchDate: Date(), info_speed: partialServerState.dl_info_speed ?? 0)
-                    self.dlTransferData.append(newDlTransferInfo)
-                    
-                    // Limit the history to the last 30 entries
-                    if self.dlTransferData.count > 20 { self.dlTransferData.removeFirst(self.dlTransferData.count - 20) }
-                    
-                    let newUpTransferInfo = TransferInfo(fetchDate: Date(), info_speed: partialServerState.up_info_speed ?? 0)
-                    self.upTransferData.append(newUpTransferInfo)
-                    
-                    // Limit the history to the last 30 entries
-                    if self.upTransferData.count > 20 { self.upTransferData.removeFirst(self.upTransferData.count - 20) }
+    func stopPolling() {
+        pollingTask?.cancel()
+        pollingTask = nil
+    }
+    
+    func getMainData() async {
+        guard let client = ServersHelper.shared.client else { return }
+        
+        do {
+            let mainData = try await client.getMainData(rid: rid)
+            self.rid = mainData.rid
+            
+            if let partialServerState = mainData.server_state {
+                if let existingServerState = self.serverState {
+                    // Update existing ServerState with new data
+                    var updatedServerState = existingServerState
+                    updatedServerState.update(from: partialServerState)
+                    self.serverState = updatedServerState
+                } else {
+                    // Create a new ServerState if none exists
+                    self.serverState = ServerState(from: partialServerState)
                 }
+                
+                let newDlTransferInfo = TransferInfo(fetchDate: Date(), info_speed: partialServerState.dl_info_speed ?? 0)
+                self.dlTransferData.append(newDlTransferInfo)
+                
+                // Limit the history to the last 20 entries
+                if self.dlTransferData.count > 20 { self.dlTransferData.removeFirst(self.dlTransferData.count - 20) }
+                
+                let newUpTransferInfo = TransferInfo(fetchDate: Date(), info_speed: partialServerState.up_info_speed ?? 0)
+                self.upTransferData.append(newUpTransferInfo)
+                
+                // Limit the history to the last 20 entries
+                if self.upTransferData.count > 20 { self.upTransferData.removeFirst(self.upTransferData.count - 20) }
             }
+        } catch {
+            print("Telemetry fetch failed: \(error)")
         }
     }
 }

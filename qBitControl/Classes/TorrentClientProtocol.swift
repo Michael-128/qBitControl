@@ -40,6 +40,7 @@ protocol TorrentTaskActions {
     func toggleSequentialDownload(hashes: [String]) async throws
     func toggleFLPiecesFirst(hashes: [String]) async throws
     func setForceStart(hashes: [String], value: Bool) async throws
+    func setLocation(hashes: [String], location: String) async throws
     
     func addMagnetTorrent(
         torrent: URLQueryItem,
@@ -72,6 +73,7 @@ protocol TorrentTaskActions {
     ) async throws
     
     func getFiles(hash: String) async throws -> [File]
+    func getPeers(hash: String) async throws -> Peers
     func setFilePriority(hash: String, ids: String, priority: Int) async throws
 }
 

@@ -5,16 +5,18 @@ struct ChangePathView: View {
     @State var path: String
     let torrentHash: String
     
+    private var client: TorrentClientProtocol {
+        ServersHelper.shared.client ?? MockTorrentClient()
+    }
+    
     func setPath() {
-        let request = qBitRequest.prepareURLRequest(path: "/api/v2/torrents/setLocation", queryItems: [
-            URLQueryItem(name: "hashes", value: torrentHash),
-            URLQueryItem(name: "location", value: path)
-        ])
-        
-        qBitRequest.requestTorrentManagement(request: request, statusCode: {
-            code in
-            print("Code: \(code ?? -1)")
-        })
+        Task {
+            do {
+                try await client.setLocation(hashes: [torrentHash], location: path)
+            } catch {
+                print("Failed to set location: \(error)")
+            }
+        }
     }
     
     var body: some View {

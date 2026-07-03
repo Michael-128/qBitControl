@@ -87,9 +87,8 @@ struct RSSNodeView: View {
                 if self.newFeedURL.isEmpty { return }
                 var path = self.path + [newFeedURL]
                 path.removeFirst()
-                qBittorrent.addRSSFeed(url: newFeedURL, path: path.joined(separator: "\\"))
+                viewModel.addRSSFeed(url: newFeedURL, path: path.joined(separator: "\\"))
                 newFeedURL = ""
-                refresh()
             }
             Button("Cancel", role: .cancel) {}
         }
@@ -101,12 +100,11 @@ struct RSSNodeView: View {
             Button("Add") {
                 let path = rssNode.getPath()
                 if path.isEmpty {
-                    qBittorrent.addRSSFolder(path: newFolderName)
+                    viewModel.addRSSFolder(path: newFolderName)
                 } else {
-                    qBittorrent.addRSSFolder(path: rssNode.getPath() + "\\" + newFolderName)
+                    viewModel.addRSSFolder(path: rssNode.getPath() + "\\" + newFolderName)
                 }
                 newFolderName = ""
-                refresh()
             }
             Button("Cancel", role: .cancel) {}
         }
@@ -117,11 +115,10 @@ struct RSSNodeView: View {
             TextField("Name", text: $newRenameName)
             Button("Save") {
                 let newRenamePath = self.getItemPath(item: newRenameName)
-                qBittorrent.moveRSSItem(itemPath: oldRenamePath, destPath: newRenamePath)
+                viewModel.moveRSSItem(itemPath: oldRenamePath, destPath: newRenamePath)
                 
                 oldRenamePath = ""
                 newRenameName = ""
-                refresh()
             }
             Button("Cancel", role: .cancel) {}
         }
@@ -131,7 +128,7 @@ struct RSSNodeView: View {
         VStack {
             if !isFolder {
                 Button {
-                    qBittorrent.addRSSRefreshItem(path: self.getItemPath(item: itemTitle))
+                    viewModel.addRSSRefreshItem(path: self.getItemPath(item: itemTitle))
                 } label: { Label("Refresh", systemImage: "arrow.clockwise") }
             }
             Button {
@@ -140,7 +137,7 @@ struct RSSNodeView: View {
                 self.isRenameAlert.toggle()
             } label: { Label("Rename", systemImage: "pencil") }
             Button(role: .destructive) {
-                qBittorrent.addRSSRemoveItem(path: self.getItemPath(item: itemTitle))
+                viewModel.addRSSRemoveItem(path: self.getItemPath(item: itemTitle))
             } label: { Label("Remove", systemImage: "trash") }
         }
     }

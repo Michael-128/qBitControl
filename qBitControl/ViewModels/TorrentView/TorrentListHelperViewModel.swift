@@ -167,6 +167,96 @@ class TorrentListHelperViewModel: ObservableObject {
         self.quitSelectionMode()
     }
     
+    func resumeTorrents(hashes: [String]) {
+        Task {
+            do {
+                try await client.resumeTorrents(hashes: hashes)
+            } catch {
+                print("Failed to resume torrents: \(error)")
+            }
+        }
+    }
+    
+    func resumeAllTorrents() {
+        Task {
+            do {
+                try await client.resumeAllTorrents()
+            } catch {
+                print("Failed to resume all torrents: \(error)")
+            }
+        }
+    }
+    
+    func pauseAllTorrents() {
+        Task {
+            do {
+                try await client.pauseAllTorrents()
+            } catch {
+                print("Failed to pause all torrents: \(error)")
+            }
+        }
+    }
+    
+    func pauseTorrents(hashes: [String]) {
+        Task {
+            do {
+                try await client.pauseTorrents(hashes: hashes)
+            } catch {
+                print("Failed to pause torrents: \(error)")
+            }
+        }
+    }
+    
+    func increasePriority(hashes: [String]) {
+        Task {
+            do {
+                try await client.increasePriorityTorrents(hashes: hashes)
+            } catch {
+                print("Failed to increase priority: \(error)")
+            }
+        }
+    }
+    
+    func decreasePriority(hashes: [String]) {
+        Task {
+            do {
+                try await client.decreasePriorityTorrents(hashes: hashes)
+            } catch {
+                print("Failed to decrease priority: \(error)")
+            }
+        }
+    }
+    
+    func recheckTorrents(hashes: [String]) {
+        Task {
+            do {
+                try await client.recheckTorrents(hashes: hashes)
+            } catch {
+                print("Failed to recheck torrents: \(error)")
+            }
+        }
+    }
+    
+    func reannounceTorrents(hashes: [String]) {
+        Task {
+            do {
+                try await client.reannounceTorrents(hashes: hashes)
+            } catch {
+                print("Failed to reannounce torrents: \(error)")
+            }
+        }
+    }
+    
+    func deleteTorrents(hashes: [String], deleteFiles: Bool) {
+        Task {
+            do {
+                try await client.deleteTorrents(hashes: hashes, deleteFiles: deleteFiles)
+            } catch {
+                print("Failed to delete torrents: \(error)")
+            }
+        }
+    }
+    
     func resumeSelectedTorrents() {
         self.doForSelectedTorrents { hashes in
             Task {

@@ -29,7 +29,7 @@ struct TorrentDetailsView: View {
                     Button { viewModel.deleteTorrent() } label: { Text("Delete Task").foregroundColor(.red) }
                 }
                 
-                if let preferences = qBittorrent.getSavedPreferences() {
+                if let preferences = ServersHelper.shared.preferences {
                     if(preferences.queueing_enabled == true) {
                         Section(header: Text("Queue Management")) {
                             CustomLabelView(label: "Priority", value: "\(viewModel.torrent.priority)")

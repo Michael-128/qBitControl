@@ -5,6 +5,10 @@ struct ChangeCategoryView: View {
     @State private var categories: [Category] = []
     @State var category: String
     
+    private var client: TorrentClientProtocol {
+        ServersHelper.shared.client ?? MockTorrentClient()
+    }
+    
     let defaultCategory: Category = Category(name: NSLocalizedString("Uncategorized", comment: ""), savePath: "")
     func isDefaultCategorySelected(currentCategory: String) -> Bool {
         return currentCategory == defaultCategory.name && category == ""
@@ -15,14 +19,27 @@ struct ChangeCategoryView: View {
     
     public var onCategoryChange: ((Category) -> Void)?
     
+    init(torrentHash: String? = nil, category: String, onCategoryChange: ((Category) -> Void)? = nil) {
+        self._torrentHash = State(initialValue: torrentHash)
+        self._category = State(initialValue: category)
+        self.onCategoryChange = onCategoryChange
+    }
+    
     private func getCategories() {
-        qBittorrent.getCategories(completionHandler: { _categories in
-            var categories = _categories.map { $0.value }
-            categories.sort { $0.name < $1.name }
-            categories.insert(defaultCategory, at: 0)
-            self.categories = categories
-            clearSelectedCategories()
-        })
+        Task {
+            do {
+                let _categories = try await client.getCategories()
+                var categories = _categories.map { $0.value }
+                categories.sort { $0.name < $1.name }
+                categories.insert(defaultCategory, at: 0)
+                self.categories = categories
+                clearSelectedCategories()
+                // Update global metadata cache
+                ServersHelper.shared.categories = _categories
+            } catch {
+                print("Failed to get categories: \(error)")
+            }
+        }
     }
     
     private func clearSelectedCategories() {
@@ -44,11 +61,16 @@ struct ChangeCategoryView: View {
                     }.alert("Add New Category", isPresented: $showAddCategoryAlert, actions: {
                         TextField("Category Name", text: $newCategoryName)
                         Button("Add", action: {
-                            qBittorrent.addCategory(category: newCategoryName, savePath: nil, then: { status in
-                                if(status == 200) {
-                                    self.getCategories()
+                            Task {
+                                do {
+                                    let status = try await client.addCategory(category: newCategoryName, savePath: nil)
+                                    if status == 200 {
+                                        self.getCategories()
+                                    }
+                                } catch {
+                                    print("Failed to add category: \(error)")
                                 }
-                            })
+                            }
                             newCategoryName = ""
                         })
                         Button("Cancel", role: .cancel, action: {
@@ -77,8 +99,15 @@ struct ChangeCategoryView: View {
                             }
                             .onDelete(perform: { offsets in
                                 for index in offsets {
-                                    let category = categories[index].name
-                                    qBittorrent.removeCategory(category: category, then: {status in print(status)})
+                                    let categoryName = categories[index].name
+                                    Task {
+                                        do {
+                                            let _ = try await client.removeCategory(category: categoryName)
+                                            ServersHelper.shared.refreshCategories()
+                                        } catch {
+                                            print("Failed to remove category: \(error)")
+                                        }
+                                    }
                                 }
                                 
                                 categories.remove(atOffsets: offsets)
@@ -90,11 +119,18 @@ struct ChangeCategoryView: View {
             }
             .navigationTitle("Categories")
         }.onAppear() {
-            print(category)
             self.getCategories()
         }.onChange(of: category) { category in
-            if let onCategoryChange = self.onCategoryChange, let category = categories.first(where: { $0.name == category }) { onCategoryChange(category) }
-            if let hash = self.torrentHash { qBittorrent.setCategory(hash: hash, category: category == defaultCategory.name ? "" : category) }
+            if let onCategoryChange = self.onCategoryChange, let categoryObj = categories.first(where: { $0.name == category }) { onCategoryChange(categoryObj) }
+            if let hash = self.torrentHash {
+                Task {
+                    do {
+                        try await client.setCategory(hash: hash, category: category == defaultCategory.name ? "" : category)
+                    } catch {
+                        print("Failed to set category: \(error)")
+                    }
+                }
+            }
         }
     }
 }
