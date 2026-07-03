@@ -555,25 +555,41 @@ class qBittorrentClient: TorrentClientProtocol {
             cookie: nil
         )
         
+        // Accept any 2xx status code
+        guard (200...299).contains(response.statusCode) else {
+            throw NetworkError.unauthorized
+        }
+        
+        // Extract cookie on a best-effort basis
+        var parsedCookie: String? = nil
+        
+        // 1. Check Set-Cookie response header
         if let setCookieHeader = response.value(forHTTPHeaderField: "Set-Cookie") {
             let components = setCookieHeader.split(separator: ";")
             if let firstComponent = components.first {
                 let cookieStr = String(firstComponent)
                 if cookieStr.contains("SID") {
-                    self.cookie = cookieStr
-                    
-                    // Fetch and store version after successful login
-                    do {
-                        self.version = try await fetchVersion()
-                    } catch {
-                        print("Failed to fetch version on login: \(error)")
-                    }
-                    return
+                    parsedCookie = cookieStr
                 }
             }
         }
         
-        throw NetworkError.unauthorized
+        // 2. Check shared HTTPCookieStorage fallback
+        if parsedCookie == nil,
+           let url = URL(string: networkClient.baseURL),
+           let cookies = HTTPCookieStorage.shared.cookies(for: url),
+           let sidCookie = cookies.first(where: { $0.name == "SID" }) {
+            parsedCookie = "SID=\(sidCookie.value)"
+        }
+        
+        self.cookie = parsedCookie
+        
+        // 3. Verification Call: Confirm that the session is authorized and active
+        do {
+            self.version = try await fetchVersion()
+        } catch {
+            throw NetworkError.unauthorized
+        }
     }
     
     func fetchVersion() async throws -> Version {
