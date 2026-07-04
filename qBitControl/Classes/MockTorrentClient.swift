@@ -330,7 +330,17 @@ class MockTorrentClient: TorrentClientProtocol {
     }
     
     func getMainData(rid: Int = 0) async throws -> MainData {
-        return MainData(rid: rid, full_update: true, server_state: nil)
+        return MainData(
+            rid: rid,
+            full_update: true,
+            server_state: nil,
+            torrents: nil,
+            torrents_removed: nil,
+            categories: nil,
+            categories_removed: nil,
+            tags: nil,
+            tags_removed: nil
+        )
     }
     
     func getPreferences() async throws -> qBitPreferences {
