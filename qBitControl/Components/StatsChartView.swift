@@ -11,32 +11,35 @@ struct StatsChartView: View {
     
     var body: some View {
         VStack {
-            Chart(transferData.suffix(30)) {
-                transferData in
-                AreaMark(
-                    x: .value("Time", transferData.fetchDate.timeIntervalSinceNow),
-                    y: .value("Transfer", transferData.info_speed),
-                    stacking: .standard
-                ).interpolationMethod(.monotone)
-                    .mask { RectangleMark() }
-                    .foregroundStyle(
-                        LinearGradient(
-                            gradient: Gradient(colors: [self.color.opacity(0.4), self.color.opacity(0.2)]),
+            TimelineView(.periodic(from: .now, by: 0.1)) { timeline in
+                let now = timeline.date
+                
+                Chart(transferData.suffix(30)) { item in
+                    let relativeTime = item.fetchDate.timeIntervalSince(now)
+                    AreaMark(
+                        x: .value("Time", relativeTime),
+                        y: .value("Transfer", item.info_speed),
+                        stacking: .standard
+                    ).interpolationMethod(.monotone)
+                        .mask { RectangleMark() }
+                        .foregroundStyle(
+                            LinearGradient(
+                                gradient: Gradient(colors: [self.color.opacity(0.4), self.color.opacity(0.2)]),
                                 startPoint: .top,
                                 endPoint: .bottom
                             )
-                    )
-                
-                LineMark(
-                    x: .value("Time", transferData.fetchDate.timeIntervalSinceNow),
-                    y: .value("Transfer", transferData.info_speed)
-                ).interpolationMethod(.monotone)
-                    .mask { RectangleMark() }
-                    .foregroundStyle(self.color)
-            }.chartXScale(domain: -30...0)
+                        )
+                    
+                    LineMark(
+                        x: .value("Time", relativeTime),
+                        y: .value("Transfer", item.info_speed)
+                    ).interpolationMethod(.monotone)
+                        .mask { RectangleMark() }
+                        .foregroundStyle(self.color)
+                }
+                .chartXScale(domain: -34 ... -4)
                 .chartYAxis {
-                    AxisMarks {
-                        value in
+                    AxisMarks { value in
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel {
@@ -45,8 +48,7 @@ struct StatsChartView: View {
                     }
                 }
                 .chartXAxis {
-                    AxisMarks {
-                        value in
+                    AxisMarks { value in
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel {
@@ -54,6 +56,7 @@ struct StatsChartView: View {
                         }
                     }
                 }
+            }
         }.padding(10)
     }
 }

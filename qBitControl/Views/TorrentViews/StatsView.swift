@@ -16,13 +16,13 @@ struct StatsView: View {
                 List {
                     Section(header: Text("Download")) {
                         CustomLabelView(label: "Session Download", value: "\(formatter.getFormatedSize(size: qBitDataShared.serverState?.dl_info_data ?? 0))")
-                        CustomLabelView(label: "Download Speed", value: "\(formatter.getFormatedSize(size: qBitDataShared.serverState?.dl_info_speed ?? 0))/s")
+                        CustomLabelView(label: "Download Speed", value: "\(formatter.getFormatedSize(size: Int64(getDelayedSpeed(from: qBitDataShared.dlTransferData))))/s")
                         StatsChartView(transferData: $qBitDataShared.dlTransferData, color: .green)
                     }
                     
                     Section(header: Text("Upload")) {
                         CustomLabelView(label: "Session Upload", value: "\(formatter.getFormatedSize(size: qBitDataShared.serverState?.up_info_data ?? 0))")
-                        CustomLabelView(label: "Upload Speed", value: "\(formatter.getFormatedSize(size: qBitDataShared.serverState?.up_info_speed ?? 0))/s")
+                        CustomLabelView(label: "Upload Speed", value: "\(formatter.getFormatedSize(size: Int64(getDelayedSpeed(from: qBitDataShared.upTransferData))))/s")
                         StatsChartView(transferData: $qBitDataShared.upTransferData)
                     }
                     
@@ -38,5 +38,12 @@ struct StatsView: View {
                 }
             }.navigationTitle("Statistics")
         }
+    }
+    
+    private func getDelayedSpeed(from transferData: [TransferInfo], delay: TimeInterval = 4.0) -> Int {
+        let targetDate = Date().addingTimeInterval(-delay)
+        return transferData.min(by: {
+            abs($0.fetchDate.timeIntervalSince(targetDate)) < abs($1.fetchDate.timeIntervalSince(targetDate))
+        })?.info_speed ?? 0
     }
 }
