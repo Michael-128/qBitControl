@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */; };
 		90EF6A4D29093142001E9F02 /* TorrentClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */; };
 		90EF6A4D29093142001E9F04 /* qBittorrentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */; };
 		90EF6A4D29093142001E9F06 /* MockTorrentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */; };
@@ -120,6 +121,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListHelperViewModelTests.swift; sourceTree = "<group>"; };
 		90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentClientProtocol.swift; sourceTree = "<group>"; };
 		90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClient.swift; sourceTree = "<group>"; };
 		90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTorrentClient.swift; sourceTree = "<group>"; };
@@ -466,6 +468,7 @@
 		90EF6A5029093142001E9EF4 /* qBitControlTests */ = {
 			isa = PBXGroup;
 			children = (
+				90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */,
 				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
 			);
 			path = qBitControlTests;
@@ -764,6 +767,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */,
 				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
