@@ -14,9 +14,9 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published public var torrents: [Torrent] = []
     
     @Published public var searchQuery: String = ""
-    @Published public var sort: String = "name"
+    @Published public var sort: TorrentSortOption = .name
     @Published public var reverse: Bool = false
-    @Published public var filter: String = "all"
+    @Published public var filter: TorrentFilterOption = .all
     @Published public var category: String = "All"
     @Published public var tag: String = "All"
     
@@ -69,7 +69,7 @@ class TorrentListHelperViewModel: ObservableObject {
             self.torrents = self.getProcessedTorrents(
                 allTorrents: allTorrents,
                 query: "",
-                filterVal: "all",
+                filterVal: .all,
                 categoryVal: "All",
                 tagVal: "All",
                 sortVal: sortVal,
@@ -93,36 +93,38 @@ class TorrentListHelperViewModel: ObservableObject {
     func getProcessedTorrents(
         allTorrents: [Torrent],
         query: String,
-        filterVal: String,
+        filterVal: TorrentFilterOption,
         categoryVal: String,
         tagVal: String,
-        sortVal: String,
+        sortVal: TorrentSortOption,
         reverseVal: Bool
     ) -> [Torrent] {
         var list = allTorrents.filter { torrent in
             // Filter by status (filterVal)
             switch filterVal {
-            case "downloading":
+            case .downloading:
                 if !(torrent.state == "downloading" || torrent.state == "stalledDL" || torrent.state == "checkingDL" || torrent.state == "metaDL" || torrent.state == "forcedDL" || torrent.state == "allocating") { return false }
-            case "completed", "seeding":
+            case .completed, .seeding:
                 if !(torrent.state == "seeding" || torrent.state == "uploading" || torrent.state == "stalledUP" || torrent.state == "checkingUP" || torrent.state == "forcedUP" || torrent.state == "queuedUP" || torrent.state == "pausedUP" || torrent.state == "stoppedUP") { return false }
-            case "paused":
+            case .paused:
                 if !(torrent.state == "pausedDL" || torrent.state == "pausedUP" || torrent.state == "stoppedDL" || torrent.state == "stoppedUP") { return false }
-            case "active":
+            case .active:
                 if !(torrent.dlspeed > 0 || torrent.upspeed > 0) { return false }
-            case "inactive":
+            case .inactive:
                 if !(torrent.dlspeed == 0 && torrent.upspeed == 0) { return false }
-            case "stalled":
+            case .stalled:
                 if !(torrent.state == "stalledDL" || torrent.state == "stalledUP") { return false }
-            case "stalled_downloading":
+            case .stalledDownloading:
                 if !(torrent.state == "stalledDL") { return false }
-            case "stalled_uploading":
+            case .stalledUploading:
                 if !(torrent.state == "stalledUP") { return false }
-            case "checking":
+            case .checking:
                 if !(torrent.state == "checkingDL" || torrent.state == "checkingUP" || torrent.state == "checkingResumeData") { return false }
-            case "errored":
+            case .errored:
                 if !(torrent.state == "error" || torrent.state == "missingFiles") { return false }
-            default:
+            case .resumed:
+                if torrent.state.contains("paused") || torrent.state.contains("stopped") { return false }
+            case .all:
                 break
             }
             
@@ -157,34 +159,78 @@ class TorrentListHelperViewModel: ObservableObject {
         list.sort { a, b in
             let isOrdered: Bool
             switch sortVal {
-            case "size":
+            case .size:
                 isOrdered = a.size < b.size
-            case "progress":
+            case .totalSize:
+                isOrdered = a.total_size < b.total_size
+            case .amountLeft:
+                isOrdered = a.amount_left < b.amount_left
+            case .completed:
+                isOrdered = a.completed < b.completed
+            case .seedingTime:
+                isOrdered = (a.seeding_time ?? 0) < (b.seeding_time ?? 0)
+            case .uploaded:
+                isOrdered = a.uploaded < b.uploaded
+            case .downloaded:
+                isOrdered = a.downloaded < b.downloaded
+            case .lastActivity:
+                isOrdered = a.last_activity < b.last_activity
+            case .progress:
                 isOrdered = a.progress < b.progress
-            case "dlspeed":
+            case .dlspeed:
                 isOrdered = a.dlspeed < b.dlspeed
-            case "upspeed":
+            case .upspeed:
                 isOrdered = a.upspeed < b.upspeed
-            case "added_on":
+            case .addedOn:
                 isOrdered = a.added_on < b.added_on
-            case "num_seeds":
+            case .numSeeds:
                 isOrdered = a.num_seeds < b.num_seeds
-            case "num_leechs":
+            case .numLeechs:
                 isOrdered = a.num_leechs < b.num_leechs
-            case "ratio":
+            case .ratio:
                 isOrdered = a.ratio < b.ratio
-            case "eta":
+            case .eta:
                 let aEta = a.eta <= 0 || a.eta == 8640000 ? Int.max : a.eta
                 let bEta = b.eta <= 0 || b.eta == 8640000 ? Int.max : b.eta
                 isOrdered = aEta < bEta
-            case "priority":
+            case .priority:
                 let aPrio = a.priority <= 0 ? Int.max : a.priority
                 let bPrio = b.priority <= 0 ? Int.max : b.priority
                 isOrdered = aPrio < bPrio
-            case "state":
+            case .state:
                 isOrdered = a.state.localizedCompare(b.state) == .orderedAscending
-            default: // "name"
+            case .name:
                 isOrdered = a.name.localizedStandardCompare(b.name) == .orderedAscending
+            case .availability:
+                isOrdered = a.availability < b.availability
+            case .category:
+                isOrdered = a.category.localizedStandardCompare(b.category) == .orderedAscending
+            case .completionOn:
+                isOrdered = a.completion_on < b.completion_on
+            case .dlLimit:
+                isOrdered = a.dl_limit < b.dl_limit
+            case .downloadedSession:
+                isOrdered = a.downloaded_session < b.downloaded_session
+            case .maxRatio:
+                isOrdered = a.max_ratio < b.max_ratio
+            case .maxSeedingTime:
+                isOrdered = a.max_seeding_time < b.max_seeding_time
+            case .numComplete:
+                isOrdered = a.num_complete < b.num_complete
+            case .numIncomplete:
+                isOrdered = a.num_incomplete < b.num_incomplete
+            case .ratioLimit:
+                isOrdered = a.ratio_limit < b.ratio_limit
+            case .seedingTimeLimit:
+                isOrdered = a.seeding_time_limit < b.seeding_time_limit
+            case .tags:
+                isOrdered = a.tags.localizedStandardCompare(b.tags) == .orderedAscending
+            case .timeActive:
+                isOrdered = a.time_active < b.time_active
+            case .upLimit:
+                isOrdered = a.up_limit < b.up_limit
+            case .uploadedSession:
+                isOrdered = a.uploaded_session < b.uploaded_session
             }
             
             return reverseVal ? !isOrdered : isOrdered
@@ -202,10 +248,10 @@ class TorrentListHelperViewModel: ObservableObject {
                 let catParam = category == "All" ? nil : category
                 let tagParam = tag == "All" ? nil : tag
                 let fetched = try await client.fetchTorrents(
-                    filter: filter,
+                    filter: filter.rawValue,
                     category: catParam,
                     tag: tagParam,
-                    sort: sort,
+                    sort: sort.rawValue,
                     reverse: reverse
                 )
                 var mockTorrentsDict: [String: Torrent] = [:]
@@ -241,9 +287,12 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func getInitialTorrents() {
         reverse = defaults.bool(forKey: "reverse")
-        sort = defaults.string(forKey: "sort") ?? sort
-        filter = defaults.string(forKey: "filter") ?? filter
-        // Combine will automatically handle updates on properties setting
+        if let savedSort = defaults.string(forKey: "sort"), let sortOption = TorrentSortOption(rawValue: savedSort) {
+            sort = sortOption
+        }
+        if let savedFilter = defaults.string(forKey: "filter"), let filterOption = TorrentFilterOption(rawValue: savedFilter) {
+            filter = filterOption
+        }
     }
     
     func deleteTorrent(torrent: Torrent) {
