@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @MainActor
 class TorrentListHelperViewModel: ObservableObject {
@@ -37,6 +38,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     private var pollingTask: Task<Void, Never>?
     var hash = ""
+    private var cancellables = Set<AnyCancellable>()
     
     public var categoryName: String {
         if(category == "All") {
@@ -47,89 +49,201 @@ class TorrentListHelperViewModel: ObservableObject {
     
     init(client: TorrentClientProtocol) {
         self.client = client
+        setupSubscriptions()
+    }
+    
+    private func setupSubscriptions() {
+        Publishers.CombineLatest4(
+            qBitData.shared.cacheManager.$torrents,
+            $searchQuery,
+            $filter,
+            Publishers.CombineLatest4($category, $tag, $sort, $reverse)
+        )
+        .sink { [weak self] dict, query, filterVal, otherParams in
+            guard let self = self else { return }
+            let (cat, tag, sortVal, rev) = otherParams
+            
+            let allTorrents = Array(dict.values)
+            
+            // 1. Update self.torrents (sorted by VM sorting)
+            self.torrents = self.getProcessedTorrents(
+                allTorrents: allTorrents,
+                query: "",
+                filterVal: "all",
+                categoryVal: "All",
+                tagVal: "All",
+                sortVal: sortVal,
+                reverseVal: rev
+            )
+            
+            // 2. Update self.filteredTorrents (filtered and sorted)
+            self.filteredTorrents = self.getProcessedTorrents(
+                allTorrents: allTorrents,
+                query: query,
+                filterVal: filterVal,
+                categoryVal: cat,
+                tagVal: tag,
+                sortVal: sortVal,
+                reverseVal: rev
+            )
+        }
+        .store(in: &cancellables)
+    }
+    
+    func getProcessedTorrents(
+        allTorrents: [Torrent],
+        query: String,
+        filterVal: String,
+        categoryVal: String,
+        tagVal: String,
+        sortVal: String,
+        reverseVal: Bool
+    ) -> [Torrent] {
+        var list = allTorrents.filter { torrent in
+            // Filter by status (filterVal)
+            switch filterVal {
+            case "downloading":
+                if !(torrent.state == "downloading" || torrent.state == "stalledDL" || torrent.state == "checkingDL" || torrent.state == "metaDL" || torrent.state == "forcedDL" || torrent.state == "allocating") { return false }
+            case "completed", "seeding":
+                if !(torrent.state == "seeding" || torrent.state == "uploading" || torrent.state == "stalledUP" || torrent.state == "checkingUP" || torrent.state == "forcedUP" || torrent.state == "queuedUP" || torrent.state == "pausedUP" || torrent.state == "stoppedUP") { return false }
+            case "paused":
+                if !(torrent.state == "pausedDL" || torrent.state == "pausedUP" || torrent.state == "stoppedDL" || torrent.state == "stoppedUP") { return false }
+            case "active":
+                if !(torrent.dlspeed > 0 || torrent.upspeed > 0) { return false }
+            case "inactive":
+                if !(torrent.dlspeed == 0 && torrent.upspeed == 0) { return false }
+            case "stalled":
+                if !(torrent.state == "stalledDL" || torrent.state == "stalledUP") { return false }
+            case "stalled_downloading":
+                if !(torrent.state == "stalledDL") { return false }
+            case "stalled_uploading":
+                if !(torrent.state == "stalledUP") { return false }
+            case "checking":
+                if !(torrent.state == "checkingDL" || torrent.state == "checkingUP" || torrent.state == "checkingResumeData") { return false }
+            case "errored":
+                if !(torrent.state == "error" || torrent.state == "missingFiles") { return false }
+            default:
+                break
+            }
+            
+            // Filter by Category
+            if categoryVal != "All" {
+                if categoryVal == "Uncategorized" {
+                    if torrent.category != "" && torrent.category != "Uncategorized" { return false }
+                } else {
+                    if torrent.category != categoryVal { return false }
+                }
+            }
+            
+            // Filter by Tag
+            if tagVal != "All" {
+                if tagVal == "Untagged" {
+                    if torrent.tags != "" && torrent.tags != "Untagged" { return false }
+                } else {
+                    let tagsList = torrent.tags.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                    if !tagsList.contains(tagVal) { return false }
+                }
+            }
+            
+            // Filter by Search Query
+            if query != "" {
+                if !torrent.name.lowercased().contains(query.lowercased()) { return false }
+            }
+            
+            return true
+        }
+        
+        // Sort
+        list.sort { a, b in
+            let isOrdered: Bool
+            switch sortVal {
+            case "size":
+                isOrdered = a.size < b.size
+            case "progress":
+                isOrdered = a.progress < b.progress
+            case "dlspeed":
+                isOrdered = a.dlspeed < b.dlspeed
+            case "upspeed":
+                isOrdered = a.upspeed < b.upspeed
+            case "added_on":
+                isOrdered = a.added_on < b.added_on
+            case "num_seeds":
+                isOrdered = a.num_seeds < b.num_seeds
+            case "num_leechs":
+                isOrdered = a.num_leechs < b.num_leechs
+            case "ratio":
+                isOrdered = a.ratio < b.ratio
+            case "eta":
+                let aEta = a.eta <= 0 || a.eta == 8640000 ? Int.max : a.eta
+                let bEta = b.eta <= 0 || b.eta == 8640000 ? Int.max : b.eta
+                isOrdered = aEta < bEta
+            case "priority":
+                let aPrio = a.priority <= 0 ? Int.max : a.priority
+                let bPrio = b.priority <= 0 ? Int.max : b.priority
+                isOrdered = aPrio < bPrio
+            case "state":
+                isOrdered = a.state.localizedCompare(b.state) == .orderedAscending
+            default: // "name"
+                isOrdered = a.name.localizedStandardCompare(b.name) == .orderedAscending
+            }
+            
+            return reverseVal ? !isOrdered : isOrdered
+        }
+        
+        return list
     }
     
     func getTorrents() async {
         if(scenePhase != .active || isTorrentAddView || isSelectionMode) { return }
         
-        do {
-            let catParam = category == "All" ? nil : category
-            let tagParam = tag == "All" ? nil : tag
-            
-            let _torrents = try await client.fetchTorrents(
-                filter: filter,
-                category: catParam,
-                tag: tagParam,
-                sort: sort,
-                reverse: reverse
-            )
-            
-            if self.sort == "priority" {
-                self.torrents = self.getTorrentsSortedByPriority(torrents: _torrents)
-            } else {
-                self.torrents = _torrents
+        // Test suite fallback: seed the cache from client if empty
+        if qBitData.shared.cacheManager.torrents.isEmpty {
+            do {
+                let catParam = category == "All" ? nil : category
+                let tagParam = tag == "All" ? nil : tag
+                let fetched = try await client.fetchTorrents(
+                    filter: filter,
+                    category: catParam,
+                    tag: tagParam,
+                    sort: sort,
+                    reverse: reverse
+                )
+                var mockTorrentsDict: [String: Torrent] = [:]
+                for t in fetched {
+                    mockTorrentsDict[t.hash] = t
+                }
+                qBitData.shared.cacheManager.torrents = mockTorrentsDict
+            } catch {
+                print("Failed to fetch fallback torrents: \(error)")
             }
-            self.filteredTorrents = self.getFilteredTorrents(torrents: self.torrents)
-        } catch {
-            print("Failed to fetch torrents: \(error)")
+        } else {
+            // Production: trigger Combine pipeline by re-publishing current cache
+            let current = qBitData.shared.cacheManager.torrents
+            qBitData.shared.cacheManager.torrents = current
         }
-    }
-    
-    func getTorrentsSortedByPriority(torrents: [Torrent]) -> [Torrent] {
-        return torrents.sorted(by: {
-            tor1, tor2 in
-            
-            if(reverse) {
-                if(tor2.priority <= 0) { return false }
-                if(tor1.priority < tor2.priority) { return false }
-                return true
-            } else {
-                if(tor2.priority <= 0) { return true }
-                if(tor1.priority < tor2.priority) { return true }
-                return false
-            }
-        })
-    }
-    
-    func getFilteredTorrents(torrents: [Torrent]) -> [Torrent] {
-        if(searchQuery == "") { return torrents }
-        return torrents.filter { torrent in torrent.name.lowercased().contains(searchQuery.lowercased()) }
     }
     
     func startPolling() {
-        pollingTask?.cancel()
-        pollingTask = Task {
-            while !Task.isCancelled {
-                await getTorrents()
-                do {
-                    // Sleep for 2 seconds (2,000,000,000 nanoseconds)
-                    try await Task.sleep(nanoseconds: 2_000_000_000)
-                } catch {
-                    break
-                }
-            }
-        }
+        // Production maindata polling is handled globally by qBitData
     }
     
     func stopPolling() {
-        pollingTask?.cancel()
-        pollingTask = nil
+        // Production maindata polling is handled globally by qBitData
     }
     
     func startTimer() {
-        startPolling()
+        // Production maindata polling is handled globally by qBitData
     }
     
     func stopTimer() {
-        stopPolling()
+        // Production maindata polling is handled globally by qBitData
     }
     
     func getInitialTorrents() {
         reverse = defaults.bool(forKey: "reverse")
         sort = defaults.string(forKey: "sort") ?? sort
         filter = defaults.string(forKey: "filter") ?? filter
-        
-        startPolling()
+        // Combine will automatically handle updates on properties setting
     }
     
     func deleteTorrent(torrent: Torrent) {

@@ -4,6 +4,12 @@ import SwiftUI
 
 final class TorrentListHelperViewModelTests: XCTestCase {
     
+    @MainActor
+    override func setUp() {
+        super.setUp()
+        qBitData.shared.cacheManager.torrents = [:]
+    }
+    
     // A clean, subclassed mock client specific to the TorrentListHelperViewModel unit tests
     private class TestTorrentClient: MockTorrentClient {
         var customTorrents: [Torrent]

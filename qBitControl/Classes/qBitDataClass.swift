@@ -14,6 +14,7 @@ class qBitData: ObservableObject {
     @Published var serverState: ServerState?
     @Published var dlTransferData: [TransferInfo] = []
     @Published var upTransferData: [TransferInfo] = []
+    let cacheManager = TorrentCacheManager()
     
     private var pollingTask: Task<Void, Never>?
     private var fetchInterval: UInt64 = 2_000_000_000 // 2 seconds
@@ -54,6 +55,8 @@ class qBitData: ObservableObject {
         do {
             let mainData = try await client.getMainData(rid: rid)
             self.rid = mainData.rid
+            
+            self.cacheManager.merge(mainData: mainData)
             
             if let partialServerState = mainData.server_state {
                 if let existingServerState = self.serverState {
