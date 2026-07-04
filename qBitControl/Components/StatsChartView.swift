@@ -11,7 +11,7 @@ struct StatsChartView: View {
     
     var body: some View {
         VStack {
-            TimelineView(.periodic(from: .now, by: 0.1)) { timeline in
+            TimelineView(.periodic(from: .now, by: 0.066)) { timeline in
                 let now = timeline.date
                 
                 Chart(transferData.suffix(30)) { item in

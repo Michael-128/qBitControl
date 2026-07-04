@@ -40,7 +40,7 @@ struct StatsView: View {
         }
     }
     
-    private func getDelayedSpeed(from transferData: [TransferInfo], delay: TimeInterval = 4.0) -> Int {
+    private func getDelayedSpeed(from transferData: [TransferInfo], delay: TimeInterval = 3.0) -> Int {
         let targetDate = Date().addingTimeInterval(-delay)
         return transferData.min(by: {
             abs($0.fetchDate.timeIntervalSince(targetDate)) < abs($1.fetchDate.timeIntervalSince(targetDate))
