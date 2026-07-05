@@ -17,6 +17,7 @@ struct MainView: View {
         TabView {
             ForEach(tabs, id: \.label) { tab in
                 tab.content()
+                    .id(serversHelper.activeServerId)
                     .tabItem {
                         Label(tab.label, systemImage: tab.systemImage)
                     }
@@ -33,6 +34,7 @@ struct MainView: View {
                 ForEach(tabs, id: \.label) { tab in
                     Tab(tab.label, systemImage: tab.systemImage, value: tab.value) {
                         tab.content()
+                            .id(serversHelper.activeServerId)
                     }
                 }
             }.onChange(of: scenePhase) { phase in
