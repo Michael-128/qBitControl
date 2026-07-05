@@ -130,7 +130,9 @@ class ServersHelper: ObservableObject {
     }
     
     func connect(server: Server, result: ((Bool) -> Void)?) {
-        self.clearCache()
+        if server.id != activeServerId {
+            self.clearCache()
+        }
         connectingServerId = server.id
         
         Task {
@@ -154,7 +156,9 @@ class ServersHelper: ObservableObject {
     }
     
     func connect(server: Server) {
-        self.clearCache()
+        if server.id != activeServerId {
+            self.clearCache()
+        }
         connectingServerId = server.id
         
         Task {
