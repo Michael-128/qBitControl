@@ -5933,6 +5933,9 @@
         }
       }
     },
+    "remaining" : {
+      "comment" : "remaining time"
+    },
     "Remove" : {
       "localizations" : {
         "ja" : {

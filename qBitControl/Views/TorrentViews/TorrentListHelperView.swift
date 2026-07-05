@@ -48,7 +48,7 @@ struct TorrentListHelperView: View {
         NavigationLink {
             TorrentDetailsView(torrent: torrent)
         } label: {
-            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio, size: torrent.size)
+            TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio, size: torrent.size, eta: torrent.eta)
             .contextMenu() { torrentRowContextMenu(torrent: torrent) }
         }
     }
@@ -68,7 +68,8 @@ struct TorrentListHelperView: View {
                 dlspeed: torrent.dlspeed,
                 upspeed: torrent.upspeed,
                 ratio: torrent.ratio,
-                size: torrent.size
+                size: torrent.size,
+                eta: torrent.eta
             )
         }
         .onTapGesture {
