@@ -12,6 +12,7 @@ struct TorrentRowView: View {
     let dlspeed: Int64
     let upspeed: Int64
     let ratio: Float
+    let size: Int64
     
     var formatter: TorrentFormatting = TorrentFormatter()
     
@@ -20,15 +21,19 @@ struct TorrentRowView: View {
     let screenWidth = UIScreen.main.bounds.width
     
     var body: some View {
-        VStack {
+        VStack(alignment: .leading, spacing: 6) {
             HStack(alignment: .bottom) {
                 Text(name)
                     .lineLimit(1)
                 Spacer()
             }.padding(.bottom, -1)
             
-            ProgressView(value: progress)
-                .progressViewStyle(LinearProgressViewStyle(tint: formatter.getStateColor(state: state)))
+            SmoothProgressBar(
+                progress: Double(progress),
+                dlSpeed: dlspeed,
+                totalSize: size,
+                state: state
+            )
             
             HStack(spacing: 3.5) {
                 Group {
@@ -40,21 +45,25 @@ struct TorrentRowView: View {
                 }
                 Group {
                     Text("\(String(format: "%.1f", progress*100))%")
+                        .monospacedDigit()
                     Text("•")
                 }
                 Group {
                     Image(systemName: "arrow.down")
                     Text("\(formatter.getFormatedSize(size: dlspeed))/s")
+                        .monospacedDigit()
                     Text("•")
                 }
                 Group {
                     Image(systemName: "arrow.up")
                     Text("\(formatter.getFormatedSize(size: upspeed))/s")
+                        .monospacedDigit()
                     Text("•")
                 }
                 Group {
                     Image(systemName: "arrow.up.arrow.down")
                     Text("\(String(format: "%.2f", ratio))")
+                        .monospacedDigit()
                 }
                 Spacer()
             }
@@ -74,7 +83,7 @@ struct TorrentRowView_Previews: PreviewProvider {
                 NavigationLink {
                     //MainView()
                 } label: {
-                    TorrentRowView(name: "Torrent name", progress: 0.789, state: "downloading", dlspeed:10000000, upspeed:1000000, ratio: 0.5)
+                    TorrentRowView(name: "Torrent name", progress: 0.789, state: "downloading", dlspeed:10000000, upspeed:1000000, ratio: 0.5, size: 1000000000)
                 }
             }
         }
