@@ -49,6 +49,17 @@ class qBitData: ObservableObject {
         pollingTask = nil
     }
     
+    func resetTransferHistory() {
+        let date = Date()
+        self.dlTransferData.removeAll()
+        self.upTransferData.removeAll()
+        for n in stride(from: -30, to: 0, by: 2) {
+            self.dlTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
+            self.upTransferData.append(TransferInfo(fetchDate: date.addingTimeInterval(Double(n)), info_speed: 0))
+        }
+        self.serverState = nil
+    }
+    
     func getMainData() async {
         guard let client = ServersHelper.shared.client else { return }
         

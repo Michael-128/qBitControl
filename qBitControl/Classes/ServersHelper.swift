@@ -98,9 +98,7 @@ class ServersHelper: ObservableObject {
             activeServerId = nil
             isLoggedIn = false
             client = nil
-            preferences = nil
-            categories = [:]
-            tags = []
+            clearCache()
         }
         
         saveSeverList()
@@ -119,7 +117,20 @@ class ServersHelper: ObservableObject {
         }
     }
     
+    func clearCache() {
+        qBitData.shared.cacheManager.torrents = [:]
+        qBitData.shared.rid = 0
+        qBitData.shared.resetTransferHistory()
+        
+        RSSNodeViewModel.shared.rssRootNode = RSSNode()
+        
+        self.preferences = nil
+        self.categories = [:]
+        self.tags = []
+    }
+    
     func connect(server: Server, result: ((Bool) -> Void)?) {
+        self.clearCache()
         connectingServerId = server.id
         
         Task {
@@ -143,6 +154,7 @@ class ServersHelper: ObservableObject {
     }
     
     func connect(server: Server) {
+        self.clearCache()
         connectingServerId = server.id
         
         Task {

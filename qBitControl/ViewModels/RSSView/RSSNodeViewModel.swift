@@ -7,14 +7,16 @@ import SwiftUI
 
 @MainActor
 class RSSNodeViewModel: ObservableObject {
-    static public let shared = RSSNodeViewModel(client: ServersHelper.shared.client ?? MockTorrentClient())
+    static public let shared = RSSNodeViewModel()
     
     @Published public var rssRootNode: RSSNode = .init()
     private var pollingTask: Task<Void, Never>?
-    private let client: TorrentClientProtocol
     
-    init(client: TorrentClientProtocol) {
-        self.client = client
+    private var client: TorrentClientProtocol {
+        ServersHelper.shared.client ?? MockTorrentClient()
+    }
+    
+    init() {
         self.getRssRootNode()
         self.startTimer()
     }
