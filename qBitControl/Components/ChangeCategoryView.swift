@@ -143,6 +143,9 @@ struct ChangeCategoryView: View {
                 }
             }
             if let hash = self.torrentHash {
+                qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [hash]) { torrent in
+                    torrent.category = category
+                }
                 Task {
                     do {
                         try await client.setCategory(hash: hash, category: category)

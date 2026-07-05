@@ -39,50 +39,49 @@ struct ChangeTagsView: View {
     }
     
     func unsetTag(tag: String) {
+        selectedTags.remove(tag)
+        if let onTagsChange = self.onTagsChange {
+            onTagsChange(selectedTags)
+        }
         if let hash = self.torrentHash {
+            qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [hash]) { torrent in
+                var tagList = torrent.tags.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                tagList.removeAll { $0 == tag }
+                torrent.tags = tagList.joined(separator: ", ")
+            }
             Task {
                 do {
-                    let success = try await client.unsetTag(hash: hash, tag: tag)
-                    if success {
-                        selectedTags.remove(tag)
-                        if let onTagsChange = self.onTagsChange {
-                            onTagsChange(selectedTags)
-                        }
-                    }
+                    let _ = try await client.unsetTag(hash: hash, tag: tag)
                 } catch {
                     print("Failed to unset tag: \(error)")
                 }
-            }
-        } else {
-            selectedTags.remove(tag)
-            if let onTagsChange = self.onTagsChange {
-                onTagsChange(selectedTags)
             }
         }
     }
     
     func setTag(tag: String) {
+        selectedTags.insert(tag)
+        if let onTagsChange = self.onTagsChange {
+            onTagsChange(selectedTags)
+        }
         if let hash = self.torrentHash {
+            qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [hash]) { torrent in
+                var tagList = torrent.tags.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }
+                if !tagList.contains(tag) {
+                    tagList.append(tag)
+                }
+                torrent.tags = tagList.joined(separator: ", ")
+            }
             Task {
                 do {
-                    let success = try await client.setTag(hash: hash, tag: tag)
-                    if success {
-                        selectedTags.insert(tag)
-                        if let onTagsChange = self.onTagsChange {
-                            onTagsChange(selectedTags)
-                        }
-                    }
+                    let _ = try await client.setTag(hash: hash, tag: tag)
                 } catch {
                     print("Failed to set tag: \(error)")
                 }
             }
-        } else {
-            selectedTags.insert(tag)
-            if let onTagsChange = self.onTagsChange {
-                onTagsChange(selectedTags)
-            }
         }
     }
+    
     
     func addTag(name: String) {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)

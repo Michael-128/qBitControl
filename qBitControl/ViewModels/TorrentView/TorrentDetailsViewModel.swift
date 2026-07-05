@@ -4,6 +4,7 @@
 //
 
 import SwiftUI
+import Combine
 
 @MainActor
 class TorrentDetailsViewModel: ObservableObject {
@@ -22,7 +23,7 @@ class TorrentDetailsViewModel: ObservableObject {
     private var tags: [String] { torrent.tags.split(separator: ", ").map { String($0) } }
     
     let haptics = UIImpactFeedbackGenerator(style: .medium)
-    private var timer: Timer?
+    private var cancellables = Set<AnyCancellable>()
     
     init(torrent: Torrent, formatter: TorrentFormatting = TorrentFormatter(), client: TorrentClientProtocol) {
         self.torrent = torrent
@@ -31,33 +32,34 @@ class TorrentDetailsViewModel: ObservableObject {
         self.isSequentialDownload = torrent.seq_dl
         self.isFLPiecesFirst = torrent.f_l_piece_prio
         self.fetchState(state: torrent.state)
+        
+        // Observe global cache updates reactively
+        qBitData.shared.cacheManager.$torrents
+            .compactMap { $0[torrent.hash] }
+            .receive(on: RunLoop.main)
+            .sink { [weak self] updatedTorrent in
+                self?.torrent = updatedTorrent
+                self?.isSequentialDownload = updatedTorrent.seq_dl
+                self?.isFLPiecesFirst = updatedTorrent.f_l_piece_prio
+                self?.fetchState(state: updatedTorrent.state)
+            }
+            .store(in: &cancellables)
     }
     
     func setRefreshTimer() {
-        self.timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] timer in
-            Task { @MainActor in
-                self?.getTorrent()
-            }
-        }
+        // No-op: Observing the cache manager removes the need for active details view polling
     }
     
     func removeRefreshTimer() {
-        timer?.invalidate()
+        // No-op
     }
     
     func getTorrent() {
-        Task {
-            do {
-                let list = try await client.fetchTorrents()
-                if let matchingTorrent = list.first(where: { $0.hash == torrent.hash }) {
-                    self.torrent = matchingTorrent
-                    self.isSequentialDownload = matchingTorrent.seq_dl
-                    self.isFLPiecesFirst = matchingTorrent.f_l_piece_prio
-                    self.fetchState(state: matchingTorrent.state)
-                }
-            } catch {
-                print("Failed to fetch torrent details: \(error)")
-            }
+        if let matchingTorrent = qBitData.shared.cacheManager.torrents[torrent.hash] {
+            self.torrent = matchingTorrent
+            self.isSequentialDownload = matchingTorrent.seq_dl
+            self.isFLPiecesFirst = matchingTorrent.f_l_piece_prio
+            self.fetchState(state: matchingTorrent.state)
         }
     }
     
@@ -94,14 +96,25 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func toggleTorrentPause() {
         haptics.impactOccurred()
+        let isCurrentlyPaused = self.isPaused()
+        
+        let newState = isCurrentlyPaused 
+            ? (self.torrent.progress < 1.0 ? "downloading" : "uploading") 
+            : (self.torrent.progress < 1.0 ? "pausedDL" : "pausedUP")
+        self.torrent.state = newState
+        self.fetchState(state: newState)
+        
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.state = newState
+        }
+        
         Task {
             do {
-                if self.isPaused() {
+                if isCurrentlyPaused {
                     try await client.resumeTorrent(hash: torrent.hash)
                 } else {
                     try await client.pauseTorrent(hash: torrent.hash)
                 }
-                getTorrent()
             } catch {
                 print("Failed to toggle torrent pause: \(error)")
             }
@@ -109,6 +122,11 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func toggleSequentialDownload() {
+        let newValue = !isSequentialDownload
+        isSequentialDownload = newValue
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.seq_dl = newValue
+        }
         Task {
             do {
                 try await client.toggleSequentialDownload(hashes: [torrent.hash])
@@ -119,6 +137,11 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func toggleFLPiecesFirst() {
+        let newValue = !isFLPiecesFirst
+        isFLPiecesFirst = newValue
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.f_l_piece_prio = newValue
+        }
         Task {
             do {
                 try await client.toggleFLPiecesFirst(hashes: [torrent.hash])
@@ -129,6 +152,16 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func setForceStart(value: Bool) {
+        let newState = value 
+            ? (self.torrent.progress < 1.0 ? "forcedDL" : "forcedUP")
+            : (self.torrent.progress < 1.0 ? "downloading" : "uploading")
+        self.torrent.state = newState
+        self.fetchState(state: newState)
+        
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.state = newState
+        }
+        
         Task {
             do {
                 try await client.setForceStart(hashes: [torrent.hash], value: value)
@@ -140,6 +173,14 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func recheckTorrent() {
         haptics.impactOccurred()
+        let newState = self.torrent.progress < 1.0 ? "checkingDL" : "checkingUP"
+        self.torrent.state = newState
+        self.fetchState(state: newState)
+        
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.state = newState
+        }
+        
         Task {
             do {
                 try await client.recheckTorrent(hash: torrent.hash)
@@ -167,6 +208,9 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func moveToTopPriority() {
         haptics.impactOccurred()
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.priority = 1
+        }
         Task {
             do {
                 try await client.topPriorityTorrents(hashes: [torrent.hash])
@@ -178,6 +222,9 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func moveToBottomPriority() {
         haptics.impactOccurred()
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.priority = 999
+        }
         Task {
             do {
                 try await client.bottomPriorityTorrents(hashes: [torrent.hash])
@@ -189,6 +236,9 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func increasePriority() {
         haptics.impactOccurred()
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.priority = max(1, torrent.priority - 1)
+        }
         Task {
             do {
                 try await client.increasePriorityTorrents(hashes: [torrent.hash])
@@ -200,6 +250,9 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func decreasePriority() {
         haptics.impactOccurred()
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.priority = torrent.priority + 1
+        }
         Task {
             do {
                 try await client.decreasePriorityTorrents(hashes: [torrent.hash])
@@ -210,6 +263,7 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func deleteTorrent(then dismiss: DismissAction) {
+        qBitData.shared.cacheManager.deleteTorrentsOptimistically(hashes: [torrent.hash])
         Task {
             do {
                 try await client.deleteTorrent(hash: torrent.hash, deleteFiles: false)
@@ -221,6 +275,7 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func deleteTorrentWithFiles(then dismiss: DismissAction) {
+        qBitData.shared.cacheManager.deleteTorrentsOptimistically(hashes: [torrent.hash])
         Task {
             do {
                 try await client.deleteTorrent(hash: torrent.hash, deleteFiles: true)
