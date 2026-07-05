@@ -4,6 +4,12 @@ import SwiftUI
 
 final class TorrentListHelperViewModelTests: XCTestCase {
     
+    @MainActor
+    override func setUp() {
+        super.setUp()
+        qBitData.shared.cacheManager.torrents = [:]
+    }
+    
     // A clean, subclassed mock client specific to the TorrentListHelperViewModel unit tests
     private class TestTorrentClient: MockTorrentClient {
         var customTorrents: [Torrent]
@@ -188,9 +194,9 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         
         XCTAssertTrue(sut.torrents.isEmpty)
         XCTAssertEqual(sut.searchQuery, "")
-        XCTAssertEqual(sut.sort, "name")
+        XCTAssertEqual(sut.sort, .name)
         XCTAssertFalse(sut.reverse)
-        XCTAssertEqual(sut.filter, "all")
+        XCTAssertEqual(sut.filter, .all)
         XCTAssertEqual(sut.category, "All")
         XCTAssertEqual(sut.tag, "All")
         XCTAssertFalse(sut.isTorrentAddView)
@@ -285,12 +291,12 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         
         await sut.getTorrents()
         
-        sut.filter = "seeding"
+        sut.filter = .seeding
         await sut.getTorrents()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.state, "seeding")
         
-        sut.filter = "downloading"
+        sut.filter = .downloading
         await sut.getTorrents()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.state, "downloading")
@@ -305,7 +311,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         await sut.getTorrents()
         
         // Default sort is "name" (Ubuntu Linux ISO (U) vs Swift Programming Book (S))
-        sut.sort = "name"
+        sut.sort = .name
         sut.reverse = false
         await sut.getTorrents()
         XCTAssertEqual(sut.filteredTorrents[0].name, "Swift Programming Book")
@@ -318,7 +324,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         XCTAssertEqual(sut.filteredTorrents[1].name, "Swift Programming Book")
         
         // Sort by size ascending (2GB first, then 5GB)
-        sut.sort = "size"
+        sut.sort = .size
         sut.reverse = false
         await sut.getTorrents()
         XCTAssertEqual(sut.filteredTorrents[0].size, 2000000000)

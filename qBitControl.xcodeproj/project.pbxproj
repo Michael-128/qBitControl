@@ -7,10 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */; };
-		90EF6A4D29093142001E9F02 /* TorrentClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */; };
-		90EF6A4D29093142001E9F04 /* qBittorrentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */; };
-		90EF6A4D29093142001E9F06 /* MockTorrentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */; };
+		90EF6A5D29093142001E9F71 /* TorrentSortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */; };
+		90EF6A5D29093142001E9F73 /* TorrentFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F72 /* TorrentFilterOption.swift */; };
 		901230522DB02E8B0022FD4C /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901230512DB02E870022FD4C /* SearchResponse.swift */; };
 		901230542DB02EAE0022FD4C /* SearchResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901230532DB02EAA0022FD4C /* SearchResult.swift */; };
 		901230562DB037120022FD4C /* SearchRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901230552DB0370F0022FD4C /* SearchRowView.swift */; };
@@ -72,6 +70,7 @@
 		90726B772CDA221B0032993E /* TorrentListHelperViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B712CDA221B0032993E /* TorrentListHelperViewModel.swift */; };
 		90726B782CDA221B0032993E /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B732CDA221B0032993E /* MainViewModel.swift */; };
 		90726B7A2CDA24960032993E /* TrackersViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B792CDA24820032993E /* TrackersViewModel.swift */; };
+		90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B892CDA22190032993F /* TorrentFormatter.swift */; };
 		907C63282DAED94A004B1F41 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C63262DAED94A004B1F41 /* SearchView.swift */; };
 		907C632A2DAEDACA004B1F41 /* SearchStartResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */; };
 		907C632D2DAEDC28004B1F41 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 907C632C2DAEDC1C004B1F41 /* SearchViewModel.swift */; };
@@ -94,13 +93,19 @@
 		90E6DD6F2DFF407000BC1D76 /* ServerAdvancedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E6DD6E2DFF406A00BC1D76 /* ServerAdvancedView.swift */; };
 		90E86FFE2C81C89A00F4EA01 /* qBitDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */; };
 		90EE84862E8AEB2B009C2D7F /* TorrentListSelectionToolbarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EE84852E8AEB26009C2D7F /* TorrentListSelectionToolbarViewModel.swift */; };
-		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
-		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
-		90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90726B892CDA22190032993F /* TorrentFormatter.swift */; };
 		90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4C29093142001E9EF0 /* NetworkClient.swift */; };
+		90EF6A4D29093142001E9F02 /* TorrentClientProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */; };
+		90EF6A4D29093142001E9F04 /* qBittorrentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */; };
+		90EF6A4D29093142001E9F06 /* MockTorrentClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */; };
+		90EF6A4D29093142001E9F61 /* PartialTorrent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F60 /* PartialTorrent.swift */; };
+		90EF6A4D29093142001E9F63 /* TorrentCacheManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4D29093142001E9F62 /* TorrentCacheManager.swift */; };
 		90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */; };
+		90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */; };
+		90EF6A4F29093142001E9EFE /* TorrentCacheManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EFD /* TorrentCacheManagerTests.swift */; };
 		90EF6A5129093142001E9EF5 /* qBitControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */; };
 		90EF6A5329093142001E9EF7 /* qBitControlUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */; };
+		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
+		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -121,10 +126,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListHelperViewModelTests.swift; sourceTree = "<group>"; };
-		90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentClientProtocol.swift; sourceTree = "<group>"; };
-		90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClient.swift; sourceTree = "<group>"; };
-		90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTorrentClient.swift; sourceTree = "<group>"; };
+		90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentSortOption.swift; sourceTree = "<group>"; };
+		90EF6A5D29093142001E9F72 /* TorrentFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilterOption.swift; sourceTree = "<group>"; };
 		901230512DB02E870022FD4C /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
 		901230532DB02EAA0022FD4C /* SearchResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResult.swift; sourceTree = "<group>"; };
 		901230552DB0370F0022FD4C /* SearchRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRowView.swift; sourceTree = "<group>"; };
@@ -186,6 +189,7 @@
 		90726B712CDA221B0032993E /* TorrentListHelperViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListHelperViewModel.swift; sourceTree = "<group>"; };
 		90726B732CDA221B0032993E /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		90726B792CDA24820032993E /* TrackersViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackersViewModel.swift; sourceTree = "<group>"; };
+		90726B892CDA22190032993F /* TorrentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFormatter.swift; sourceTree = "<group>"; };
 		907C63262DAED94A004B1F41 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		907C63292DAEDAC7004B1F41 /* SearchStartResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchStartResult.swift; sourceTree = "<group>"; };
 		907C632C2DAEDC1C004B1F41 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
@@ -212,14 +216,20 @@
 		90E6DD6E2DFF406A00BC1D76 /* ServerAdvancedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAdvancedView.swift; sourceTree = "<group>"; };
 		90E86FFD2C81C89A00F4EA01 /* qBitDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitDataClass.swift; sourceTree = "<group>"; };
 		90EE84852E8AEB26009C2D7F /* TorrentListSelectionToolbarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListSelectionToolbarViewModel.swift; sourceTree = "<group>"; };
+		90EF6A4C29093142001E9EF0 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
+		90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentClientProtocol.swift; sourceTree = "<group>"; };
+		90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBittorrentClient.swift; sourceTree = "<group>"; };
+		90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockTorrentClient.swift; sourceTree = "<group>"; };
+		90EF6A4D29093142001E9F60 /* PartialTorrent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PartialTorrent.swift; sourceTree = "<group>"; };
+		90EF6A4D29093142001E9F62 /* TorrentCacheManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentCacheManager.swift; sourceTree = "<group>"; };
+		90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientTests.swift; sourceTree = "<group>"; };
+		90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListHelperViewModelTests.swift; sourceTree = "<group>"; };
+		90EF6A4E29093142001E9EFD /* TorrentCacheManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentCacheManagerTests.swift; sourceTree = "<group>"; };
+		90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITests.swift; sourceTree = "<group>"; };
+		90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		90FA253529190D0400DC8F0B /* FileNodeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNodeClass.swift; sourceTree = "<group>"; };
 		90FF93462C8707BF001CDCE4 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
-		90726B892CDA22190032993F /* TorrentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFormatter.swift; sourceTree = "<group>"; };
-		90EF6A4C29093142001E9EF0 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
-		90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientTests.swift; sourceTree = "<group>"; };
-		90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITests.swift; sourceTree = "<group>"; };
-		90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITestsLaunchTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -259,6 +269,7 @@
 		903DED2C290A8A2000FB36D6 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				90EF6A4D29093142001E9F62 /* TorrentCacheManager.swift */,
 				90EF6A4D29093142001E9F01 /* TorrentClientProtocol.swift */,
 				90EF6A4D29093142001E9F03 /* qBittorrentClient.swift */,
 				90EF6A4D29093142001E9F05 /* MockTorrentClient.swift */,
@@ -294,6 +305,9 @@
 		90726B1E2CDA22160032993E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */,
+				90EF6A5D29093142001E9F72 /* TorrentFilterOption.swift */,
+				90EF6A4D29093142001E9F60 /* PartialTorrent.swift */,
 				9023703E2E8DAD130048F5E1 /* TabItem.swift */,
 				9042ABE02DB2CC8A003584EF /* SearchCategory.swift */,
 				9042ABDE2DB2CC02003584EF /* SearchPlugin.swift */,
@@ -425,6 +439,14 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		90726B882CDA22190032993F /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				90726B892CDA22190032993F /* TorrentFormatter.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		907C63272DAED94A004B1F41 /* SearchViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -463,24 +485,6 @@
 				9082FA3929080E55006C3960 /* qBitControlUITests.xctest */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		90EF6A5029093142001E9EF4 /* qBitControlTests */ = {
-			isa = PBXGroup;
-			children = (
-				90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */,
-				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
-			);
-			path = qBitControlTests;
-			sourceTree = "<group>";
-		};
-		90EF6A5529093142001E9EF9 /* qBitControlUITests */ = {
-			isa = PBXGroup;
-			children = (
-				90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */,
-				90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */,
-			);
-			path = qBitControlUITests;
 			sourceTree = "<group>";
 		};
 		9082FA2129080E53006C3960 /* qBitControl */ = {
@@ -529,12 +533,23 @@
 			path = Toolbars;
 			sourceTree = "<group>";
 		};
-		90726B882CDA22190032993F /* Helpers */ = {
+		90EF6A5029093142001E9EF4 /* qBitControlTests */ = {
 			isa = PBXGroup;
 			children = (
-				90726B892CDA22190032993F /* TorrentFormatter.swift */,
+				90EF6A4E29093142001E9EFD /* TorrentCacheManagerTests.swift */,
+				90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */,
+				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
 			);
-			path = Helpers;
+			path = qBitControlTests;
+			sourceTree = "<group>";
+		};
+		90EF6A5529093142001E9EF9 /* qBitControlUITests */ = {
+			isa = PBXGroup;
+			children = (
+				90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */,
+				90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */,
+			);
+			path = qBitControlUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -676,6 +691,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90EF6A5D29093142001E9F71 /* TorrentSortOption.swift in Sources */,
+				90EF6A5D29093142001E9F73 /* TorrentFilterOption.swift in Sources */,
+				90EF6A4D29093142001E9F61 /* PartialTorrent.swift in Sources */,
+				90EF6A4D29093142001E9F63 /* TorrentCacheManager.swift in Sources */,
 				90EF6A4D29093142001E9F02 /* TorrentClientProtocol.swift in Sources */,
 				90EF6A4D29093142001E9F04 /* qBittorrentClient.swift in Sources */,
 				90EF6A4D29093142001E9F06 /* MockTorrentClient.swift in Sources */,
@@ -767,6 +786,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				90EF6A4F29093142001E9EFE /* TorrentCacheManagerTests.swift in Sources */,
 				90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */,
 				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 			);
@@ -998,10 +1018,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 626XV358Y5;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptTests;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlTests-Bridging-Header.h";
@@ -1020,10 +1041,11 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 626XV358Y5;
 				GENERATE_INFOPLIST_FILE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptTests;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControlTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlTests-Bridging-Header.h";
@@ -1040,9 +1062,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 626XV358Y5;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControlUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlUITests-Bridging-Header.h";
@@ -1060,9 +1083,10 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 626XV358Y5;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.TorrentAttemptUITests;
+				PRODUCT_BUNDLE_IDENTIFIER = MikeMichael.qBitControlUITests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "qBitControl/qBitControlUITests-Bridging-Header.h";

@@ -8,9 +8,9 @@ import SwiftUI
 struct FiltersMenuView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding var sort: String
+    @Binding var sort: TorrentSortOption
     @Binding var reverse: Bool
-    @Binding var filter: String
+    @Binding var filter: TorrentFilterOption
     
     @State private var categories: [Category] = []
     @State private var tagsArr: [String] = []
@@ -58,80 +58,78 @@ struct FiltersMenuView: View {
                 
                 Picker("Filter By", selection: $filter) {
                     Group {
-                        Text("All").tag("all")
-                        Text("Resumed").tag("resumed")
-                        Text("Seeding").tag("stalled_uploading")
-                        Text("Downloading").tag("stalled_downloading")
-                        Text("Active Downloading").tag("downloading")
-                        Text("Active Seeding").tag("seeding")
-                        Text("Completed").tag("completed")
-                        Text("Paused").tag("paused")
-                        Text("Active").tag("active")
-                        Text("Inactive").tag("inactive")
+                        Text("All").tag(TorrentFilterOption.all)
+                        Text("Resumed").tag(TorrentFilterOption.resumed)
+                        Text("Seeding").tag(TorrentFilterOption.stalledUploading)
+                        Text("Downloading").tag(TorrentFilterOption.stalledDownloading)
+                        Text("Active Downloading").tag(TorrentFilterOption.downloading)
+                        Text("Active Seeding").tag(TorrentFilterOption.seeding)
+                        Text("Completed").tag(TorrentFilterOption.completed)
+                        Text("Paused").tag(TorrentFilterOption.paused)
+                        Text("Active").tag(TorrentFilterOption.active)
+                        Text("Inactive").tag(TorrentFilterOption.inactive)
                     }
                     Group {
-                        Text("Stalled").tag("stalled")
-                        Text("Errored").tag("errored")
+                        Text("Stalled").tag(TorrentFilterOption.stalled)
+                        Text("Errored").tag(TorrentFilterOption.errored)
                     }
                 }.pickerStyle(.inline)
-                    .onChange(of: filter, perform: {
-                    value in
-                    defaults.set(filter, forKey: "filter")
+                    .onChange(of: filter, perform: { value in
+                    defaults.set(filter.rawValue, forKey: "filter")
                 })
                 
                 Picker("Sort By", selection: $sort) {
                     Group {
-                        Text("Added On").tag("added_on")
-                        Text("Amount Left").tag("amount_left")
-                        Text("Availability").tag("availability")
-                        Text("Category").tag("category")
-                        Text("Completed").tag("completed")
-                        Text("Completion On").tag("completion_on")
-                        Text("Download Limit").tag("dl_limit")
-                        Text("Download Speed").tag("dlspeed")
+                        Text("Added On").tag(TorrentSortOption.addedOn)
+                        Text("Amount Left").tag(TorrentSortOption.amountLeft)
+                        Text("Availability").tag(TorrentSortOption.availability)
+                        Text("Category").tag(TorrentSortOption.category)
+                        Text("Completed").tag(TorrentSortOption.completed)
+                        Text("Completion On").tag(TorrentSortOption.completionOn)
+                        Text("Download Limit").tag(TorrentSortOption.dlLimit)
+                        Text("Download Speed").tag(TorrentSortOption.dlspeed)
                     }
                     
                     Group {
-                        Text("Downloaded").tag("downloaded")
-                        Text("Downloaded Session").tag("downloaded_session")
-                        Text("ETA").tag("eta")
-                        Text("Last Activity").tag("last_activity")
-                        Text("Max Ratio").tag("max_ratio")
-                        Text("Max Seeding Time").tag("max_seeding_time")
+                        Text("Downloaded").tag(TorrentSortOption.downloaded)
+                        Text("Downloaded Session").tag(TorrentSortOption.downloadedSession)
+                        Text("ETA").tag(TorrentSortOption.eta)
+                        Text("Last Activity").tag(TorrentSortOption.lastActivity)
+                        Text("Max Ratio").tag(TorrentSortOption.maxRatio)
+                        Text("Max Seeding Time").tag(TorrentSortOption.maxSeedingTime)
                     }
                     
                     Group {
-                        Text("Name").tag("name")
-                        Text("Seeds In Swarm").tag("num_complete")
-                        Text("Peers In Swarm").tag("num_incomplete")
-                        Text("Connected Leeches").tag("num_leechs")
-                        Text("Connected Seeds").tag("num_seeds")
-                        Text("Priority").tag("priority")
-                        Text("Progress").tag("progress")
-                        Text("Ratio").tag("ratio")
-                        Text("Ratio Limit").tag("ratio_limit")
+                        Text("Name").tag(TorrentSortOption.name)
+                        Text("Seeds In Swarm").tag(TorrentSortOption.numComplete)
+                        Text("Peers In Swarm").tag(TorrentSortOption.numIncomplete)
+                        Text("Connected Leeches").tag(TorrentSortOption.numLeechs)
+                        Text("Connected Seeds").tag(TorrentSortOption.numSeeds)
+                        Text("Priority").tag(TorrentSortOption.priority)
+                        Text("Progress").tag(TorrentSortOption.progress)
+                        Text("Ratio").tag(TorrentSortOption.ratio)
+                        Text("Ratio Limit").tag(TorrentSortOption.ratioLimit)
                     }
                     
                     Group {
-                        Text("Seeding Time").tag("seeding_time")
-                        Text("Seeding Time Limit").tag("seeding_time_limit")
-                        Text("Size").tag("size")
-                        Text("State").tag("state")
-                        Text("Tags").tag("tags")
-                        Text("Time Active").tag("time_active")
-                        Text("Total Size").tag("total_size")
+                        Text("Seeding Time").tag(TorrentSortOption.seedingTime)
+                        Text("Seeding Time Limit").tag(TorrentSortOption.seedingTimeLimit)
+                        Text("Size").tag(TorrentSortOption.size)
+                        Text("State").tag(TorrentSortOption.state)
+                        Text("Tags").tag(TorrentSortOption.tags)
+                        Text("Time Active").tag(TorrentSortOption.timeActive)
+                        Text("Total Size").tag(TorrentSortOption.totalSize)
                     }
                     
                     Group {
-                        Text("Upload Limit").tag("up_limit")
-                        Text("Uploaded").tag("uploaded")
-                        Text("Uploaded Session").tag("uploaded_session")
-                        Text("Upload Speed").tag("upspeed")
+                        Text("Upload Limit").tag(TorrentSortOption.upLimit)
+                        Text("Uploaded").tag(TorrentSortOption.uploaded)
+                        Text("Uploaded Session").tag(TorrentSortOption.uploadedSession)
+                        Text("Upload Speed").tag(TorrentSortOption.upspeed)
                     }
                 }.pickerStyle(.inline)
-                    .onChange(of: sort, perform: {
-                    value in
-                    defaults.set(sort, forKey: "sort")
+                    .onChange(of: sort, perform: { value in
+                    defaults.set(sort.rawValue, forKey: "sort")
                 })
                 
                 .navigationBarTitle("Filters")
