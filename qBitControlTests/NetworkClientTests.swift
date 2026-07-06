@@ -271,4 +271,52 @@ final class NetworkClientTests: XCTestCase {
         // Then
         XCTAssertEqual(result, rawVersionString)
     }
+
+    func testSendRequest_Timeout() async {
+        // Given
+        MockURLProtocol.requestHandler = { request in
+            Thread.sleep(forTimeInterval: 0.3)
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, nil)
+        }
+
+        let configuration = URLSessionConfiguration.ephemeral
+        configuration.protocolClasses = [MockURLProtocol.self]
+        configuration.timeoutIntervalForRequest = 0.1
+        configuration.timeoutIntervalForResource = 0.1
+        let mockTimeoutSession = URLSession(configuration: configuration)
+
+        let client = NetworkClient(baseURL: baseURL, basicAuth: nil, session: mockTimeoutSession)
+
+        // When/Then
+        do {
+            let _: MockDecodable = try await client.sendRequest(path: "/test", queryItems: [], cookie: nil)
+            XCTFail("Expected request to timeout, but it succeeded.")
+        } catch {
+            XCTAssertNotNil(error)
+        }
+    }
+
+    func testTaskGroup_TimeoutRace() async {
+        // Given/When/Then
+        do {
+            let _: Bool = try await withThrowingTaskGroup(of: Bool.self) { group in
+                group.addTask {
+                    try await Task.sleep(nanoseconds: 300_000_000) // 0.3 seconds
+                    return true
+                }
+                group.addTask {
+                    try await Task.sleep(nanoseconds: 100_000_000) // 0.1 seconds (wins timeout)
+                    throw NetworkError.timeout
+                }
+                
+                let first = try await group.next()
+                group.cancelAll()
+                return first ?? false
+            }
+            XCTFail("Expected task group to fail with timeout error")
+        } catch {
+            XCTAssertEqual(error as? NetworkError, NetworkError.timeout)
+        }
+    }
 }
