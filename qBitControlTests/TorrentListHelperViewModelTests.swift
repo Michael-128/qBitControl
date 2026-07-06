@@ -1,5 +1,6 @@
 import XCTest
 import SwiftUI
+import Combine
 @testable import qBitManager
 
 final class TorrentListHelperViewModelTests: XCTestCase {
@@ -355,10 +356,59 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         XCTAssertEqual(client.deleteFilesFlag, false)
         
         // 4. Test multi delete selected torrents
-        sut.selectedTorrents = [mockTorrents[0], mockTorrents[1]]
+        sut.selectedTorrents = [mockTorrents[0].hash, mockTorrents[1].hash]
         sut.deleteSelectedTorrents(isDeleteFiles: true)
         try? await Task.sleep(nanoseconds: 50_000_000)
         XCTAssertNotNil(client.deleteCalledWithHash)
         XCTAssertEqual(client.deleteFilesFlag, true)
+    }
+
+    @MainActor
+    func testSelection_PersistsAcrossTelemetryRefresh() async throws {
+        // Given: A view model loaded with a mock torrent
+        let mockTorrents = getTestTorrents()
+        let mockTorrent = mockTorrents[0]
+        
+        let client = TestTorrentClient(torrents: [mockTorrent])
+        let sut = TorrentListHelperViewModel(client: client)
+        
+        // Setup expectation to wait for initial Combine emission FIRST
+        var cancellables = Set<AnyCancellable>()
+        let initialExpectation = XCTestExpectation(description: "Initial Combine emission")
+        sut.$filteredTorrents
+            .dropFirst()
+            .sink { _ in initialExpectation.fulfill() }
+            .store(in: &cancellables)
+        
+        // Inject initial torrent into the cache SECOND
+        qBitData.shared.cacheManager.torrents = [mockTorrent.hash: mockTorrent]
+        
+        await fulfillment(of: [initialExpectation], timeout: 1.0)
+        
+        // Select the torrent hash
+        sut.selectedTorrents = [mockTorrent.hash]
+        XCTAssertTrue(sut.selectedTorrents.contains(mockTorrent.hash))
+        
+        // Setup expectation to wait for refresh Combine emission
+        let refreshExpectation = XCTestExpectation(description: "Refresh Combine emission")
+        sut.$filteredTorrents
+            .dropFirst()
+            .sink { _ in refreshExpectation.fulfill() }
+            .store(in: &cancellables)
+        
+        // When: Telemetry updates properties (speed and progress change)
+        var updatedTorrent = mockTorrent
+        updatedTorrent.progress = 0.55
+        updatedTorrent.dlspeed = 200
+        updatedTorrent.upspeed = 80
+        
+        // Merge the update into the cache
+        qBitData.shared.cacheManager.torrents = [updatedTorrent.hash: updatedTorrent]
+        
+        // Await the update event reactively (sleep-free!)
+        await fulfillment(of: [refreshExpectation], timeout: 1.0)
+        
+        // Then: The selection MUST still persist, even though properties changed
+        XCTAssertTrue(sut.selectedTorrents.contains(mockTorrent.hash), "Selection should persist after telemetry updates properties")
     }
 }
