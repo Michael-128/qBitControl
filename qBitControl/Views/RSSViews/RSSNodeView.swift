@@ -47,7 +47,7 @@ struct RSSNodeView: View {
                 
                 ForEach(rssNode.feeds, id: \.id) { feed in
                     NavigationLink {
-                        RSSFeedView(rssFeed: feed)
+                        RSSFeedView(feedURL: feed.url ?? "")
                     } label: {
                         Label(feed.title.isEmpty ? "Feed" : feed.title, systemImage: "dot.radiowaves.up.forward").contextMenu(menuItems: { itemContextMenu(itemTitle: feed.title) })
                     }
@@ -59,6 +59,12 @@ struct RSSNodeView: View {
             .alert("Add Feed", isPresented: $isAddFeedAlert, actions: { addFeedAlert() })
             .alert("Add Folder", isPresented: $isAddFolderAlert, actions: { addFolderAlert() })
             .alert("New Name", isPresented: $isRenameAlert, actions: { renameAlert() })
+            .onAppear {
+                viewModel.startTimer()
+            }
+            .onDisappear {
+                viewModel.stopTimer()
+            }
     }
     
     func sectionHeader() -> Text {

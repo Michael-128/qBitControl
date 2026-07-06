@@ -1,34 +1,49 @@
 import SwiftUI
 
 struct RSSFeedView: View {
-    @ObservedObject var rssNodeViewModel = RSSNodeViewModel.shared
+    let feedURL: String
+    @StateObject private var viewModel: RSSFeedViewModel
     
-    @State public var rssFeed: RSSFeed
-    @State public var searchQuery: String = ""
-    
-    func filterArticles(_ article: RSSFeed.Article) -> Bool {
-        if let title = article.title { return title.lowercased().contains(searchQuery.lowercased()) }
-        return false
+    init(feedURL: String) {
+        self.feedURL = feedURL
+        self._viewModel = StateObject(wrappedValue: RSSFeedViewModel(feedURL: feedURL))
     }
     
     var body: some View {
-        List {
-            if !searchQuery.isEmpty {
-                Section(header: Text("\(rssFeed.articles.count) Articles") ) {
-                    ForEach(rssFeed.articles.filter(filterArticles), id: \.id) { article in
-                        RSSArticleView(article: article)
-                    }
+        Group {
+            if viewModel.displayedArticles.isEmpty && viewModel.searchQuery.isEmpty {
+                VStack {
+                    ProgressView()
+                    Text("Loading Feed...")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                        .padding(.top, 8)
                 }
             } else {
-                Section(header: Text("\(rssFeed.articles.count) Articles")) {
-                    ForEach(rssFeed.articles, id: \.id) { article in
-                        RSSArticleView(article: article)
+                List {
+                    Section(header: Text("\(viewModel.displayedArticles.count) Articles")) {
+                        ForEach(viewModel.displayedArticles, id: \.id) { article in
+                            RSSArticleView(article: article) {
+                                guard viewModel.selectedArticle == nil else { return }
+                                viewModel.selectedArticle = article
+                            }
+                        }
                     }
                 }
+                .navigationTitle(viewModel.feedTitle)
             }
         }
-        .navigationTitle(rssFeed.title)
-        .searchable(text: $searchQuery)
-        .onAppear { if self.rssFeed.title.isEmpty { rssNodeViewModel.getRssRootNode() } }
+        .sheet(item: $viewModel.selectedArticle) { _ in
+            if let url = viewModel.selectedTorrentURL {
+                TorrentAddView(torrentUrls: .constant([url]))
+            }
+        }
+        .searchable(text: $viewModel.searchQuery)
+        .onAppear {
+            viewModel.startPolling()
+        }
+        .onDisappear {
+            viewModel.stopPolling()
+        }
     }
 }
