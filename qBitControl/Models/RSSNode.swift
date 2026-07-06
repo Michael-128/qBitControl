@@ -34,6 +34,20 @@ final class RSSNode: Decodable, Identifiable {
         return nil
     }
     
+    func getFeed(url: String) -> RSSFeed? {
+        for feed in feeds {
+            if feed.url == url {
+                return feed
+            }
+        }
+        for node in nodes {
+            if let found = node.getFeed(url: url) {
+                return found
+            }
+        }
+        return nil
+    }
+    
     init() { }
     
     required init(from decoder: any Decoder) throws {
