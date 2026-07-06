@@ -6,11 +6,6 @@
 import SwiftUI
 import Foundation
 
-enum ConnectionStatus {
-    case connected
-    case offline
-}
-
 @MainActor
 class qBitData: ObservableObject {
     static let shared = qBitData()

@@ -80,6 +80,7 @@
 		9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9082FA2229080E53006C3960 /* qBitControlApp.swift */; };
 		9082FA2729080E55006C3960 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2629080E55006C3960 /* Assets.xcassets */; };
 		9082FA2A29080E55006C3960 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9082FA2929080E55006C3960 /* Preview Assets.xcassets */; };
+		90833C252FFC3CC300D3769B /* ConnectionStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90833C242FFC3CBD00D3769B /* ConnectionStatus.swift */; };
 		909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */; };
 		909EE5A32CDD3B51002403DF /* RSSFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A42CDD3B4E002403DF /* RSSFeedViewModel.swift */; };
 		909EE5A52CDD3B51002403DF /* RSSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A62CDD3B51002403DF /* RSSError.swift */; };
@@ -212,6 +213,7 @@
 		9082FA2929080E55006C3960 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9082FA2F29080E55006C3960 /* qBitControlTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9082FA3929080E55006C3960 /* qBitControlUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = qBitControlUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		90833C242FFC3CBD00D3769B /* ConnectionStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectionStatus.swift; sourceTree = "<group>"; };
 		909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSNodeViewModel.swift; sourceTree = "<group>"; };
 		909EE5A42CDD3B4E002403DF /* RSSFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedViewModel.swift; sourceTree = "<group>"; };
 		909EE5A62CDD3B51002403DF /* RSSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSError.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 		90726B1E2CDA22160032993E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				90833C242FFC3CBD00D3769B /* ConnectionStatus.swift */,
 				90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */,
 				90EF6A5D29093142001E9F72 /* TorrentFilterOption.swift */,
 				90EF6A4D29093142001E9F60 /* PartialTorrent.swift */,
@@ -730,6 +733,7 @@
 				90AE89392CDBEC4D000E0276 /* RSSNodeView.swift in Sources */,
 				90E1D0542D30438F00B81F12 /* Version.swift in Sources */,
 				901230562DB037120022FD4C /* SearchRowView.swift in Sources */,
+				90833C252FFC3CC300D3769B /* ConnectionStatus.swift in Sources */,
 				90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */,
 				90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */,
 				90726B1F2CDA22160032993E /* AlertIdentifier.swift in Sources */,
