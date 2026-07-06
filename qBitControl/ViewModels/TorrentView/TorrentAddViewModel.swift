@@ -52,6 +52,7 @@ class TorrentAddViewModel: ObservableObject {
     @Published var seedingTimeLimit = ""
     
     @Published var isAppeared = false
+    @Published var activeError: TorrentAddError? = nil
     
     init(torrentUrls: [URL], magnetOverride: Bool = false, client: TorrentClientProtocol) {
         self.torrentUrls = torrentUrls
@@ -121,7 +122,7 @@ class TorrentAddViewModel: ObservableObject {
         }
     }
     
-    func addTorrent(then dismiss: () -> Void) {
+    func addTorrent(then dismiss: @escaping () -> Void) {
         let category = self.category == Self.defaultCategory ? "" : self.category.name
         
         Task {
@@ -157,11 +158,12 @@ class TorrentAddViewModel: ObservableObject {
                         seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
                     )
                 }
+                dismiss()
             } catch {
                 print("Failed to add torrent: \(error)")
+                self.activeError = self.mapError(error)
             }
         }
-        dismiss()
     }
     
     func getSavePath() {
@@ -179,5 +181,26 @@ class TorrentAddViewModel: ObservableObject {
                 print("Failed to get preferences for save path: \(error)")
             }
         }
+    }
+    
+    private func mapError(_ error: Error) -> TorrentAddError {
+        if let networkError = error as? NetworkError {
+            switch networkError {
+            case .invalidURL:
+                return .invalidFileOrMagnet
+            case .unauthorized:
+                return .unauthorized
+            case .timeout:
+                return .timeout
+            case .invalidResponse:
+                return .unknown(0)
+            case .httpError(let statusCode):
+                if statusCode == 415 || statusCode == 400 {
+                    return .invalidFileOrMagnet
+                }
+                return .unknown(statusCode)
+            }
+        }
+        return .unknown(0)
     }
 }
