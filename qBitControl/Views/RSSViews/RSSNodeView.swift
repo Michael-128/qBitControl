@@ -65,6 +65,13 @@ struct RSSNodeView: View {
             .onDisappear {
                 viewModel.stopTimer()
             }
+            .alert(item: $viewModel.activeError) { error in
+                Alert(
+                    title: Text("RSS Action Failed"),
+                    message: Text(error.localizedDescription),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
     }
     
     func sectionHeader() -> Text {
