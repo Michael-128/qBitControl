@@ -18,7 +18,6 @@ class RSSNodeViewModel: ObservableObject {
     
     init() {
         self.getRssRootNode()
-        self.startTimer()
     }
     
     deinit {
@@ -31,7 +30,7 @@ class RSSNodeViewModel: ObservableObject {
             while !Task.isCancelled {
                 await getRssRootNodeAsync()
                 do {
-                    try await Task.sleep(nanoseconds: 2_000_000_000)
+                    try await Task.sleep(nanoseconds: 30_000_000_000)
                 } catch {
                     break
                 }
@@ -99,7 +98,7 @@ class RSSNodeViewModel: ObservableObject {
         }
     }
     
-    private func getRssRootNodeAsync() async {
+    func getRssRootNodeAsync() async {
         do {
             let node = try await client.getRSSFeeds(withDate: true)
             self.rssRootNode = node
