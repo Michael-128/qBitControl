@@ -11,6 +11,7 @@ enum NetworkError: Error, Equatable {
     case unauthorized
     case invalidResponse
     case httpError(statusCode: Int)
+    case timeout
 }
 
 /// A stateless actor responsible for executing generic asynchronous HTTP requests.
@@ -23,11 +24,19 @@ actor NetworkClient {
     /// - Parameters:
     ///   - baseURL: The base server URL.
     ///   - basicAuth: Optional basic authentication credentials.
-    ///   - session: The `URLSession` instance to use (supports Dependency Injection for testability).
-    init(baseURL: String, basicAuth: Server.BasicAuth?, session: URLSession = .shared) {
+    ///   - session: Optional custom `URLSession` (defaults to 15s timeout session).
+    init(baseURL: String, basicAuth: Server.BasicAuth?, session: URLSession? = nil) {
         self.baseURL = baseURL
         self.basicAuth = basicAuth
-        self.session = session
+        
+        if let session = session {
+            self.session = session
+        } else {
+            let config = URLSessionConfiguration.default
+            config.timeoutIntervalForRequest = 15.0
+            config.timeoutIntervalForResource = 15.0
+            self.session = URLSession(configuration: config)
+        }
     }
 
     /// Sends an HTTP request and decodes the response to a generic `Decodable` type.
