@@ -165,12 +165,30 @@ class ServersHelper: ObservableObject {
             let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
             let newClient = qBittorrentClient(networkClient: networkClient)
             do {
-                try await newClient.login(username: server.username, password: server.password)
+                let loggedInClient = try await withThrowingTaskGroup(of: qBittorrentClient.self) { group in
+                    group.addTask {
+                        try await newClient.login(username: server.username, password: server.password)
+                        return newClient
+                    }
+                    
+                    group.addTask {
+                        try await Task.sleep(nanoseconds: 3_000_000_000) // 3 seconds
+                        throw NetworkError.timeout
+                    }
+                    
+                    let firstResult = try await group.next()
+                    group.cancelAll()
+                    
+                    guard let client = firstResult else {
+                        throw NetworkError.invalidResponse
+                    }
+                    return client
+                }
                 
-                self.client = newClient
+                // Mutating and invoking actor-isolated methods safely on the MainActor
+                self.client = loggedInClient
                 self.setActiveServer(id: server.id)
-                
-                await fetchMetadata()
+                await self.fetchMetadata()
                 
                 self.isLoggedIn = true
             } catch {
