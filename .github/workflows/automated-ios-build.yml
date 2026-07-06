@@ -6,9 +6,6 @@ on:
       - "main"
     tags:
       - "build-ci*"
-  pull_request:
-    branches:
-      - "main"
 
 jobs:
   build:
