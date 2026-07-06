@@ -23,7 +23,7 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published public var isTorrentAddView: Bool = false
     @Published public var isSelectionMode: Bool = false
     
-    @Published public var selectedTorrents: Set<Torrent> = Set()
+    @Published public var selectedTorrents: Set<String> = Set()
     
     @Published public var filteredTorrents: [Torrent] = []
     
@@ -316,17 +316,12 @@ class TorrentListHelperViewModel: ObservableObject {
     func checkAllTorrents() {
         self.torrents.forEach {
             torrent in
-            self.selectedTorrents.insert(torrent)
+            self.selectedTorrents.insert(torrent.hash)
         }
     }
     
     func doForSelectedTorrents(action: ([String]) -> Void) {
-        let selectedHashes = self.selectedTorrents.compactMap {
-            torrent in
-            torrent.hash
-        }
-        
-        action(selectedHashes)
+        action(Array(self.selectedTorrents))
         self.quitSelectionMode()
     }
     

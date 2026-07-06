@@ -355,7 +355,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         XCTAssertEqual(client.deleteFilesFlag, false)
         
         // 4. Test multi delete selected torrents
-        sut.selectedTorrents = [mockTorrents[0], mockTorrents[1]]
+        sut.selectedTorrents = [mockTorrents[0].hash, mockTorrents[1].hash]
         sut.deleteSelectedTorrents(isDeleteFiles: true)
         try? await Task.sleep(nanoseconds: 50_000_000)
         XCTAssertNotNil(client.deleteCalledWithHash)

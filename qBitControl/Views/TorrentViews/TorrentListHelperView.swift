@@ -54,7 +54,7 @@ struct TorrentListHelperView: View {
     }
     
     func torrentSelectionModeRowView(torrent: Torrent) -> some View {
-        let isTorrentSelected = viewModel.selectedTorrents.contains(torrent)
+        let isTorrentSelected = viewModel.selectedTorrents.contains(torrent.hash)
         
         return HStack {
             Image(systemName: isTorrentSelected ? "checkmark.circle.fill" : "circle")
@@ -75,9 +75,9 @@ struct TorrentListHelperView: View {
         .onTapGesture {
             withAnimation(.spring(response: 0.2, dampingFraction: 0.6)) {
                 if isTorrentSelected {
-                    viewModel.selectedTorrents.remove(torrent)
+                    viewModel.selectedTorrents.remove(torrent.hash)
                 } else {
-                    viewModel.selectedTorrents.insert(torrent)
+                    viewModel.selectedTorrents.insert(torrent.hash)
                 }
             }
         }
