@@ -10,6 +10,7 @@ class RSSNodeViewModel: ObservableObject {
     static public let shared = RSSNodeViewModel()
     
     @Published public var rssRootNode: RSSNode = .init()
+    @Published public var activeError: RSSError? = nil
     private var pollingTask: Task<Void, Never>?
     
     private var client: TorrentClientProtocol {
@@ -18,7 +19,6 @@ class RSSNodeViewModel: ObservableObject {
     
     init() {
         self.getRssRootNode()
-        self.startTimer()
     }
     
     deinit {
@@ -31,7 +31,7 @@ class RSSNodeViewModel: ObservableObject {
             while !Task.isCancelled {
                 await getRssRootNodeAsync()
                 do {
-                    try await Task.sleep(nanoseconds: 2_000_000_000)
+                    try await Task.sleep(nanoseconds: 30_000_000_000)
                 } catch {
                     break
                 }
@@ -50,7 +50,7 @@ class RSSNodeViewModel: ObservableObject {
                 try await client.addRSSFeed(url: url, path: path)
                 getRssRootNode()
             } catch {
-                print("Failed to add RSS feed: \(error)")
+                self.activeError = self.mapError(error)
             }
         }
     }
@@ -61,7 +61,7 @@ class RSSNodeViewModel: ObservableObject {
                 try await client.addRSSFolder(path: path)
                 getRssRootNode()
             } catch {
-                print("Failed to add RSS folder: \(error)")
+                self.activeError = self.mapError(error)
             }
         }
     }
@@ -72,7 +72,7 @@ class RSSNodeViewModel: ObservableObject {
                 try await client.moveRSSItem(itemPath: itemPath, destPath: destPath)
                 getRssRootNode()
             } catch {
-                print("Failed to move RSS item: \(error)")
+                self.activeError = self.mapError(error)
             }
         }
     }
@@ -83,7 +83,7 @@ class RSSNodeViewModel: ObservableObject {
                 try await client.addRSSRefreshItem(path: path)
                 getRssRootNode()
             } catch {
-                print("Failed to refresh RSS item: \(error)")
+                self.activeError = self.mapError(error)
             }
         }
     }
@@ -94,12 +94,12 @@ class RSSNodeViewModel: ObservableObject {
                 try await client.addRSSRemoveItem(path: path)
                 getRssRootNode()
             } catch {
-                print("Failed to remove RSS item: \(error)")
+                self.activeError = self.mapError(error)
             }
         }
     }
     
-    private func getRssRootNodeAsync() async {
+    func getRssRootNodeAsync() async {
         do {
             let node = try await client.getRSSFeeds(withDate: true)
             self.rssRootNode = node
@@ -112,5 +112,26 @@ class RSSNodeViewModel: ObservableObject {
         Task {
             await getRssRootNodeAsync()
         }
+    }
+    
+    private func mapError(_ error: Error) -> RSSError {
+        if let networkError = error as? NetworkError {
+            switch networkError {
+            case .invalidURL:
+                return .invalidURL
+            case .unauthorized:
+                return .unauthorized
+            case .timeout:
+                return .timeout
+            case .invalidResponse:
+                return .unknown(0)
+            case .httpError(let statusCode):
+                if statusCode == 409 {
+                    return .alreadyExists
+                }
+                return .unknown(statusCode)
+            }
+        }
+        return .unknown(0)
     }
 }

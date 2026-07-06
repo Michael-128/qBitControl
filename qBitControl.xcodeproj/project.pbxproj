@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909EE5A52CDD3B51002403DF /* RSSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A62CDD3B51002403DF /* RSSError.swift */; };
+		909EE5A32CDD3B51002403DF /* RSSFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A42CDD3B4E002403DF /* RSSFeedViewModel.swift */; };
 		90EF6A5D29093142001E9F75 /* SmoothProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F74 /* SmoothProgressBar.swift */; };
 		90EF6A5D29093142001E9F71 /* TorrentSortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */; };
 		90EF6A5D29093142001E9F73 /* TorrentFilterOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F72 /* TorrentFilterOption.swift */; };
@@ -127,6 +129,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		909EE5A62CDD3B51002403DF /* RSSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSError.swift; sourceTree = "<group>"; };
+		909EE5A42CDD3B4E002403DF /* RSSFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSFeedViewModel.swift; sourceTree = "<group>"; };
 		90EF6A5D29093142001E9F74 /* SmoothProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SmoothProgressBar.swift; sourceTree = "<group>"; };
 		90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentSortOption.swift; sourceTree = "<group>"; };
 		90EF6A5D29093142001E9F72 /* TorrentFilterOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentFilterOption.swift; sourceTree = "<group>"; };
@@ -329,6 +333,7 @@
 				90726B152CDA22160032993E /* qBitPreferences.swift */,
 				90AE89332CDB7316000E0276 /* RSSNode.swift */,
 				90726B162CDA22160032993E /* RSSFeed.swift */,
+				909EE5A62CDD3B51002403DF /* RSSError.swift */,
 				90726B172CDA22160032993E /* Server.swift */,
 				90726B182CDA22160032993E /* ServerAction.swift */,
 				90726B192CDA22160032993E /* ServerState.swift */,
@@ -522,6 +527,7 @@
 		90AE89302CDB6EF5000E0276 /* RSSView */ = {
 			isa = PBXGroup;
 			children = (
+				909EE5A42CDD3B4E002403DF /* RSSFeedViewModel.swift */,
 				909EE5A12CDD3B4E002403DF /* RSSNodeViewModel.swift */,
 				90AE89312CDB6EFC000E0276 /* RSSViewModel.swift */,
 			);
@@ -766,11 +772,13 @@
 				90726B252CDA22160032993E /* PartialServerState.swift in Sources */,
 				90AE89322CDB6F00000E0276 /* RSSViewModel.swift in Sources */,
 				909EE5A22CDD3B51002403DF /* RSSNodeViewModel.swift in Sources */,
+				909EE5A32CDD3B51002403DF /* RSSFeedViewModel.swift in Sources */,
 				90726B262CDA22160032993E /* Peer.swift in Sources */,
 				90726B272CDA22160032993E /* Peers.swift in Sources */,
 				90DF6C6F2E89BF21004562C1 /* SystemHelper.swift in Sources */,
 				90726B282CDA22160032993E /* qBitPreferences.swift in Sources */,
 				90726B292CDA22160032993E /* RSSFeed.swift in Sources */,
+				909EE5A52CDD3B51002403DF /* RSSError.swift in Sources */,
 				90726B2A2CDA22160032993E /* Server.swift in Sources */,
 				90726B2B2CDA22160032993E /* ServerAction.swift in Sources */,
 				90726B2C2CDA22160032993E /* ServerState.swift in Sources */,

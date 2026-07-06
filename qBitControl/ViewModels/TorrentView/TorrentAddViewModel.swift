@@ -83,15 +83,26 @@ class TorrentAddViewModel: ObservableObject {
         
         self.fileNames.append(fileName)
         
-        if fileURL.startAccessingSecurityScopedResource() || isRemote {
+        if isRemote {
             Task {
                 do {
-                    let data = try Data(contentsOf: fileURL)
+                    let (data, _) = try await URLSession.shared.data(from: fileURL)
                     self.fileContent[fileName] = data
                 } catch {
                     print(error)
                 }
-                fileURL.stopAccessingSecurityScopedResource()
+            }
+        } else {
+            if fileURL.startAccessingSecurityScopedResource() {
+                Task {
+                    do {
+                        let data = try Data(contentsOf: fileURL)
+                        self.fileContent[fileName] = data
+                    } catch {
+                        print(error)
+                    }
+                    fileURL.stopAccessingSecurityScopedResource()
+                }
             }
         }
     }
