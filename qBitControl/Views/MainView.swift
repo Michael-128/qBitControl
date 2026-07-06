@@ -3,8 +3,10 @@ import SwiftUI
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @ObservedObject var serversHelper = ServersHelper.shared
+    @ObservedObject var qBitDataObj = qBitData.shared
     @Environment(\.scenePhase) var scenePhase
     @State var selectedTab: TabItem.Tab = .search
+    @State private var showOfflineBanner = false
     
     let tabs = [
         TabItem(label: "Tasks", systemImage: "square.and.arrow.down.on.square", value: .tasks) { AnyView(TorrentListView()) },
@@ -60,11 +62,28 @@ struct MainView: View {
                     }
                     .navigationTitle("qBitControl")
             } else {
-                if #available(iOS 26.0, *) {
-                    mainTabViewLG()
-                        .tabBarMinimizeBehavior(.onScrollDown)
-                } else {
-                    mainTabView()
+                ZStack(alignment: .bottom) {
+                    if #available(iOS 26.0, *) {
+                        mainTabViewLG()
+                            .tabBarMinimizeBehavior(.onScrollDown)
+                    } else {
+                        mainTabView()
+                    }
+                    
+                    if showOfflineBanner {
+                        ConnectionBannerView()
+                            .padding(.bottom, 56) // Positioned above the system tab bar
+                            .transition(.move(edge: .bottom).combined(with: .opacity))
+                            .zIndex(1)
+                    }
+                }
+                .onAppear {
+                    showOfflineBanner = (qBitDataObj.connectionStatus != .connected)
+                }
+                .onChange(of: qBitDataObj.connectionStatus) { status in
+                    withAnimation(.easeInOut) {
+                        showOfflineBanner = (status != .connected)
+                    }
                 }
             }
         }
