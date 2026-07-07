@@ -14,6 +14,7 @@ class qBitData: ObservableObject {
     @Published var serverState: ServerState?
     @Published var dlTransferData: [TransferInfo] = []
     @Published var upTransferData: [TransferInfo] = []
+    @Published var connectionStatus: ConnectionStatus = .connected
     let cacheManager = TorrentCacheManager()
     
     private var pollingTask: Task<Void, Never>?
@@ -61,7 +62,12 @@ class qBitData: ObservableObject {
     }
     
     func getMainData() async {
-        guard let client = ServersHelper.shared.client else { return }
+        guard let client = ServersHelper.shared.client, ServersHelper.shared.isLoggedIn else {
+            if self.connectionStatus != .connected {
+                self.connectionStatus = .connected
+            }
+            return
+        }
         
         do {
             let mainData = try await client.getMainData(rid: rid)
@@ -92,8 +98,10 @@ class qBitData: ObservableObject {
                 // Limit the history to the last 20 entries
                 if self.upTransferData.count > 20 { self.upTransferData.removeFirst(self.upTransferData.count - 20) }
             }
+            self.connectionStatus = .connected
         } catch {
             print("Telemetry fetch failed: \(error)")
+            self.connectionStatus = .offline
         }
     }
 }
