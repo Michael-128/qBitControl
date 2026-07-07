@@ -104,7 +104,7 @@ class RSSNodeViewModel: ObservableObject {
             let node = try await client.getRSSFeeds(withDate: true)
             self.rssRootNode = node
         } catch {
-            print("Failed to get RSS feeds: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .rss, eventName: "get_rss_feeds_failed", errorDescription: error.localizedDescription))
         }
     }
     

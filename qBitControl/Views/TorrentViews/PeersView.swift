@@ -33,7 +33,7 @@ struct PeersView: View {
             self.peers = refreshedPeers
             self.isLoaded = true
         } catch {
-            print("Failed to get peers: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "get_peers_failed", errorDescription: error.localizedDescription))
         }
     }
     

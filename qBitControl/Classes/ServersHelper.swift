@@ -44,7 +44,7 @@ class ServersHelper: ObservableObject {
             do {
                 self.servers = try decoder.decode([Server].self, from: encodedServers)
             } catch {
-                print("Servers could not be decoded.")
+                AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "servers_decode_failed", errorDescription: "Servers could not be decoded: \(error.localizedDescription)"))
             }
         }
     }
@@ -79,7 +79,7 @@ class ServersHelper: ObservableObject {
             let encodedServers = try encoder.encode(self.servers)
             defaults.setValue(encodedServers, forKey: self.serversKey)
         } catch {
-            print("Servers could not be encoded")
+            AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "servers_encode_failed", errorDescription: "Servers could not be encoded: \(error.localizedDescription)"))
         }
     }
     
@@ -194,7 +194,7 @@ class ServersHelper: ObservableObject {
                 self.isLoggedIn = true
                 await qBitData.shared.getMainData()
             } catch {
-                print("Auto-connect failed: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .auth, eventName: "auto_connect_failed", errorDescription: error.localizedDescription))
             }
             self.connectingServerId = nil
         }
@@ -205,17 +205,17 @@ class ServersHelper: ObservableObject {
         do {
             self.preferences = try await client.getPreferences()
         } catch {
-            print("Failed to fetch preferences: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "fetch_preferences_failed", errorDescription: error.localizedDescription))
         }
         do {
             self.categories = try await client.getCategories()
         } catch {
-            print("Failed to fetch categories: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_categories_failed", errorDescription: error.localizedDescription))
         }
         do {
             self.tags = try await client.getTags()
         } catch {
-            print("Failed to fetch tags: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_tags_failed", errorDescription: error.localizedDescription))
         }
     }
     
@@ -226,7 +226,7 @@ class ServersHelper: ObservableObject {
                     self.categories = try await client.getCategories()
                 }
             } catch {
-                print("Failed to refresh categories: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "refresh_categories_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -238,7 +238,7 @@ class ServersHelper: ObservableObject {
                     self.tags = try await client.getTags()
                 }
             } catch {
-                print("Failed to refresh tags: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "refresh_tags_failed", errorDescription: error.localizedDescription))
             }
         }
     }

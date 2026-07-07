@@ -61,7 +61,7 @@ struct FilesView: View {
                 self.sortedFiles = filesWithCommonPaths.sorted(by: { $0.0 < $1.0 })
                 getNextFileNodes(startIndex: curStep, endIndex: getNextStep(currentStep: curStep))
             } catch {
-                print("Failed to get files: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "get_files_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -115,7 +115,7 @@ struct FilesView: View {
                 try await client.setFilePriority(hash: torrentHash, ids: indexes, priority: priority)
                 onComplete(true)
             } catch {
-                print("Failed to set priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "set_file_priority_failed", errorDescription: error.localizedDescription))
                 onComplete(false)
             }
         }

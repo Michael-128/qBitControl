@@ -23,7 +23,7 @@ class RSSViewModel: ObservableObject {
                 self.RSSNode = node
                 self.updateID = UUID()
             } catch {
-                print("Failed to get RSS feeds: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .rss, eventName: "get_rss_feeds_failed", errorDescription: error.localizedDescription))
             }
         }
     }

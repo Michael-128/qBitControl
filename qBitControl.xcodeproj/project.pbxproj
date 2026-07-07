@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909EE5BD2CDD3B51002403DF /* String+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BE2CDD3B51002403DF /* String+Logging.swift */; };
+		909EE5BF2CDD3B51002403DF /* TorrentAddInitiatedPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C02CDD3B51002403DF /* TorrentAddInitiatedPayload.swift */; };
+		909EE5C12CDD3B51002403DF /* TorrentAddSuccessPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C22CDD3B51002403DF /* TorrentAddSuccessPayload.swift */; };
+		909EE5C32CDD3B51002403DF /* TorrentAddFailurePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C42CDD3B51002403DF /* TorrentAddFailurePayload.swift */; };
+		909EE5BB2CDD3B51002403DF /* LoggingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BC2CDD3B51002403DF /* LoggingTests.swift */; };
+		909EE5B92CDD3B51002403DF /* LogViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BA2CDD3B51002403DF /* LogViewerView.swift */; };
+		909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B02CDD3B51002403DF /* LoggablePayload.swift */; };
+		909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B22CDD3B51002403DF /* AppLogger.swift */; };
+		909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */; };
+		909EE5B52CDD3B51002403DF /* LogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B62CDD3B51002403DF /* LogStore.swift */; };
 		909EE5AB2CDD3B51002403DF /* qBitDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */; };
 		909EE5A72CDD3B51002403DF /* TorrentAddError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A82CDD3B51002403DF /* TorrentAddError.swift */; };
 		909EE5A52CDD3B51002403DF /* RSSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A62CDD3B51002403DF /* RSSError.swift */; };
@@ -139,6 +149,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		909EE5BE2CDD3B51002403DF /* String+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Logging.swift"; sourceTree = "<group>"; };
+		909EE5C02CDD3B51002403DF /* TorrentAddInitiatedPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddInitiatedPayload.swift; sourceTree = "<group>"; };
+		909EE5C22CDD3B51002403DF /* TorrentAddSuccessPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddSuccessPayload.swift; sourceTree = "<group>"; };
+		909EE5C42CDD3B51002403DF /* TorrentAddFailurePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddFailurePayload.swift; sourceTree = "<group>"; };
+		909EE5BC2CDD3B51002403DF /* LoggingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingTests.swift; sourceTree = "<group>"; };
+		909EE5BA2CDD3B51002403DF /* LogViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerView.swift; sourceTree = "<group>"; };
+		909EE5B02CDD3B51002403DF /* LoggablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggablePayload.swift; sourceTree = "<group>"; };
+		909EE5B22CDD3B51002403DF /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAnonymizer.swift; sourceTree = "<group>"; };
+		909EE5B62CDD3B51002403DF /* LogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogStore.swift; sourceTree = "<group>"; };
 		909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitDataTests.swift; sourceTree = "<group>"; };
 		909EE5A82CDD3B51002403DF /* TorrentAddError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddError.swift; sourceTree = "<group>"; };
 		909EE5A62CDD3B51002403DF /* RSSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSError.swift; sourceTree = "<group>"; };
@@ -283,6 +303,29 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		909EE5AD2CDD3B51002403DF /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				909EE5AE2CDD3B51002403DF /* Payloads */,
+				909EE5BE2CDD3B51002403DF /* String+Logging.swift */,
+				909EE5B22CDD3B51002403DF /* AppLogger.swift */,
+				909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */,
+				909EE5B02CDD3B51002403DF /* LoggablePayload.swift */,
+				909EE5B62CDD3B51002403DF /* LogStore.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
+		909EE5AE2CDD3B51002403DF /* Payloads */ = {
+			isa = PBXGroup;
+			children = (
+				909EE5C02CDD3B51002403DF /* TorrentAddInitiatedPayload.swift */,
+				909EE5C22CDD3B51002403DF /* TorrentAddSuccessPayload.swift */,
+				909EE5C42CDD3B51002403DF /* TorrentAddFailurePayload.swift */,
+			);
+			path = Payloads;
+			sourceTree = "<group>";
+		};
 		9006B5212C186974002DDD4E /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -433,6 +476,7 @@
 				90726B342CDA22190032993E /* RSSViews */,
 				90726B502CDA22190032993E /* TorrentViews */,
 				90726B512CDA22190032993E /* MainView.swift */,
+				909EE5BA2CDD3B51002403DF /* LogViewerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -525,6 +569,7 @@
 				90726B1E2CDA22160032993E /* Models */,
 				90726B742CDA221B0032993E /* ViewModels */,
 				90726B522CDA22190032993E /* Views */,
+				909EE5AD2CDD3B51002403DF /* Logging */,
 				90726B3B2CDA22190032993E /* Components */,
 				9070232D2CDA556A007B2199 /* Toolbars */,
 				903DED2C290A8A2000FB36D6 /* Classes */,
@@ -572,6 +617,7 @@
 				90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */,
 				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
 				909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */,
+				909EE5BC2CDD3B51002403DF /* LoggingTests.swift */,
 			);
 			path = qBitControlTests;
 			sourceTree = "<group>";
@@ -817,6 +863,15 @@
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
 				90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
+				909EE5BD2CDD3B51002403DF /* String+Logging.swift in Sources */,
+				909EE5BF2CDD3B51002403DF /* TorrentAddInitiatedPayload.swift in Sources */,
+				909EE5C12CDD3B51002403DF /* TorrentAddSuccessPayload.swift in Sources */,
+				909EE5C32CDD3B51002403DF /* TorrentAddFailurePayload.swift in Sources */,
+				909EE5B92CDD3B51002403DF /* LogViewerView.swift in Sources */,
+				909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */,
+				909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */,
+				909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */,
+				909EE5B52CDD3B51002403DF /* LogStore.swift in Sources */,
 				90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -829,6 +884,7 @@
 				90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */,
 				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 				909EE5AB2CDD3B51002403DF /* qBitDataTests.swift in Sources */,
+				909EE5BB2CDD3B51002403DF /* LoggingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

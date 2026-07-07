@@ -41,7 +41,7 @@ struct ChangeCategoryView: View {
                 // Update global metadata cache
                 ServersHelper.shared.categories = _categories
             } catch {
-                print("Failed to get categories: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "get_categories_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -65,7 +65,7 @@ struct ChangeCategoryView: View {
                     self.getCategories()
                 }
             } catch {
-                print("Failed to add category: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "add_category_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -119,7 +119,7 @@ struct ChangeCategoryView: View {
                                             let _ = try await client.removeCategory(category: categoryName)
                                             ServersHelper.shared.refreshCategories()
                                         } catch {
-                                            print("Failed to remove category: \(error)")
+                                            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "remove_category_failed", errorDescription: error.localizedDescription))
                                         }
                                     }
                                 }
@@ -150,7 +150,7 @@ struct ChangeCategoryView: View {
                     do {
                         try await client.setCategory(hash: hash, category: category)
                     } catch {
-                        print("Failed to set category: \(error)")
+                        AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "set_category_failed", errorDescription: error.localizedDescription))
                     }
                 }
             }

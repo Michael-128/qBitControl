@@ -80,6 +80,13 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         Image(systemName: "info.circle")
                         Text("About")
                     }
+                    
+                    Button {
+                        viewModel.sheetIdentifier = SheetIdentifier(id: .showLogs)
+                    } label: {
+                        Image(systemName: "doc.text")
+                        Text("Logs")
+                    }
                 }
             } label: {
                 Image(systemName: "ellipsis.circle")
@@ -110,7 +117,9 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 sheet in
                 switch sheet.id {
                 case .showAbout:
-                    return AboutView()
+                    AnyView(AboutView())
+                case .showLogs:
+                    AnyView(LogViewerView())
                 }
             }
         }

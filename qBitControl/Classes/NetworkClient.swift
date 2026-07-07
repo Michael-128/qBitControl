@@ -6,12 +6,27 @@
 import Foundation
 
 /// Custom errors thrown by `NetworkClient`.
-enum NetworkError: Error, Equatable {
+enum NetworkError: Error, Equatable, LocalizedError {
     case invalidURL
     case unauthorized
     case invalidResponse
     case httpError(statusCode: Int)
     case timeout
+    
+    var errorDescription: String? {
+        switch self {
+        case .invalidURL:
+            return "Invalid URL"
+        case .unauthorized:
+            return "Unauthorized (401/403)"
+        case .invalidResponse:
+            return "Invalid Server Response"
+        case .httpError(let statusCode):
+            return "HTTP Error \(statusCode)"
+        case .timeout:
+            return "Request Timeout"
+        }
+    }
 }
 
 /// A stateless actor responsible for executing generic asynchronous HTTP requests.

@@ -207,8 +207,5 @@ extension FileNode
            + (children ?? []).enumerated().map{ ($0 < (children ?? []).count-1, $1) }
              .flatMap{ $0 ? $1.treeLines("┣╸","┃ ") : $1.treeLines("┗╸","  ") }
              .map{ childIndent + $0 }
-   }
-
-   func printTree()
-   { print(treeLines().joined(separator:"\n")) }
+    }
 }

@@ -116,7 +116,7 @@ class TorrentDetailsViewModel: ObservableObject {
                     try await client.pauseTorrent(hash: torrent.hash)
                 }
             } catch {
-                print("Failed to toggle torrent pause: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "toggle_torrent_pause_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -131,7 +131,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.toggleSequentialDownload(hashes: [torrent.hash])
             } catch {
-                print("Failed to toggle sequential download: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "toggle_sequential_download_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -146,7 +146,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.toggleFLPiecesFirst(hashes: [torrent.hash])
             } catch {
-                print("Failed to toggle first/last pieces first: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "toggle_first_last_pieces_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -166,7 +166,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.setForceStart(hashes: [torrent.hash], value: value)
             } catch {
-                print("Failed to set force start: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "set_force_start_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -185,7 +185,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.recheckTorrent(hash: torrent.hash)
             } catch {
-                print("Failed to recheck torrent: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "recheck_torrent_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -196,7 +196,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.reannounceTorrent(hash: torrent.hash)
             } catch {
-                print("Failed to reannounce torrent: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "reannounce_torrent_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -215,7 +215,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.topPriorityTorrents(hashes: [torrent.hash])
             } catch {
-                print("Failed to move to top priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "move_to_top_priority_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -229,7 +229,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.bottomPriorityTorrents(hashes: [torrent.hash])
             } catch {
-                print("Failed to move to bottom priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "move_to_bottom_priority_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -243,7 +243,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.increasePriorityTorrents(hashes: [torrent.hash])
             } catch {
-                print("Failed to increase priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "increase_priority_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -257,7 +257,7 @@ class TorrentDetailsViewModel: ObservableObject {
             do {
                 try await client.decreasePriorityTorrents(hashes: [torrent.hash])
             } catch {
-                print("Failed to decrease priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "decrease_priority_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -269,7 +269,7 @@ class TorrentDetailsViewModel: ObservableObject {
                 try await client.deleteTorrent(hash: torrent.hash, deleteFiles: false)
                 dismiss()
             } catch {
-                print("Failed to delete torrent: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "delete_torrent_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -281,7 +281,7 @@ class TorrentDetailsViewModel: ObservableObject {
                 try await client.deleteTorrent(hash: torrent.hash, deleteFiles: true)
                 dismiss()
             } catch {
-                print("Failed to delete torrent with files: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "delete_torrent_with_files_failed", errorDescription: error.localizedDescription))
             }
         }
     }

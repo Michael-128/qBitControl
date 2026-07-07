@@ -90,7 +90,7 @@ class TorrentAddViewModel: ObservableObject {
                     let (data, _) = try await URLSession.shared.data(from: fileURL)
                     self.fileContent[fileName] = data
                 } catch {
-                    print(error)
+                    AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_remote_torrent_data_failed", errorDescription: error.localizedDescription))
                 }
             }
         } else {
@@ -100,7 +100,7 @@ class TorrentAddViewModel: ObservableObject {
                         let data = try Data(contentsOf: fileURL)
                         self.fileContent[fileName] = data
                     } catch {
-                        print(error)
+                        AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_local_torrent_data_failed", errorDescription: error.localizedDescription))
                     }
                     fileURL.stopAccessingSecurityScopedResource()
                 }
@@ -118,7 +118,7 @@ class TorrentAddViewModel: ObservableObject {
         do {
             handleTorrentFiles(fileURLs: try fileURLs.get())
         } catch {
-            print(error)
+            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "handle_torrent_files_failed", errorDescription: error.localizedDescription))
         }
     }
     
@@ -128,6 +128,7 @@ class TorrentAddViewModel: ObservableObject {
         Task {
             do {
                 if self.torrentType == .magnet {
+                    AppLogger.log(.info, TorrentAddInitiatedPayload(filename: self.magnetURL, savePath: self.savePath))
                     try await client.addMagnetTorrent(
                         torrent: URLQueryItem(name: "urls", value: self.magnetURL),
                         savePath: self.savePath,
@@ -142,7 +143,11 @@ class TorrentAddViewModel: ObservableObject {
                         ratioLimit: Float(self.ratioLimit) ?? -1.0,
                         seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
                     )
+                    AppLogger.log(.info, TorrentAddSuccessPayload(filename: self.magnetURL))
                 } else {
+                    for name in self.fileNames {
+                        AppLogger.log(.info, TorrentAddInitiatedPayload(filename: name, savePath: self.savePath))
+                    }
                     try await client.addFileTorrent(
                         torrents: self.fileContent,
                         savePath: self.savePath,
@@ -157,10 +162,19 @@ class TorrentAddViewModel: ObservableObject {
                         ratioLimit: Float(self.ratioLimit) ?? -1.0,
                         seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
                     )
+                    for name in self.fileNames {
+                        AppLogger.log(.info, TorrentAddSuccessPayload(filename: name))
+                    }
                 }
                 dismiss()
             } catch {
-                print("Failed to add torrent: \(error)")
+                if self.torrentType == .magnet {
+                    AppLogger.log(.error, TorrentAddFailurePayload(filename: self.magnetURL, errorDescription: error.localizedDescription))
+                } else {
+                    for name in self.fileNames {
+                        AppLogger.log(.error, TorrentAddFailurePayload(filename: name, errorDescription: error.localizedDescription))
+                    }
+                }
                 self.activeError = self.mapError(error)
             }
         }
@@ -178,7 +192,7 @@ class TorrentAddViewModel: ObservableObject {
                     self.defaultSavePath = preferences.save_path ?? ""
                 }
             } catch {
-                print("Failed to get preferences for save path: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_preferences_save_path_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -197,6 +211,9 @@ class TorrentAddViewModel: ObservableObject {
             case .httpError(let statusCode):
                 if statusCode == 415 || statusCode == 400 {
                     return .invalidFileOrMagnet
+                }
+                if statusCode == 409 {
+                    return .duplicate
                 }
                 return .unknown(statusCode)
             }

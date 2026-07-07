@@ -38,7 +38,7 @@ class TrackersViewModel: ObservableObject {
                 try await client.editTrackerURL(hash: torrentHash, origUrl: origURL, newURL: newURL)
                 getTrackers()
             } catch {
-                print("Failed to edit tracker: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "edit_tracker_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -55,7 +55,7 @@ class TrackersViewModel: ObservableObject {
                 try await client.addTrackerURL(hash: torrentHash, urls: newURL)
                 getTrackers()
             } catch {
-                print("Failed to add tracker: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "add_tracker_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -66,7 +66,7 @@ class TrackersViewModel: ObservableObject {
                 try await client.removeTracker(hash: torrentHash, url: tracker.url)
                 getTrackers()
             } catch {
-                print("Failed to remove tracker: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "remove_tracker_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -77,7 +77,7 @@ class TrackersViewModel: ObservableObject {
                 let trackersList = try await client.getTrackers(hash: torrentHash)
                 self.trackers = trackersList
             } catch {
-                print("Failed to fetch trackers: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_trackers_failed", errorDescription: error.localizedDescription))
             }
         }
     }

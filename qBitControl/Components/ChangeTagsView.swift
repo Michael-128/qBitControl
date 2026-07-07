@@ -33,7 +33,7 @@ struct ChangeTagsView: View {
                 // Update global metadata cache
                 ServersHelper.shared.tags = tags
             } catch {
-                print("Failed to get tags: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "get_tags_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -53,7 +53,7 @@ struct ChangeTagsView: View {
                 do {
                     let _ = try await client.unsetTag(hash: hash, tag: tag)
                 } catch {
-                    print("Failed to unset tag: \(error)")
+                    AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "unset_tag_failed", errorDescription: error.localizedDescription))
                 }
             }
         }
@@ -76,7 +76,7 @@ struct ChangeTagsView: View {
                 do {
                     let _ = try await client.setTag(hash: hash, tag: tag)
                 } catch {
-                    print("Failed to set tag: \(error)")
+                    AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "set_tag_failed", errorDescription: error.localizedDescription))
                 }
             }
         }
@@ -90,12 +90,12 @@ struct ChangeTagsView: View {
         Task {
             do {
                 let status = try await client.addTag(tag: trimmed)
-                print("[ChangeTagsView] addTag returned status: \(status) for tag: \(trimmed)")
+                AppLogger.log(.info, SystemEventPayload(category: .torrents, eventName: "add_tag_status", message: "addTag returned status: \(status) for tag: \(trimmed)"))
                 if status == 200 || status == 204 {
                     self.getTags()
                 }
             } catch {
-                print("[ChangeTagsView] Failed to add tag: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "add_tag_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -104,12 +104,12 @@ struct ChangeTagsView: View {
         Task {
             do {
                 let status = try await client.removeTag(tag: tag)
-                print("[ChangeTagsView] removeTag returned status: \(status) for tag: \(tag)")
+                AppLogger.log(.info, SystemEventPayload(category: .torrents, eventName: "remove_tag_status", message: "removeTag returned status: \(status) for tag: \(tag)"))
                 if status == 200 || status == 204 {
                     self.getTags()
                 }
             } catch {
-                print("[ChangeTagsView] Failed to remove tag: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "remove_tag_failed", errorDescription: error.localizedDescription))
             }
         }
     }
