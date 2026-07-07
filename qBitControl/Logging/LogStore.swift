@@ -70,14 +70,15 @@ actor LogStore {
     
     func loadAllLogs() -> String {
         let urls = getLogFileURLs()
-        var combinedLogs = ""
+        var allLines: [String] = []
         
         for url in urls.reversed() {
             if let contents = try? String(contentsOf: url, encoding: .utf8) {
-                combinedLogs += contents
+                let lines = contents.components(separatedBy: .newlines).filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+                allLines.append(contentsOf: lines)
             }
         }
-        return combinedLogs
+        return allLines.reversed().joined(separator: "\n")
     }
     
     func clearAllLogs() {
