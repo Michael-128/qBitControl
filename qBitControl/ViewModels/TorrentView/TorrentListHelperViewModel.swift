@@ -139,7 +139,7 @@ class TorrentListHelperViewModel: ObservableObject {
             
             // Filter by Tag
             if tagVal != "All" {
-                if tagVal == "Untagged" {
+                if tagVal == "" || tagVal == "Untagged" {
                     if torrent.tags != "" && torrent.tags != "Untagged" { return false }
                 } else {
                     let tagsList = torrent.tags.split(separator: ",").map { $0.trimmingCharacters(in: .whitespaces) }

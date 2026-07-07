@@ -263,7 +263,61 @@ final class TorrentListHelperViewModelTests: XCTestCase {
     
     @MainActor
     func test_filtering_byTag() async {
-        let mockTorrents = getTestTorrents()
+        var mockTorrents = getTestTorrents()
+        
+        // Add an untagged torrent specifically for this test
+        let untaggedJson = """
+        {
+            "added_on": 1620000000,
+            "amount_left": 0,
+            "auto_tmm": false,
+            "availability": 1.0,
+            "category": "movies",
+            "completed": 1000000000,
+            "completion_on": 1620000500,
+            "content_path": "/downloads/untagged.mkv",
+            "dl_limit": -1,
+            "dlspeed": 0,
+            "downloaded": 1000000000,
+            "downloaded_session": 1000000000,
+            "eta": 0,
+            "f_l_piece_prio": false,
+            "force_start": false,
+            "hash": "hash333333333333333333333333333333333333",
+            "last_activity": 1620000500,
+            "magnet_uri": "",
+            "max_ratio": -1.0,
+            "max_seeding_time": -1,
+            "name": "Untagged Torrent File",
+            "num_complete": 50,
+            "num_incomplete": 5,
+            "num_leechs": 2,
+            "num_seeds": 10,
+            "priority": 3,
+            "progress": 1.0,
+            "ratio": 1.0,
+            "ratio_limit": -1.0,
+            "save_path": "/downloads",
+            "seeding_time": 3600,
+            "seeding_time_limit": -1,
+            "seen_complete": 1620000500,
+            "seq_dl": false,
+            "size": 1000000000,
+            "state": "seeding",
+            "super_seeding": false,
+            "tags": "",
+            "time_active": 500,
+            "total_size": 1000000000,
+            "tracker": "",
+            "up_limit": -1,
+            "uploaded": 1000000000,
+            "uploaded_session": 1000000000,
+            "upspeed": 0
+        }
+        """
+        let untaggedTorrent = try! JSONDecoder().decode(Torrent.self, from: untaggedJson.data(using: .utf8)!)
+        mockTorrents.append(untaggedTorrent)
+        
         let client = TestTorrentClient(torrents: mockTorrents)
         let sut = TorrentListHelperViewModel(client: client)
         
@@ -279,9 +333,14 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Ubuntu Linux ISO")
         
+        sut.tag = ""
+        await sut.getTorrents()
+        XCTAssertEqual(sut.filteredTorrents.count, 1)
+        XCTAssertEqual(sut.filteredTorrents.first?.name, "Untagged Torrent File")
+        
         sut.tag = "All"
         await sut.getTorrents()
-        XCTAssertEqual(sut.filteredTorrents.count, 2)
+        XCTAssertEqual(sut.filteredTorrents.count, 3)
     }
     
     @MainActor
