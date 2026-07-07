@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909EE5BB2CDD3B51002403DF /* LoggingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BC2CDD3B51002403DF /* LoggingTests.swift */; };
 		909EE5B92CDD3B51002403DF /* LogViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BA2CDD3B51002403DF /* LogViewerView.swift */; };
 		909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B02CDD3B51002403DF /* LoggablePayload.swift */; };
 		909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B22CDD3B51002403DF /* AppLogger.swift */; };
@@ -145,6 +146,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		909EE5BC2CDD3B51002403DF /* LoggingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggingTests.swift; sourceTree = "<group>"; };
 		909EE5BA2CDD3B51002403DF /* LogViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerView.swift; sourceTree = "<group>"; };
 		909EE5B02CDD3B51002403DF /* LoggablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggablePayload.swift; sourceTree = "<group>"; };
 		909EE5B22CDD3B51002403DF /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 				90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */,
 				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
 				909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */,
+				909EE5BC2CDD3B51002403DF /* LoggingTests.swift */,
 			);
 			path = qBitControlTests;
 			sourceTree = "<group>";
@@ -869,6 +872,7 @@
 				90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */,
 				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 				909EE5AB2CDD3B51002403DF /* qBitDataTests.swift in Sources */,
+				909EE5BB2CDD3B51002403DF /* LoggingTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -13,7 +13,17 @@ actor LogStore {
     private let logFolderName = "Logs"
     private let activeLogFileName = "current_log.txt"
     
+    // For unit testing
+    var logsDirectoryOverride: URL? = nil
+    var maxFileSizeOverride: Int? = nil
+    
     private var logsDirectory: URL {
+        if let override = logsDirectoryOverride {
+            if !FileManager.default.fileExists(atPath: override.path) {
+                try? FileManager.default.createDirectory(at: override, withIntermediateDirectories: true, attributes: nil)
+            }
+            return override
+        }
         let paths = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
         let appSupportDir = paths[0].appendingPathComponent("MikeMichael.qBitControl", isDirectory: true)
         let logsDir = appSupportDir.appendingPathComponent(logFolderName, isDirectory: true)
@@ -108,7 +118,8 @@ actor LogStore {
         guard let attributes = try? FileManager.default.attributesOfItem(atPath: fileURL.path),
               let size = attributes[.size] as? Int else { return }
         
-        if size + upcomingDataSize > maxFileSize {
+        let limit = maxFileSizeOverride ?? maxFileSize
+        if size + upcomingDataSize > limit {
             let fileManager = FileManager.default
             let dir = logsDirectory
             
