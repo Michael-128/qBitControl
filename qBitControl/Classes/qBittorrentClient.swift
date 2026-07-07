@@ -24,7 +24,7 @@ class qBittorrentClient: TorrentClientProtocol {
                 do {
                     self.version = try await fetchVersion()
                 } catch {
-                    print("Failed to prefetch version: \(error)")
+                    AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "prefetch_version_failed", errorDescription: error.localizedDescription))
                 }
             }
         }

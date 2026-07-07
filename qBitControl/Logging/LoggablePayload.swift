@@ -25,3 +25,23 @@ protocol LoggablePayload {
     var eventName: String { get }
     var parameters: [String: Any] { get }
 }
+
+struct SystemEventPayload: LoggablePayload {
+    let category: LogCategory
+    let eventName: String
+    let message: String
+    
+    var parameters: [String: Any] {
+        return ["message": message]
+    }
+}
+
+struct GeneralErrorPayload: LoggablePayload {
+    let category: LogCategory
+    let eventName: String
+    let errorDescription: String
+    
+    var parameters: [String: Any] {
+        return ["error": errorDescription]
+    }
+}

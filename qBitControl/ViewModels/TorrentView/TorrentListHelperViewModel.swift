@@ -260,7 +260,7 @@ class TorrentListHelperViewModel: ObservableObject {
                 }
                 qBitData.shared.cacheManager.torrents = mockTorrentsDict
             } catch {
-                print("Failed to fetch fallback torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_fallback_torrents_failed", errorDescription: error.localizedDescription))
             }
         } else {
             // Production: trigger Combine pipeline by re-publishing current cache
@@ -333,7 +333,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.resumeTorrents(hashes: hashes)
             } catch {
-                print("Failed to resume torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "resume_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -347,7 +347,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.resumeAllTorrents()
             } catch {
-                print("Failed to resume all torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "resume_all_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -363,7 +363,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.pauseAllTorrents()
             } catch {
-                print("Failed to pause all torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "pause_all_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -378,7 +378,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.pauseTorrents(hashes: hashes)
             } catch {
-                print("Failed to pause torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "pause_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -388,7 +388,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.increasePriorityTorrents(hashes: hashes)
             } catch {
-                print("Failed to increase priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "increase_priority_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -398,7 +398,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.decreasePriorityTorrents(hashes: hashes)
             } catch {
-                print("Failed to decrease priority: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "decrease_priority_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -411,7 +411,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.recheckTorrents(hashes: hashes)
             } catch {
-                print("Failed to recheck torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "recheck_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -421,7 +421,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.reannounceTorrents(hashes: hashes)
             } catch {
-                print("Failed to reannounce torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "reannounce_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -432,7 +432,7 @@ class TorrentListHelperViewModel: ObservableObject {
             do {
                 try await client.deleteTorrents(hashes: hashes, deleteFiles: deleteFiles)
             } catch {
-                print("Failed to delete torrents: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "delete_torrents_failed", errorDescription: error.localizedDescription))
             }
         }
     }

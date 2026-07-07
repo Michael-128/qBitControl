@@ -69,7 +69,7 @@ class SearchViewModel: ObservableObject {
                 
                 startPolling()
             } catch {
-                print("Failed to start search: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .network, eventName: "start_search_failed", errorDescription: error.localizedDescription))
             }
         }
     }
@@ -111,7 +111,7 @@ class SearchViewModel: ObservableObject {
                 self.endSearch()
             }
         } catch {
-            print("Failed to get search results: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .network, eventName: "get_search_results_failed", errorDescription: error.localizedDescription))
         }
     }
     
@@ -145,7 +145,6 @@ class SearchViewModel: ObservableObject {
         
         defaults.set(sortBy.rawValue, forKey: self.prepareKey("sortBy"))
         defaults.set(isDescending, forKey: self.prepareKey("isDescending"))
-        print(isDescending)
     }
     
     private func loadFilters() {
@@ -156,7 +155,6 @@ class SearchViewModel: ObservableObject {
         }
         
         self.isDescending = defaults.bool(forKey: self.prepareKey("isDescending"))
-        print(self.isDescending)
     }
     
     private func fetchCategories() {
@@ -169,7 +167,7 @@ class SearchViewModel: ObservableObject {
                 }
                 self.categories = categoriesSet
             } catch {
-                print("Failed to fetch search plugins: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .network, eventName: "fetch_search_plugins_failed", errorDescription: error.localizedDescription))
             }
         }
     }

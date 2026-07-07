@@ -106,7 +106,7 @@ class qBitData: ObservableObject {
             }
             self.connectionStatus = .connected
         } catch {
-            print("Telemetry fetch failed: \(error)")
+            AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "telemetry_fetch_failed", errorDescription: error.localizedDescription))
             self.connectionStatus = .offline
         }
     }

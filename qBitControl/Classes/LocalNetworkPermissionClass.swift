@@ -66,7 +66,7 @@ class LocalNetworkPermissionService {
     private func ipv4AddressesOfEthernetLikeInterfaces() -> [String] {
         let interfaces = Set(namesOfEthernetLikeInterfaces())
         
-        print("Interfaces: \(interfaces)")
+        AppLogger.log(.info, SystemEventPayload(category: .system, eventName: "local_network_interfaces", message: "Interfaces: \(interfaces)"))
         var addrList: UnsafeMutablePointer<ifaddrs>? = nil
         let err = getifaddrs(&addrList)
         guard err == 0, let start = addrList else { return [] }
@@ -85,7 +85,7 @@ class LocalNetworkPermissionService {
                 let err = getnameinfo(sa, socklen_t(sa.pointee.sa_len), &addr, socklen_t(addr.count), nil, 0, NI_NUMERICHOST | NI_NUMERICSERV)
                 guard err == 0 else { return nil }
                 let address = String(cString: addr)
-                print("Address: \(address)")
+                AppLogger.log(.info, SystemEventPayload(category: .system, eventName: "local_network_address", message: "Address: \(address)"))
                 return address
             }
     }

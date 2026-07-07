@@ -147,14 +147,14 @@ struct FiltersMenuView: View {
                         let fetchedCategories = try await client.getCategories()
                         self.categories = fetchedCategories.map { $1 }.sorted { $0.name < $1.name }
                     } catch {
-                        print("Failed to fetch categories: \(error)")
+                        AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_categories_failed", errorDescription: error.localizedDescription))
                     }
                     
                     do {
                         let fetchedTags = try await client.getTags()
                         self.tagsArr = fetchedTags
                     } catch {
-                        print("Failed to fetch tags: \(error)")
+                        AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_tags_failed", errorDescription: error.localizedDescription))
                     }
                 }
             }

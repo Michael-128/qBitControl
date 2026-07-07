@@ -125,7 +125,6 @@ struct TorrentAddView: View {
                             DispatchQueue.main.async {
                                 viewModel.category = category
                                 if !viewModel.autoTmmEnabled { viewModel.savePath = category.savePath }
-                                print(viewModel.savePath)
                             }
                         })
                     } label: {

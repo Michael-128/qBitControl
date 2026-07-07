@@ -14,7 +14,7 @@ struct ChangePathView: View {
             do {
                 try await client.setLocation(hashes: [torrentHash], location: path)
             } catch {
-                print("Failed to set location: \(error)")
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "set_location_failed", errorDescription: error.localizedDescription))
             }
         }
     }
