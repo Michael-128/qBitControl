@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B02CDD3B51002403DF /* LoggablePayload.swift */; };
+		909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B22CDD3B51002403DF /* AppLogger.swift */; };
+		909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */; };
+		909EE5B52CDD3B51002403DF /* LogStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B62CDD3B51002403DF /* LogStore.swift */; };
+		909EE5B72CDD3B51002403DF /* TorrentPayloads.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B82CDD3B51002403DF /* TorrentPayloads.swift */; };
 		909EE5AB2CDD3B51002403DF /* qBitDataTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */; };
 		909EE5A72CDD3B51002403DF /* TorrentAddError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A82CDD3B51002403DF /* TorrentAddError.swift */; };
 		909EE5A52CDD3B51002403DF /* RSSError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5A62CDD3B51002403DF /* RSSError.swift */; };
@@ -139,6 +144,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		909EE5B02CDD3B51002403DF /* LoggablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggablePayload.swift; sourceTree = "<group>"; };
+		909EE5B22CDD3B51002403DF /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
+		909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAnonymizer.swift; sourceTree = "<group>"; };
+		909EE5B62CDD3B51002403DF /* LogStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogStore.swift; sourceTree = "<group>"; };
+		909EE5B82CDD3B51002403DF /* TorrentPayloads.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentPayloads.swift; sourceTree = "<group>"; };
 		909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitDataTests.swift; sourceTree = "<group>"; };
 		909EE5A82CDD3B51002403DF /* TorrentAddError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddError.swift; sourceTree = "<group>"; };
 		909EE5A62CDD3B51002403DF /* RSSError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSSError.swift; sourceTree = "<group>"; };
@@ -283,6 +293,26 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		909EE5AD2CDD3B51002403DF /* Logging */ = {
+			isa = PBXGroup;
+			children = (
+				909EE5AE2CDD3B51002403DF /* Payloads */,
+				909EE5B22CDD3B51002403DF /* AppLogger.swift */,
+				909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */,
+				909EE5B02CDD3B51002403DF /* LoggablePayload.swift */,
+				909EE5B62CDD3B51002403DF /* LogStore.swift */,
+			);
+			path = Logging;
+			sourceTree = "<group>";
+		};
+		909EE5AE2CDD3B51002403DF /* Payloads */ = {
+			isa = PBXGroup;
+			children = (
+				909EE5B82CDD3B51002403DF /* TorrentPayloads.swift */,
+			);
+			path = Payloads;
+			sourceTree = "<group>";
+		};
 		9006B5212C186974002DDD4E /* Localizations */ = {
 			isa = PBXGroup;
 			children = (
@@ -525,6 +555,7 @@
 				90726B1E2CDA22160032993E /* Models */,
 				90726B742CDA221B0032993E /* ViewModels */,
 				90726B522CDA22190032993E /* Views */,
+				909EE5AD2CDD3B51002403DF /* Logging */,
 				90726B3B2CDA22190032993E /* Components */,
 				9070232D2CDA556A007B2199 /* Toolbars */,
 				903DED2C290A8A2000FB36D6 /* Classes */,
@@ -817,6 +848,11 @@
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
 				90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
+				909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */,
+				909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */,
+				909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */,
+				909EE5B52CDD3B51002403DF /* LogStore.swift in Sources */,
+				909EE5B72CDD3B51002403DF /* TorrentPayloads.swift in Sources */,
 				90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
