@@ -35,26 +35,22 @@ struct FiltersMenuView: View {
                     }
                 }
                 
-                if categories.count > 1 {
-                    Picker("Categories", selection: $category) {
-                        Text("All").tag("All")
-                        Text("Uncategorized").tag("")
-                        ForEach(categories, id: \.self) { theCategory in
-                            Text(theCategory.name).tag(theCategory.name)
-                        }
-                    }.pickerStyle(.inline)
-                }
+                Picker("Categories", selection: $category) {
+                    Text("All").tag("All")
+                    Text("Uncategorized").tag("")
+                    ForEach(categories, id: \.self) { theCategory in
+                        Text(theCategory.name).tag(theCategory.name)
+                    }
+                }.pickerStyle(.inline)
                 
-                if tagsArr.count > 1 {
-                    Picker("Tags", selection: $tag) {
-                        Text("All").tag("All")
-                        Text("Untagged").tag("")
-                        ForEach(tagsArr, id: \.self) {
-                            tag1 in
-                            Text(tag1).tag(tag1)
-                        }
-                    }.pickerStyle(.inline)
-                }
+                Picker("Tags", selection: $tag) {
+                    Text("All").tag("All")
+                    Text("Untagged").tag("")
+                    ForEach(tagsArr, id: \.self) {
+                        tag1 in
+                        Text(tag1).tag(tag1)
+                    }
+                }.pickerStyle(.inline)
                 
                 Picker("Filter By", selection: $filter) {
                     Group {

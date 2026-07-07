@@ -143,7 +143,7 @@ struct ChangeTagsView: View {
                     })
                 }
                 
-                if allTags.count > 1 {
+                if allTags.count > 0 {
                     Section {
                         List {
                             ForEach(allTags, id: \.self) { tag in
