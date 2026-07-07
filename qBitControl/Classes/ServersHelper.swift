@@ -147,6 +147,7 @@ class ServersHelper: ObservableObject {
                 await fetchMetadata()
                 
                 self.isLoggedIn = true
+                await qBitData.shared.getMainData()
                 result?(true)
             } catch {
                 result?(false)
@@ -191,6 +192,7 @@ class ServersHelper: ObservableObject {
                 await self.fetchMetadata()
                 
                 self.isLoggedIn = true
+                await qBitData.shared.getMainData()
             } catch {
                 print("Auto-connect failed: \(error)")
             }

@@ -20,6 +20,8 @@ class qBitData: ObservableObject {
     private var pollingTask: Task<Void, Never>?
     private var fetchInterval: UInt64 = 2_000_000_000 // 2 seconds
     
+    private var isFetching = false
+    
     init() {
         let date = Date()
         
@@ -68,6 +70,10 @@ class qBitData: ObservableObject {
             }
             return
         }
+        
+        guard !isFetching else { return }
+        isFetching = true
+        defer { isFetching = false }
         
         do {
             let mainData = try await client.getMainData(rid: rid)
