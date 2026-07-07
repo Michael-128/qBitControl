@@ -60,6 +60,13 @@ struct TorrentAddView: View {
                     Button { viewModel.addTorrent(then: dismiss) } label: { Text("Add") }
                 }
             }
+            .alert(item: $viewModel.activeError) { error in
+                Alert(
+                    title: Text("Failed to Add Torrent"),
+                    message: Text(error.localizedDescription),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
         }
     }
     

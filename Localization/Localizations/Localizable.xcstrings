@@ -3202,6 +3202,9 @@
         }
       }
     },
+    "Failed to Add Torrent" : {
+
+    },
     "Feeds" : {
       "localizations" : {
         "ja" : {
@@ -6064,7 +6067,7 @@
       }
     },
     "Request timed out. Please check your network connection." : {
-      "comment" : "RSS timeout error"
+      "comment" : "RSS timeout error\nTorrent add timeout error"
     },
     "results" : {
       "extractionState" : "manual",
@@ -6821,7 +6824,7 @@
       }
     },
     "Server returned error code %d." : {
-      "comment" : "RSS unknown error"
+      "comment" : "RSS unknown error\nTorrent add unknown error"
     },
     "Servers" : {
       "localizations" : {
@@ -7644,6 +7647,9 @@
     "The feed or folder already exists, or the specified path does not exist." : {
       "comment" : "RSS Conflict error"
     },
+    "The torrent file or magnet URL is invalid or unsupported." : {
+      "comment" : "Torrent invalid file/magnet error"
+    },
     "Time" : {
       "localizations" : {
         "ja" : {
@@ -7886,7 +7892,7 @@
       }
     },
     "Unauthorized. Please re-login to the server." : {
-      "comment" : "RSS unauthorized error"
+      "comment" : "RSS unauthorized error\nTorrent add unauthorized error"
     },
     "Uncategorized" : {
       "localizations" : {
