@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909EE5B92CDD3B51002403DF /* LogViewerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BA2CDD3B51002403DF /* LogViewerView.swift */; };
 		909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B02CDD3B51002403DF /* LoggablePayload.swift */; };
 		909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B22CDD3B51002403DF /* AppLogger.swift */; };
 		909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */; };
@@ -144,6 +145,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		909EE5BA2CDD3B51002403DF /* LogViewerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogViewerView.swift; sourceTree = "<group>"; };
 		909EE5B02CDD3B51002403DF /* LoggablePayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoggablePayload.swift; sourceTree = "<group>"; };
 		909EE5B22CDD3B51002403DF /* AppLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppLogger.swift; sourceTree = "<group>"; };
 		909EE5B42CDD3B51002403DF /* LogAnonymizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogAnonymizer.swift; sourceTree = "<group>"; };
@@ -463,6 +465,7 @@
 				90726B342CDA22190032993E /* RSSViews */,
 				90726B502CDA22190032993E /* TorrentViews */,
 				90726B512CDA22190032993E /* MainView.swift */,
+				909EE5BA2CDD3B51002403DF /* LogViewerView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -848,6 +851,7 @@
 				90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */,
 				90726B8A2CDA22190032993F /* TorrentFormatter.swift in Sources */,
 				9082FA2329080E53006C3960 /* qBitControlApp.swift in Sources */,
+				909EE5B92CDD3B51002403DF /* LogViewerView.swift in Sources */,
 				909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */,
 				909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */,
 				909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */,
