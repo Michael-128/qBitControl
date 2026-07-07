@@ -7678,6 +7678,9 @@
     "The torrent file or magnet URL is invalid or unsupported." : {
       "comment" : "Torrent invalid file/magnet error"
     },
+    "This torrent is already in your download list." : {
+      "comment" : "Torrent add duplicate error"
+    },
     "Time" : {
       "localizations" : {
         "ja" : {
