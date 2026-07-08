@@ -1287,6 +1287,12 @@
             "state" : "translated",
             "value" : "アプリケーションログ"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logi aplikacji"
+          }
         }
       }
     },
@@ -1456,6 +1462,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "基本驗證"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uwierzytelnianie podstawowe"
           }
         }
       }
@@ -1859,6 +1871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "閉じる"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zamknij"
           }
         }
       }
@@ -3328,6 +3346,12 @@
             "state" : "translated",
             "value" : "トレントの追加に失敗しました"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie udało się dodać torrenta"
+          }
         }
       }
     },
@@ -4104,6 +4128,12 @@
             "state" : "translated",
             "value" : "無効なRSS URLです。アドレスを確認してもう一度お試しください。"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nieprawidłowy adres URL RSS. Sprawdź adres i spróbuj ponownie."
+          }
         }
       }
     },
@@ -4277,6 +4307,12 @@
             "state" : "translated",
             "value" : "レベル"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poziom"
+          }
         }
       }
     },
@@ -4329,6 +4365,12 @@
             "state" : "translated",
             "value" : "フィードを読み込み中..."
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ładowanie kanału..."
+          }
         }
       }
     },
@@ -4340,6 +4382,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログ"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Logi"
           }
         }
       }
@@ -4943,6 +4991,12 @@
             "state" : "translated",
             "value" : "条件に一致するログが見つかりません。"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie znaleziono logów spełniających kryteria."
+          }
         }
       }
     },
@@ -5115,6 +5169,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "オフラインです。ネットワーク接続を確認してください。"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jesteś offline. Sprawdź połączenie sieciowe."
           }
         }
       }
@@ -6253,6 +6313,12 @@
             "state" : "translated",
             "value" : "残り"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pozostało"
+          }
         }
       }
     },
@@ -6383,6 +6449,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "リクエストがタイムアウトしました。ネットワーク接続を確認してください。"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upłynął limit czasu żądania. Sprawdź połączenie sieciowe."
           }
         }
       }
@@ -6665,6 +6737,12 @@
             "state" : "translated",
             "value" : "RSSの操作に失敗しました"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Akcja RSS nie powiodła się"
+          }
         }
       }
     },
@@ -6796,6 +6874,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ログを検索..."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szukaj w logach..."
           }
         }
       }
@@ -7168,6 +7252,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "サーバーがエラーコード %d を返しました。"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Serwer zwrócił kod błędu %d."
           }
         }
       }
@@ -7820,6 +7910,12 @@
             "state" : "translated",
             "value" : "停止"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zatrzymaj"
+          }
         }
       }
     },
@@ -8032,6 +8128,12 @@
             "state" : "translated",
             "value" : "フィードまたはフォルダがすでに存在するか、指定されたパスが存在しません。"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kanał lub folder już istnieje, albo podana ścieżka nie istnieje."
+          }
         }
       }
     },
@@ -8043,6 +8145,12 @@
             "state" : "translated",
             "value" : "トレントファイルまたはマグネットURLが無効、またはサポートされていません。"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plik torrent lub adres URL Magnet jest nieprawidłowy lub nieobsługiwany."
+          }
         }
       }
     },
@@ -8053,6 +8161,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このトレントはすでにダウンロードリストにあります。"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ten torrent znajduje się już na liście pobierania."
           }
         }
       }
@@ -8305,6 +8419,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "認証されていません。サーバーに再ログインしてください。"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brak autoryzacji. Zaloguj się ponownie do serwera."
           }
         }
       }
