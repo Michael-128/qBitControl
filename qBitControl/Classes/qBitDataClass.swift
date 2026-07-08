@@ -107,6 +107,15 @@ class qBitData: ObservableObject {
             self.connectionStatus = .connected
         } catch {
             AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "telemetry_fetch_failed", errorDescription: error.localizedDescription))
+            
+            if let networkError = error as? NetworkError, networkError == .unauthorized {
+                do {
+                    try await ServersHelper.shared.reauthenticate()
+                } catch {
+                    // Silent reauth failed. Permanent failure is handled in reauthenticate()
+                }
+            }
+            
             self.connectionStatus = .offline
         }
     }
