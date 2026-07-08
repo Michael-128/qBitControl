@@ -24,6 +24,9 @@ class ServersHelper: ObservableObject {
     @Published public var categories: [String: Category] = [:]
     @Published public var tags: [String] = []
     
+    // For unit testing tracking
+    public var reauthAttemptCount = 0
+    
     init() {
         getServerList()
         getActiveServer()
@@ -201,6 +204,7 @@ class ServersHelper: ObservableObject {
     }
     
     func reauthenticate() async throws {
+        reauthAttemptCount += 1
         guard let activeId = activeServerId, let server = getServer(id: activeId) else {
             throw NetworkError.unauthorized
         }
