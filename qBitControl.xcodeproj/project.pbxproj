@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		909EE5C52CDD3B51002403DF /* WhatsNewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C62CDD3B51002403DF /* WhatsNewView.swift */; };
+		909EE5C72CDD3B51002403DF /* AppVersionTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C82CDD3B51002403DF /* AppVersionTracker.swift */; };
+		909EE5C92CDD3B51002403DF /* AppVersionTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5CA2CDD3B51002403DF /* AppVersionTrackerTests.swift */; };
 		909EE5BD2CDD3B51002403DF /* String+Logging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5BE2CDD3B51002403DF /* String+Logging.swift */; };
 		909EE5BF2CDD3B51002403DF /* TorrentAddInitiatedPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C02CDD3B51002403DF /* TorrentAddInitiatedPayload.swift */; };
 		909EE5C12CDD3B51002403DF /* TorrentAddSuccessPayload.swift in Sources */ = {isa = PBXBuildFile; fileRef = 909EE5C22CDD3B51002403DF /* TorrentAddSuccessPayload.swift */; };
@@ -149,6 +152,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		909EE5C62CDD3B51002403DF /* WhatsNewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhatsNewView.swift; sourceTree = "<group>"; };
+		909EE5C82CDD3B51002403DF /* AppVersionTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTracker.swift; sourceTree = "<group>"; };
+		909EE5CA2CDD3B51002403DF /* AppVersionTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppVersionTrackerTests.swift; sourceTree = "<group>"; };
 		909EE5BE2CDD3B51002403DF /* String+Logging.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Logging.swift"; sourceTree = "<group>"; };
 		909EE5C02CDD3B51002403DF /* TorrentAddInitiatedPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddInitiatedPayload.swift; sourceTree = "<group>"; };
 		909EE5C22CDD3B51002403DF /* TorrentAddSuccessPayload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentAddSuccessPayload.swift; sourceTree = "<group>"; };
@@ -348,6 +354,7 @@
 				90FA253529190D0400DC8F0B /* FileNodeClass.swift */,
 				90BA88542B2206F100C8A342 /* LocalNetworkPermissionClass.swift */,
 				90DCA7E42B51C393008A9C1B /* ServersHelper.swift */,
+				909EE5C82CDD3B51002403DF /* AppVersionTracker.swift */,
 				90FF93462C8707BF001CDCE4 /* AppInfo.swift */,
 			);
 			path = Classes;
@@ -477,6 +484,7 @@
 				90726B502CDA22190032993E /* TorrentViews */,
 				90726B512CDA22190032993E /* MainView.swift */,
 				909EE5BA2CDD3B51002403DF /* LogViewerView.swift */,
+				909EE5C62CDD3B51002403DF /* WhatsNewView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -618,6 +626,7 @@
 				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
 				909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */,
 				909EE5BC2CDD3B51002403DF /* LoggingTests.swift */,
+				909EE5CA2CDD3B51002403DF /* AppVersionTrackerTests.swift */,
 			);
 			path = qBitControlTests;
 			sourceTree = "<group>";
@@ -788,6 +797,8 @@
 				90833C252FFC3CC300D3769B /* ConnectionStatus.swift in Sources */,
 				90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */,
 				90DCA7E52B51C393008A9C1B /* ServersHelper.swift in Sources */,
+				909EE5C72CDD3B51002403DF /* AppVersionTracker.swift in Sources */,
+				909EE5C52CDD3B51002403DF /* WhatsNewView.swift in Sources */,
 				90726B1F2CDA22160032993E /* AlertIdentifier.swift in Sources */,
 				90726B552CDA22190032993E /* RSSView.swift in Sources */,
 				90726B562CDA22190032993E /* ServerAddView.swift in Sources */,
@@ -885,6 +896,7 @@
 				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 				909EE5AB2CDD3B51002403DF /* qBitDataTests.swift in Sources */,
 				909EE5BB2CDD3B51002403DF /* LoggingTests.swift in Sources */,
+				909EE5C92CDD3B51002403DF /* AppVersionTrackerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
