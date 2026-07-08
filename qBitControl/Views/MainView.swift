@@ -7,6 +7,7 @@ struct MainView: View {
     @Environment(\.scenePhase) var scenePhase
     @State var selectedTab: TabItem.Tab = .search
     @State private var showOfflineBanner = false
+    @State private var showWhatsNew = false
     
     let tabs = [
         TabItem(label: "Tasks", systemImage: "square.and.arrow.down.on.square", value: .tasks) { AnyView(TorrentListView()) },
@@ -14,6 +15,14 @@ struct MainView: View {
         TabItem(label: "Stats", systemImage: "chart.line.uptrend.xyaxis", value: .stats) { AnyView(StatsView()) },
         TabItem(label: "Servers", systemImage: "server.rack", value: .servers) { AnyView(ServersView()) },
     ]
+    
+    private func checkWhatsNew() {
+        let tracker = AppVersionTracker(currentVersion: "1.4.0")
+        let hasServers = !serversHelper.servers.isEmpty
+        if case .update = tracker.determineLaunchType(hasConfiguredServers: hasServers) {
+            showWhatsNew = true
+        }
+    }
     
     func mainTabView() -> some View {
         TabView {
@@ -79,11 +88,15 @@ struct MainView: View {
                 }
                 .onAppear {
                     showOfflineBanner = (qBitDataObj.connectionStatus != .connected)
+                    checkWhatsNew()
                 }
                 .onChange(of: qBitDataObj.connectionStatus) { status in
                     withAnimation(.easeInOut) {
                         showOfflineBanner = (status != .connected)
                     }
+                }
+                .sheet(isPresented: $showWhatsNew) {
+                    WhatsNewView()
                 }
             }
         }
