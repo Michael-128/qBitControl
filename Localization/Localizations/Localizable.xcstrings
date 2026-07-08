@@ -1293,6 +1293,12 @@
             "state" : "translated",
             "value" : "Logi aplikacji"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用日志"
+          }
         }
       }
     },
@@ -1877,6 +1883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zamknij"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "关闭"
           }
         }
       }
@@ -3352,6 +3364,12 @@
             "state" : "translated",
             "value" : "Nie udało się dodać torrenta"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加种子失败"
+          }
         }
       }
     },
@@ -4134,6 +4152,12 @@
             "state" : "translated",
             "value" : "Nieprawidłowy adres URL RSS. Sprawdź adres i spróbuj ponownie."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无效的 RSS URL。请检查地址并重试。"
+          }
         }
       }
     },
@@ -4313,6 +4337,12 @@
             "state" : "translated",
             "value" : "Poziom"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "级别"
+          }
         }
       }
     },
@@ -4371,6 +4401,12 @@
             "state" : "translated",
             "value" : "Ładowanie kanału..."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在加载订阅源..."
+          }
         }
       }
     },
@@ -4388,6 +4424,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Logi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "日志"
           }
         }
       }
@@ -4997,6 +5039,12 @@
             "state" : "translated",
             "value" : "Nie znaleziono logów spełniających kryteria."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未找到符合条件的日志。"
+          }
         }
       }
     },
@@ -5175,6 +5223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Jesteś offline. Sprawdź połączenie sieciowe."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "离线。请检查您的网络连接。"
           }
         }
       }
@@ -6319,6 +6373,12 @@
             "state" : "translated",
             "value" : "pozostało"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剩余"
+          }
         }
       }
     },
@@ -6455,6 +6515,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Upłynął limit czasu żądania. Sprawdź połączenie sieciowe."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请求超时。请检查您的网络连接。"
           }
         }
       }
@@ -6743,6 +6809,12 @@
             "state" : "translated",
             "value" : "Akcja RSS nie powiodła się"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RSS 操作失败"
+          }
         }
       }
     },
@@ -6880,6 +6952,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Szukaj w logach..."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜索日志..."
           }
         }
       }
@@ -7258,6 +7336,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Serwer zwrócił kod błędu %d."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务器返回错误代码 %d。"
           }
         }
       }
@@ -8134,6 +8218,12 @@
             "state" : "translated",
             "value" : "Kanał lub folder już istnieje, albo podana ścieżka nie istnieje."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "订阅源或文件夹已存在，或者指定的路径不存在。"
+          }
         }
       }
     },
@@ -8151,6 +8241,12 @@
             "state" : "translated",
             "value" : "Plik torrent lub adres URL Magnet jest nieprawidłowy lub nieobsługiwany."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "种子文件或磁力链接无效或不受支持。"
+          }
         }
       }
     },
@@ -8167,6 +8263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ten torrent znajduje się już na liście pobierania."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该种子已在您的下载列表中。"
           }
         }
       }
@@ -8425,6 +8527,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Brak autoryzacji. Zaloguj się ponownie do serwera."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未授权。请重新登录服务器。"
           }
         }
       }
