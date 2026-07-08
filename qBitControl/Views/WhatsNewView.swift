@@ -112,6 +112,27 @@ private struct FeatureRowView: View {
     }
 }
 
-#Preview {
+#Preview("English") {
     WhatsNewView()
+        .environment(\.locale, Locale(identifier: "en"))
+}
+
+#Preview("Polish") {
+    WhatsNewView()
+        .environment(\.locale, Locale(identifier: "pl"))
+}
+
+#Preview("Chinese (Simplified)") {
+    WhatsNewView()
+        .environment(\.locale, Locale(identifier: "zh-Hans"))
+}
+
+#Preview("Chinese (Traditional)") {
+    WhatsNewView()
+        .environment(\.locale, Locale(identifier: "zh-Hant"))
+}
+
+#Preview("Japanese") {
+    WhatsNewView()
+        .environment(\.locale, Locale(identifier: "ja"))
 }
