@@ -24,6 +24,9 @@ class ServersHelper: ObservableObject {
     @Published public var categories: [String: Category] = [:]
     @Published public var tags: [String] = []
     
+    // For unit testing tracking
+    public var reauthAttemptCount = 0
+    
     init() {
         getServerList()
         getActiveServer()
@@ -197,6 +200,33 @@ class ServersHelper: ObservableObject {
                 AppLogger.log(.error, GeneralErrorPayload(category: .auth, eventName: "auto_connect_failed", errorDescription: error.localizedDescription))
             }
             self.connectingServerId = nil
+        }
+    }
+    
+    func reauthenticate() async throws {
+        reauthAttemptCount += 1
+        guard let activeId = activeServerId, let server = getServer(id: activeId) else {
+            throw NetworkError.unauthorized
+        }
+        
+        let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+        let newClient = qBittorrentClient(networkClient: networkClient)
+        
+        do {
+            try await newClient.login(username: server.username, password: server.password)
+            self.client = newClient
+            self.isLoggedIn = true
+            AppLogger.log(.info, SystemEventPayload(category: .auth, eventName: "silent_reauth_success", message: "Successfully silently reauthenticated server: \(server.name)"))
+        } catch {
+            AppLogger.log(.error, GeneralErrorPayload(category: .auth, eventName: "silent_reauth_failed", errorDescription: error.localizedDescription))
+            
+            if let networkError = error as? NetworkError, networkError == .unauthorized {
+                // Permanent auth failure (e.g. password changed) -> Log out and show login screen
+                self.isLoggedIn = false
+                self.client = nil
+                self.clearCache()
+            }
+            throw error
         }
     }
     

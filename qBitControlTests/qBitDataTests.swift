@@ -110,4 +110,33 @@ final class qBitDataTests: XCTestCase {
         await qBitData.shared.getMainData()
         XCTAssertEqual(mockClient.fetchCount, 2)
     }
+    
+    private class MockUnauthorizedClient: MockTorrentClient {
+        override func getMainData(rid: Int = 0) async throws -> MainData {
+            throw NetworkError.unauthorized
+        }
+    }
+    
+    @MainActor
+    func test_getMainData_onUnauthorizedError_triggersSilentReauthentication() async {
+        let mockClient = MockUnauthorizedClient()
+        ServersHelper.shared.client = mockClient
+        ServersHelper.shared.isLoggedIn = true
+        
+        let testServer = Server(
+            id: "test-auth-id",
+            name: "Test Server",
+            url: "http://127.0.0.1",
+            username: "admin",
+            password: "password",
+            basicAuth: nil
+        )
+        ServersHelper.shared.servers = [testServer]
+        ServersHelper.shared.activeServerId = testServer.id
+        ServersHelper.shared.reauthAttemptCount = 0
+        
+        await qBitData.shared.getMainData()
+        
+        XCTAssertEqual(ServersHelper.shared.reauthAttemptCount, 1)
+    }
 }
