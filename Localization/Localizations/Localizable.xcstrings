@@ -670,8 +670,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Category"
+            "state" : "translated",
+            "value" : "新增類別"
           }
         }
       }
@@ -790,8 +790,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add New Category"
+            "state" : "translated",
+            "value" : "新增類別"
           }
         }
       }
@@ -830,8 +830,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add New Tag"
+            "state" : "translated",
+            "value" : "新增標籤"
           }
         }
       }
@@ -910,8 +910,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Add Tag"
+            "state" : "translated",
+            "value" : "新增標籤"
           }
         }
       }
@@ -1070,8 +1070,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "ADDING"
+            "state" : "translated",
+            "value" : "加入中"
           }
         }
       }
@@ -1298,6 +1298,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "应用日志"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "應用程式記錄"
           }
         }
       }
@@ -1673,8 +1679,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Category Name"
+            "state" : "translated",
+            "value" : "類別名稱"
           }
         }
       }
@@ -1889,6 +1895,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "关闭"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "關閉"
           }
         }
       }
@@ -3145,8 +3157,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Downloaded Session"
+            "state" : "translated",
+            "value" : "工作階段下載量"
           }
         }
       }
@@ -3305,8 +3317,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Errored"
+            "state" : "translated",
+            "value" : "發生錯誤"
           }
         }
       }
@@ -3370,6 +3382,12 @@
             "state" : "translated",
             "value" : "添加种子失败"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增種子失敗"
+          }
         }
       }
     },
@@ -3407,8 +3425,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Feeds"
+            "state" : "translated",
+            "value" : "訂閱源"
           }
         }
       }
@@ -3607,8 +3625,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "First & Last Pieces First"
+            "state" : "translated",
+            "value" : "優先下載首尾區塊"
           }
         }
       }
@@ -3647,8 +3665,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Flags"
+            "state" : "translated",
+            "value" : "旗標"
           }
         }
       }
@@ -3916,8 +3934,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Help with translation"
+            "state" : "translated",
+            "value" : "協助翻譯"
           }
         }
       }
@@ -4158,6 +4176,12 @@
             "state" : "translated",
             "value" : "无效的 RSS URL。请检查地址并重试。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無效的 RSS URL。請檢查網址並重試。"
+          }
         }
       }
     },
@@ -4343,6 +4367,12 @@
             "state" : "translated",
             "value" : "级别"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "等級"
+          }
         }
       }
     },
@@ -4380,8 +4410,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Limits"
+            "state" : "translated",
+            "value" : "限制"
           }
         }
       }
@@ -4407,6 +4437,12 @@
             "state" : "translated",
             "value" : "正在加载订阅源..."
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "正在載入訂閱源..."
+          }
         }
       }
     },
@@ -4430,6 +4466,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "日志"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "記錄"
           }
         }
       }
@@ -4548,8 +4590,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Max Ratio"
+            "state" : "translated",
+            "value" : "最大分享率"
           }
         }
       }
@@ -4588,8 +4630,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Max Seeding Time"
+            "state" : "translated",
+            "value" : "最大做種時間"
           }
         }
       }
@@ -4628,8 +4670,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Maximum Ratio"
+            "state" : "translated",
+            "value" : "最大分享率"
           }
         }
       }
@@ -4978,8 +5020,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "New Name"
+            "state" : "translated",
+            "value" : "新名稱"
           }
         }
       }
@@ -5044,6 +5086,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未找到符合条件的日志。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到符合條件的記錄。"
           }
         }
       }
@@ -5230,6 +5278,12 @@
             "state" : "translated",
             "value" : "离线。请检查您的网络连接。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "離線。請檢查您的網路連線。"
+          }
         }
       }
     },
@@ -5267,8 +5321,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "OK"
+            "state" : "translated",
+            "value" : "確定"
           }
         }
       }
@@ -5627,8 +5681,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Peer Details"
+            "state" : "translated",
+            "value" : "節點詳細資訊"
           }
         }
       }
@@ -5667,8 +5721,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Peers"
+            "state" : "translated",
+            "value" : "節點"
           }
         }
       }
@@ -5707,8 +5761,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Peers In Swarm"
+            "state" : "translated",
+            "value" : "群集中的節點"
           }
         }
       }
@@ -5953,8 +6007,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "qBitControl is the definitive remote client for managing your qBittorrent downloads on iOS devices."
+            "state" : "translated",
+            "value" : "qBitControl 是在 iOS 裝置上管理 qBittorrent 下載的最佳遠端用戶端。"
           }
         }
       }
@@ -5993,8 +6047,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Queue"
+            "state" : "translated",
+            "value" : "佇列"
           }
         }
       }
@@ -6033,8 +6087,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Queue Management"
+            "state" : "translated",
+            "value" : "佇列管理"
           }
         }
       }
@@ -6113,8 +6167,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Ratio Limit"
+            "state" : "translated",
+            "value" : "分享率限制"
           }
         }
       }
@@ -6153,8 +6207,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reannounce"
+            "state" : "translated",
+            "value" : "重新宣告"
           }
         }
       }
@@ -6193,8 +6247,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Reannounce Task"
+            "state" : "translated",
+            "value" : "重新宣告任務"
           }
         }
       }
@@ -6273,8 +6327,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Recheck Task"
+            "state" : "translated",
+            "value" : "重新檢查任務"
           }
         }
       }
@@ -6379,6 +6433,12 @@
             "state" : "translated",
             "value" : "剩余"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "剩餘"
+          }
         }
       }
     },
@@ -6456,8 +6516,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Rename"
+            "state" : "translated",
+            "value" : "重新命名"
           }
         }
       }
@@ -6521,6 +6581,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "请求超时。请检查您的网络连接。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請求逾時。請檢查您的網路連線。"
           }
         }
       }
@@ -6708,8 +6774,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Resume Task"
+            "state" : "translated",
+            "value" : "繼續任務"
           }
         }
       }
@@ -6748,8 +6814,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Resumed"
+            "state" : "translated",
+            "value" : "已繼續"
           }
         }
       }
@@ -6814,6 +6880,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "RSS 操作失败"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "RSS 操作失敗"
           }
         }
       }
@@ -6958,6 +7030,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "搜索日志..."
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "搜尋記錄..."
           }
         }
       }
@@ -7117,8 +7195,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Seeding Time Limit"
+            "state" : "translated",
+            "value" : "做種時間限制"
           }
         }
       }
@@ -7157,8 +7235,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Seeds In Swarm"
+            "state" : "translated",
+            "value" : "群集中的種子"
           }
         }
       }
@@ -7343,6 +7421,12 @@
             "state" : "translated",
             "value" : "服务器返回错误代码 %d。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "伺服器回傳錯誤代碼 %d。"
+          }
         }
       }
     },
@@ -7420,8 +7504,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Session"
+            "state" : "translated",
+            "value" : "工作階段"
           }
         }
       }
@@ -7460,8 +7544,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Session Download"
+            "state" : "translated",
+            "value" : "工作階段下載量"
           }
         }
       }
@@ -7500,8 +7584,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Session Upload"
+            "state" : "translated",
+            "value" : "工作階段上傳量"
           }
         }
       }
@@ -7861,8 +7945,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Statistics"
+            "state" : "translated",
+            "value" : "統計資料"
           }
         }
       }
@@ -8037,8 +8121,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Stop Force Start"
+            "state" : "translated",
+            "value" : "停止強制開始"
           }
         }
       }
@@ -8077,8 +8161,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Tag Name"
+            "state" : "translated",
+            "value" : "標籤名稱"
           }
         }
       }
@@ -8224,6 +8308,12 @@
             "state" : "translated",
             "value" : "订阅源或文件夹已存在，或者指定的路径不存在。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "訂閱源或資料夾已存在，或者指定的路徑不存在。"
+          }
         }
       }
     },
@@ -8247,6 +8337,12 @@
             "state" : "translated",
             "value" : "种子文件或磁力链接无效或不受支持。"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "種子檔案或磁力連結無效或不受支援。"
+          }
         }
       }
     },
@@ -8269,6 +8365,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "该种子已在您的下载列表中。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此種子已在您的下載清單中。"
           }
         }
       }
@@ -8347,8 +8449,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Time Active"
+            "state" : "translated",
+            "value" : "活躍時間"
           }
         }
       }
@@ -8427,8 +8529,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Trackers"
+            "state" : "translated",
+            "value" : "追蹤器"
           }
         }
       }
@@ -8533,6 +8635,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "未授权。请重新登录服务器。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未經授權。請重新登入伺服器。"
           }
         }
       }
@@ -8811,8 +8919,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Upload Limit"
+            "state" : "translated",
+            "value" : "上傳限制"
           }
         }
       }
@@ -8891,8 +8999,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Uploaded"
+            "state" : "translated",
+            "value" : "已上傳"
           }
         }
       }
@@ -8931,8 +9039,8 @@
         },
         "zh-Hant" : {
           "stringUnit" : {
-            "state" : "new",
-            "value" : "Uploaded Session"
+            "state" : "translated",
+            "value" : "工作階段上傳量"
           }
         }
       }
