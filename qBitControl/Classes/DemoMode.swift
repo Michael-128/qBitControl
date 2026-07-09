@@ -4,14 +4,18 @@
 //
 
 import Foundation
+import Combine
 import SwiftUI
 
 @MainActor
 enum DemoMode {
     
+    static let alertMessage = CurrentValueSubject<String?, Never>(nil)
+    
     static func activate() {
         let mockClient = MockTorrentClient()
-        ServersHelper.shared.client = mockClient
+        let guardClient = DemoGuardClient(mock: mockClient)
+        ServersHelper.shared.client = guardClient
         ServersHelper.shared.isLoggedIn = true
         
         Task {
