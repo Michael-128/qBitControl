@@ -62,9 +62,10 @@ struct ServersView: View {
                         DemoMode.activate()
                     } label: {
                         HStack {
-                            Image(systemName: "play.display")
-                            Text("Try Demo Mode")
+                            Image(systemName: "sparkles")
+                            Text("Live Demo")
                         }
+                        .foregroundColor(.teal)
                     }
                 }
             }
