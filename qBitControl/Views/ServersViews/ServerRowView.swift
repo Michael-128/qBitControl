@@ -12,6 +12,7 @@ struct ServerRowView: View {
     
     var body: some View {
         HStack() {
+            Image(systemName: "server.rack")
             Text(server.name.isEmpty ? server.url : server.name)
             
             Spacer()
