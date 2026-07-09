@@ -318,7 +318,90 @@ class MockTorrentClient: TorrentClientProtocol {
     // MARK: - TorrentRSSActions
     
     func getRSSFeeds(withDate: Bool = true) async throws -> RSSNode {
-        return RSSNode()
+        let root = RSSNode()
+        
+        let linuxFeed = RSSFeed(
+            url: "https://example.com/linux-isos/rss",
+            uid: "001",
+            isLoading: false,
+            title: "Linux ISOs",
+            hasError: false,
+            articles: [
+                RSSFeed.Article(
+                    category: "Linux",
+                    title: "Ubuntu 24.04.1 LTS (Noble Numbat)",
+                    date: "2026-07-01",
+                    link: "https://releases.ubuntu.com/24.04.1",
+                    size: "5.8 GiB",
+                    torrentURL: "https://releases.ubuntu.com/24.04.1/ubuntu-24.04.1-desktop-amd64.iso.torrent",
+                    isRead: false
+                ),
+                RSSFeed.Article(
+                    category: "Linux",
+                    title: "Fedora 42 Workstation",
+                    date: "2026-07-05",
+                    link: "https://fedoraproject.org/42",
+                    size: "4.2 GiB",
+                    torrentURL: "https://torrent.fedoraproject.org/42/Fedora-Workstation-Live-x86_64-42.torrent",
+                    isRead: false
+                ),
+                RSSFeed.Article(
+                    category: "Linux",
+                    title: "Arch Linux 2026.07.01",
+                    date: "2026-07-07",
+                    link: "https://archlinux.org/releng/releases/2026.07.01",
+                    size: "1.1 GiB",
+                    torrentURL: "https://archlinux.org/releng/releases/2026.07.01/torrent",
+                    isRead: true
+                )
+            ]
+        )
+        root.feeds.append(linuxFeed)
+        
+        let ossFolder = RSSNode()
+        ossFolder.title = "Open-Source Software"
+        ossFolder.parent = root
+        
+        let ossFeed = RSSFeed(
+            url: "https://example.com/opensource/rss",
+            uid: "003",
+            isLoading: false,
+            title: "Open Source",
+            hasError: false,
+            articles: [
+                RSSFeed.Article(
+                    category: "Software",
+                    title: "qBittorrent v5.1.0",
+                    date: "2026-07-03",
+                    link: "https://www.qbittorrent.org",
+                    size: "48 MiB",
+                    torrentURL: "https://www.qbittorrent.org/download.torrent",
+                    isRead: false
+                ),
+                RSSFeed.Article(
+                    category: "Software",
+                    title: "LibreOffice 24.8.0",
+                    date: "2026-06-28",
+                    link: "https://www.libreoffice.org",
+                    size: "352 MiB",
+                    torrentURL: "https://www.libreoffice.org/download.torrent",
+                    isRead: true
+                ),
+                RSSFeed.Article(
+                    category: "Software",
+                    title: "Blender 4.4 LTS",
+                    date: "2026-06-15",
+                    link: "https://www.blender.org",
+                    size: "420 MiB",
+                    torrentURL: "https://www.blender.org/download.torrent",
+                    isRead: false
+                )
+            ]
+        )
+        ossFolder.feeds.append(ossFeed)
+        root.nodes.append(ossFolder)
+        
+        return root
     }
     
     func addRSSFeed(url: String, path: String) async throws {}
