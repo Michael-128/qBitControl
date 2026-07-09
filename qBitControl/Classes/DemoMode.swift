@@ -16,6 +16,7 @@ enum DemoMode {
         let mockClient = MockTorrentClient()
         let guardClient = DemoGuardClient(mock: mockClient)
         ServersHelper.shared.client = guardClient
+        ServersHelper.shared.activeServerId = "demo"
         ServersHelper.shared.isLoggedIn = true
         
         Task {
@@ -26,6 +27,7 @@ enum DemoMode {
     }
     
     static func deactivate() {
+        ServersHelper.shared.activeServerId = nil
         ServersHelper.shared.client = nil
         ServersHelper.shared.isLoggedIn = false
         ServersHelper.shared.clearCache()

@@ -64,9 +64,14 @@ struct ServersView: View {
                         HStack {
                             Image(systemName: "sparkles")
                             Text("Live Demo")
+                            Spacer()
+                            if serversHelper.activeServerId == "demo" {
+                                Image(systemName: "checkmark")
+                            }
                         }
                         .foregroundColor(.teal)
                     }
+                    .disabled(serversHelper.activeServerId == "demo")
                 }
             }
             .navigationTitle("Servers")
