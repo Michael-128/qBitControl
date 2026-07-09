@@ -57,6 +57,16 @@ struct ServersView: View {
                         }
                     }
                 }
+                Section {
+                    Button {
+                        DemoMode.activate()
+                    } label: {
+                        HStack {
+                            Image(systemName: "play.display")
+                            Text("Try Demo Mode")
+                        }
+                    }
+                }
             }
             .navigationTitle("Servers")
         }

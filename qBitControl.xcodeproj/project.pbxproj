@@ -132,6 +132,7 @@
 		90EF6A5D29093142001E9F75 /* SmoothProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F74 /* SmoothProgressBar.swift */; };
 		90FA253629190D0400DC8F0B /* FileNodeClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FA253529190D0400DC8F0B /* FileNodeClass.swift */; };
 		90FF93472C8707BF001CDCE4 /* AppInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90FF93462C8707BF001CDCE4 /* AppInfo.swift */; };
+		90669D903F83CF4C689553A4 /* DemoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C01DB5D0C1284DD1BD2E78 /* DemoMode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -282,6 +283,7 @@
 		90FA253529190D0400DC8F0B /* FileNodeClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileNodeClass.swift; sourceTree = "<group>"; };
 		90FF93462C8707BF001CDCE4 /* AppInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInfo.swift; sourceTree = "<group>"; };
 		CE421B2E2BD7A9C800225FC1 /* qBitControl.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = qBitControl.entitlements; sourceTree = "<group>"; };
+		90C01DB5D0C1284DD1BD2E78 /* DemoMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoMode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -356,7 +358,7 @@
 				90DCA7E42B51C393008A9C1B /* ServersHelper.swift */,
 				909EE5C82CDD3B51002403DF /* AppVersionTracker.swift */,
 				90FF93462C8707BF001CDCE4 /* AppInfo.swift */,
-			);
+				90C01DB5D0C1284DD1BD2E78 /* DemoMode.swift */,);
 			path = Classes;
 			sourceTree = "<group>";
 		};
@@ -884,7 +886,7 @@
 				909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */,
 				909EE5B52CDD3B51002403DF /* LogStore.swift in Sources */,
 				90EF6A4D29093142001E9EF1 /* NetworkClient.swift in Sources */,
-			);
+				90669D903F83CF4C689553A4 /* DemoMode.swift in Sources */,);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		9082FA2B29080E55006C3960 /* Sources */ = {
