@@ -1,5 +1,5 @@
 //
-//  ServerAddView.swift
+//  ServerAddViewModel.swift
 //  qBitControl
 //
 
