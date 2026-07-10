@@ -49,34 +49,27 @@ struct ServerAddView: View {
                         Text("Check Connection")
                     })
                 }
-                
-                Section {
-                    Button {
-                        viewModel.addServer(dismiss: dismiss)
-                    } label: {
-                        Spacer()
-                        if(viewModel.isCheckingConnection) {
-                            Text("ADDING" + "...")
-                                .fontWeight(.bold)
-                        } else {
-                            Text("ADD")
-                                .fontWeight(.bold)
-                        }
-                        Spacer()
-                    }.buttonStyle(.borderedProminent)
-                        .tint(viewModel.addButtonColor)
-                }.listRowBackground(viewModel.addButtonColor)
             }
             .alert(isPresented: $viewModel.isInvalidAlert) {
                 Alert(title: Text("Invalid server information"), message: Text(viewModel.invalidAlertMessage), dismissButton: .default(Text("OK"), action: {
                     viewModel.alertDismissed()
                 }))
             }
-            .toolbar() {
-                Button {
-                    dismiss()
-                } label: {
-                    Text("Cancel")
+            .toolbar {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button("Cancel") { dismiss() }
+                }
+                ToolbarItem(placement: .confirmationAction) {
+                    Button {
+                        viewModel.addServer(dismiss: dismiss)
+                    } label: {
+                        if viewModel.isCheckingConnection {
+                            ProgressView()
+                        } else {
+                            Text("Add")
+                        }
+                    }
+                    .disabled(viewModel.isCheckingConnection)
                 }
             }
             .navigationTitle("Add Server")

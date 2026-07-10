@@ -22,8 +22,6 @@ class ServerAddViewModel: ObservableObject {
     
     @Published var isCheckingConnection = false;
     
-    public var addButtonColor: Color { self.isCheckingConnection ? Color.gray : Color.blue }
-    
     private var alertQueue: [String] = [];
     
     init() { }
