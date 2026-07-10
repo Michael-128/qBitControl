@@ -13,6 +13,7 @@ enum DemoMode {
     static let alertMessage = CurrentValueSubject<String?, Never>(nil)
     
     static func activate() {
+        ServersHelper.shared.clearCache()
         let mockClient = MockTorrentClient()
         let guardClient = DemoGuardClient(mock: mockClient)
         ServersHelper.shared.client = guardClient
