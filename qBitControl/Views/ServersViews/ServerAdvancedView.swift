@@ -3,31 +3,42 @@ import SwiftUI
 struct ServerAdvancedView: View {
     @Binding var basicAuth: Server.BasicAuth?
     
-    @State var isBasicAuthEnabled: Bool = false
+    @State var isBasicAuthEnabled = false
     @State var username = ""
     @State var password = ""
     
     var body: some View {
         List {
-            Section(header: Text("Basic Authentication")) {
-                self.basicAuthView()
+            Section(footer: Text("Enable if your server is behind a reverse proxy that requires HTTP Basic Authentication.")) {
+                Toggle(isOn: $isBasicAuthEnabled.animation(.default)) {
+                    Label("Basic Authentication", systemImage: "key")
+                }
+                .onChange(of: isBasicAuthEnabled) { _ in onChangeHandler() }
+                
+                if isBasicAuthEnabled {
+                    LabeledContent {
+                        TextField("Required", text: $username)
+                            .disableAutocorrection(true)
+                            .autocapitalization(.none)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: username) { _ in onChangeHandler() }
+                    } label: {
+                        Label("Username", systemImage: "person")
+                    }
+                    .transition(.opacity)
+                    LabeledContent {
+                        SecureField("Required", text: $password)
+                            .multilineTextAlignment(.trailing)
+                            .onChange(of: password) { _ in onChangeHandler() }
+                    } label: {
+                        Label("Password", systemImage: "lock")
+                    }
+                    .transition(.opacity)
+                }
             }
-        }.onAppear { self.restoreValues() }
-    }
-    
-    @ViewBuilder
-    private func basicAuthView() -> some View {
-        Toggle("Basic Authentication", isOn: self.$isBasicAuthEnabled)
-            .onChange(of: isBasicAuthEnabled) { _ in self.onChangeHandler() }
-        
-        if(self.isBasicAuthEnabled) {
-            TextField("Username", text: self.$username)
-                .disableAutocorrection(true)
-                .autocapitalization(.none)
-                .onChange(of: username) { _ in self.onChangeHandler() }
-            SecureField("Password", text: self.$password)
-                .onChange(of: password) { _ in self.onChangeHandler() }
         }
+        .onAppear { restoreValues() }
+        .navigationTitle("Advanced")
     }
     
     private func restoreValues() {
@@ -39,13 +50,15 @@ struct ServerAdvancedView: View {
     }
     
     private func onChangeHandler() {
-        if(self.isBasicAuthEnabled == false) {
+        if isBasicAuthEnabled == false {
             self.basicAuth = nil
             return
         }
         
-        if(!username.isEmpty && !password.isEmpty) {
+        if !username.isEmpty && !password.isEmpty {
             self.basicAuth = Server.BasicAuth(username, password)
+        } else {
+            self.basicAuth = nil
         }
     }
 }
