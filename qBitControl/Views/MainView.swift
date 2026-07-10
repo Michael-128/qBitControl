@@ -1,4 +1,5 @@
 import SwiftUI
+import Combine
 
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
@@ -8,6 +9,7 @@ struct MainView: View {
     @State var selectedTab: TabItem.Tab = .search
     @State private var showOfflineBanner = false
     @State private var showWhatsNew = false
+    @State private var demoAlertMessage: String?
     
     let tabs = [
         TabItem(label: "Tasks", systemImage: "square.and.arrow.down.on.square", value: .tasks) { AnyView(TorrentListView()) },
@@ -99,6 +101,15 @@ struct MainView: View {
                     WhatsNewView()
                 }
             }
+        }
+        .onReceive(DemoMode.alertMessage) { demoAlertMessage = $0 }
+        .alert("Demo Mode", isPresented: Binding(
+            get: { demoAlertMessage != nil },
+            set: { if !$0 { demoAlertMessage = nil } }
+        )) {
+            Button("OK") { demoAlertMessage = nil }
+        } message: {
+            if let msg = demoAlertMessage { Text(msg) }
         }
     }
 }
