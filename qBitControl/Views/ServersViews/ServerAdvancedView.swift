@@ -57,6 +57,8 @@ struct ServerAdvancedView: View {
         
         if !username.isEmpty && !password.isEmpty {
             self.basicAuth = Server.BasicAuth(username, password)
+        } else {
+            self.basicAuth = nil
         }
     }
 }
