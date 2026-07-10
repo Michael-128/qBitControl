@@ -21,20 +21,23 @@ jobs:
       with:
         xcode-version: '26.0'
 
-    # --- CACHE SIMULATOR COMPONENTS ---
-    - name: Cache iOS Simulator Platform
-      id: cache-ios-platform
+    - name: Cache DerivedData
       uses: actions/cache@v3
       with:
-        path: /Library/Developer/CoreSimulator/Profiles/Runtimes
-        key: ${{ runner.os }}-xcode-26.0-ios-platform
+        path: ~/Library/Developer/Xcode/DerivedData
+        key: ${{ runner.os }}-xcode-26-deriveddata-${{ hashFiles('**/*.swift', '**/project.pbxproj') }}
+        restore-keys: ${{ runner.os }}-xcode-26-deriveddata-
 
-    - name: Download Missing iOS Simulator Components
-      if: steps.cache-ios-platform.outputs.cache-hit != 'true'
+    - name: Install iOS Simulator Runtime
       run: |
         xcrun simctl list > /dev/null
-        sudo xcodebuild -downloadPlatform iOS
-    # ----------------------------------
+        for i in 1 2 3; do
+          sudo xcodebuild -downloadPlatform iOS && exit 0
+          echo "Attempt $i failed, retrying in 15s..."
+          sleep 15
+        done
+        echo "All 3 download attempts failed"
+        exit 1
 
     - uses: yukiarrr/ios-build-action@v1.11.2
       with:
@@ -44,6 +47,14 @@ jobs:
         code-signing-identity: ${{ secrets.CODE_SIGNING_IDENTITY }}
         team-id: ${{ secrets.TEAM_ID }}
         output-path: qBitControl.ipa
+
+    - name: Run Unit Tests
+      run: |
+        xcodebuild test \
+          -project qBitControl.xcodeproj \
+          -scheme qBitControl \
+          -destination 'platform=iOS Simulator,name=iPhone 17 Pro' \
+          -resultBundlePath TestResults.xcresult
 
     - name: Extract Version and Build Number
       if: startsWith(github.ref, 'refs/tags/build-ci')
