@@ -21,6 +21,8 @@ class qBitData: ObservableObject {
     private var fetchInterval: UInt64 = 2_000_000_000 // 2 seconds
     
     private var isFetching = false
+    private var latestDlSpeed = 0
+    private var latestUpSpeed = 0
     
     init() {
         let date = Date()
@@ -37,7 +39,14 @@ class qBitData: ObservableObject {
         pollingTask?.cancel()
         pollingTask = Task {
             while !Task.isCancelled {
-                await self.getMainData()
+                // Trigger the network call in the background on the MainActor
+                Task { @MainActor in
+                    await self.getMainData()
+                }
+                
+                // Immediately append the latest known speed to the timeline history
+                self.appendTransferInfo()
+                
                 do {
                     try await Task.sleep(nanoseconds: fetchInterval)
                 } catch {
@@ -54,6 +63,8 @@ class qBitData: ObservableObject {
     
     func resetTransferHistory() {
         let date = Date()
+        self.latestDlSpeed = 0
+        self.latestUpSpeed = 0
         self.dlTransferData.removeAll()
         self.upTransferData.removeAll()
         for n in stride(from: -30, to: 0, by: 2) {
@@ -92,21 +103,16 @@ class qBitData: ObservableObject {
                     self.serverState = ServerState(from: partialServerState)
                 }
                 
-                let newDlTransferInfo = TransferInfo(fetchDate: Date(), info_speed: partialServerState.dl_info_speed ?? 0)
-                self.dlTransferData.append(newDlTransferInfo)
-                
-                // Limit the history to the last 20 entries
-                if self.dlTransferData.count > 20 { self.dlTransferData.removeFirst(self.dlTransferData.count - 20) }
-                
-                let newUpTransferInfo = TransferInfo(fetchDate: Date(), info_speed: partialServerState.up_info_speed ?? 0)
-                self.upTransferData.append(newUpTransferInfo)
-                
-                // Limit the history to the last 20 entries
-                if self.upTransferData.count > 20 { self.upTransferData.removeFirst(self.upTransferData.count - 20) }
+                self.latestDlSpeed = partialServerState.dl_info_speed ?? 0
+                self.latestUpSpeed = partialServerState.up_info_speed ?? 0
             }
             self.connectionStatus = .connected
         } catch {
             AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "telemetry_fetch_failed", errorDescription: error.localizedDescription))
+            
+            self.latestDlSpeed = 0
+            self.latestUpSpeed = 0
+            self.rid = 0 // Reset rid on network failure to force full update on recovery
             
             if let networkError = error as? NetworkError, networkError == .unauthorized {
                 do {
@@ -118,5 +124,15 @@ class qBitData: ObservableObject {
             
             self.connectionStatus = .offline
         }
+    }
+    
+    private func appendTransferInfo() {
+        let dlPoint = TransferInfo(fetchDate: Date(), info_speed: latestDlSpeed)
+        self.dlTransferData.append(dlPoint)
+        if self.dlTransferData.count > 20 { self.dlTransferData.removeFirst(self.dlTransferData.count - 20) }
+        
+        let upPoint = TransferInfo(fetchDate: Date(), info_speed: latestUpSpeed)
+        self.upTransferData.append(upPoint)
+        if self.upTransferData.count > 20 { self.upTransferData.removeFirst(self.upTransferData.count - 20) }
     }
 }
