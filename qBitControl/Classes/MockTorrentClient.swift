@@ -147,33 +147,6 @@ class MockTorrentClient: TorrentClientProtocol {
                 tracker: "udp://tracker.opentrackr.org:1337/announce", up_limit: -1, uploaded: 0,
                 uploaded_session: 0, upspeed: 0
             )
-        } else if hash == "dl_movies" || hash == "dl_arch" {
-            let prog = Float(0.3 + (sin(t * 0.02) * 0.1 + 0.5) * 0.6)
-            let progress = min(prog, Float(0.95))
-            let speed = wave(5, min: 1024, max: 4_194_304)
-            return PartialTorrent(
-                added_on: now + Int(addedOn), amount_left: Int(Float(totalSize) * (1 - progress)),
-                auto_tmm: false, availability: Float(min(1.0, 0.5 + progress)),
-                category: category, completed: Int(Float(totalSize) * progress), completion_on: nil,
-                content_path: "/Downloads/\(name)",
-                dl_limit: -1,
-                dlspeed: Int64(speed),
-                downloaded: Int64(Float(totalSize) * progress),
-                downloaded_session: Int64(Float(totalSize) * progress),
-                eta: max(1, Int(Float(totalSize - Int64(Float(totalSize) * progress)) / Float(speed == 0 ? 1 : speed))),
-                f_l_piece_prio: false, force_start: false,
-                last_activity: now, magnet_uri: "magnet:?xt=urn:btih:\(hash)",
-                max_ratio: -1.0, max_seeding_time: -1, name: name,
-                num_complete: Int.random(in: 30...500), num_incomplete: Int.random(in: 2...30),
-                num_leechs: Int.random(in: 3...15), num_seeds: Int.random(in: 30...400),
-                priority: 1, progress: progress, ratio: Float.random(in: 0.1...0.5),
-                ratio_limit: -1.0, save_path: "/downloads/\(category)",
-                seeding_time: nil, seeding_time_limit: -1, seen_complete: 0,
-                seq_dl: false, size: totalSize, state: "downloading",
-                super_seeding: false, tags: tags, time_active: Int(t), total_size: totalSize,
-                tracker: "udp://tracker.opentrackr.org:1337/announce", up_limit: -1,
-                uploaded: 0, uploaded_session: 0, upspeed: 0
-            )
         } else if hash == "ck_fedora" {
             let cycle = t.truncatingRemainder(dividingBy: 15) / 15.0
             let prog = Float(cycle)
