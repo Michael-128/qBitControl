@@ -57,7 +57,7 @@ struct ServersView: View {
                         }
                     }
                 }
-                Section {
+                Section(header: Text("Demo")) {
                     Button {
                         DemoMode.activate()
                     } label: {
