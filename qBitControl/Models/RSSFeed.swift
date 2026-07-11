@@ -4,7 +4,7 @@
 import Foundation
 
 struct RSSFeed: Decodable, Identifiable {
-    var id: UUID { UUID() }
+    var id: String { url ?? uid ?? UUID().uuidString }
     let url: String?
     let uid: String?
     let isLoading: Bool?
@@ -13,7 +13,7 @@ struct RSSFeed: Decodable, Identifiable {
     let articles: [Article]
     
     struct Article: Decodable, Identifiable {
-        var id: UUID { UUID() }
+        var id: String { torrentURL ?? link ?? UUID().uuidString }
         let category: String?
         let title: String?
         let date: String?
