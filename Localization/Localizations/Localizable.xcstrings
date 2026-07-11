@@ -2498,6 +2498,9 @@
         }
       }
     },
+    "Custom Headers" : {
+
+    },
     "Delete" : {
       "localizations" : {
         "ja" : {
