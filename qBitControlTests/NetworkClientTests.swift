@@ -299,6 +299,19 @@ final class NetworkClientTests: XCTestCase {
         }
     }
 
+    func testSendRequest_SSLUntrusted_ThrowsSSLUntrusted() async {
+        MockURLProtocol.requestHandler = { _ in
+            throw URLError(.serverCertificateUntrusted)
+        }
+        let client = NetworkClient(baseURL: baseURL, basicAuth: nil, session: mockSession)
+        do {
+            let _: MockDecodable = try await client.sendRequest(path: "/", queryItems: [], cookie: nil)
+            XCTFail("Expected sslUntrusted error")
+        } catch {
+            XCTAssertEqual(error as? NetworkError, .sslUntrusted)
+        }
+    }
+
     func testTaskGroup_TimeoutRace() async {
         // Given/When/Then
         do {
