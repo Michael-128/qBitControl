@@ -35,6 +35,7 @@ final class qBitDataTests: XCTestCase {
         qBitData.shared.stopPolling()
         ServersHelper.shared.client = nil
         ServersHelper.shared.isLoggedIn = false
+        ServersHelper.shared.refreshClientCallCount = 0
     }
     
     @MainActor
@@ -138,5 +139,56 @@ final class qBitDataTests: XCTestCase {
         await qBitData.shared.getMainData()
         
         XCTAssertEqual(ServersHelper.shared.reauthAttemptCount, 1)
+    }
+    
+    @MainActor
+    func test_getMainData_onFirstNonAuthFailure_doesNotTriggerRefreshClient() async {
+        let mockClient = MockDelayClient()
+        mockClient.shouldThrow = true
+        ServersHelper.shared.client = mockClient
+        ServersHelper.shared.isLoggedIn = true
+        qBitData.shared.connectionStatus = .connected
+        
+        let testServer = Server(
+            id: "test-refresh-id",
+            name: "Test Server",
+            url: "http://127.0.0.1",
+            username: "admin",
+            password: "password",
+            basicAuth: nil
+        )
+        ServersHelper.shared.servers = [testServer]
+        ServersHelper.shared.activeServerId = testServer.id
+        ServersHelper.shared.refreshClientCallCount = 0
+        
+        await qBitData.shared.getMainData()
+        
+        XCTAssertEqual(ServersHelper.shared.refreshClientCallCount, 0)
+        XCTAssertEqual(qBitData.shared.connectionStatus, .offline)
+    }
+    
+    @MainActor
+    func test_getMainData_onSecondNonAuthFailure_triggersRefreshClient() async {
+        let mockClient = MockDelayClient()
+        mockClient.shouldThrow = true
+        ServersHelper.shared.client = mockClient
+        ServersHelper.shared.isLoggedIn = true
+        qBitData.shared.connectionStatus = .offline
+        
+        let testServer = Server(
+            id: "test-refresh-id",
+            name: "Test Server",
+            url: "http://127.0.0.1",
+            username: "admin",
+            password: "password",
+            basicAuth: nil
+        )
+        ServersHelper.shared.servers = [testServer]
+        ServersHelper.shared.activeServerId = testServer.id
+        ServersHelper.shared.refreshClientCallCount = 0
+        
+        await qBitData.shared.getMainData()
+        
+        XCTAssertEqual(ServersHelper.shared.refreshClientCallCount, 1)
     }
 }

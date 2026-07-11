@@ -120,6 +120,9 @@ class qBitData: ObservableObject {
                 } catch {
                     // Silent reauth failed. Permanent failure is handled in reauthenticate()
                 }
+            } else if self.connectionStatus == .offline {
+                // Already offline — attempt recovery by creating a fresh URLSession client
+                await ServersHelper.shared.refreshClient()
             }
             
             self.connectionStatus = .offline
