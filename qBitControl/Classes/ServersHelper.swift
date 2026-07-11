@@ -26,6 +26,7 @@ class ServersHelper: ObservableObject {
     
     // For unit testing tracking
     public var reauthAttemptCount = 0
+    public var refreshClientCallCount = 0
     
     init() {
         getServerList()
@@ -133,12 +134,19 @@ class ServersHelper: ObservableObject {
     }
     
     func connect(server: Server, result: ((Bool) -> Void)?) {
+        qBitData.shared.stopPolling()
+        
         if server.id != activeServerId {
             self.clearCache()
         }
         connectingServerId = server.id
         
         Task {
+            defer {
+                self.connectingServerId = nil
+                qBitData.shared.startPolling()
+            }
+            
             let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
             let newClient = qBittorrentClient(networkClient: networkClient)
             do {
@@ -155,17 +163,23 @@ class ServersHelper: ObservableObject {
             } catch {
                 result?(false)
             }
-            self.connectingServerId = nil
         }
     }
     
     func connect(server: Server) {
+        qBitData.shared.stopPolling()
+        
         if server.id != activeServerId {
             self.clearCache()
         }
         connectingServerId = server.id
         
         Task {
+            defer {
+                self.connectingServerId = nil
+                qBitData.shared.startPolling()
+            }
+            
             let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
             let newClient = qBittorrentClient(networkClient: networkClient)
             do {
@@ -189,7 +203,6 @@ class ServersHelper: ObservableObject {
                     return client
                 }
                 
-                // Mutating and invoking actor-isolated methods safely on the MainActor
                 self.client = loggedInClient
                 self.setActiveServer(id: server.id)
                 await self.fetchMetadata()
@@ -199,10 +212,26 @@ class ServersHelper: ObservableObject {
             } catch {
                 AppLogger.log(.error, GeneralErrorPayload(category: .auth, eventName: "auto_connect_failed", errorDescription: error.localizedDescription))
             }
-            self.connectingServerId = nil
         }
     }
     
+    func refreshClient() async {
+        refreshClientCallCount += 1
+        guard let activeId = activeServerId, let server = getServer(id: activeId) else { return }
+
+        let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+        let newClient = qBittorrentClient(networkClient: networkClient)
+
+        do {
+            try await newClient.login(username: server.username, password: server.password)
+            self.client = newClient
+            self.isLoggedIn = true
+            AppLogger.log(.info, SystemEventPayload(category: .system, eventName: "client_refresh_success", message: "Successfully refreshed client for server: \(server.name)"))
+        } catch {
+            AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "client_refresh_failed", errorDescription: error.localizedDescription))
+        }
+    }
+
     func reauthenticate() async throws {
         reauthAttemptCount += 1
         guard let activeId = activeServerId, let server = getServer(id: activeId) else {
