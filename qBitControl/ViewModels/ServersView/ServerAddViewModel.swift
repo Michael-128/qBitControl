@@ -15,6 +15,7 @@ class ServerAddViewModel: ObservableObject {
     @Published var username = ""
     @Published var password = ""
     @Published var basicAuth: Server.BasicAuth?
+    @Published var customHeaders: [Server.CustomHeader] = []
     
     @Published var isInvalidAlert = false
     @Published var invalidAlertMessage = ""
@@ -36,6 +37,7 @@ class ServerAddViewModel: ObservableObject {
             username = server.username
             password = server.password
             basicAuth = server.basicAuth
+            customHeaders = server.customHeaders
         }
     }
     
@@ -77,7 +79,7 @@ class ServerAddViewModel: ObservableObject {
         if !validateInputs() { return }
         if isCheckingConnection { return }
         
-        let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth)
+        let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders)
         pendingServer = server
         
         self.isCheckingConnection = true

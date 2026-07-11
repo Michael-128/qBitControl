@@ -2,11 +2,14 @@ import SwiftUI
 
 struct ServerAdvancedView: View {
     @Binding var basicAuth: Server.BasicAuth?
+    @Binding var customHeaders: [Server.CustomHeader]
     
     @State var isBasicAuthEnabled = false
     @State var username = ""
     @State var password = ""
-    
+    @State var isCustomHeadersEnabled = false
+    @State private var animatedHeaders: [Server.CustomHeader] = []
+
     var body: some View {
         List {
             Section(footer: Text("Enable if your server is behind a reverse proxy that requires HTTP Basic Authentication.")) {
@@ -14,7 +17,7 @@ struct ServerAdvancedView: View {
                     Label("Basic Authentication", systemImage: "key")
                 }
                 .onChange(of: isBasicAuthEnabled) { _ in onChangeHandler() }
-                
+
                 if isBasicAuthEnabled {
                     LabeledContent {
                         TextField("Required", text: $username)
@@ -36,8 +39,49 @@ struct ServerAdvancedView: View {
                     .transition(.opacity)
                 }
             }
+
+            Section(footer: Text("Additional HTTP headers sent with every request. Use for reverse proxy authentication or zero-trust tunnels.")) {
+                Toggle(isOn: $isCustomHeadersEnabled.animation(.default)) {
+                    Label("Custom Headers", systemImage: "ellipsis.curlybraces")
+                }
+                .onChange(of: isCustomHeadersEnabled) { isEnabled in
+                    if isEnabled {
+                        animatedHeaders = customHeaders
+                    } else {
+                        withAnimation(.default) { animatedHeaders = [] }
+                    }
+                }
+
+                if isCustomHeadersEnabled {
+                    ForEach($animatedHeaders) { $header in
+                        HStack(spacing: 8) {
+                            TextField("Key", text: $header.key)
+                                .disableAutocorrection(true)
+                                .autocapitalization(.none)
+                            TextField("Value", text: $header.value)
+                                .disableAutocorrection(true)
+                                .autocapitalization(.none)
+                        }
+                    }
+                    .onDelete { indexSet in
+                        withAnimation(.default) { animatedHeaders.remove(atOffsets: indexSet) }
+                    }
+
+                    Button {
+                        withAnimation(.default) { animatedHeaders.append(Server.CustomHeader(key: "", value: "")) }
+                    } label: {
+                        Label("Add Header", systemImage: "plus")
+                    }
+                    .transition(.opacity)
+                }
+            }
         }
         .onAppear { restoreValues() }
+        .onChange(of: animatedHeaders) { newHeaders in
+            if isCustomHeadersEnabled {
+                customHeaders = newHeaders
+            }
+        }
         .navigationTitle("Advanced")
     }
     
@@ -46,6 +90,10 @@ struct ServerAdvancedView: View {
             self.isBasicAuthEnabled = true
             self.username = basicAuth.username
             self.password = basicAuth.password
+        }
+        if !customHeaders.isEmpty {
+            self.isCustomHeadersEnabled = true
+            self.animatedHeaders = customHeaders
         }
     }
     

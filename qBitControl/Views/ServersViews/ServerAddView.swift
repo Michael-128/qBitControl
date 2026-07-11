@@ -61,7 +61,7 @@ struct ServerAddView: View {
                 
                 Section {
                     NavigationLink {
-                        ServerAdvancedView(basicAuth: $viewModel.basicAuth)
+                        ServerAdvancedView(basicAuth: $viewModel.basicAuth, customHeaders: $viewModel.customHeaders)
                     } label: {
                         Label("Advanced", systemImage: "gearshape")
                     }
