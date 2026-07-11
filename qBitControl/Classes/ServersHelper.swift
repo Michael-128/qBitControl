@@ -110,7 +110,7 @@ class ServersHelper: ObservableObject {
     
     func checkConnection(server: Server, result: @escaping (Bool) -> Void) {
         Task {
-            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth, customHeaders: server.customHeaders)
             let tempClient = qBittorrentClient(networkClient: networkClient)
             do {
                 try await tempClient.login(username: server.username, password: server.password)
@@ -147,7 +147,7 @@ class ServersHelper: ObservableObject {
                 qBitData.shared.startPolling()
             }
             
-            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth, customHeaders: server.customHeaders)
             let newClient = qBittorrentClient(networkClient: networkClient)
             do {
                 try await newClient.login(username: server.username, password: server.password)
@@ -180,7 +180,7 @@ class ServersHelper: ObservableObject {
                 qBitData.shared.startPolling()
             }
             
-            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+            let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth, customHeaders: server.customHeaders)
             let newClient = qBittorrentClient(networkClient: networkClient)
             do {
                 let loggedInClient = try await withThrowingTaskGroup(of: qBittorrentClient.self) { group in
@@ -219,7 +219,7 @@ class ServersHelper: ObservableObject {
         refreshClientCallCount += 1
         guard let activeId = activeServerId, let server = getServer(id: activeId) else { return }
 
-        let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+        let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth, customHeaders: server.customHeaders)
         let newClient = qBittorrentClient(networkClient: networkClient)
 
         do {
@@ -238,7 +238,7 @@ class ServersHelper: ObservableObject {
             throw NetworkError.unauthorized
         }
         
-        let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth)
+        let networkClient = NetworkClient(baseURL: server.url, basicAuth: server.basicAuth, customHeaders: server.customHeaders)
         let newClient = qBittorrentClient(networkClient: networkClient)
         
         do {

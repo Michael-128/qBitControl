@@ -33,16 +33,19 @@ enum NetworkError: Error, Equatable, LocalizedError {
 actor NetworkClient {
     nonisolated let baseURL: String
     private let basicAuth: Server.BasicAuth?
+    private let customHeaders: [Server.CustomHeader]
     private let session: URLSession
 
     /// Initializes a new stateless network client.
     /// - Parameters:
     ///   - baseURL: The base server URL.
     ///   - basicAuth: Optional basic authentication credentials.
+    ///   - customHeaders: Optional additional HTTP headers sent with every request.
     ///   - session: Optional custom `URLSession` (defaults to 15s timeout session).
-    init(baseURL: String, basicAuth: Server.BasicAuth?, session: URLSession? = nil) {
+    init(baseURL: String, basicAuth: Server.BasicAuth?, customHeaders: [Server.CustomHeader] = [], session: URLSession? = nil) {
         self.baseURL = baseURL
         self.basicAuth = basicAuth
+        self.customHeaders = customHeaders
         
         if let session = session {
             self.session = session
@@ -90,7 +93,11 @@ actor NetworkClient {
             }
         }
 
-        // 3. Configure headers: Basic Auth and Cookies
+        // 3. Configure headers: custom, Basic Auth and Cookies
+        for header in customHeaders where !header.key.isEmpty {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+
         if let basicAuth = basicAuth {
             request.setValue("Basic \(basicAuth.getAuthString())", forHTTPHeaderField: "Authorization")
         }
@@ -225,7 +232,11 @@ actor NetworkClient {
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
-        // 4. Configure headers: Basic Auth and Cookies
+        // 4. Configure headers: custom, Basic Auth and Cookies
+        for header in customHeaders where !header.key.isEmpty {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+
         if let basicAuth = basicAuth {
             request.setValue("Basic \(basicAuth.getAuthString())", forHTTPHeaderField: "Authorization")
         }
