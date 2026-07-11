@@ -57,6 +57,19 @@ actor NetworkClient {
         }
     }
 
+    /// Applies stored custom headers, Basic Auth, and cookie to a URLRequest.
+    private func applyHeaders(to request: inout URLRequest, cookie: String?) {
+        for header in customHeaders where !header.key.isEmpty {
+            request.setValue(header.value, forHTTPHeaderField: header.key)
+        }
+        if let basicAuth = basicAuth {
+            request.setValue("Basic \(basicAuth.getAuthString())", forHTTPHeaderField: "Authorization")
+        }
+        if let cookie = cookie {
+            request.setValue(cookie, forHTTPHeaderField: "Cookie")
+        }
+    }
+
     /// Sends an HTTP request and decodes the response to a generic `Decodable` type.
     /// - Parameters:
     ///   - path: The URL path relative to the base URL.
@@ -93,18 +106,8 @@ actor NetworkClient {
             }
         }
 
-        // 3. Configure headers: custom, Basic Auth and Cookies
-        for header in customHeaders where !header.key.isEmpty {
-            request.setValue(header.value, forHTTPHeaderField: header.key)
-        }
-
-        if let basicAuth = basicAuth {
-            request.setValue("Basic \(basicAuth.getAuthString())", forHTTPHeaderField: "Authorization")
-        }
-
-        if let cookie = cookie {
-            request.setValue(cookie, forHTTPHeaderField: "Cookie")
-        }
+        // 3. Configure request headers
+        applyHeaders(to: &request, cookie: cookie)
 
         // 4. Execute request using the injected URLSession (with backwards compatibility)
         let data: Data
@@ -232,18 +235,8 @@ actor NetworkClient {
         request.httpMethod = "POST"
         request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
 
-        // 4. Configure headers: custom, Basic Auth and Cookies
-        for header in customHeaders where !header.key.isEmpty {
-            request.setValue(header.value, forHTTPHeaderField: header.key)
-        }
-
-        if let basicAuth = basicAuth {
-            request.setValue("Basic \(basicAuth.getAuthString())", forHTTPHeaderField: "Authorization")
-        }
-
-        if let cookie = cookie {
-            request.setValue(cookie, forHTTPHeaderField: "Cookie")
-        }
+        // 4. Configure request headers
+        applyHeaders(to: &request, cookie: cookie)
 
         // 5. Execute upload
         let data: Data

@@ -237,17 +237,19 @@ final class NetworkClientTests: XCTestCase {
         // Given
         let basicAuth = Server.BasicAuth("admin", "admin123")
         let expectedCookie = "SID=dummyCookieValue"
+        let customHeader = Server.CustomHeader(key: "X-Custom", value: "custom-value")
 
         MockURLProtocol.requestHandler = { request in
             XCTAssertEqual(request.value(forHTTPHeaderField: "Authorization"), "Basic \(basicAuth.getAuthString())")
             XCTAssertEqual(request.value(forHTTPHeaderField: "Cookie"), expectedCookie)
+            XCTAssertEqual(request.value(forHTTPHeaderField: "X-Custom"), "custom-value")
 
             let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
             let data = try! JSONEncoder().encode(MockDecodable(value: "headers-verified"))
             return (response, data)
         }
 
-        let client = NetworkClient(baseURL: baseURL, basicAuth: basicAuth, session: mockSession)
+        let client = NetworkClient(baseURL: baseURL, basicAuth: basicAuth, customHeaders: [customHeader], session: mockSession)
 
         // When
         let _: MockDecodable = try await client.sendRequest(path: "/headers-route", queryItems: [], cookie: expectedCookie)
