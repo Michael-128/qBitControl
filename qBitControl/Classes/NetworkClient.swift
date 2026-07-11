@@ -275,6 +275,9 @@ actor NetworkClient {
             }
         } catch {
             try? FileManager.default.removeItem(at: fileURL)
+            if let urlError = error as? URLError, urlError.code == .serverCertificateUntrusted || urlError.code == .serverCertificateHasBadDate || urlError.code == .serverCertificateNotYetValid || urlError.code == .serverCertificateHasUnknownRoot {
+                throw NetworkError.sslUntrusted
+            }
             throw error
         }
 

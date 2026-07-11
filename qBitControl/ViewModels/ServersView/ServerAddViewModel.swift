@@ -16,6 +16,7 @@ class ServerAddViewModel: ObservableObject {
     @Published var password = ""
     @Published var basicAuth: Server.BasicAuth?
     @Published var customHeaders: [Server.CustomHeader] = []
+    @Published var allowSelfSignedCert = false
     
     @Published var isInvalidAlert = false
     @Published var invalidAlertMessage = ""
@@ -39,6 +40,7 @@ class ServerAddViewModel: ObservableObject {
             password = server.password
             basicAuth = server.basicAuth
             customHeaders = server.customHeaders
+            allowSelfSignedCert = server.allowSelfSignedCert
         }
     }
     
@@ -80,7 +82,7 @@ class ServerAddViewModel: ObservableObject {
         if !validateInputs() { return }
         if isCheckingConnection { return }
         
-        let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders)
+        let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders, allowSelfSignedCert: allowSelfSignedCert)
         pendingServer = server
         
         self.isCheckingConnection = true
