@@ -12,7 +12,8 @@ enum NetworkError: Error, Equatable, LocalizedError {
     case invalidResponse
     case httpError(statusCode: Int)
     case timeout
-    
+    case sslUntrusted
+
     var errorDescription: String? {
         switch self {
         case .invalidURL:
@@ -25,6 +26,8 @@ enum NetworkError: Error, Equatable, LocalizedError {
             return "HTTP Error \(statusCode)"
         case .timeout:
             return "Request Timeout"
+        case .sslUntrusted:
+            return "SSL Certificate Untrusted"
         }
     }
 }
@@ -36,24 +39,34 @@ actor NetworkClient {
     private let customHeaders: [Server.CustomHeader]
     private let session: URLSession
 
-    /// Initializes a new stateless network client.
-    /// - Parameters:
-    ///   - baseURL: The base server URL.
-    ///   - basicAuth: Optional basic authentication credentials.
-    ///   - customHeaders: Optional additional HTTP headers sent with every request.
-    ///   - session: Optional custom `URLSession` (defaults to 15s timeout session).
-    init(baseURL: String, basicAuth: Server.BasicAuth?, customHeaders: [Server.CustomHeader] = [], session: URLSession? = nil) {
+    private final class SelfSignedDelegate: NSObject, URLSessionDelegate {
+        func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge,
+                        completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            guard challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
+                  let serverTrust = challenge.protectionSpace.serverTrust else {
+                completionHandler(.performDefaultHandling, nil)
+                return
+            }
+            completionHandler(.useCredential, URLCredential(trust: serverTrust))
+        }
+    }
+
+    init(baseURL: String, basicAuth: Server.BasicAuth?, customHeaders: [Server.CustomHeader] = [], allowSelfSignedCert: Bool = false, session: URLSession? = nil) {
         self.baseURL = baseURL
         self.basicAuth = basicAuth
         self.customHeaders = customHeaders
-        
+
         if let session = session {
             self.session = session
         } else {
             let config = URLSessionConfiguration.default
             config.timeoutIntervalForRequest = 15.0
             config.timeoutIntervalForResource = 15.0
-            self.session = URLSession(configuration: config)
+            if allowSelfSignedCert {
+                self.session = URLSession(configuration: config, delegate: SelfSignedDelegate(), delegateQueue: nil)
+            } else {
+                self.session = URLSession(configuration: config)
+            }
         }
     }
 
@@ -130,7 +143,9 @@ actor NetworkClient {
                 }
             }
         } catch {
-            // Throw native URL/network errors directly
+            if let urlError = error as? URLError, urlError.code == .serverCertificateUntrusted || urlError.code == .serverCertificateHasBadDate || urlError.code == .serverCertificateNotYetValid || urlError.code == .serverCertificateHasUnknownRoot {
+                throw NetworkError.sslUntrusted
+            }
             throw error
         }
 
@@ -260,6 +275,9 @@ actor NetworkClient {
             }
         } catch {
             try? FileManager.default.removeItem(at: fileURL)
+            if let urlError = error as? URLError, urlError.code == .serverCertificateUntrusted || urlError.code == .serverCertificateHasBadDate || urlError.code == .serverCertificateNotYetValid || urlError.code == .serverCertificateHasUnknownRoot {
+                throw NetworkError.sslUntrusted
+            }
             throw error
         }
 
