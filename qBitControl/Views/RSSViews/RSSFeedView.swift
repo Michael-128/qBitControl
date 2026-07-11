@@ -36,6 +36,7 @@ struct RSSFeedView: View {
         .sheet(item: $viewModel.selectedArticle) { _ in
             if let url = viewModel.selectedTorrentURL {
                 TorrentAddView(torrentUrls: .constant([url]))
+                    .id(url)
             }
         }
         .searchable(text: $viewModel.searchQuery)
