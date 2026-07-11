@@ -78,6 +78,12 @@ struct ServerAddView: View {
             } message: {
                 Text("Could not connect to the server. Check your URL and credentials.")
             }
+            .alert("Untrusted Certificate", isPresented: $viewModel.isSSLCertAlert) {
+                Button("Cancel", role: .cancel) { }
+                Button("Allow") { viewModel.retryWithSSLTrust(dismiss: dismiss) }
+            } message: {
+                Text("The server's certificate is not trusted. Allow connection anyway?")
+            }
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }

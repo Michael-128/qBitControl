@@ -21,6 +21,7 @@ class ServerAddViewModel: ObservableObject {
     @Published var invalidAlertMessage = ""
     
     @Published var isConnectionAlert = false
+    @Published var isSSLCertAlert = false
     
     @Published var isCheckingConnection = false
     
@@ -84,11 +85,13 @@ class ServerAddViewModel: ObservableObject {
         
         self.isCheckingConnection = true
         
-        serversHelper.checkConnection(server: server, result: { didConnect in
+        serversHelper.checkConnection(server: server, result: { didConnect, error in
             DispatchQueue.main.async {
                 self.isCheckingConnection = false
                 if didConnect {
                     self.commitServer(dismiss: dismiss)
+                } else if let networkError = error as? NetworkError, networkError == .sslUntrusted {
+                    self.isSSLCertAlert = true
                 } else {
                     self.isConnectionAlert = true
                 }
@@ -98,6 +101,24 @@ class ServerAddViewModel: ObservableObject {
     
     func saveAnyway(dismiss: DismissAction) {
         commitServer(dismiss: dismiss)
+    }
+
+    func retryWithSSLTrust(dismiss: DismissAction) {
+        guard var server = pendingServer else { return }
+        server.allowSelfSignedCert = true
+        pendingServer = server
+
+        isCheckingConnection = true
+        serversHelper.checkConnection(server: server) { didConnect, error in
+            DispatchQueue.main.async {
+                self.isCheckingConnection = false
+                if didConnect {
+                    self.commitServer(dismiss: dismiss)
+                } else {
+                    self.isConnectionAlert = true
+                }
+            }
+        }
     }
     
     private func commitServer(dismiss: DismissAction) {
