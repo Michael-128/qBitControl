@@ -10,18 +10,20 @@ enum TorrentAddError: LocalizedError, Identifiable {
     case unauthorized
     case timeout
     case duplicate
+    case sslRequired
     case unknown(Int)
-    
+
     var id: String {
         switch self {
         case .invalidFileOrMagnet: return "invalidFileOrMagnet"
         case .unauthorized: return "unauthorized"
         case .timeout: return "timeout"
         case .duplicate: return "duplicate"
+        case .sslRequired: return "sslRequired"
         case .unknown(let code): return "unknown_\(code)"
         }
     }
-    
+
     var errorDescription: String? {
         switch self {
         case .invalidFileOrMagnet:
@@ -32,6 +34,8 @@ enum TorrentAddError: LocalizedError, Identifiable {
             return NSLocalizedString("Request timed out. Please check your network connection.", comment: "Torrent add timeout error")
         case .duplicate:
             return NSLocalizedString("This torrent is already in your download list.", comment: "Torrent add duplicate error")
+        case .sslRequired:
+            return NSLocalizedString("The server's certificate is not trusted.", comment: "Torrent add SSL required error")
         case .unknown(let statusCode):
             return String(format: NSLocalizedString("Server returned error code %d.", comment: "Torrent add unknown error"), statusCode)
         }

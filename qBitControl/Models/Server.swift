@@ -11,12 +11,13 @@ struct Server: Codable, Identifiable {
     let password: String
     let basicAuth: BasicAuth?
     var customHeaders: [CustomHeader] = []
+    var allowSelfSignedCert: Bool = false
 
     enum CodingKeys: String, CodingKey {
-        case id, name, url, username, password, basicAuth, customHeaders
+        case id, name, url, username, password, basicAuth, customHeaders, allowSelfSignedCert
     }
 
-    init(id: String = UUID().uuidString, name: String, url: String, username: String, password: String, basicAuth: BasicAuth? = nil, customHeaders: [CustomHeader] = []) {
+    init(id: String = UUID().uuidString, name: String, url: String, username: String, password: String, basicAuth: BasicAuth? = nil, customHeaders: [CustomHeader] = [], allowSelfSignedCert: Bool = false) {
         self.id = id
         self.name = name
         self.url = url
@@ -24,6 +25,7 @@ struct Server: Codable, Identifiable {
         self.password = password
         self.basicAuth = basicAuth
         self.customHeaders = customHeaders
+        self.allowSelfSignedCert = allowSelfSignedCert
     }
 
     init(from decoder: Decoder) throws {
@@ -35,6 +37,7 @@ struct Server: Codable, Identifiable {
         password = try container.decode(String.self, forKey: .password)
         basicAuth = try container.decodeIfPresent(BasicAuth.self, forKey: .basicAuth)
         customHeaders = try container.decodeIfPresent([CustomHeader].self, forKey: .customHeaders) ?? []
+        allowSelfSignedCert = try container.decodeIfPresent(Bool.self, forKey: .allowSelfSignedCert) ?? false
     }
 
     struct BasicAuth: Codable {

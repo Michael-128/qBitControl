@@ -123,6 +123,8 @@ class RSSNodeViewModel: ObservableObject {
                 return .unauthorized
             case .timeout:
                 return .timeout
+            case .sslUntrusted:
+                return .sslRequired
             case .invalidResponse:
                 return .unknown(0)
             case .httpError(let statusCode):
