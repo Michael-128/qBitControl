@@ -59,13 +59,13 @@ class DemoGuardClient: TorrentClientProtocol {
     
     func setDownloadLimit(hashes: [String], limit: Int) async throws { block("Set Download Limit") }
     func setUploadLimit(hashes: [String], limit: Int) async throws { block("Set Upload Limit") }
-    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int) async throws { block("Set Share Limits") }
+    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int, shareLimitAction: ShareLimitAction) async throws { block("Set Share Limits") }
     
-    func addMagnetTorrent(torrent: URLQueryItem, savePath: String, cookie: String, category: String, tags: String, skipChecking: Bool, paused: Bool, sequentialDownload: Bool, dlLimit: Int, upLimit: Int, ratioLimit: Float, seedingTimeLimit: Int) async throws {
+    func addMagnetTorrent(torrent: URLQueryItem, savePath: String, cookie: String, category: String, tags: String, skipChecking: Bool, paused: Bool, sequentialDownload: Bool, dlLimit: Int, upLimit: Int, ratioLimit: Float, seedingTimeLimit: Int, shareLimitAction: ShareLimitAction) async throws {
         block("Add Torrent")
     }
     
-    func addFileTorrent(torrents: [String : Data], savePath: String, cookie: String, category: String, tags: String, skipChecking: Bool, paused: Bool, sequentialDownload: Bool, dlLimit: Int, upLimit: Int, ratioLimit: Float, seedingTimeLimit: Int) async throws {
+    func addFileTorrent(torrents: [String : Data], savePath: String, cookie: String, category: String, tags: String, skipChecking: Bool, paused: Bool, sequentialDownload: Bool, dlLimit: Int, upLimit: Int, ratioLimit: Float, seedingTimeLimit: Int, shareLimitAction: ShareLimitAction) async throws {
         block("Add Torrent")
     }
     

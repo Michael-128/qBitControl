@@ -50,6 +50,7 @@ class TorrentAddViewModel: ObservableObject {
     @Published var uploadLimit = ""
     @Published var ratioLimit = ""
     @Published var seedingTimeLimit = ""
+    @Published var shareLimitAction: ShareLimitAction = .global
     
     @Published var isAppeared = false
     @Published var activeError: TorrentAddError? = nil
@@ -147,7 +148,8 @@ class TorrentAddViewModel: ObservableObject {
                         dlLimit: dlLimitBytes,
                         upLimit: upLimitBytes,
                         ratioLimit: Float(self.ratioLimit) ?? -1.0,
-                        seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
+                        seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1,
+                        shareLimitAction: self.shareLimitAction
                     )
                     AppLogger.log(.info, TorrentAddSuccessPayload(filename: self.magnetURL))
                 } else {
@@ -166,7 +168,8 @@ class TorrentAddViewModel: ObservableObject {
                         dlLimit: dlLimitBytes,
                         upLimit: upLimitBytes,
                         ratioLimit: Float(self.ratioLimit) ?? -1.0,
-                        seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
+                        seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1,
+                        shareLimitAction: self.shareLimitAction
                     )
                     for name in self.fileNames {
                         AppLogger.log(.info, TorrentAddSuccessPayload(filename: name))

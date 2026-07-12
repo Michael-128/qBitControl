@@ -307,21 +307,26 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func updateTorrentLimits(
-        dlLimit: Int64,
-        upLimit: Int64,
+        dlLimitKiB: Int64,
+        upLimitKiB: Int64,
         ratioLimit: Float,
         seedingTimeLimit: Int,
-        inactiveSeedingTimeLimit: Int
+        inactiveSeedingTimeLimit: Int,
+        shareLimitAction: ShareLimitAction
     ) {
+        let dlBytes = dlLimitKiB > 0 ? dlLimitKiB * 1024 : -1
+        let upBytes = upLimitKiB > 0 ? upLimitKiB * 1024 : -1
+        
         Task {
             do {
-                try await client.setDownloadLimit(hashes: [torrent.hash], limit: Int(dlLimit))
-                try await client.setUploadLimit(hashes: [torrent.hash], limit: Int(upLimit))
+                try await client.setDownloadLimit(hashes: [torrent.hash], limit: Int(dlBytes))
+                try await client.setUploadLimit(hashes: [torrent.hash], limit: Int(upBytes))
                 try await client.setShareLimits(
                     hashes: [torrent.hash],
                     ratioLimit: ratioLimit,
                     seedingTimeLimit: seedingTimeLimit,
-                    inactiveSeedingTimeLimit: inactiveSeedingTimeLimit
+                    inactiveSeedingTimeLimit: inactiveSeedingTimeLimit,
+                    shareLimitAction: shareLimitAction
                 )
                 self.getTorrent()
             } catch {

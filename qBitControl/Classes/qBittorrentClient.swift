@@ -239,15 +239,30 @@ class qBittorrentClient: TorrentClientProtocol {
         )
     }
     
-    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int) async throws {
+    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int, shareLimitAction: ShareLimitAction) async throws {
+        let ratioStr = (ratioLimit == -2.0) ? "-2" : ((ratioLimit == -1.0) ? "-1" : String(ratioLimit))
+        
+        var queryItems = [
+            URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+            URLQueryItem(name: "ratioLimit", value: ratioStr),
+            URLQueryItem(name: "seedingTimeLimit", value: String(seedingTimeLimit))
+        ]
+        
+        // inactiveSeedingTimeLimit was added in v4.6.0
+        let supportsInactiveLimit = self.version.major == 0 || self.version.major > 4 || (self.version.major == 4 && self.version.minor >= 6)
+        if supportsInactiveLimit {
+            queryItems.append(URLQueryItem(name: "inactiveSeedingTimeLimit", value: String(inactiveSeedingTimeLimit)))
+        }
+        
+        // shareLimitAction was added in v5.2.0
+        let supportsShareLimitAction = self.version.major == 0 || self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2)
+        if supportsShareLimitAction {
+            queryItems.append(URLQueryItem(name: "shareLimitAction", value: shareLimitAction.rawValue))
+        }
+        
         let _: String = try await networkClient.sendRequest(
             path: "/api/v2/torrents/setShareLimits",
-            queryItems: [
-                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
-                URLQueryItem(name: "ratioLimit", value: String(ratioLimit)),
-                URLQueryItem(name: "seedingTimeLimit", value: String(seedingTimeLimit)),
-                URLQueryItem(name: "inactiveSeedingTimeLimit", value: String(inactiveSeedingTimeLimit))
-            ],
+            queryItems: queryItems,
             cookie: self.cookie
         )
     }
@@ -264,7 +279,8 @@ class qBittorrentClient: TorrentClientProtocol {
         dlLimit: Int = -1,
         upLimit: Int = -1,
         ratioLimit: Float = -1.0,
-        seedingTimeLimit: Int = -1
+        seedingTimeLimit: Int = -1,
+        shareLimitAction: ShareLimitAction = .global
     ) async throws {
         var queryItems: [URLQueryItem] = [torrent]
         if savePath != "" { queryItems.append(URLQueryItem(name: "savepath", value: savePath)) }
@@ -282,6 +298,11 @@ class qBittorrentClient: TorrentClientProtocol {
         if seedingTimeLimit > 0 { queryItems.append(URLQueryItem(name: "seedingTimeLimit", value: "\(seedingTimeLimit)")) }
         if sequentialDownload { queryItems.append(URLQueryItem(name: "sequentialDownload", value: "true")) }
         
+        let supportsShareLimitAction = self.version.major == 0 || self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2)
+        if supportsShareLimitAction {
+            queryItems.append(URLQueryItem(name: "shareLimitAction", value: shareLimitAction.rawValue))
+        }
+        
         let _: String = try await networkClient.sendRequest(path: "/api/v2/torrents/add", queryItems: queryItems, cookie: self.cookie)
     }
     
@@ -297,7 +318,8 @@ class qBittorrentClient: TorrentClientProtocol {
         dlLimit: Int = -1,
         upLimit: Int = -1,
         ratioLimit: Float = -1.0,
-        seedingTimeLimit: Int = -1
+        seedingTimeLimit: Int = -1,
+        shareLimitAction: ShareLimitAction = .global
     ) async throws {
         var params: [String: String] = [:]
         if savePath != "" { params["savepath"] = savePath }
@@ -314,7 +336,12 @@ class qBittorrentClient: TorrentClientProtocol {
         if ratioLimit > 0 { params["ratioLimit"] = "\(ratioLimit)" }
         if seedingTimeLimit > 0 { params["seedingTimeLimit"] = "\(seedingTimeLimit)" }
         if sequentialDownload { params["sequentialDownload"] = "true" }
-
+        
+        let supportsShareLimitAction = self.version.major == 0 || self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2)
+        if supportsShareLimitAction {
+            params["shareLimitAction"] = shareLimitAction.rawValue
+        }
+        
         let _: String = try await networkClient.uploadMultipart(
             path: "/api/v2/torrents/add",
             files: torrents,
