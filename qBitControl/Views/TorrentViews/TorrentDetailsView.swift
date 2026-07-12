@@ -115,9 +115,9 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Limits")) {
-                    CustomLabelView(label: "Maximum Ratio", value: viewModel.getMaxRatio())
                     CustomLabelView(label: "Download Limit", value: viewModel.getDownloadLimit())
                     CustomLabelView(label: "Upload Limit", value: viewModel.getUploadLimit())
+                    CustomLabelView(label: "Share Ratio Limit", value: viewModel.getRatioLimit())
                     CustomLabelView(label: "Seeding Time Limit", value: viewModel.getSeedingTimeLimit())
                     
                     NavigationLink {
