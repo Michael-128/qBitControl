@@ -125,6 +125,12 @@ class TorrentAddViewModel: ObservableObject {
     func addTorrent(then dismiss: @escaping () -> Void) {
         let category = self.category == Self.defaultCategory ? "" : self.category.name
         
+        let dlLimitKiB = Int(self.downloadLimit) ?? -1
+        let dlLimitBytes = dlLimitKiB > 0 ? dlLimitKiB * 1024 : -1
+        
+        let upLimitKiB = Int(self.uploadLimit) ?? -1
+        let upLimitBytes = upLimitKiB > 0 ? upLimitKiB * 1024 : -1
+        
         Task {
             do {
                 if self.torrentType == .magnet {
@@ -138,8 +144,8 @@ class TorrentAddViewModel: ObservableObject {
                         skipChecking: self.skipChecking,
                         paused: self.paused,
                         sequentialDownload: self.sequentialDownload,
-                        dlLimit: Int(self.downloadLimit) ?? -1,
-                        upLimit: Int(self.uploadLimit) ?? -1,
+                        dlLimit: dlLimitBytes,
+                        upLimit: upLimitBytes,
                         ratioLimit: Float(self.ratioLimit) ?? -1.0,
                         seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
                     )
@@ -157,8 +163,8 @@ class TorrentAddViewModel: ObservableObject {
                         skipChecking: self.skipChecking,
                         paused: self.paused,
                         sequentialDownload: self.sequentialDownload,
-                        dlLimit: Int(self.downloadLimit) ?? -1,
-                        upLimit: Int(self.uploadLimit) ?? -1,
+                        dlLimit: dlLimitBytes,
+                        upLimit: upLimitBytes,
                         ratioLimit: Float(self.ratioLimit) ?? -1.0,
                         seedingTimeLimit: Int(self.seedingTimeLimit) ?? -1
                     )
