@@ -24,24 +24,28 @@ struct TorrentLimitsView: View {
     @State private var inactiveSeedingOption: SeedingLimitOption = .global
     @State private var inactiveSeedingValue: String = ""
     
+    @State private var shareLimitAction: ShareLimitAction = .global
+    
     // Mode properties
     let editTorrent: Torrent?
-    let onSave: ((Int64, Int64, Float, Int, Int) -> Void)?
+    let onSave: ((Int64, Int64, Float, Int, Int, ShareLimitAction) -> Void)?
     
     // Bindings for add mode
     let addDlLimit: Binding<String>?
     let addUpLimit: Binding<String>?
     let addRatioLimit: Binding<String>?
     let addSeedingTimeLimit: Binding<String>?
+    let addShareLimitAction: Binding<ShareLimitAction>?
     
     // Initializer for Edit Mode
-    init(torrent: Torrent, onSave: @escaping (Int64, Int64, Float, Int, Int) -> Void) {
+    init(torrent: Torrent, onSave: @escaping (Int64, Int64, Float, Int, Int, ShareLimitAction) -> Void) {
         self.editTorrent = torrent
         self.onSave = onSave
         self.addDlLimit = nil
         self.addUpLimit = nil
         self.addRatioLimit = nil
         self.addSeedingTimeLimit = nil
+        self.addShareLimitAction = nil
     }
     
     // Initializer for Add Mode
@@ -49,7 +53,8 @@ struct TorrentLimitsView: View {
         dlLimit: Binding<String>,
         upLimit: Binding<String>,
         ratioLimit: Binding<String>,
-        seedingTimeLimit: Binding<String>
+        seedingTimeLimit: Binding<String>,
+        shareLimitAction: Binding<ShareLimitAction>
     ) {
         self.editTorrent = nil
         self.onSave = nil
@@ -57,6 +62,7 @@ struct TorrentLimitsView: View {
         self.addUpLimit = upLimit
         self.addRatioLimit = ratioLimit
         self.addSeedingTimeLimit = seedingTimeLimit
+        self.addShareLimitAction = shareLimitAction
     }
     
     var body: some View {
@@ -73,6 +79,14 @@ struct TorrentLimitsView: View {
                 if editTorrent != nil {
                     seedingSectionRow(title: "Inactive Seeding", icon: "zzz", selection: $inactiveSeedingOption, value: $inactiveSeedingValue, unit: "min")
                 }
+                
+                Picker(selection: $shareLimitAction) {
+                    ForEach(ShareLimitAction.allCases) { action in
+                        Text(action.displayName).tag(action)
+                    }
+                } label: {
+                    Label("When limits are reached", systemImage: "arrow.right.to.line")
+                }
             }
         }
         .navigationTitle("Torrent Limits")
@@ -81,14 +95,14 @@ struct TorrentLimitsView: View {
             if editTorrent != nil {
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button("Save") {
-                        let up = isUploadLimitEnabled ? (Int64(uploadLimitValue) ?? 0) * 1024 : -1
-                        let dl = isDownloadLimitEnabled ? (Int64(downloadLimitValue) ?? 0) * 1024 : -1
+                        let up = isUploadLimitEnabled ? (Int64(uploadLimitValue) ?? 0) : -1
+                        let dl = isDownloadLimitEnabled ? (Int64(downloadLimitValue) ?? 0) : -1
                         
                         let ratio = shareRatioOption.toRatioLimit(customValue: shareRatioValue)
                         let time = seedingTimeOption.toTimeLimit(customValue: seedingTimeValue)
                         let inactive = inactiveSeedingOption.toTimeLimit(customValue: inactiveSeedingValue)
                         
-                        onSave?(dl, up, ratio, time, inactive)
+                        onSave?(dl, up, ratio, time, inactive, shareLimitAction)
                         dismiss()
                     }
                 }
@@ -110,6 +124,12 @@ struct TorrentLimitsView: View {
                 
                 inactiveSeedingOption = .global
                 inactiveSeedingValue = ""
+                
+                if let actionRaw = torrent.share_limit_action {
+                    shareLimitAction = ShareLimitAction(rawValue: actionRaw) ?? .global
+                } else {
+                    shareLimitAction = .global
+                }
             } else if let addDlLimit = addDlLimit,
                       let addUpLimit = addUpLimit,
                       let addRatioLimit = addRatioLimit,
@@ -129,6 +149,8 @@ struct TorrentLimitsView: View {
                 let timeInt = Int(addSeedingTimeLimit.wrappedValue) ?? -2
                 seedingTimeOption = SeedingLimitOption.from(timeLimit: timeInt)
                 seedingTimeValue = seedingTimeOption == .custom ? addSeedingTimeLimit.wrappedValue : ""
+                
+                shareLimitAction = addShareLimitAction?.wrappedValue ?? .global
             }
         }
         .onDisappear {
@@ -141,6 +163,10 @@ struct TorrentLimitsView: View {
                 
                 let time = seedingTimeOption.toTimeLimit(customValue: seedingTimeValue)
                 addSeedingTimeLimit?.wrappedValue = time == -2 ? "-2" : (time == -1 ? "-1" : seedingTimeValue)
+                
+                if let action = addShareLimitAction {
+                    action.wrappedValue = shareLimitAction
+                }
             }
         }
     }
@@ -211,6 +237,6 @@ struct TorrentLimitsView: View {
 
 #Preview {
     NavigationStack {
-        TorrentLimitsView(torrent: Torrent(hash: "preview_mock")) { _, _, _, _, _ in }
+        TorrentLimitsView(torrent: Torrent(hash: "preview_mock")) { _, _, _, _, _, _ in }
     }
 }

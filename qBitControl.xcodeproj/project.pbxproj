@@ -13,6 +13,7 @@
 		901230562DB037120022FD4C /* SearchRowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901230552DB0370F0022FD4C /* SearchRowView.swift */; };
 		901AC21C3003A6F800DFD12A /* TorrentLimitsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901AC21B3003A6F800DFD12A /* TorrentLimitsView.swift */; };
 		901AC21E3003AC4900DFD12A /* SeedingLimitOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901AC21D3003AC4900DFD12A /* SeedingLimitOption.swift */; };
+		901AC220300426A700DFD12A /* ShareLimitAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 901AC21F300426A700DFD12A /* ShareLimitAction.swift */; };
 		90200BA52B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA62B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
 		90200BA72B44BA6F00D3BA55 /* logo1.png in Resources */ = {isa = PBXBuildFile; fileRef = 90200BA42B44BA6E00D3BA55 /* logo1.png */; };
@@ -155,6 +156,7 @@
 		901230552DB0370F0022FD4C /* SearchRowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRowView.swift; sourceTree = "<group>"; };
 		901AC21B3003A6F800DFD12A /* TorrentLimitsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentLimitsView.swift; sourceTree = "<group>"; };
 		901AC21D3003AC4900DFD12A /* SeedingLimitOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeedingLimitOption.swift; sourceTree = "<group>"; };
+		901AC21F300426A700DFD12A /* ShareLimitAction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareLimitAction.swift; sourceTree = "<group>"; };
 		90200BA42B44BA6E00D3BA55 /* logo1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo1.png; path = qBitControl/Assets.xcassets/AppIcon.appiconset/logo1.png; sourceTree = "<group>"; };
 		90200BA82B44BC2600D3BA55 /* qBitControlTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		90200BA92B44BC2600D3BA55 /* qBitControlUITests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "qBitControlUITests-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -389,6 +391,7 @@
 				90726B1C2CDA22160032993E /* Tracker.swift */,
 				90726B1D2CDA22160032993E /* TransferInfo.swift */,
 				901AC21D3003AC4900DFD12A /* SeedingLimitOption.swift */,
+				901AC21F300426A700DFD12A /* ShareLimitAction.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -860,6 +863,7 @@
 				90726B262CDA22160032993E /* Peer.swift in Sources */,
 				90726B272CDA22160032993E /* Peers.swift in Sources */,
 				90DF6C6F2E89BF21004562C1 /* SystemHelper.swift in Sources */,
+				901AC220300426A700DFD12A /* ShareLimitAction.swift in Sources */,
 				90726B282CDA22160032993E /* qBitPreferences.swift in Sources */,
 				90726B292CDA22160032993E /* RSSFeed.swift in Sources */,
 				909EE5A52CDD3B51002403DF /* RSSError.swift in Sources */,

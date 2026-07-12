@@ -159,7 +159,8 @@ struct TorrentAddView: View {
                         dlLimit: $viewModel.downloadLimit,
                         upLimit: $viewModel.uploadLimit,
                         ratioLimit: $viewModel.ratioLimit,
-                        seedingTimeLimit: $viewModel.seedingTimeLimit
+                        seedingTimeLimit: $viewModel.seedingTimeLimit,
+                        shareLimitAction: $viewModel.shareLimitAction
                     )
                 } label: {
                     Label("Configure Limits", systemImage: "slider.horizontal.3")
