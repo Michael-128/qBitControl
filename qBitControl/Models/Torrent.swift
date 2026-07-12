@@ -36,6 +36,7 @@ struct Torrent: Codable, Hashable {
     var save_path: String
     var seeding_time: Int?
     var seeding_time_limit: Int
+    var share_limit_action: String?
     var seen_complete: Int
     var seq_dl: Bool
     var size: Int64
@@ -82,6 +83,7 @@ struct Torrent: Codable, Hashable {
         if let value = partial.save_path { self.save_path = value }
         if let value = partial.seeding_time { self.seeding_time = value }
         if let value = partial.seeding_time_limit { self.seeding_time_limit = value }
+        if let value = partial.share_limit_action { self.share_limit_action = value }
         if let value = partial.seen_complete { self.seen_complete = value }
         if let value = partial.seq_dl { self.seq_dl = value }
         if let value = partial.size { self.size = value }
@@ -132,6 +134,7 @@ extension Torrent {
         self.save_path = ""
         self.seeding_time = nil
         self.seeding_time_limit = 0
+        self.share_limit_action = nil
         self.seen_complete = 0
         self.seq_dl = false
         self.size = 0
