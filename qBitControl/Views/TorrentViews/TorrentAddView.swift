@@ -154,12 +154,15 @@ struct TorrentAddView: View {
             }
         
             Section(header: Text("Limits")) {
-                Toggle(isOn: $viewModel.showLimits) { Text("Limits") }
-                if viewModel.showLimits {
-                    limitField(title: "Download Limit", placeholder: "0 bytes/s", content: $viewModel.downloadLimit)
-                    limitField(title: "Upload Limit", placeholder: "0 bytes/s", content: $viewModel.uploadLimit)
-                    limitField(title: "Ratio Limit", placeholder: "Ratio Limit", content: $viewModel.ratioLimit)
-                    limitField(title: "Seeding Time Limit", placeholder: "Time Limit", content: $viewModel.seedingTimeLimit)
+                NavigationLink {
+                    TorrentLimitsView(
+                        dlLimit: $viewModel.downloadLimit,
+                        upLimit: $viewModel.uploadLimit,
+                        ratioLimit: $viewModel.ratioLimit,
+                        seedingTimeLimit: $viewModel.seedingTimeLimit
+                    )
+                } label: {
+                    Label("Configure Limits", systemImage: "slider.horizontal.3")
                 }
             }
 
