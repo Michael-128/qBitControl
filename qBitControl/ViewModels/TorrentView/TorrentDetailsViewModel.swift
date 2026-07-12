@@ -109,6 +109,16 @@ class TorrentDetailsViewModel: ObservableObject {
         }
         return NSLocalizedString("None", comment: "")
     }
+    func getInactiveSeedingTimeLimit() -> String {
+        if torrent.inactive_seeding_time_limit == -2 {
+            return NSLocalizedString("Global", comment: "")
+        } else if torrent.inactive_seeding_time_limit == -1 {
+            return NSLocalizedString("Unlimited", comment: "")
+        } else if torrent.inactive_seeding_time_limit >= 0 {
+            return "\(torrent.inactive_seeding_time_limit) min"
+        }
+        return NSLocalizedString("None", comment: "")
+    }
     func getETA() -> String { torrent.progress < 1 ? formatter.getFormattedTime(time: torrent.eta) : "-" }
     
     func isPaused() -> Bool { state == .paused }

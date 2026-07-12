@@ -4239,6 +4239,9 @@
     "Inactive Seeding" : {
 
     },
+    "Inactive Seeding Limit" : {
+
+    },
     "Info" : {
       "localizations" : {
         "ja" : {
@@ -4573,6 +4576,9 @@
           }
         }
       }
+    },
+    "Limit Action" : {
+
     },
     "Limits" : {
       "localizations" : {
@@ -9524,9 +9530,6 @@
           }
         }
       }
-    },
-    "When limits are reached" : {
-
     },
     "Working" : {
       "localizations" : {

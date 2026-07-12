@@ -85,7 +85,7 @@ struct TorrentLimitsView: View {
                         Text(action.displayName).tag(action)
                     }
                 } label: {
-                    Label("When limits are reached", systemImage: "arrow.right.to.line")
+                    Label("Limit Action", systemImage: "arrow.right.to.line")
                 }
             }
         }
@@ -122,8 +122,8 @@ struct TorrentLimitsView: View {
                 seedingTimeOption = SeedingLimitOption.from(timeLimit: torrent.seeding_time_limit)
                 seedingTimeValue = seedingTimeOption == .custom ? String(torrent.seeding_time_limit) : ""
                 
-                inactiveSeedingOption = .global
-                inactiveSeedingValue = ""
+                inactiveSeedingOption = SeedingLimitOption.from(timeLimit: torrent.inactive_seeding_time_limit)
+                inactiveSeedingValue = inactiveSeedingOption == .custom ? String(torrent.inactive_seeding_time_limit) : ""
                 
                 if let actionRaw = torrent.share_limit_action {
                     shareLimitAction = ShareLimitAction(rawValue: actionRaw) ?? .global
