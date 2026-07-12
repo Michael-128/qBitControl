@@ -286,6 +286,30 @@ class TorrentDetailsViewModel: ObservableObject {
         }
     }
     
+    func updateTorrentLimits(
+        dlLimit: Int64,
+        upLimit: Int64,
+        ratioLimit: Float,
+        seedingTimeLimit: Int,
+        inactiveSeedingTimeLimit: Int
+    ) {
+        Task {
+            do {
+                try await client.setDownloadLimit(hashes: [torrent.hash], limit: Int(dlLimit))
+                try await client.setUploadLimit(hashes: [torrent.hash], limit: Int(upLimit))
+                try await client.setShareLimits(
+                    hashes: [torrent.hash],
+                    ratioLimit: ratioLimit,
+                    seedingTimeLimit: seedingTimeLimit,
+                    inactiveSeedingTimeLimit: inactiveSeedingTimeLimit
+                )
+                self.getTorrent()
+            } catch {
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "update_limits_failed", errorDescription: error.localizedDescription))
+            }
+        }
+    }
+    
     enum State {
         case resumed, paused, forceStart
     }
