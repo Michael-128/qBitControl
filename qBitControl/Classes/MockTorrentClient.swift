@@ -248,6 +248,10 @@ class MockTorrentClient: TorrentClientProtocol {
     func setForceStart(hashes: [String], value: Bool) async throws {}
     func setLocation(hashes: [String], location: String) async throws {}
     
+    func setDownloadLimit(hashes: [String], limit: Int) async throws {}
+    func setUploadLimit(hashes: [String], limit: Int) async throws {}
+    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int) async throws {}
+    
     func addMagnetTorrent(
         torrent: URLQueryItem,
         savePath: String = "",
