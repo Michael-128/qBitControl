@@ -217,6 +217,41 @@ class qBittorrentClient: TorrentClientProtocol {
         )
     }
     
+    func setDownloadLimit(hashes: [String], limit: Int) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/setDownloadLimit",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+                URLQueryItem(name: "limit", value: String(limit))
+            ],
+            cookie: self.cookie
+        )
+    }
+    
+    func setUploadLimit(hashes: [String], limit: Int) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/setUploadLimit",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+                URLQueryItem(name: "limit", value: String(limit))
+            ],
+            cookie: self.cookie
+        )
+    }
+    
+    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/torrents/setShareLimits",
+            queryItems: [
+                URLQueryItem(name: "hashes", value: hashes.joined(separator: "|")),
+                URLQueryItem(name: "ratioLimit", value: String(ratioLimit)),
+                URLQueryItem(name: "seedingTimeLimit", value: String(seedingTimeLimit)),
+                URLQueryItem(name: "inactiveSeedingTimeLimit", value: String(inactiveSeedingTimeLimit))
+            ],
+            cookie: self.cookie
+        )
+    }
+    
     func addMagnetTorrent(
         torrent: URLQueryItem,
         savePath: String = "",
