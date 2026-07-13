@@ -76,7 +76,7 @@ struct ServerAddView: View {
                 Button("Cancel", role: .cancel) { }
                 Button("Save Anyway") { viewModel.saveAnyway(dismiss: dismiss) }
             } message: {
-                Text("Could not connect to the server. Check your URL and credentials.")
+                Text(viewModel.connectionErrorMessage)
             }
             .alert("Untrusted Certificate", isPresented: $viewModel.isSSLCertAlert) {
                 Button("Cancel", role: .cancel) { }

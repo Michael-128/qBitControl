@@ -2406,6 +2406,7 @@
       }
     },
     "Could not connect to the server. Check your URL and credentials." : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {

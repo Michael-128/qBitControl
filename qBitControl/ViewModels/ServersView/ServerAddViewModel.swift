@@ -21,6 +21,8 @@ class ServerAddViewModel: ObservableObject {
     @Published var isInvalidAlert = false
     @Published var invalidAlertMessage = ""
     
+    @Published var connectionErrorMessage = ""
+    
     @Published var isConnectionAlert = false
     @Published var isSSLCertAlert = false
     
@@ -95,6 +97,7 @@ class ServerAddViewModel: ObservableObject {
                 } else if let networkError = error as? NetworkError, networkError == .sslUntrusted {
                     self.isSSLCertAlert = true
                 } else {
+                    self.connectionErrorMessage = error?.localizedDescription ?? "Could not connect to the server."
                     self.isConnectionAlert = true
                 }
             }
@@ -117,6 +120,7 @@ class ServerAddViewModel: ObservableObject {
                 if didConnect {
                     self.commitServer(dismiss: dismiss)
                 } else {
+                    self.connectionErrorMessage = error?.localizedDescription ?? "Could not connect to the server."
                     self.isConnectionAlert = true
                 }
             }
