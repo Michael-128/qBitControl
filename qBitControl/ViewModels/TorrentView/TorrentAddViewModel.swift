@@ -54,6 +54,7 @@ class TorrentAddViewModel: ObservableObject {
     
     @Published var isAppeared = false
     @Published var activeError: TorrentAddError? = nil
+    @Published var isAdding = false
     
     init(torrentUrls: [URL], magnetOverride: Bool = false, client: TorrentClientProtocol) {
         self.torrentUrls = torrentUrls
@@ -124,6 +125,9 @@ class TorrentAddViewModel: ObservableObject {
     }
     
     func addTorrent(then dismiss: @escaping () -> Void) {
+        guard !isAdding else { return }
+        isAdding = true
+        
         let category = self.category == Self.defaultCategory ? "" : self.category.name
         
         let dlLimitKiB = Int(self.downloadLimit) ?? -1
@@ -175,8 +179,10 @@ class TorrentAddViewModel: ObservableObject {
                         AppLogger.log(.info, TorrentAddSuccessPayload(filename: name))
                     }
                 }
+                isAdding = false
                 dismiss()
             } catch {
+                isAdding = false
                 if self.torrentType == .magnet {
                     AppLogger.log(.error, TorrentAddFailurePayload(filename: self.magnetURL, errorDescription: error.localizedDescription))
                 } else {
