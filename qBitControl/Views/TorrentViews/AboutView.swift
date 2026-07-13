@@ -25,7 +25,7 @@ struct AboutView: View {
                         Link("GitHub", destination: URL(string: "https://github.com/Michael-128/qBitControl")!)
                         Link("Patreon", destination: URL(string: "https://patreon.com/michael128")!)
                         Link("Report a bug", destination: URL(string: "https://github.com/Michael-128/qBitControl/issues")!)
-                        Link("Help with translation", destination: URL(string: "https://crowdin.com/project/qbitcontrol/invite?h=3bc475d8145450c4770cae83a742583c2277091")!)
+                        //Link("Help with translation", destination: URL(string: "https://crowdin.com/project/qbitcontrol/invite?h=3bc475d8145450c4770cae83a742583c2277091")!)
                     }
                 }
             }
