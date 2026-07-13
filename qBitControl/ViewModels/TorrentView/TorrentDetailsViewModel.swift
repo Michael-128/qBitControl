@@ -119,6 +119,13 @@ class TorrentDetailsViewModel: ObservableObject {
         }
         return NSLocalizedString("None", comment: "")
     }
+    func getShareLimitAction() -> String {
+        if let actionRaw = torrent.share_limit_action,
+           let action = ShareLimitAction(rawValue: actionRaw) {
+            return action.displayName
+        }
+        return NSLocalizedString("None", comment: "")
+    }
     func getETA() -> String { torrent.progress < 1 ? formatter.getFormattedTime(time: torrent.eta) : "-" }
     
     func isPaused() -> Bool { state == .paused }

@@ -120,6 +120,7 @@ struct TorrentDetailsView: View {
                     CustomLabelView(label: "Share Ratio Limit", value: viewModel.getRatioLimit())
                     CustomLabelView(label: "Seeding Time Limit", value: viewModel.getSeedingTimeLimit())
                     CustomLabelView(label: "Inactive Seeding Limit", value: viewModel.getInactiveSeedingTimeLimit())
+                    CustomLabelView(label: "Limit Action", value: viewModel.getShareLimitAction())
                     
                     NavigationLink {
                         TorrentLimitsView(torrent: viewModel.torrent) { dl, up, ratio, time, inactive, action in
