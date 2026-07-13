@@ -497,4 +497,6 @@ class MockTorrentClient: TorrentClientProtocol {
     func getPreferences() async throws -> qBitPreferences {
         return Self.mockPreferences()
     }
+    
+    func setPreferences(json: String) async throws {}
 }

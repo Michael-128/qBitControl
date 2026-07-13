@@ -150,4 +150,8 @@ class DemoGuardClient: TorrentClientProtocol {
     func getPreferences() async throws -> qBitPreferences {
         return try await mock.getPreferences()
     }
+    
+    func setPreferences(json: String) async throws {
+        block("Set Preferences")
+    }
 }

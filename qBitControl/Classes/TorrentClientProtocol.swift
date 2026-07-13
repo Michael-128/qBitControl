@@ -129,6 +129,7 @@ protocol TorrentServerActions {
     func getGlobalTransferInfo() async throws -> GlobalTransferInfo
     func getMainData(rid: Int) async throws -> MainData
     func getPreferences() async throws -> qBitPreferences
+    func setPreferences(json: String) async throws
 }
 
 // MARK: - TorrentClientProtocol

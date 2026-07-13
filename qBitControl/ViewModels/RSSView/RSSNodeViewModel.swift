@@ -11,6 +11,7 @@ class RSSNodeViewModel: ObservableObject {
     
     @Published public var rssRootNode: RSSNode = .init()
     @Published public var activeError: RSSError? = nil
+    @Published public var isRSSEnabling = false
     private var pollingTask: Task<Void, Never>?
     
     private var client: TorrentClientProtocol {
@@ -83,6 +84,19 @@ class RSSNodeViewModel: ObservableObject {
                 try await client.addRSSRefreshItem(path: path)
                 getRssRootNode()
             } catch {
+                self.activeError = self.mapError(error)
+            }
+        }
+    }
+    
+    func enableRSSProcessing() {
+        isRSSEnabling = true
+        Task {
+            do {
+                try await client.setPreferences(json: "{\"rss_processing_enabled\":true}")
+                await ServersHelper.shared.fetchMetadata()
+            } catch {
+                isRSSEnabling = false
                 self.activeError = self.mapError(error)
             }
         }

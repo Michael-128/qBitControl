@@ -34,6 +34,25 @@ struct RSSNodeView: View {
                         Label("Search", systemImage: "magnifyingglass")
                     }
                 }
+                
+                if let preferences = ServersHelper.shared.preferences,
+                   preferences.rss_processing_enabled == false,
+                   !viewModel.isRSSEnabling {
+                    Section {
+                        HStack {
+                            Image(systemName: "antenna.radiowaves.left.and.right.slash")
+                                .foregroundColor(.orange)
+                            Text("RSS fetching is disabled")
+                                .font(.subheadline)
+                            Spacer()
+                            Button("Enable") {
+                                viewModel.enableRSSProcessing()
+                            }
+                            .buttonStyle(.borderedProminent)
+                            .controlSize(.small)
+                        }
+                    }
+                }
             }
             
             Section(header: sectionHeader()) {
