@@ -13,7 +13,11 @@ struct RSSFeed: Decodable, Identifiable {
     let articles: [Article]
     
     struct Article: Decodable, Identifiable {
-        var id: String { torrentURL ?? link ?? UUID().uuidString }
+        var id: String {
+            let base = torrentURL ?? link
+            if let base = base { return base + (title ?? "") }
+            return UUID().uuidString
+        }
         let category: String?
         let title: String?
         let date: String?

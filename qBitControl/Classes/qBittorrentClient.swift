@@ -691,4 +691,12 @@ class qBittorrentClient: TorrentClientProtocol {
             cookie: self.cookie
         )
     }
+    
+    func setPreferences(json: String) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/app/setPreferences",
+            queryItems: [URLQueryItem(name: "json", value: json)],
+            cookie: self.cookie
+        )
+    }
 }
