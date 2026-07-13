@@ -35,8 +35,55 @@ struct RSSFeedView: View {
         }
         .sheet(item: $viewModel.selectedArticle) { _ in
             if let url = viewModel.selectedTorrentURL {
-                TorrentAddView(torrentUrls: .constant([url]))
-                    .id(url)
+                let str = url.absoluteString
+                if str.contains("magnet:") || str.hasSuffix(".torrent") {
+                    TorrentAddView(torrentUrls: .constant([url]))
+                        .id(url)
+                } else {
+                    NavigationView {
+                        VStack(spacing: 16) {
+                            Image(systemName: "exclamationmark.triangle")
+                                .font(.title)
+                                .foregroundColor(.red)
+                            Text("This RSS link is not a .torrent file or magnet URL.")
+                                .font(.subheadline)
+                                .foregroundColor(.secondary)
+                                .multilineTextAlignment(.center)
+                        }
+                        .padding(.horizontal)
+                        .navigationTitle("Unsupported Link")
+                        .navigationBarTitleDisplayMode(.inline)
+                        .toolbar {
+                            ToolbarItem(placement: .navigationBarLeading) {
+                                Button("Close") {
+                                    viewModel.selectedArticle = nil
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                NavigationView {
+                    VStack(spacing: 16) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.title)
+                            .foregroundColor(.red)
+                        Text("This article does not contain a torrent link.")
+                            .font(.subheadline)
+                            .foregroundColor(.secondary)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding(.horizontal)
+                    .navigationTitle("No Torrent")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button("Close") {
+                                viewModel.selectedArticle = nil
+                            }
+                        }
+                    }
+                }
             }
         }
         .searchable(text: $viewModel.searchQuery)

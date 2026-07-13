@@ -5349,6 +5349,9 @@
         }
       }
     },
+    "No Torrent" : {
+
+    },
     "None" : {
       "comment" : "None",
       "localizations" : {
@@ -8672,6 +8675,12 @@
         }
       }
     },
+    "This article does not contain a torrent link." : {
+
+    },
+    "This RSS link is not a .torrent file or magnet URL." : {
+
+    },
     "This torrent is already in your download list." : {
       "comment" : "Torrent add duplicate error",
       "localizations" : {
@@ -9061,6 +9070,9 @@
       }
     },
     "Unlimited" : {
+
+    },
+    "Unsupported Link" : {
 
     },
     "Untagged" : {
