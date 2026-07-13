@@ -327,6 +327,22 @@ class TorrentDetailsViewModel: ObservableObject {
         let dlBytes = dlLimitKiB > 0 ? dlLimitKiB * 1024 : -1
         let upBytes = upLimitKiB > 0 ? upLimitKiB * 1024 : -1
         
+        torrent.dl_limit = dlBytes
+        torrent.up_limit = upBytes
+        torrent.ratio_limit = ratioLimit
+        torrent.seeding_time_limit = seedingTimeLimit
+        torrent.inactive_seeding_time_limit = inactiveSeedingTimeLimit
+        torrent.share_limit_action = shareLimitAction.rawValue
+        
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.dl_limit = dlBytes
+            torrent.up_limit = upBytes
+            torrent.ratio_limit = ratioLimit
+            torrent.seeding_time_limit = seedingTimeLimit
+            torrent.inactive_seeding_time_limit = inactiveSeedingTimeLimit
+            torrent.share_limit_action = shareLimitAction.rawValue
+        }
+        
         Task {
             do {
                 try await client.setDownloadLimit(hashes: [torrent.hash], limit: Int(dlBytes))
@@ -338,7 +354,6 @@ class TorrentDetailsViewModel: ObservableObject {
                     inactiveSeedingTimeLimit: inactiveSeedingTimeLimit,
                     shareLimitAction: shareLimitAction
                 )
-                self.getTorrent()
             } catch {
                 AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "update_limits_failed", errorDescription: error.localizedDescription))
             }
