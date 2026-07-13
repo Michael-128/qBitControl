@@ -223,9 +223,6 @@ class TorrentAddViewModel: ObservableObject {
                 if statusCode == 415 || statusCode == 400 {
                     return .invalidFileOrMagnet
                 }
-                if statusCode == 409 {
-                    return .duplicate
-                }
                 return .unknown(statusCode)
             }
         }
