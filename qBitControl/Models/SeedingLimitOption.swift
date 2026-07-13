@@ -32,7 +32,7 @@ extension SeedingLimitOption {
         switch self {
         case .global: return -2
         case .unlimited: return -1
-        case .custom: return Float(customValue) ?? -1
+        case .custom: return Float(customValue) ?? -2
         }
     }
 
@@ -40,7 +40,7 @@ extension SeedingLimitOption {
         switch self {
         case .global: return -2
         case .unlimited: return -1
-        case .custom: return Int(customValue) ?? -1
+        case .custom: return Int(customValue) ?? -2
         }
     }
 }

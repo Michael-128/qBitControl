@@ -249,13 +249,13 @@ class qBittorrentClient: TorrentClientProtocol {
         ]
         
         // inactiveSeedingTimeLimit was added in v4.6.0
-        let supportsInactiveLimit = self.version.major == 0 || self.version.major > 4 || (self.version.major == 4 && self.version.minor >= 6)
+        let supportsInactiveLimit = self.version.major != 0 && (self.version.major > 4 || (self.version.major == 4 && self.version.minor >= 6))
         if supportsInactiveLimit {
             queryItems.append(URLQueryItem(name: "inactiveSeedingTimeLimit", value: String(inactiveSeedingTimeLimit)))
         }
         
         // shareLimitAction was added in v5.2.0
-        let supportsShareLimitAction = self.version.major == 0 || self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2)
+        let supportsShareLimitAction = self.version.major != 0 && (self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2))
         if supportsShareLimitAction {
             queryItems.append(URLQueryItem(name: "shareLimitAction", value: shareLimitAction.rawValue))
         }
@@ -298,7 +298,7 @@ class qBittorrentClient: TorrentClientProtocol {
         if seedingTimeLimit > 0 { queryItems.append(URLQueryItem(name: "seedingTimeLimit", value: "\(seedingTimeLimit)")) }
         if sequentialDownload { queryItems.append(URLQueryItem(name: "sequentialDownload", value: "true")) }
         
-        let supportsShareLimitAction = self.version.major == 0 || self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2)
+        let supportsShareLimitAction = self.version.major != 0 && (self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2))
         if supportsShareLimitAction {
             queryItems.append(URLQueryItem(name: "shareLimitAction", value: shareLimitAction.rawValue))
         }
@@ -337,7 +337,7 @@ class qBittorrentClient: TorrentClientProtocol {
         if seedingTimeLimit > 0 { params["seedingTimeLimit"] = "\(seedingTimeLimit)" }
         if sequentialDownload { params["sequentialDownload"] = "true" }
         
-        let supportsShareLimitAction = self.version.major == 0 || self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2)
+        let supportsShareLimitAction = self.version.major != 0 && (self.version.major > 5 || (self.version.major == 5 && self.version.minor >= 2))
         if supportsShareLimitAction {
             params["shareLimitAction"] = shareLimitAction.rawValue
         }
