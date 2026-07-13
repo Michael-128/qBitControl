@@ -22,21 +22,29 @@ struct TorrentDetailsView: View {
         VStack {
             List {
                 Section(header: Text("Management")) {
-                    Button { viewModel.toggleTorrentPause() } label: { Text(viewModel.isPaused() ? "Resume Task" : "Pause Task") }
-                    Button { viewModel.recheckTorrent() } label: { Text("Recheck Task") }
-                    Button { viewModel.reannounceTorrent() } label: { Text("Reannounce Task") }
-                    Button { viewModel.setForceStart(value: !viewModel.isForceStart()) } label: { Text(viewModel.isForceStart() ? "Stop Force Start" : "Force Start").foregroundColor(.yellow) }
-                    Button { viewModel.deleteTorrent() } label: { Text("Delete Task").foregroundColor(.red) }
+                    if viewModel.isPaused() {
+                        Button { viewModel.toggleTorrentPause() } label: { Label("Resume Task", systemImage: "play.fill") }
+                    } else {
+                        Button { viewModel.toggleTorrentPause() } label: { Label("Pause Task", systemImage: "pause.fill") }
+                    }
+                    Button { viewModel.recheckTorrent() } label: { Label("Recheck Task", systemImage: "arrow.triangle.2.circlepath") }
+                    Button { viewModel.reannounceTorrent() } label: { Label("Reannounce Task", systemImage: "antenna.radiowaves.left.and.right") }
+                    if viewModel.isForceStart() {
+                        Button { viewModel.setForceStart(value: false) } label: { Label("Stop Force Start", systemImage: "bolt.slash.fill").foregroundColor(.yellow) }
+                    } else {
+                        Button { viewModel.setForceStart(value: true) } label: { Label("Force Start", systemImage: "bolt.fill").foregroundColor(.yellow) }
+                    }
+                    Button { viewModel.deleteTorrent() } label: { Label("Delete Task", systemImage: "trash.fill").foregroundColor(.red) }
                 }
                 
                 if let preferences = ServersHelper.shared.preferences {
                     if(preferences.queueing_enabled == true) {
                         Section(header: Text("Queue Management")) {
                             CustomLabelView(label: "Priority", value: "\(viewModel.torrent.priority)")
-                            Button { viewModel.moveToTopPriority() } label: { Text("Move to Top") }
-                            Button { viewModel.increasePriority() } label: { Text("Move Up") }
-                            Button { viewModel.decreasePriority() } label: { Text("Move Down") }
-                            Button { viewModel.moveToBottomPriority() } label: { Text("Move to Bottom") }
+                            Button { viewModel.moveToTopPriority() } label: { Label("Move to Top", systemImage: "arrow.up.to.line") }
+                            Button { viewModel.increasePriority() } label: { Label("Move Up", systemImage: "arrow.up") }
+                            Button { viewModel.decreasePriority() } label: { Label("Move Down", systemImage: "arrow.down") }
+                            Button { viewModel.moveToBottomPriority() } label: { Label("Move to Bottom", systemImage: "arrow.down.to.line") }
                         }
                     }
                 }
@@ -84,12 +92,12 @@ struct TorrentDetailsView: View {
                     NavigationLink {
                         PeersView(torrentHash: .constant(viewModel.torrent.hash))
                     } label: {
-                        Text("Peers")
+                        Label("Peers", systemImage: "person.2.fill")
                     }
                     NavigationLink {
                         TrackersView(viewModel: trackersViewModel)
                     } label: {
-                        Text("Trackers")
+                        Label("Trackers", systemImage: "point.3.connected.trianglepath.dotted")
                     }
                 }
                 
@@ -97,20 +105,28 @@ struct TorrentDetailsView: View {
                     NavigationLink {
                         ChangePathView(path: viewModel.torrent.save_path, torrentHash: viewModel.torrent.hash)
                     } label: {
-                        CustomLabelView(label: "Save Path", value: viewModel.torrent.save_path)
+                        Label {
+                            CustomLabelView(label: "Save Path", value: viewModel.torrent.save_path)
+                        } icon: {
+                            Image(systemName: "folder.fill")
+                        }
                     }
                     
                     NavigationLink {
                         FilesView(torrentHash: .constant(viewModel.torrent.hash), client: ServersHelper.shared.client ?? MockTorrentClient())
                     } label: {
-                        Text("Files")
+                        Label("Files", systemImage: "doc.fill")
                     }
                 }
                 
                 Section(header: Text("Advanced")) {
-                    Toggle(isOn: $viewModel.isSequentialDownload, label: { Text("Sequential Download") })
+                    Toggle(isOn: $viewModel.isSequentialDownload) {
+                        Label("Sequential Download", systemImage: "arrow.right.to.line.compact")
+                    }
                         .onChange(of: viewModel.isSequentialDownload, perform: { _ in viewModel.toggleSequentialDownload() })
-                    Toggle(isOn: $viewModel.isFLPiecesFirst, label: { Text("First & Last Pieces First") })
+                    Toggle(isOn: $viewModel.isFLPiecesFirst) {
+                        Label("First & Last Pieces First", systemImage: "arrow.left.and.right")
+                    }
                         .onChange(of: viewModel.isFLPiecesFirst, perform: { _ in viewModel.toggleFLPiecesFirst() })
                 }
                 
