@@ -45,11 +45,7 @@ struct TorrentAddView: View {
             }
             .onAppear() {
                 viewModel.getSavePath()
-                
-                if(!viewModel.isAppeared) {
-                    viewModel.isAppeared.toggle()
-                    viewModel.checkTorrentType()
-                }
+                viewModel.checkTorrentType()
             }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {

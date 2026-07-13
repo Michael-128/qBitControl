@@ -52,7 +52,6 @@ class TorrentAddViewModel: ObservableObject {
     @Published var seedingTimeLimit = ""
     @Published var shareLimitAction: ShareLimitAction = .global
     
-    @Published var isAppeared = false
     @Published var activeError: TorrentAddError? = nil
     @Published var isAdding = false
     
@@ -65,6 +64,10 @@ class TorrentAddViewModel: ObservableObject {
     func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
     
     func checkTorrentType() -> Void {
+        fileNames = []
+        fileContent = [:]
+        fileURLs = []
+        
         if torrentUrls.isEmpty { return }
         
         if torrentUrls.first!.absoluteString.contains("magnet") || magnetOverride {
