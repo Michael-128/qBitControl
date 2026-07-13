@@ -334,4 +334,20 @@ final class NetworkClientTests: XCTestCase {
             XCTAssertEqual(error as? NetworkError, NetworkError.timeout)
         }
     }
+    
+    func test_networkErrors_haveLocalizedDescriptions() {
+        let errors: [NetworkError] = [
+            .invalidURL,
+            .unauthorized,
+            .invalidResponse,
+            .httpError(statusCode: 409),
+            .httpError(statusCode: 500),
+            .timeout,
+            .sslUntrusted
+        ]
+        for error in errors {
+            XCTAssertNotNil(error.errorDescription, "\(error) should have an error description")
+            XCTAssertFalse(error.errorDescription?.isEmpty ?? true, "\(error) error description should not be empty")
+        }
+    }
 }
