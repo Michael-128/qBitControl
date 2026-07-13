@@ -115,9 +115,27 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Limits")) {
-                    CustomLabelView(label: "Maximum Ratio", value: viewModel.getMaxRatio())
                     CustomLabelView(label: "Download Limit", value: viewModel.getDownloadLimit())
                     CustomLabelView(label: "Upload Limit", value: viewModel.getUploadLimit())
+                    CustomLabelView(label: "Share Ratio Limit", value: viewModel.getRatioLimit())
+                    CustomLabelView(label: "Seeding Time Limit", value: viewModel.getSeedingTimeLimit())
+                    CustomLabelView(label: "Inactive Seeding Limit", value: viewModel.getInactiveSeedingTimeLimit())
+                    CustomLabelView(label: "Limit Action", value: viewModel.getShareLimitAction())
+                    
+                    NavigationLink {
+                        TorrentLimitsView(torrent: viewModel.torrent) { dl, up, ratio, time, inactive, action in
+                            viewModel.updateTorrentLimits(
+                                dlLimitKiB: dl,
+                                upLimitKiB: up,
+                                ratioLimit: ratio,
+                                seedingTimeLimit: time,
+                                inactiveSeedingTimeLimit: inactive,
+                                shareLimitAction: action
+                            )
+                        }
+                    } label: {
+                        Label("Configure Limits", systemImage: "slider.horizontal.3")
+                    }
                 }
                 
             }

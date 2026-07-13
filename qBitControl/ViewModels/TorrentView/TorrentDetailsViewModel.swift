@@ -87,8 +87,45 @@ class TorrentDetailsViewModel: ObservableObject {
     func getDownloadedSession() -> String { "\(formatter.getFormatedSize(size: torrent.downloaded_session))" }
     func getUploadedSession() -> String { "\(formatter.getFormatedSize(size: torrent.uploaded_session))" }
     func getMaxRatio() -> String { "\(torrent.max_ratio > -1 ? String(format:"%.2f", torrent.max_ratio) : NSLocalizedString("None", comment: "None"))" }
+    func getRatioLimit() -> String {
+        if torrent.ratio_limit == -2 {
+            return NSLocalizedString("Global", comment: "")
+        } else if torrent.ratio_limit == -1 {
+            return NSLocalizedString("Unlimited", comment: "")
+        } else if torrent.ratio_limit >= 0 {
+            return String(format: "%.2f", torrent.ratio_limit)
+        }
+        return NSLocalizedString("None", comment: "")
+    }
     func getDownloadLimit() -> String { "\(torrent.dl_limit > 0 ? formatter.getFormatedSize(size: torrent.dl_limit)+"/s" : NSLocalizedString("None", comment: "None"))" }
     func getUploadLimit() -> String { "\(torrent.up_limit > 0 ? formatter.getFormatedSize(size: torrent.up_limit)+"/s" : NSLocalizedString("None", comment: "None"))" }
+    func getSeedingTimeLimit() -> String {
+        if torrent.seeding_time_limit == -2 {
+            return NSLocalizedString("Global", comment: "")
+        } else if torrent.seeding_time_limit == -1 {
+            return NSLocalizedString("Unlimited", comment: "")
+        } else if torrent.seeding_time_limit >= 0 {
+            return "\(torrent.seeding_time_limit) min"
+        }
+        return NSLocalizedString("None", comment: "")
+    }
+    func getInactiveSeedingTimeLimit() -> String {
+        if torrent.inactive_seeding_time_limit == -2 {
+            return NSLocalizedString("Global", comment: "")
+        } else if torrent.inactive_seeding_time_limit == -1 {
+            return NSLocalizedString("Unlimited", comment: "")
+        } else if torrent.inactive_seeding_time_limit >= 0 {
+            return "\(torrent.inactive_seeding_time_limit) min"
+        }
+        return NSLocalizedString("None", comment: "")
+    }
+    func getShareLimitAction() -> String {
+        if let actionRaw = torrent.share_limit_action,
+           let action = ShareLimitAction(rawValue: actionRaw) {
+            return action.displayName
+        }
+        return NSLocalizedString("None", comment: "")
+    }
     func getETA() -> String { torrent.progress < 1 ? formatter.getFormattedTime(time: torrent.eta) : "-" }
     
     func isPaused() -> Bool { state == .paused }
@@ -282,6 +319,50 @@ class TorrentDetailsViewModel: ObservableObject {
                 dismiss()
             } catch {
                 AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "delete_torrent_with_files_failed", errorDescription: error.localizedDescription))
+            }
+        }
+    }
+    
+    func updateTorrentLimits(
+        dlLimitKiB: Int64,
+        upLimitKiB: Int64,
+        ratioLimit: Float,
+        seedingTimeLimit: Int,
+        inactiveSeedingTimeLimit: Int,
+        shareLimitAction: ShareLimitAction
+    ) {
+        let dlBytes = dlLimitKiB > 0 ? dlLimitKiB * 1024 : -1
+        let upBytes = upLimitKiB > 0 ? upLimitKiB * 1024 : -1
+        
+        torrent.dl_limit = dlBytes
+        torrent.up_limit = upBytes
+        torrent.ratio_limit = ratioLimit
+        torrent.seeding_time_limit = seedingTimeLimit
+        torrent.inactive_seeding_time_limit = inactiveSeedingTimeLimit
+        torrent.share_limit_action = shareLimitAction.rawValue
+        
+        qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
+            torrent.dl_limit = dlBytes
+            torrent.up_limit = upBytes
+            torrent.ratio_limit = ratioLimit
+            torrent.seeding_time_limit = seedingTimeLimit
+            torrent.inactive_seeding_time_limit = inactiveSeedingTimeLimit
+            torrent.share_limit_action = shareLimitAction.rawValue
+        }
+        
+        Task {
+            do {
+                try await client.setDownloadLimit(hashes: [torrent.hash], limit: Int(dlBytes))
+                try await client.setUploadLimit(hashes: [torrent.hash], limit: Int(upBytes))
+                try await client.setShareLimits(
+                    hashes: [torrent.hash],
+                    ratioLimit: ratioLimit,
+                    seedingTimeLimit: seedingTimeLimit,
+                    inactiveSeedingTimeLimit: inactiveSeedingTimeLimit,
+                    shareLimitAction: shareLimitAction
+                )
+            } catch {
+                AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "update_limits_failed", errorDescription: error.localizedDescription))
             }
         }
     }

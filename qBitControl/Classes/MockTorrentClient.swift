@@ -141,7 +141,9 @@ class MockTorrentClient: TorrentClientProtocol {
                 priority: 1, progress: prog,
                 ratio: totalSize > 0 ? Float(completed) / Float(totalSize) * Float.random(in: 0.5...1.5) : 0,
                 ratio_limit: -1.0, save_path: "/downloads/\(category)",
-                seeding_time: nil, seeding_time_limit: -1, seen_complete: 0,
+                seeding_time: nil, seeding_time_limit: -1,
+                inactive_seeding_time_limit: nil,
+                share_limit_action: nil, seen_complete: 0,
                 seq_dl: false, size: totalSize, state: prog >= 1.0 ? "uploading" : "downloading",
                 super_seeding: false, tags: tags, time_active: Int(t), total_size: totalSize,
                 tracker: "udp://tracker.opentrackr.org:1337/announce", up_limit: -1, uploaded: 0,
@@ -166,6 +168,8 @@ class MockTorrentClient: TorrentClientProtocol {
                 ratio: 0,
                 ratio_limit: seedRatio, save_path: "/downloads/\(category)",
                 seeding_time: nil, seeding_time_limit: -1,
+                inactive_seeding_time_limit: nil,
+                share_limit_action: nil,
                 seen_complete: now, seq_dl: false, size: totalSize,
                 state: "checkingUP",
                 super_seeding: false, tags: tags, time_active: Int.random(in: 3600...86400 * 7),
@@ -190,6 +194,8 @@ class MockTorrentClient: TorrentClientProtocol {
                 ratio: totalSize > 0 ? Float(uploaded) / Float(totalSize) : 0,
                 ratio_limit: seedRatio, save_path: "/downloads/\(category)",
                 seeding_time: Int.random(in: 3600...86400), seeding_time_limit: -1,
+                inactive_seeding_time_limit: nil,
+                share_limit_action: nil,
                 seen_complete: now, seq_dl: false, size: totalSize,
                 state: hash == "sd_debian" ? "uploading" : (upSpeed > 512_000 ? "uploading" : "pausedUP"),
                 super_seeding: false, tags: tags, time_active: Int.random(in: 3600...86400 * 7),
@@ -248,6 +254,10 @@ class MockTorrentClient: TorrentClientProtocol {
     func setForceStart(hashes: [String], value: Bool) async throws {}
     func setLocation(hashes: [String], location: String) async throws {}
     
+    func setDownloadLimit(hashes: [String], limit: Int) async throws {}
+    func setUploadLimit(hashes: [String], limit: Int) async throws {}
+    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int, shareLimitAction: ShareLimitAction) async throws {}
+    
     func addMagnetTorrent(
         torrent: URLQueryItem,
         savePath: String = "",
@@ -260,7 +270,8 @@ class MockTorrentClient: TorrentClientProtocol {
         dlLimit: Int = -1,
         upLimit: Int = -1,
         ratioLimit: Float = -1.0,
-        seedingTimeLimit: Int = -1
+        seedingTimeLimit: Int = -1,
+        shareLimitAction: ShareLimitAction = .global
     ) async throws {}
     
     func addFileTorrent(
@@ -275,7 +286,8 @@ class MockTorrentClient: TorrentClientProtocol {
         dlLimit: Int = -1,
         upLimit: Int = -1,
         ratioLimit: Float = -1.0,
-        seedingTimeLimit: Int = -1
+        seedingTimeLimit: Int = -1,
+        shareLimitAction: ShareLimitAction = .global
     ) async throws {}
     
     func getFiles(hash: String) async throws -> [File] {

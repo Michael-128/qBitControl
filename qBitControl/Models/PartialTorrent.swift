@@ -32,6 +32,8 @@ struct PartialTorrent: Decodable, Equatable {
     let save_path: String?
     let seeding_time: Int?
     let seeding_time_limit: Int?
+    let inactive_seeding_time_limit: Int?
+    let share_limit_action: String?
     let seen_complete: Int?
     let seq_dl: Bool?
     let size: Int64?

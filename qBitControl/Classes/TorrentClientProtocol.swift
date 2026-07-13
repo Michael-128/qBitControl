@@ -54,7 +54,8 @@ protocol TorrentTaskActions {
         dlLimit: Int,
         upLimit: Int,
         ratioLimit: Float,
-        seedingTimeLimit: Int
+        seedingTimeLimit: Int,
+        shareLimitAction: ShareLimitAction
     ) async throws
     
     func addFileTorrent(
@@ -69,12 +70,17 @@ protocol TorrentTaskActions {
         dlLimit: Int,
         upLimit: Int,
         ratioLimit: Float,
-        seedingTimeLimit: Int
+        seedingTimeLimit: Int,
+        shareLimitAction: ShareLimitAction
     ) async throws
     
     func getFiles(hash: String) async throws -> [File]
     func getPeers(hash: String) async throws -> Peers
     func setFilePriority(hash: String, ids: String, priority: Int) async throws
+    
+    func setDownloadLimit(hashes: [String], limit: Int) async throws
+    func setUploadLimit(hashes: [String], limit: Int) async throws
+    func setShareLimits(hashes: [String], ratioLimit: Float, seedingTimeLimit: Int, inactiveSeedingTimeLimit: Int, shareLimitAction: ShareLimitAction) async throws
 }
 
 // MARK: - TorrentRSSActions
