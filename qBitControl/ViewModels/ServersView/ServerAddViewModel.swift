@@ -97,7 +97,7 @@ class ServerAddViewModel: ObservableObject {
                 } else if let networkError = error as? NetworkError, networkError == .sslUntrusted {
                     self.isSSLCertAlert = true
                 } else {
-                    self.connectionErrorMessage = error?.localizedDescription ?? "Could not connect to the server."
+                    self.connectionErrorMessage = self.buildConnectionErrorMessage(from: error)
                     self.isConnectionAlert = true
                 }
             }
@@ -120,7 +120,7 @@ class ServerAddViewModel: ObservableObject {
                 if didConnect {
                     self.commitServer(dismiss: dismiss)
                 } else {
-                    self.connectionErrorMessage = error?.localizedDescription ?? "Could not connect to the server."
+                    self.connectionErrorMessage = self.buildConnectionErrorMessage(from: error)
                     self.isConnectionAlert = true
                 }
             }
@@ -137,5 +137,26 @@ class ServerAddViewModel: ObservableObject {
     
     private func sanitizeInputs() {
         url = url.replacingOccurrences(of: "/+$", with: "", options: .regularExpression)
+    }
+    
+    private func buildConnectionErrorMessage(from error: Error?) -> String {
+        var message = error?.localizedDescription ?? "Could not connect to the server."
+        if isLanHost, let urlError = error as? URLError {
+            let codes: [URLError.Code] = [.cannotConnectToHost, .networkConnectionLost, .timedOut, .cannotFindHost, .dnsLookupFailed]
+            if codes.contains(urlError.code) {
+                message += "\n\nIf this is a local server, check that local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"
+            }
+        }
+        return message
+    }
+    
+    private var isLanHost: Bool {
+        guard let host = URL(string: url)?.host else { return false }
+        if host == "localhost" || host.hasSuffix(".local") { return true }
+        let parts = host.split(separator: ".")
+        guard parts.count == 4, let first = Int(parts[0]) else { return false }
+        return first == 10
+            || (first == 192 && parts[1] == "168")
+            || (first == 172 && (Int(parts[1]) ?? 0) >= 16 && (Int(parts[1]) ?? 0) <= 31)
     }
 }
