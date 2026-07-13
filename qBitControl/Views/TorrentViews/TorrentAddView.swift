@@ -54,7 +54,7 @@ struct TorrentAddView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button { viewModel.addTorrent(then: dismiss) } label: { Text("Add") }
-                        .disabled(viewModel.isAdding)
+                        .disabled(viewModel.isAdding || viewModel.isFileLoading)
                 }
             }
             .alert(item: $viewModel.activeError) { error in

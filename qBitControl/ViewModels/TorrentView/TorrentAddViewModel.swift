@@ -54,6 +54,8 @@ class TorrentAddViewModel: ObservableObject {
     
     @Published var activeError: TorrentAddError? = nil
     @Published var isAdding = false
+    @Published var isFileLoading = false
+    private var pendingFileLoads = 0
     
     init(torrentUrls: [URL], magnetOverride: Bool = false, client: TorrentClientProtocol) {
         self.torrentUrls = torrentUrls
@@ -67,6 +69,8 @@ class TorrentAddViewModel: ObservableObject {
         fileNames = []
         fileContent = [:]
         fileURLs = []
+        pendingFileLoads = 0
+        isFileLoading = false
         
         if torrentUrls.isEmpty { return }
         
@@ -89,6 +93,9 @@ class TorrentAddViewModel: ObservableObject {
         
         self.fileNames.append(fileName)
         
+        pendingFileLoads += 1
+        isFileLoading = true
+        
         if isRemote {
             Task {
                 do {
@@ -96,6 +103,10 @@ class TorrentAddViewModel: ObservableObject {
                     self.fileContent[fileName] = data
                 } catch {
                     AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_remote_torrent_data_failed", errorDescription: error.localizedDescription))
+                }
+                self.pendingFileLoads -= 1
+                if self.pendingFileLoads <= 0 {
+                    self.isFileLoading = false
                 }
             }
         } else {
@@ -106,6 +117,10 @@ class TorrentAddViewModel: ObservableObject {
                         self.fileContent[fileName] = data
                     } catch {
                         AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_local_torrent_data_failed", errorDescription: error.localizedDescription))
+                    }
+                    self.pendingFileLoads -= 1
+                    if self.pendingFileLoads <= 0 {
+                        self.isFileLoading = false
                     }
                     fileURL.stopAccessingSecurityScopedResource()
                 }
