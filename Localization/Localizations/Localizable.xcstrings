@@ -126,7 +126,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wskaźnik %@"
+            "value" : "Prędkość %@"
           }
         },
         "zh-Hans" : {
@@ -6871,7 +6871,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wskaźnik / Prędkość"
+            "value" : "Prędkość"
           }
         },
         "zh-Hans" : {
@@ -8513,7 +8513,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Współczynnik dzielenia"
+            "value" : "Ratio"
           }
         },
         "zh-Hans" : {
