@@ -52,8 +52,10 @@ class TorrentAddViewModel: ObservableObject {
     @Published var seedingTimeLimit = ""
     @Published var shareLimitAction: ShareLimitAction = .global
     
-    @Published var isAppeared = false
     @Published var activeError: TorrentAddError? = nil
+    @Published var isAdding = false
+    @Published var isFileLoading = false
+    private var pendingFileLoads = 0
     
     init(torrentUrls: [URL], magnetOverride: Bool = false, client: TorrentClientProtocol) {
         self.torrentUrls = torrentUrls
@@ -64,6 +66,12 @@ class TorrentAddViewModel: ObservableObject {
     func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
     
     func checkTorrentType() -> Void {
+        fileNames = []
+        fileContent = [:]
+        fileURLs = []
+        pendingFileLoads = 0
+        isFileLoading = false
+        
         if torrentUrls.isEmpty { return }
         
         if torrentUrls.first!.absoluteString.contains("magnet") || magnetOverride {
@@ -85,6 +93,9 @@ class TorrentAddViewModel: ObservableObject {
         
         self.fileNames.append(fileName)
         
+        pendingFileLoads += 1
+        isFileLoading = true
+        
         if isRemote {
             Task {
                 do {
@@ -92,6 +103,10 @@ class TorrentAddViewModel: ObservableObject {
                     self.fileContent[fileName] = data
                 } catch {
                     AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_remote_torrent_data_failed", errorDescription: error.localizedDescription))
+                }
+                self.pendingFileLoads -= 1
+                if self.pendingFileLoads <= 0 {
+                    self.isFileLoading = false
                 }
             }
         } else {
@@ -102,6 +117,10 @@ class TorrentAddViewModel: ObservableObject {
                         self.fileContent[fileName] = data
                     } catch {
                         AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_local_torrent_data_failed", errorDescription: error.localizedDescription))
+                    }
+                    self.pendingFileLoads -= 1
+                    if self.pendingFileLoads <= 0 {
+                        self.isFileLoading = false
                     }
                     fileURL.stopAccessingSecurityScopedResource()
                 }
@@ -124,6 +143,9 @@ class TorrentAddViewModel: ObservableObject {
     }
     
     func addTorrent(then dismiss: @escaping () -> Void) {
+        guard !isAdding else { return }
+        isAdding = true
+        
         let category = self.category == Self.defaultCategory ? "" : self.category.name
         
         let dlLimitKiB = Int(self.downloadLimit) ?? -1
@@ -175,8 +197,10 @@ class TorrentAddViewModel: ObservableObject {
                         AppLogger.log(.info, TorrentAddSuccessPayload(filename: name))
                     }
                 }
+                isAdding = false
                 dismiss()
             } catch {
+                isAdding = false
                 if self.torrentType == .magnet {
                     AppLogger.log(.error, TorrentAddFailurePayload(filename: self.magnetURL, errorDescription: error.localizedDescription))
                 } else {
@@ -222,9 +246,6 @@ class TorrentAddViewModel: ObservableObject {
             case .httpError(let statusCode):
                 if statusCode == 415 || statusCode == 400 {
                     return .invalidFileOrMagnet
-                }
-                if statusCode == 409 {
-                    return .duplicate
                 }
                 return .unknown(statusCode)
             }

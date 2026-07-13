@@ -45,11 +45,7 @@ struct TorrentAddView: View {
             }
             .onAppear() {
                 viewModel.getSavePath()
-                
-                if(!viewModel.isAppeared) {
-                    viewModel.isAppeared.toggle()
-                    viewModel.checkTorrentType()
-                }
+                viewModel.checkTorrentType()
             }
             .toolbar() {
                 ToolbarItem(placement: .navigationBarLeading) {
@@ -58,6 +54,7 @@ struct TorrentAddView: View {
                 
                 ToolbarItem(placement: .navigationBarTrailing) {
                     Button { viewModel.addTorrent(then: dismiss) } label: { Text("Add") }
+                        .disabled(viewModel.isAdding || viewModel.isFileLoading)
                 }
             }
             .alert(item: $viewModel.activeError) { error in

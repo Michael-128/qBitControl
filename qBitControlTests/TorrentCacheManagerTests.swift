@@ -38,6 +38,7 @@ final class TorrentCacheManagerTests: XCTestCase {
             "save_path": "/downloads",
             "seeding_time": 7200,
             "seeding_time_limit": -1,
+            "inactive_seeding_time_limit": -2,
             "seen_complete": 1600000500,
             "seq_dl": false,
             "size": 5000000000,
