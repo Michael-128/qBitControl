@@ -19,9 +19,37 @@ struct FiltersMenuView: View {
     @Binding var tag: String
     
     private let defaults = UserDefaults.standard
+    private let filterStrategy = QBitTorrentFilterStrategy()
+    @ObservedObject private var cacheManager = qBitData.shared.cacheManager
+    private var torrents: [Torrent] { Array(cacheManager.torrents.values) }
     
     private var client: TorrentClientProtocol {
         ServersHelper.shared.client ?? MockTorrentClient()
+    }
+    
+    private func count(for option: TorrentFilterOption) -> Int {
+        torrents.filter { filterStrategy.matches($0, filter: option) }.count
+    }
+    
+    private func filterRow(_ label: String, option: TorrentFilterOption) -> some View {
+        Button {
+            filter = option
+            defaults.set(filter.rawValue, forKey: "filter")
+        } label: {
+            HStack {
+                Text(label)
+                    .foregroundColor(.primary)
+                Spacer()
+                if filter == option {
+                    Image(systemName: "checkmark")
+                        .foregroundColor(.accentColor)
+                } else {
+                    Text("\(count(for: option))")
+                        .foregroundColor(.secondary)
+                        .font(.footnote)
+                }
+            }
+        }
     }
     
     var body: some View {
@@ -52,29 +80,22 @@ struct FiltersMenuView: View {
                     }
                 }.pickerStyle(.inline)
                 
-                Picker("Filter By", selection: $filter) {
-                    Group {
-                        Text("All").tag(TorrentFilterOption.all)
-                        Text("Running").tag(TorrentFilterOption.running)
-                        Text("Seeding").tag(TorrentFilterOption.seeding)
-                        Text("Downloading").tag(TorrentFilterOption.downloading)
-                        Text("Completed").tag(TorrentFilterOption.completed)
-                        Text("Stopped").tag(TorrentFilterOption.stopped)
-                        Text("Active").tag(TorrentFilterOption.active)
-                        Text("Inactive").tag(TorrentFilterOption.inactive)
-                    }
-                    Group {
-                        Text("Stalled").tag(TorrentFilterOption.stalled)
-                        Text("Stalled Uploading").tag(TorrentFilterOption.stalledUploading)
-                        Text("Stalled Downloading").tag(TorrentFilterOption.stalledDownloading)
-                        Text("Checking").tag(TorrentFilterOption.checking)
-                        Text("Moving").tag(TorrentFilterOption.moving)
-                        Text("Errored").tag(TorrentFilterOption.errored)
-                    }
-                }.pickerStyle(.inline)
-                    .onChange(of: filter, perform: { value in
-                    defaults.set(filter.rawValue, forKey: "filter")
-                })
+                Section(header: Text("Filter By")) {
+                    filterRow("All", option: .all)
+                    filterRow("Downloading", option: .downloading)
+                    filterRow("Seeding", option: .seeding)
+                    filterRow("Completed", option: .completed)
+                    filterRow("Running", option: .running)
+                    filterRow("Stopped", option: .stopped)
+                    filterRow("Active", option: .active)
+                    filterRow("Inactive", option: .inactive)
+                    filterRow("Stalled", option: .stalled)
+                    filterRow("Stalled Uploading", option: .stalledUploading)
+                    filterRow("Stalled Downloading", option: .stalledDownloading)
+                    filterRow("Checking", option: .checking)
+                    filterRow("Moving", option: .moving)
+                    filterRow("Errored", option: .errored)
+                }
                 
                 Picker("Sort By", selection: $sort) {
                     Group {
