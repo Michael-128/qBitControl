@@ -55,18 +55,20 @@ struct FiltersMenuView: View {
                 Picker("Filter By", selection: $filter) {
                     Group {
                         Text("All").tag(TorrentFilterOption.all)
-                        Text("Resumed").tag(TorrentFilterOption.resumed)
-                        Text("Seeding").tag(TorrentFilterOption.stalledUploading)
-                        Text("Downloading").tag(TorrentFilterOption.stalledDownloading)
-                        Text("Active Downloading").tag(TorrentFilterOption.downloading)
-                        Text("Active Seeding").tag(TorrentFilterOption.seeding)
+                        Text("Running").tag(TorrentFilterOption.running)
+                        Text("Seeding").tag(TorrentFilterOption.seeding)
+                        Text("Downloading").tag(TorrentFilterOption.downloading)
                         Text("Completed").tag(TorrentFilterOption.completed)
-                        Text("Paused").tag(TorrentFilterOption.paused)
+                        Text("Stopped").tag(TorrentFilterOption.stopped)
                         Text("Active").tag(TorrentFilterOption.active)
                         Text("Inactive").tag(TorrentFilterOption.inactive)
                     }
                     Group {
                         Text("Stalled").tag(TorrentFilterOption.stalled)
+                        Text("Stalled Uploading").tag(TorrentFilterOption.stalledUploading)
+                        Text("Stalled Downloading").tag(TorrentFilterOption.stalledDownloading)
+                        Text("Checking").tag(TorrentFilterOption.checking)
+                        Text("Moving").tag(TorrentFilterOption.moving)
                         Text("Errored").tag(TorrentFilterOption.errored)
                     }
                 }.pickerStyle(.inline)

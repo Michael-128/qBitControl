@@ -28,7 +28,7 @@ struct QBitTorrentFilterStrategy: TorrentFilterStrategy {
                 || torrent.state == "queuedUP"
                 || torrent.state == "pausedUP"
                 || torrent.state == "stoppedUP"
-        case .paused:
+        case .stopped:
             return torrent.state == "pausedDL"
                 || torrent.state == "pausedUP"
                 || torrent.state == "stoppedDL"
@@ -52,8 +52,10 @@ struct QBitTorrentFilterStrategy: TorrentFilterStrategy {
                 || torrent.state == "checkingResumeData"
         case .errored:
             return torrent.state == "error" || torrent.state == "missingFiles"
-        case .resumed:
+        case .running:
             return !torrent.state.contains("paused") && !torrent.state.contains("stopped")
+        case .moving:
+            return torrent.state == "moving"
         case .all:
             return true
         }
