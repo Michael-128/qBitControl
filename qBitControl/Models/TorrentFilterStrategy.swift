@@ -16,12 +16,18 @@ struct QBitTorrentFilterStrategy: TorrentFilterStrategy {
             return torrent.state == "downloading"
                 || torrent.state == "stalledDL"
                 || torrent.state == "checkingDL"
+                || torrent.state == "queuedDL"
                 || torrent.state == "metaDL"
                 || torrent.state == "forcedDL"
                 || torrent.state == "allocating"
-        case .completed, .seeding:
-            return torrent.state == "seeding"
-                || torrent.state == "uploading"
+        case .seeding:
+            return torrent.state == "uploading"
+                || torrent.state == "stalledUP"
+                || torrent.state == "checkingUP"
+                || torrent.state == "forcedUP"
+                || torrent.state == "queuedUP"
+        case .completed:
+            return torrent.state == "uploading"
                 || torrent.state == "stalledUP"
                 || torrent.state == "checkingUP"
                 || torrent.state == "forcedUP"
@@ -34,10 +40,7 @@ struct QBitTorrentFilterStrategy: TorrentFilterStrategy {
                 || torrent.state == "stoppedDL"
                 || torrent.state == "stoppedUP"
         case .active:
-            return !torrent.state.contains("paused")
-                && !torrent.state.contains("stopped")
-                && torrent.state != "error"
-                && torrent.state != "missingFiles"
+            return torrent.dlspeed > 0 || torrent.upspeed > 0
         case .inactive:
             return torrent.dlspeed == 0 && torrent.upspeed == 0
         case .stalled:
@@ -53,7 +56,10 @@ struct QBitTorrentFilterStrategy: TorrentFilterStrategy {
         case .errored:
             return torrent.state == "error" || torrent.state == "missingFiles"
         case .running:
-            return !torrent.state.contains("paused") && !torrent.state.contains("stopped")
+            return !torrent.state.contains("paused")
+                && !torrent.state.contains("stopped")
+                && torrent.state != "error"
+                && torrent.state != "missingFiles"
         case .moving:
             return torrent.state == "moving"
         case .all:
