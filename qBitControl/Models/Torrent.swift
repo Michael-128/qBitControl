@@ -157,4 +157,26 @@ extension Torrent {
         self.init(hash: hash)
         self.update(from: partial)
     }
+    
+    mutating func applyPause() {
+        state = progress < 1.0 ? "pausedDL" : "pausedUP"
+        dlspeed = 0
+        upspeed = 0
+    }
+    
+    mutating func applyResume() {
+        state = progress < 1.0 ? "downloading" : "uploading"
+    }
+    
+    mutating func applyForceStart() {
+        state = progress < 1.0 ? "forcedDL" : "forcedUP"
+    }
+    
+    mutating func applyForceStartStop() {
+        state = progress < 1.0 ? "downloading" : "uploading"
+    }
+    
+    mutating func applyRecheck() {
+        state = progress < 1.0 ? "checkingDL" : "checkingUP"
+    }
 }

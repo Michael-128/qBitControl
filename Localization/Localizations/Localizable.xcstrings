@@ -525,6 +525,7 @@
       }
     },
     "Active Downloading" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -565,6 +566,7 @@
       }
     },
     "Active Seeding" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -1975,6 +1977,9 @@
           }
         }
       }
+    },
+    "Checking" : {
+
     },
     "Clear Completed" : {
       "localizations" : {
@@ -4429,6 +4434,7 @@
       }
     },
     "Help with translation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -5557,6 +5563,9 @@
           }
         }
       }
+    },
+    "Moving" : {
+
     },
     "Music" : {
       "extractionState" : "manual",
@@ -7634,6 +7643,7 @@
       }
     },
     "Resumed" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
@@ -7772,6 +7782,9 @@
           }
         }
       }
+    },
+    "Running" : {
+
     },
     "Save" : {
       "localizations" : {
@@ -8799,6 +8812,12 @@
         }
       }
     },
+    "Stalled Downloading" : {
+
+    },
+    "Stalled Uploading" : {
+
+    },
     "Start" : {
       "localizations" : {
         "ja" : {
@@ -9094,6 +9113,9 @@
           }
         }
       }
+    },
+    "Stopped" : {
+
     },
     "Super Seeding" : {
       "comment" : "Name of the share limit action that enables super seeding.",

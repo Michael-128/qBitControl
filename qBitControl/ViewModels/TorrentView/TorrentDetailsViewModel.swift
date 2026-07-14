@@ -135,14 +135,15 @@ class TorrentDetailsViewModel: ObservableObject {
         haptics.impactOccurred()
         let isCurrentlyPaused = self.isPaused()
         
-        let newState = isCurrentlyPaused 
-            ? (self.torrent.progress < 1.0 ? "downloading" : "uploading") 
-            : (self.torrent.progress < 1.0 ? "pausedDL" : "pausedUP")
-        self.torrent.state = newState
-        self.fetchState(state: newState)
+        if isCurrentlyPaused {
+            self.torrent.applyResume()
+        } else {
+            self.torrent.applyPause()
+        }
+        self.fetchState(state: torrent.state)
         
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
-            torrent.state = newState
+            isCurrentlyPaused ? torrent.applyResume() : torrent.applyPause()
         }
         
         Task {
@@ -189,14 +190,15 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func setForceStart(value: Bool) {
-        let newState = value 
-            ? (self.torrent.progress < 1.0 ? "forcedDL" : "forcedUP")
-            : (self.torrent.progress < 1.0 ? "downloading" : "uploading")
-        self.torrent.state = newState
-        self.fetchState(state: newState)
+        if value {
+            self.torrent.applyForceStart()
+        } else {
+            self.torrent.applyForceStartStop()
+        }
+        self.fetchState(state: torrent.state)
         
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
-            torrent.state = newState
+            value ? torrent.applyForceStart() : torrent.applyForceStartStop()
         }
         
         Task {
@@ -210,12 +212,11 @@ class TorrentDetailsViewModel: ObservableObject {
     
     func recheckTorrent() {
         haptics.impactOccurred()
-        let newState = self.torrent.progress < 1.0 ? "checkingDL" : "checkingUP"
-        self.torrent.state = newState
-        self.fetchState(state: newState)
+        self.torrent.applyRecheck()
+        self.fetchState(state: torrent.state)
         
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
-            torrent.state = newState
+            torrent.applyRecheck()
         }
         
         Task {

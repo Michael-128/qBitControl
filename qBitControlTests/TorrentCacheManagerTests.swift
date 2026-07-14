@@ -42,7 +42,7 @@ final class TorrentCacheManagerTests: XCTestCase {
             "seen_complete": 1600000500,
             "seq_dl": false,
             "size": 5000000000,
-            "state": "seeding",
+            "state": "uploading",
             "super_seeding": false,
             "tags": "linux,distro",
             "time_active": 1000,
