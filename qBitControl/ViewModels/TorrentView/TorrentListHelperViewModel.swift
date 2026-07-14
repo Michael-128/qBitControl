@@ -10,6 +10,7 @@ import Combine
 class TorrentListHelperViewModel: ObservableObject {
     let defaults = UserDefaults.standard
     private let client: TorrentClientProtocol
+    private let filterStrategy: TorrentFilterStrategy
     
     @Published public var torrents: [Torrent] = []
     
@@ -47,8 +48,9 @@ class TorrentListHelperViewModel: ObservableObject {
         return category.capitalized
     }
     
-    init(client: TorrentClientProtocol) {
+    init(client: TorrentClientProtocol, filterStrategy: TorrentFilterStrategy = QBitTorrentFilterStrategy()) {
         self.client = client
+        self.filterStrategy = filterStrategy
         setupSubscriptions()
     }
     
@@ -101,32 +103,7 @@ class TorrentListHelperViewModel: ObservableObject {
     ) -> [Torrent] {
         var list = allTorrents.filter { torrent in
             // Filter by status (filterVal)
-            switch filterVal {
-            case .downloading:
-                if !(torrent.state == "downloading" || torrent.state == "stalledDL" || torrent.state == "checkingDL" || torrent.state == "metaDL" || torrent.state == "forcedDL" || torrent.state == "allocating") { return false }
-            case .completed, .seeding:
-                if !(torrent.state == "seeding" || torrent.state == "uploading" || torrent.state == "stalledUP" || torrent.state == "checkingUP" || torrent.state == "forcedUP" || torrent.state == "queuedUP" || torrent.state == "pausedUP" || torrent.state == "stoppedUP") { return false }
-            case .paused:
-                if !(torrent.state == "pausedDL" || torrent.state == "pausedUP" || torrent.state == "stoppedDL" || torrent.state == "stoppedUP") { return false }
-            case .active:
-                if !(torrent.dlspeed > 0 || torrent.upspeed > 0) { return false }
-            case .inactive:
-                if !(torrent.dlspeed == 0 && torrent.upspeed == 0) { return false }
-            case .stalled:
-                if !(torrent.state == "stalledDL" || torrent.state == "stalledUP") { return false }
-            case .stalledDownloading:
-                if !(torrent.state == "stalledDL") { return false }
-            case .stalledUploading:
-                if !(torrent.state == "stalledUP") { return false }
-            case .checking:
-                if !(torrent.state == "checkingDL" || torrent.state == "checkingUP" || torrent.state == "checkingResumeData") { return false }
-            case .errored:
-                if !(torrent.state == "error" || torrent.state == "missingFiles") { return false }
-            case .resumed:
-                if torrent.state.contains("paused") || torrent.state.contains("stopped") { return false }
-            case .all:
-                break
-            }
+            if !filterStrategy.matches(torrent, filter: filterVal) { return false }
             
             // Filter by Category
             if categoryVal != "All" {
@@ -327,7 +304,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func resumeTorrents(hashes: [String]) {
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: hashes) { torrent in
-            torrent.state = torrent.progress < 1.0 ? "downloading" : "uploading"
+            torrent.applyResume()
         }
         Task {
             do {
@@ -341,7 +318,7 @@ class TorrentListHelperViewModel: ObservableObject {
     func resumeAllTorrents() {
         let hashes = torrents.map { $0.hash }
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: hashes) { torrent in
-            torrent.state = torrent.progress < 1.0 ? "downloading" : "uploading"
+            torrent.applyResume()
         }
         Task {
             do {
@@ -355,9 +332,7 @@ class TorrentListHelperViewModel: ObservableObject {
     func pauseAllTorrents() {
         let hashes = torrents.map { $0.hash }
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: hashes) { torrent in
-            torrent.state = torrent.progress < 1.0 ? "pausedDL" : "pausedUP"
-            torrent.dlspeed = 0
-            torrent.upspeed = 0
+            torrent.applyPause()
         }
         Task {
             do {
@@ -370,9 +345,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func pauseTorrents(hashes: [String]) {
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: hashes) { torrent in
-            torrent.state = torrent.progress < 1.0 ? "pausedDL" : "pausedUP"
-            torrent.dlspeed = 0
-            torrent.upspeed = 0
+            torrent.applyPause()
         }
         Task {
             do {
@@ -405,7 +378,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     func recheckTorrents(hashes: [String]) {
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: hashes) { torrent in
-            torrent.state = torrent.progress < 1.0 ? "checkingDL" : "checkingUP"
+            torrent.applyRecheck()
         }
         Task {
             do {

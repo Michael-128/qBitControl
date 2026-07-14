@@ -4429,6 +4429,7 @@
       }
     },
     "Help with translation" : {
+      "extractionState" : "stale",
       "localizations" : {
         "ja" : {
           "stringUnit" : {
