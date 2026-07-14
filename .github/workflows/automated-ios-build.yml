@@ -44,7 +44,6 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         prerelease: true
-        automatic_release_tag: "CI"
         title: "qBitControl ${{ env.VERSION }} (${{ env.BUILD_NUMBER }})"
         files: |
           qBitControl.ipa
