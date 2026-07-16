@@ -4,8 +4,10 @@ on:
   push:
     branches:
       - "main"
+      - "release/*"
     tags:
       - "build-ci*"
+      - "release*"
 
 jobs:
   build:
@@ -27,23 +29,32 @@ jobs:
         team-id: ${{ secrets.TEAM_ID }}
         output-path: qBitControl.ipa
     - name: Extract Version and Build Number
-      if: startsWith(github.ref, 'refs/tags/build-ci')
+      if: startsWith(github.ref, 'refs/tags/')
       id: extract_version
       run: |
         TAG="${GITHUB_REF#refs/tags/}"
         echo "Full Tag: $TAG"
-        VERSION=$(echo "$TAG" | cut -d '-' -f 3)
-        BUILD_NUMBER=$(echo "$TAG" | cut -d '-' -f 4)
+        if [[ "$TAG" == build-ci-* ]]; then
+          WITHOUT_PREFIX="${TAG#build-ci-}"
+          VERSION="${WITHOUT_PREFIX%-*}"
+          BUILD_NUMBER="${WITHOUT_PREFIX##*-}"
+        elif [[ "$TAG" == release-* ]]; then
+          VERSION="${TAG#release-}"
+          BUILD_NUMBER=""
+        else
+          echo "Unknown tag pattern: $TAG"
+          exit 1
+        fi
         echo "Extracted Version: $VERSION"
         echo "Extracted Build Number: $BUILD_NUMBER"
         echo "VERSION=$VERSION" >> $GITHUB_ENV
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
     - name: "Update Release"
-      if: startsWith(github.ref, 'refs/tags/build-ci')
+      if: startsWith(github.ref, 'refs/tags/')
       uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        prerelease: true
-        title: "qBitControl ${{ env.VERSION }} (${{ env.BUILD_NUMBER }})"
+        prerelease: ${{ !startsWith(github.ref, 'refs/tags/release-') }}
+        title: "qBitControl ${{ env.VERSION }}${{ env.BUILD_NUMBER != '' && format(' ({0})', env.BUILD_NUMBER) || '' }}"
         files: |
           qBitControl.ipa
