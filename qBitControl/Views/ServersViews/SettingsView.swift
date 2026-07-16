@@ -20,7 +20,7 @@ struct SettingsView: View {
                     NavigationLink {
                         ServersView()
                     } label: {
-                        Label("Manage Servers", systemImage: "server.rack")
+                        Label("Manage Servers", systemImage: "ellipsis")
                     }
                 }
 

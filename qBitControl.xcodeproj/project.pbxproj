@@ -341,13 +341,6 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
-		905463213009497A003755CD /* SettingsViews 2 */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "SettingsViews 2";
-			sourceTree = "<group>";
-		};
 		9070232D2CDA556A007B2199 /* Toolbars */ = {
 			isa = PBXGroup;
 			children = (
@@ -478,7 +471,6 @@
 				90726B512CDA22190032993E /* MainView.swift */,
 				909EE5BA2CDD3B51002403DF /* LogViewerView.swift */,
 				909EE5C62CDD3B51002403DF /* WhatsNewView.swift */,
-				905463213009497A003755CD /* SettingsViews 2 */,
 			);
 			path = Views;
 			sourceTree = "<group>";

@@ -38,10 +38,7 @@ struct ServersView: View {
                     Button {
                         activeSheet = .add
                     } label: {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Add Server")
-                        }
+                        Label("Add Server", systemImage: "plus.circle")
                     }
                 }
                 if !serversHelper.servers.isEmpty {
@@ -62,8 +59,7 @@ struct ServersView: View {
                         DemoMode.activate()
                     } label: {
                         HStack {
-                            Image(systemName: "sparkles")
-                            Text("Live Demo")
+                            Label("Live Demo", systemImage: "sparkles")
                             Spacer()
                             if serversHelper.activeServerId == "demo" {
                                 Image(systemName: "checkmark")
