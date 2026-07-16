@@ -10,7 +10,7 @@ import SwiftUI
 class ServersHelper: ObservableObject {
     static public var shared = ServersHelper()
     
-    private var defaults = UserDefaults.standard
+    let defaults: UserDefaults
     private let serversKey = "servers"
     private let activeServerKey = "activeServer"
     private let recentServersKey = "recentServers"
@@ -31,7 +31,8 @@ class ServersHelper: ObservableObject {
     public var reauthAttemptCount = 0
     public var refreshClientCallCount = 0
     
-    init() {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
         getServerList()
         getActiveServer()
         loadRecentServers()
@@ -320,7 +321,7 @@ class ServersHelper: ObservableObject {
         }
     }
 
-    private func loadRecentServers() {
+    func loadRecentServers() {
         let ids = defaults.stringArray(forKey: recentServersKey) ?? []
         withAnimation {
             recentServers = ids.compactMap { id in
@@ -329,7 +330,7 @@ class ServersHelper: ObservableObject {
         }
     }
 
-    private func appendToRecent(serverId: String) {
+    func appendToRecent(serverId: String) {
         var ids = defaults.stringArray(forKey: recentServersKey) ?? []
         ids.removeAll { $0 == serverId }
         ids.insert(serverId, at: 0)
@@ -340,7 +341,7 @@ class ServersHelper: ObservableObject {
         loadRecentServers()
     }
 
-    private func removeFromRecent(id: String) {
+    func removeFromRecent(id: String) {
         var ids = defaults.stringArray(forKey: recentServersKey) ?? []
         ids.removeAll { $0 == id }
         defaults.set(ids, forKey: recentServersKey)

@@ -78,13 +78,16 @@ class ServerAddViewModel: ObservableObject {
         serversHelper.addServer(server: server)
     }
     
-    func addServer(dismiss: DismissAction) {
+    func makeServer() -> Server {
         sanitizeInputs()
-        
+        return Server(id: editServerId ?? UUID().uuidString, name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders, allowSelfSignedCert: allowSelfSignedCert)
+    }
+
+    func addServer(dismiss: DismissAction) {
         if !validateInputs() { return }
         if isCheckingConnection { return }
         
-        let server = Server(id: editServerId ?? UUID().uuidString, name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders, allowSelfSignedCert: allowSelfSignedCert)
+        let server = makeServer()
         pendingServer = server
         
         self.isCheckingConnection = true
@@ -138,11 +141,11 @@ class ServerAddViewModel: ObservableObject {
         dismiss()
     }
     
-    private func sanitizeInputs() {
+    func sanitizeInputs() {
         url = url.replacingOccurrences(of: "/+$", with: "", options: .regularExpression)
     }
     
-    private func buildConnectionErrorMessage(from error: Error?) -> String {
+    func buildConnectionErrorMessage(from error: Error?) -> String {
         var message = error?.localizedDescription ?? "Could not connect to the server."
         if isLanHost, let urlError = error as? URLError {
             let codes: [URLError.Code] = [.cannotConnectToHost, .networkConnectionLost, .timedOut, .cannotFindHost, .dnsLookupFailed]
@@ -153,7 +156,7 @@ class ServerAddViewModel: ObservableObject {
         return message
     }
     
-    private var isLanHost: Bool {
+    var isLanHost: Bool {
         guard let host = URL(string: url)?.host else { return false }
         if host == "localhost" || host.hasSuffix(".local") { return true }
         let parts = host.split(separator: ".")

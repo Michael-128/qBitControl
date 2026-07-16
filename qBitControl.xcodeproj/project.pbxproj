@@ -24,6 +24,9 @@
 		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
 		905463233009498A003755CD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905463223009498A003755CD /* SettingsView.swift */; };
 		905463253009525B003755CD /* View+ServerSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905463243009525B003755CD /* View+ServerSheet.swift */; };
+		90546327300959DC003755CD /* ServersHelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90546326300959DC003755CD /* ServersHelperTests.swift */; };
+		90546329300959E9003755CD /* ServerAddViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90546328300959E9003755CD /* ServerAddViewModelTests.swift */; };
+		9054632B300959EB003755CD /* TabItemTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9054632A300959EB003755CD /* TabItemTests.swift */; };
 		90669D903F83CF4C689553A4 /* DemoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C01DB5D0C1284DD1BD2E78 /* DemoMode.swift */; };
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
@@ -170,6 +173,9 @@
 		905284972D457618000EB12C /* ChangeTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTagsView.swift; sourceTree = "<group>"; };
 		905463223009498A003755CD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		905463243009525B003755CD /* View+ServerSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "View+ServerSheet.swift"; sourceTree = "<group>"; };
+		90546326300959DC003755CD /* ServersHelperTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersHelperTests.swift; sourceTree = "<group>"; };
+		90546328300959E9003755CD /* ServerAddViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerAddViewModelTests.swift; sourceTree = "<group>"; };
+		9054632A300959EB003755CD /* TabItemTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabItemTests.swift; sourceTree = "<group>"; };
 		9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsViewModel.swift; sourceTree = "<group>"; };
 		9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListViewModel.swift; sourceTree = "<group>"; };
 		907023312CDA62FD007B2199 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
@@ -639,6 +645,9 @@
 				909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */,
 				909EE5BC2CDD3B51002403DF /* LoggingTests.swift */,
 				909EE5CA2CDD3B51002403DF /* AppVersionTrackerTests.swift */,
+				90546326300959DC003755CD /* ServersHelperTests.swift */,
+				90546328300959E9003755CD /* ServerAddViewModelTests.swift */,
+				9054632A300959EB003755CD /* TabItemTests.swift */,
 			);
 			path = qBitControlTests;
 			sourceTree = "<group>";
@@ -913,10 +922,13 @@
 			files = (
 				90EF6A4F29093142001E9EFE /* TorrentCacheManagerTests.swift in Sources */,
 				90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */,
+				9054632B300959EB003755CD /* TabItemTests.swift in Sources */,
+				90546327300959DC003755CD /* ServersHelperTests.swift in Sources */,
 				90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */,
 				909EE5AB2CDD3B51002403DF /* qBitDataTests.swift in Sources */,
 				909EE5BB2CDD3B51002403DF /* LoggingTests.swift in Sources */,
 				909EE5C92CDD3B51002403DF /* AppVersionTrackerTests.swift in Sources */,
+				90546329300959E9003755CD /* ServerAddViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
