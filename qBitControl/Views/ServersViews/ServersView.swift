@@ -72,8 +72,9 @@ struct ServersView: View {
                         .foregroundColor(.teal)
                     }
                     .disabled(serversHelper.activeServerId == "demo")
-                }
-            }
+                        }
+                        .animation(.default, value: serversHelper.servers.map(\.id))
+                    }
             .navigationTitle("Servers")
         }
         .sheet(item: $activeSheet) { item in

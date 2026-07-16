@@ -15,6 +15,7 @@ struct SettingsView: View {
                                 ServerRowView(server: server, setActiveSheet: { _ in })
                             }
                         }
+                        .animation(.default, value: serversHelper.recentServers.map(\.id))
                     }
                     NavigationLink {
                         ServersView()

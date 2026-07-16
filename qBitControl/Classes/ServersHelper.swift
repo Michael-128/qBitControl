@@ -4,6 +4,7 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class ServersHelper: ObservableObject {
@@ -311,8 +312,10 @@ class ServersHelper: ObservableObject {
 
     private func loadRecentServers() {
         let ids = defaults.stringArray(forKey: recentServersKey) ?? []
-        recentServers = ids.compactMap { id in
-            servers.first { $0.id == id }
+        withAnimation {
+            recentServers = ids.compactMap { id in
+                servers.first { $0.id == id }
+            }
         }
     }
 
