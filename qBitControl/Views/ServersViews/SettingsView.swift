@@ -2,6 +2,8 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject var serversHelper = ServersHelper.shared
+    @State var activeSheet: ActiveSheet?
+    @State var isTroubleConnecting = false
 
     var body: some View {
         NavigationStack {
@@ -10,9 +12,11 @@ struct SettingsView: View {
                     if !serversHelper.recentServers.isEmpty {
                         ForEach(serversHelper.recentServers, id: \.id) { server in
                             Button {
-                                serversHelper.connect(server: server)
+                                serversHelper.connect(server: server, result: { success in
+                                    if !success { isTroubleConnecting = true }
+                                })
                             } label: {
-                                ServerRowView(server: server, setActiveSheet: { _ in })
+                                ServerRowView(server: server, setActiveSheet: { activeSheet = $0 })
                             }
                         }
                         .animation(.default, value: serversHelper.recentServers.map(\.id))
@@ -39,5 +43,6 @@ struct SettingsView: View {
             }
             .navigationTitle("Settings")
         }
+        .serverSheetAndAlert(activeSheet: $activeSheet, isTroubleConnecting: $isTroubleConnecting)
     }
 }
