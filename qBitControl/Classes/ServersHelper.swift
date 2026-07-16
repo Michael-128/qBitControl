@@ -4,16 +4,19 @@
 //
 
 import Foundation
+import SwiftUI
 
 @MainActor
 class ServersHelper: ObservableObject {
     static public var shared = ServersHelper()
     
-    private var defaults = UserDefaults.standard
+    let defaults: UserDefaults
     private let serversKey = "servers"
     private let activeServerKey = "activeServer"
-    
+    private let recentServersKey = "recentServers"
+
     @Published public var servers: [Server] = []
+    @Published public var recentServers: [Server] = []
     @Published public var activeServerId: String?
     @Published public var connectingServerId: String?
     
@@ -28,10 +31,12 @@ class ServersHelper: ObservableObject {
     public var reauthAttemptCount = 0
     public var refreshClientCallCount = 0
     
-    init() {
+    init(defaults: UserDefaults = .standard) {
+        self.defaults = defaults
         getServerList()
         getActiveServer()
-        
+        loadRecentServers()
+
         if let activeServerId = self.activeServerId {
             if let activeServer = self.getServer(id: activeServerId) {
                 self.connect(server: activeServer)
@@ -91,20 +96,32 @@ class ServersHelper: ObservableObject {
         self.servers.append(server)
         saveSeverList()
     }
+
+    func updateServer(_ server: Server) {
+        var updated = servers
+        if let index = updated.firstIndex(where: { $0.id == server.id }) {
+            updated[index] = server
+            servers = updated
+            saveSeverList()
+            loadRecentServers()
+        }
+    }
     
     func removeServer(id: String) {
         self.servers.removeAll(where: {
             server in
             return server.id == id
         })
-        
+
+        removeFromRecent(id: id)
+
         if(id == activeServerId) {
             activeServerId = nil
             isLoggedIn = false
             client = nil
             clearCache()
         }
-        
+
         saveSeverList()
     }
     
@@ -159,6 +176,7 @@ class ServersHelper: ObservableObject {
                 
                 self.isLoggedIn = true
                 await qBitData.shared.getMainData()
+                appendToRecent(serverId: server.id)
                 result?(true)
             } catch {
                 result?(false)
@@ -209,6 +227,7 @@ class ServersHelper: ObservableObject {
                 
                 self.isLoggedIn = true
                 await qBitData.shared.getMainData()
+                appendToRecent(serverId: server.id)
             } catch {
                 AppLogger.log(.error, GeneralErrorPayload(category: .auth, eventName: "auto_connect_failed", errorDescription: error.localizedDescription))
             }
@@ -300,5 +319,32 @@ class ServersHelper: ObservableObject {
                 AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "refresh_tags_failed", errorDescription: error.localizedDescription))
             }
         }
+    }
+
+    func loadRecentServers() {
+        let ids = defaults.stringArray(forKey: recentServersKey) ?? []
+        withAnimation {
+            recentServers = ids.compactMap { id in
+                servers.first { $0.id == id }
+            }
+        }
+    }
+
+    func appendToRecent(serverId: String) {
+        var ids = defaults.stringArray(forKey: recentServersKey) ?? []
+        ids.removeAll { $0 == serverId }
+        ids.insert(serverId, at: 0)
+        if ids.count > 3 {
+            ids = Array(ids.prefix(3))
+        }
+        defaults.set(ids, forKey: recentServersKey)
+        loadRecentServers()
+    }
+
+    func removeFromRecent(id: String) {
+        var ids = defaults.stringArray(forKey: recentServersKey) ?? []
+        ids.removeAll { $0 == id }
+        defaults.set(ids, forKey: recentServersKey)
+        loadRecentServers()
     }
 }
