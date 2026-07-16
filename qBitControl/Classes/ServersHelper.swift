@@ -95,6 +95,16 @@ class ServersHelper: ObservableObject {
         self.servers.append(server)
         saveSeverList()
     }
+
+    func updateServer(_ server: Server) {
+        var updated = servers
+        if let index = updated.firstIndex(where: { $0.id == server.id }) {
+            updated[index] = server
+            servers = updated
+            saveSeverList()
+            loadRecentServers()
+        }
+    }
     
     func removeServer(id: String) {
         self.servers.removeAll(where: {

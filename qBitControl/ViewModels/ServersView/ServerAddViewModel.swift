@@ -84,7 +84,7 @@ class ServerAddViewModel: ObservableObject {
         if !validateInputs() { return }
         if isCheckingConnection { return }
         
-        let server = Server(name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders, allowSelfSignedCert: allowSelfSignedCert)
+        let server = Server(id: editServerId ?? UUID().uuidString, name: friendlyName, url: url, username: username, password: password, basicAuth: basicAuth, customHeaders: customHeaders, allowSelfSignedCert: allowSelfSignedCert)
         pendingServer = server
         
         self.isCheckingConnection = true
@@ -129,8 +129,11 @@ class ServerAddViewModel: ObservableObject {
     
     private func commitServer(dismiss: DismissAction) {
         guard let server = pendingServer else { return }
-        if let editServerId = self.editServerId { serversHelper.removeServer(id: editServerId) }
-        addServer(server: server)
+        if editServerId != nil {
+            serversHelper.updateServer(server)
+        } else {
+            serversHelper.addServer(server: server)
+        }
         pendingServer = nil
         dismiss()
     }

@@ -7,8 +7,8 @@ import SwiftUI
 
 struct ServerRowView: View {
     @ObservedObject var serversHelper = ServersHelper.shared
-    @State var server: Server
-    @State var setActiveSheet: (ActiveSheet) -> Void
+    let server: Server
+    let setActiveSheet: (ActiveSheet) -> Void
     
     var body: some View {
         HStack() {
