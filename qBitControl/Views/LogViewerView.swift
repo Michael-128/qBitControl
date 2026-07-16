@@ -6,7 +6,6 @@
 import SwiftUI
 
 struct LogViewerView: View {
-    @Environment(\.dismiss) var dismiss
     @State private var logContent: String = ""
     @State private var filterQuery: String = ""
     @State private var selectedLevel: LogLevelFilter = .all
@@ -30,9 +29,8 @@ struct LogViewerView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            VStack(spacing: 0) {
-                Picker("Level", selection: $selectedLevel) {
+        VStack(spacing: 0) {
+            Picker("Level", selection: $selectedLevel) {
                     ForEach(LogLevelFilter.allCases, id: \.self) { level in
                         Text(level.rawValue).tag(level)
                     }
@@ -63,18 +61,13 @@ struct LogViewerView: View {
                         }
                         .padding(.vertical, 8)
                     }
-                }
             }
-            .navigationTitle("Application Logs")
-            .navigationBarTitleDisplayMode(.inline)
-            .searchable(text: $filterQuery, prompt: "Search logs...")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button("Close") {
-                        dismiss()
-                    }
-                }
-                ToolbarItem(placement: .topBarTrailing) {
+        }
+        .navigationTitle("Application Logs")
+        .navigationBarTitleDisplayMode(.inline)
+        .searchable(text: $filterQuery, prompt: "Search logs...")
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
                     HStack(spacing: 16) {
                         Button {
                             Task {
@@ -100,9 +93,8 @@ struct LogViewerView: View {
             .task {
                 await refreshLogs()
             }
-            .sheet(item: $exportURL) { url in
-                ActivityViewController(activityItems: [url])
-            }
+        .sheet(item: $exportURL) { url in
+            ActivityViewController(activityItems: [url])
         }
     }
     

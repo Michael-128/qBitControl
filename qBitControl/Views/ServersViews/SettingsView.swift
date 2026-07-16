@@ -25,6 +25,11 @@ struct SettingsView: View {
 
                 Section(header: Text("App")) {
                     NavigationLink {
+                        LogViewerView()
+                    } label: {
+                        Label("Logs", systemImage: "doc.text")
+                    }
+                    NavigationLink {
                         AboutView()
                     } label: {
                         Label("About", systemImage: "info.circle")

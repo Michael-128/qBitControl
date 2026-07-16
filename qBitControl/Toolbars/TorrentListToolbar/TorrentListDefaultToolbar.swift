@@ -72,22 +72,6 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                         Text("Clear Completed")
                     }
                 }
-                
-                Section {
-                    Button {
-                        viewModel.sheetIdentifier = SheetIdentifier(id: .showAbout)
-                    } label: {
-                        Image(systemName: "info.circle")
-                        Text("About")
-                    }
-                    
-                    Button {
-                        viewModel.sheetIdentifier = SheetIdentifier(id: .showLogs)
-                    } label: {
-                        Image(systemName: "doc.text")
-                        Text("Logs")
-                    }
-                }
             } label: {
                 Image(systemName: "ellipsis.circle")
             }.alert(item: $viewModel.alertIdentifier) { alert in
@@ -116,10 +100,10 @@ struct TorrentListDefaultToolbar: ToolbarContent {
             .sheet(item: $viewModel.sheetIdentifier) {
                 sheet in
                 switch sheet.id {
-                case .showAbout:
-                    AnyView(NavigationStack { AboutView() })
                 case .showLogs:
-                    AnyView(LogViewerView())
+                    AnyView(NavigationStack { LogViewerView() })
+                default:
+                    AnyView(EmptyView())
                 }
             }
         }
