@@ -22,6 +22,7 @@
 		9042ABDF2DB2CC05003584EF /* SearchPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9042ABDE2DB2CC02003584EF /* SearchPlugin.swift */; };
 		9042ABE12DB2CC8F003584EF /* SearchCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9042ABE02DB2CC8A003584EF /* SearchCategory.swift */; };
 		905284982D457618000EB12C /* ChangeTagsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905284972D457618000EB12C /* ChangeTagsView.swift */; };
+		905463233009498A003755CD /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 905463223009498A003755CD /* SettingsView.swift */; };
 		90669D903F83CF4C689553A4 /* DemoMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C01DB5D0C1284DD1BD2E78 /* DemoMode.swift */; };
 		9070232C2CDA4869007B2199 /* TorrentDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */; };
 		907023302CDA5A56007B2199 /* TorrentListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */; };
@@ -166,6 +167,7 @@
 		9042ABDE2DB2CC02003584EF /* SearchPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchPlugin.swift; sourceTree = "<group>"; };
 		9042ABE02DB2CC8A003584EF /* SearchCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCategory.swift; sourceTree = "<group>"; };
 		905284972D457618000EB12C /* ChangeTagsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeTagsView.swift; sourceTree = "<group>"; };
+		905463223009498A003755CD /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9070232B2CDA4864007B2199 /* TorrentDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentDetailsViewModel.swift; sourceTree = "<group>"; };
 		9070232F2CDA5A51007B2199 /* TorrentListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListViewModel.swift; sourceTree = "<group>"; };
 		907023312CDA62FD007B2199 /* TorrentListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListView.swift; sourceTree = "<group>"; };
@@ -339,6 +341,13 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		905463213009497A003755CD /* SettingsViews 2 */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "SettingsViews 2";
+			sourceTree = "<group>";
+		};
 		9070232D2CDA556A007B2199 /* Toolbars */ = {
 			isa = PBXGroup;
 			children = (
@@ -417,6 +426,7 @@
 				90726B352CDA22190032993E /* ServerAddView.swift */,
 				90726B362CDA22190032993E /* ServerRowView.swift */,
 				90726B372CDA22190032993E /* ServersView.swift */,
+				905463223009498A003755CD /* SettingsView.swift */,
 			);
 			path = ServersViews;
 			sourceTree = "<group>";
@@ -468,6 +478,7 @@
 				90726B512CDA22190032993E /* MainView.swift */,
 				909EE5BA2CDD3B51002403DF /* LogViewerView.swift */,
 				909EE5C62CDD3B51002403DF /* WhatsNewView.swift */,
+				905463213009497A003755CD /* SettingsViews 2 */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -890,6 +901,7 @@
 				909EE5C32CDD3B51002403DF /* TorrentAddFailurePayload.swift in Sources */,
 				909EE5B92CDD3B51002403DF /* LogViewerView.swift in Sources */,
 				909EE5AF2CDD3B51002403DF /* LoggablePayload.swift in Sources */,
+				905463233009498A003755CD /* SettingsView.swift in Sources */,
 				909EE5B12CDD3B51002403DF /* AppLogger.swift in Sources */,
 				909EE5B32CDD3B51002403DF /* LogAnonymizer.swift in Sources */,
 				909EE5B52CDD3B51002403DF /* LogStore.swift in Sources */,

@@ -12,8 +12,10 @@ class ServersHelper: ObservableObject {
     private var defaults = UserDefaults.standard
     private let serversKey = "servers"
     private let activeServerKey = "activeServer"
-    
+    private let recentServersKey = "recentServers"
+
     @Published public var servers: [Server] = []
+    @Published public var recentServers: [Server] = []
     @Published public var activeServerId: String?
     @Published public var connectingServerId: String?
     
@@ -31,7 +33,8 @@ class ServersHelper: ObservableObject {
     init() {
         getServerList()
         getActiveServer()
-        
+        loadRecentServers()
+
         if let activeServerId = self.activeServerId {
             if let activeServer = self.getServer(id: activeServerId) {
                 self.connect(server: activeServer)
@@ -97,14 +100,16 @@ class ServersHelper: ObservableObject {
             server in
             return server.id == id
         })
-        
+
+        removeFromRecent(id: id)
+
         if(id == activeServerId) {
             activeServerId = nil
             isLoggedIn = false
             client = nil
             clearCache()
         }
-        
+
         saveSeverList()
     }
     
@@ -159,6 +164,7 @@ class ServersHelper: ObservableObject {
                 
                 self.isLoggedIn = true
                 await qBitData.shared.getMainData()
+                appendToRecent(serverId: server.id)
                 result?(true)
             } catch {
                 result?(false)
@@ -209,6 +215,7 @@ class ServersHelper: ObservableObject {
                 
                 self.isLoggedIn = true
                 await qBitData.shared.getMainData()
+                appendToRecent(serverId: server.id)
             } catch {
                 AppLogger.log(.error, GeneralErrorPayload(category: .auth, eventName: "auto_connect_failed", errorDescription: error.localizedDescription))
             }
@@ -300,5 +307,30 @@ class ServersHelper: ObservableObject {
                 AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "refresh_tags_failed", errorDescription: error.localizedDescription))
             }
         }
+    }
+
+    private func loadRecentServers() {
+        let ids = defaults.stringArray(forKey: recentServersKey) ?? []
+        recentServers = ids.compactMap { id in
+            servers.first { $0.id == id }
+        }
+    }
+
+    private func appendToRecent(serverId: String) {
+        var ids = defaults.stringArray(forKey: recentServersKey) ?? []
+        ids.removeAll { $0 == serverId }
+        ids.insert(serverId, at: 0)
+        if ids.count > 3 {
+            ids = Array(ids.prefix(3))
+        }
+        defaults.set(ids, forKey: recentServersKey)
+        loadRecentServers()
+    }
+
+    private func removeFromRecent(id: String) {
+        var ids = defaults.stringArray(forKey: recentServersKey) ?? []
+        ids.removeAll { $0 == id }
+        defaults.set(ids, forKey: recentServersKey)
+        loadRecentServers()
     }
 }

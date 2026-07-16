@@ -117,7 +117,7 @@ struct TorrentListDefaultToolbar: ToolbarContent {
                 sheet in
                 switch sheet.id {
                 case .showAbout:
-                    AnyView(AboutView())
+                    AnyView(NavigationStack { AboutView() })
                 case .showLogs:
                     AnyView(LogViewerView())
                 }
