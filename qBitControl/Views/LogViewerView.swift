@@ -97,7 +97,6 @@ struct LogViewerView: View {
                 ActivityViewController(activityItems: [item.url])
             }
         }
-    }
     
     private func refreshLogs() async {
         let content = await LogStore.shared.loadAllLogs()
