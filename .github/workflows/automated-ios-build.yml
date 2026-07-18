@@ -51,10 +51,10 @@ jobs:
         echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
     - name: "Update Release"
       if: startsWith(github.ref, 'refs/tags/')
-      uses: "marvinpinto/action-automatic-releases@latest"
+      uses: "softprops/action-gh-release@v2"
       with:
-        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        tag_name: ${{ github.ref_name }}
         prerelease: ${{ !startsWith(github.ref, 'refs/tags/release-') }}
-        title: "qBitControl ${{ env.VERSION }}${{ env.BUILD_NUMBER != '' && format(' ({0})', env.BUILD_NUMBER) || '' }}"
+        name: "qBitControl ${{ env.VERSION }}${{ env.BUILD_NUMBER != '' && format(' ({0})', env.BUILD_NUMBER) || '' }}"
         files: |
           qBitControl.ipa
