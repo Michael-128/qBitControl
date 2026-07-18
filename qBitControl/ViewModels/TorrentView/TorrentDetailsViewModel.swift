@@ -160,10 +160,8 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func toggleSequentialDownload() {
-        let newValue = !isSequentialDownload
-        isSequentialDownload = newValue
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
-            torrent.seq_dl = newValue
+            torrent.seq_dl = isSequentialDownload
         }
         Task {
             do {
@@ -175,10 +173,8 @@ class TorrentDetailsViewModel: ObservableObject {
     }
     
     func toggleFLPiecesFirst() {
-        let newValue = !isFLPiecesFirst
-        isFLPiecesFirst = newValue
         qBitData.shared.cacheManager.updateTorrentsOptimistically(hashes: [torrent.hash]) { torrent in
-            torrent.f_l_piece_prio = newValue
+            torrent.f_l_piece_prio = isFLPiecesFirst
         }
         Task {
             do {

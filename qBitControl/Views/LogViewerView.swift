@@ -9,7 +9,7 @@ struct LogViewerView: View {
     @State private var logContent: String = ""
     @State private var filterQuery: String = ""
     @State private var selectedLevel: LogLevelFilter = .all
-    @State private var exportURL: URL? = nil
+    @State private var exportItem: LogExportItem? = nil
     
     enum LogLevelFilter: String, CaseIterable {
         case all = "ALL"
@@ -81,7 +81,7 @@ struct LogViewerView: View {
                         Button {
                             Task {
                                 if let url = await LogStore.shared.exportCombinedLogsURL() {
-                                    self.exportURL = url
+                                    self.exportItem = LogExportItem(url: url)
                                 }
                             }
                         } label: {
@@ -93,8 +93,9 @@ struct LogViewerView: View {
             .task {
                 await refreshLogs()
             }
-        .sheet(item: $exportURL) { url in
-            ActivityViewController(activityItems: [url])
+            .sheet(item: $exportItem) { item in
+                ActivityViewController(activityItems: [item.url])
+            }
         }
     }
     
@@ -118,8 +119,9 @@ struct LogViewerView: View {
     }
 }
 
-extension URL: Identifiable {
-    public var id: String { self.absoluteString }
+struct LogExportItem: Identifiable {
+    let id = UUID()
+    let url: URL
 }
 
 struct ActivityViewController: UIViewControllerRepresentable {
