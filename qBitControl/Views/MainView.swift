@@ -15,7 +15,7 @@ struct MainView: View {
         TabItem(label: "Tasks", systemImage: "square.and.arrow.down.on.square", value: .tasks) { AnyView(TorrentListView()) },
         TabItem(label: "RSS", systemImage: "dot.radiowaves.up.forward", value: .rss) { AnyView(RSSView()) },
         TabItem(label: "Stats", systemImage: "chart.line.uptrend.xyaxis", value: .stats) { AnyView(StatsView()) },
-        TabItem(label: "Servers", systemImage: "server.rack", value: .servers) { AnyView(ServersView()) },
+        TabItem(label: "Settings", systemImage: "gearshape", value: .settings, resetsOnServerChange: false) { AnyView(SettingsView()) },
     ]
     
     private func checkWhatsNew() {
@@ -30,7 +30,7 @@ struct MainView: View {
         TabView {
             ForEach(tabs, id: \.label) { tab in
                 tab.content()
-                    .id(serversHelper.activeServerId)
+                    .id(tab.resetsOnServerChange ? serversHelper.activeServerId : "settings")
                     .tabItem {
                         Label(tab.label, systemImage: tab.systemImage)
                     }
@@ -47,7 +47,7 @@ struct MainView: View {
                 ForEach(tabs, id: \.label) { tab in
                     Tab(tab.label, systemImage: tab.systemImage, value: tab.value) {
                         tab.content()
-                            .id(serversHelper.activeServerId)
+                            .id(tab.resetsOnServerChange ? serversHelper.activeServerId : "settings")
                     }
                 }
             }.onChange(of: scenePhase) { phase in

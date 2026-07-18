@@ -38,10 +38,7 @@ struct ServersView: View {
                     Button {
                         activeSheet = .add
                     } label: {
-                        HStack {
-                            Image(systemName: "plus.circle")
-                            Text("Add Server")
-                        }
+                        Label("Add Server", systemImage: "plus.circle")
                     }
                 }
                 if !serversHelper.servers.isEmpty {
@@ -62,8 +59,7 @@ struct ServersView: View {
                         DemoMode.activate()
                     } label: {
                         HStack {
-                            Image(systemName: "sparkles")
-                            Text("Live Demo")
+                            Label("Live Demo", systemImage: "sparkles")
                             Spacer()
                             if serversHelper.activeServerId == "demo" {
                                 Image(systemName: "checkmark")
@@ -72,20 +68,11 @@ struct ServersView: View {
                         .foregroundColor(.teal)
                     }
                     .disabled(serversHelper.activeServerId == "demo")
-                }
-            }
+                        }
+                        .animation(.default, value: serversHelper.servers.map(\.id))
+                    }
             .navigationTitle("Servers")
         }
-        .sheet(item: $activeSheet) { item in
-            switch item {
-            case .add:
-                ServerAddView()
-            case .edit(let serverId):
-                ServerAddView(editServerId: serverId)
-            }
-        }
-        .alert(isPresented: $isTroubleConnecting) {
-            Alert(title: Text("Couldn't connect to the server."), message: Text("Check if the URL, username and password is correct. Make sure local network access is enabled:\nSettings > Privacy & Security > Local Network > qBitControl"))
-        }
+        .serverSheetAndAlert(activeSheet: $activeSheet, isTroubleConnecting: $isTroubleConnecting)
     }
 }
