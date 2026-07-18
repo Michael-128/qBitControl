@@ -3,7 +3,7 @@ import SwiftUI
 struct RSSNodeView: View {
     @State public var path: [String]
     @ObservedObject var viewModel = RSSNodeViewModel.shared
-    var rssNode: RSSNode { viewModel.rssRootNode.getNode(path: path)! }
+    var rssNode: RSSNode { viewModel.rssRootNode.getNode(path: path) ?? RSSNode() }
     
     @State private var isAddFeedAlert: Bool = false
     @State private var isAddFolderAlert: Bool = false
@@ -72,7 +72,7 @@ struct RSSNodeView: View {
                     }
                 }
             }
-        }.navigationTitle(viewModel.rssRootNode.getNode(path: path)!.title)
+        }.navigationTitle(viewModel.rssRootNode.getNode(path: path)?.title ?? "")
             .refreshable { refresh() }
             .toolbar { toolbar() }
             .alert("Add Feed", isPresented: $isAddFeedAlert, actions: { addFeedAlert() })

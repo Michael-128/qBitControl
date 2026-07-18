@@ -43,7 +43,7 @@ struct FilesView: View {
                 
                 for file in files {
                     let fileComponents = file.name.components(separatedBy: "/")
-                    let actualFilename = fileComponents.last!
+                    let actualFilename = fileComponents.last ?? ""
                     let path = fileComponents.dropLast().joined(separator: "/")
                     filesWithCommonPaths[path, default: []].append(
                         FileNode(

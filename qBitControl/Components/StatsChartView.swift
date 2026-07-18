@@ -43,7 +43,7 @@ struct StatsChartView: View {
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel {
-                            Text("\(formatter.getFormatedSize(size: value.as(Int64.self)!))/s")
+                            Text("\(formatter.getFormatedSize(size: value.as(Int64.self) ?? 0))/s")
                         }
                     }
                 }
@@ -52,7 +52,7 @@ struct StatsChartView: View {
                         AxisGridLine()
                         AxisTick()
                         AxisValueLabel {
-                            Text("\(String(abs(value.as(Int.self)!)))s")
+                            Text("\(String(abs(value.as(Int.self) ?? 0)))s")
                         }
                     }
                 }
