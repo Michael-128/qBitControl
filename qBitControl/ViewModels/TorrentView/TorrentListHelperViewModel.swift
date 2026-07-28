@@ -67,27 +67,23 @@ class TorrentListHelperViewModel: ObservableObject {
             
             let allTorrents = Array(dict.values)
             
-            // 1. Update self.torrents (sorted by VM sorting)
-            self.torrents = self.getProcessedTorrents(
-                allTorrents: allTorrents,
-                query: "",
-                filterVal: .all,
-                categoryVal: "All",
-                tagVal: "All",
-                sortVal: sortVal,
-                reverseVal: rev
-            )
-            
-            // 2. Update self.filteredTorrents (filtered and sorted)
-            self.filteredTorrents = self.getProcessedTorrents(
-                allTorrents: allTorrents,
-                query: query,
-                filterVal: filterVal,
-                categoryVal: cat,
-                tagVal: tag,
-                sortVal: sortVal,
-                reverseVal: rev
-            )
+            Task(priority: .userInitiated) { [weak self] in
+                guard let self = self else { return }
+                let processed = self.getProcessedTorrents(
+                    allTorrents: allTorrents,
+                    query: query,
+                    filterVal: filterVal,
+                    categoryVal: cat,
+                    tagVal: tag,
+                    sortVal: sortVal,
+                    reverseVal: rev
+                )
+                
+                await MainActor.run {
+                    self.torrents = allTorrents
+                    self.filteredTorrents = processed
+                }
+            }
         }
         .store(in: &cancellables)
     }
