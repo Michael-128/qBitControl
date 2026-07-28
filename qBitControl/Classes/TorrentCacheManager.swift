@@ -13,9 +13,11 @@ class TorrentCacheManager: ObservableObject {
         // Clear expired locks
         lockedHashes = lockedHashes.filter { $0.value > now }
         
+        var workingTorrents = self.torrents
+        
         // 1. Reset Cache on Full Update
         if mainData.full_update == true {
-            self.torrents.removeAll()
+            workingTorrents.removeAll()
             self.lockedHashes.removeAll()
         }
         
@@ -27,13 +29,13 @@ class TorrentCacheManager: ObservableObject {
                     continue
                 }
                 
-                if let existing = self.torrents[hash] {
+                if let existing = workingTorrents[hash] {
                     var updated = existing
                     updated.update(from: partial)
-                    self.torrents[hash] = updated
+                    workingTorrents[hash] = updated
                 } else {
                     let newTorrent = Torrent(from: partial, hash: hash)
-                    self.torrents[hash] = newTorrent
+                    workingTorrents[hash] = newTorrent
                 }
             }
         }
@@ -41,9 +43,11 @@ class TorrentCacheManager: ObservableObject {
         // 3. Prune Deleted Torrents
         if let removedHashes = mainData.torrents_removed {
             for hash in removedHashes {
-                self.torrents.removeValue(forKey: hash)
+                workingTorrents.removeValue(forKey: hash)
             }
         }
+        
+        self.torrents = workingTorrents
     }
     
     // Method to apply optimistic updates
