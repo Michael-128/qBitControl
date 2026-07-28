@@ -28,10 +28,10 @@ struct TorrentListHelperView: View {
             Text("\(viewModel.filteredTorrents.count) " + NSLocalizedString("Tasks", comment: ""))
             Text("•")
             Image(systemName: "arrow.down")
-            Text("\( formatter.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.dlspeed}).reduce(0, +)) )/s")
+            Text("\( formatter.getFormatedSize(size: viewModel.totalDlSpeed) )/s")
             Text("•")
             Image(systemName: "arrow.up")
-            Text("\( formatter.getFormatedSize(size: viewModel.filteredTorrents.compactMap({$0.upspeed}).reduce(0, +)) )/s")
+            Text("\( formatter.getFormatedSize(size: viewModel.totalUpSpeed) )/s")
         }
         .lineLimit(1)
     }

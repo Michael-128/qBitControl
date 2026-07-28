@@ -27,6 +27,8 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published public var selectedTorrents: Set<String> = Set()
     
     @Published public var filteredTorrents: [Torrent] = []
+    @Published public var totalDlSpeed: Int64 = 0
+    @Published public var totalUpSpeed: Int64 = 0
     
     @Published var scenePhase: ScenePhase = .active
     @Published var isDeleteAlert: Bool = false
@@ -79,9 +81,14 @@ class TorrentListHelperViewModel: ObservableObject {
                     reverseVal: rev
                 )
                 
+                let dlSpeed = processed.reduce(0) { $0 + $1.dlspeed }
+                let upSpeed = processed.reduce(0) { $0 + $1.upspeed }
+                
                 await MainActor.run {
                     self.torrents = allTorrents
                     self.filteredTorrents = processed
+                    self.totalDlSpeed = dlSpeed
+                    self.totalUpSpeed = upSpeed
                 }
             }
         }
