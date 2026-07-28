@@ -11,7 +11,7 @@ struct TorrentListHelperView: View {
     
     var body: some View {
         Section(header: torrentListHeader()) {
-            ForEach(viewModel.filteredTorrents, id: \.hash) { torrent in torrentRowView(torrent: torrent) }
+            ForEach(viewModel.visibleTorrents, id: \.hash) { torrent in torrentRowView(torrent: torrent) }
         }
         .onAppear { viewModel.getInitialTorrents() }
         .onDisappear { viewModel.stopTimer() }
@@ -41,11 +41,14 @@ struct TorrentListHelperView: View {
     
     @ViewBuilder
     func torrentRowView(torrent: Torrent) -> some View {
-        if viewModel.isSelectionMode {
-            torrentSelectionModeRowView(torrent: torrent)
-        } else {
-            torrentStandardRowView(torrent: torrent)
+        Group {
+            if viewModel.isSelectionMode {
+                torrentSelectionModeRowView(torrent: torrent)
+            } else {
+                torrentStandardRowView(torrent: torrent)
+            }
         }
+        .onAppear { viewModel.loadMoreIfNeeded(currentItem: torrent) }
     }
     
     func torrentStandardRowView(torrent: Torrent) -> some View {

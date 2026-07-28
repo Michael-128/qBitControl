@@ -27,6 +27,8 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published public var selectedTorrents: Set<String> = Set()
     
     @Published public var filteredTorrents: [Torrent] = []
+    @Published public var visibleLimit: Int = 100
+    @Published public var visibleTorrents: [Torrent] = []
     @Published public var totalDlSpeed: Int64 = 0
     @Published public var totalUpSpeed: Int64 = 0
     
@@ -42,6 +44,7 @@ class TorrentListHelperViewModel: ObservableObject {
     private var pollingTask: Task<Void, Never>?
     var hash = ""
     private var cancellables = Set<AnyCancellable>()
+    private var lastFilterParamsKey: String = ""
     
     public var categoryName: String {
         if(category == "All") {
@@ -67,6 +70,12 @@ class TorrentListHelperViewModel: ObservableObject {
             guard let self = self else { return }
             let (cat, tag, sortVal, rev) = otherParams
             
+            let currentKey = "\(query)|\(filterVal.rawValue)|\(cat)|\(tag)|\(sortVal.rawValue)|\(rev)"
+            if self.lastFilterParamsKey != currentKey {
+                self.lastFilterParamsKey = currentKey
+                self.visibleLimit = 100
+            }
+            
             let allTorrents = Array(dict.values)
             
             Task(priority: .userInitiated) { [weak self] in
@@ -87,12 +96,22 @@ class TorrentListHelperViewModel: ObservableObject {
                 await MainActor.run {
                     self.torrents = allTorrents
                     self.filteredTorrents = processed
+                    self.visibleTorrents = Array(processed.prefix(self.visibleLimit))
                     self.totalDlSpeed = dlSpeed
                     self.totalUpSpeed = upSpeed
                 }
             }
         }
         .store(in: &cancellables)
+    }
+    
+    func loadMoreIfNeeded(currentItem: Torrent) {
+        guard let index = visibleTorrents.firstIndex(where: { $0.hash == currentItem.hash }) else { return }
+        let thresholdIndex = visibleTorrents.count - 20
+        if index >= thresholdIndex && visibleLimit < filteredTorrents.count {
+            visibleLimit = min(visibleLimit + 100, filteredTorrents.count)
+            visibleTorrents = Array(filteredTorrents.prefix(visibleLimit))
+        }
     }
     
     func getProcessedTorrents(
