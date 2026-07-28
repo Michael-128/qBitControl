@@ -39,9 +39,13 @@ struct TorrentListHelperView: View {
     
     // Torrent Rows
     
+    @ViewBuilder
     func torrentRowView(torrent: Torrent) -> some View {
-        if(viewModel.isSelectionMode) { return AnyView(torrentSelectionModeRowView(torrent: torrent)) }
-        return AnyView(torrentStandardRowView(torrent: torrent))
+        if viewModel.isSelectionMode {
+            torrentSelectionModeRowView(torrent: torrent)
+        } else {
+            torrentStandardRowView(torrent: torrent)
+        }
     }
     
     func torrentStandardRowView(torrent: Torrent) -> some View {
