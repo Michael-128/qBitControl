@@ -74,6 +74,10 @@ class qBitData: ObservableObject {
         self.serverState = nil
     }
     
+    nonisolated private func fetchMainData(client: TorrentClientProtocol, currentRid: Int) async throws -> MainData {
+        return try await client.getMainData(rid: currentRid)
+    }
+    
     func getMainData() async {
         guard let client = ServersHelper.shared.client, ServersHelper.shared.isLoggedIn else {
             if self.connectionStatus != .connected {
@@ -86,8 +90,9 @@ class qBitData: ObservableObject {
         isFetching = true
         defer { isFetching = false }
         
+        let currentRid = self.rid
         do {
-            let mainData = try await client.getMainData(rid: rid)
+            let mainData = try await fetchMainData(client: client, currentRid: currentRid)
             self.rid = mainData.rid
             
             self.cacheManager.merge(mainData: mainData)

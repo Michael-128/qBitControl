@@ -53,6 +53,7 @@ struct TorrentListHelperView: View {
             TorrentDetailsView(torrent: torrent)
         } label: {
             TorrentRowView(name: torrent.name, progress: torrent.progress, state: torrent.state, dlspeed: torrent.dlspeed, upspeed: torrent.upspeed, ratio: torrent.ratio, size: torrent.size, eta: torrent.eta)
+            .equatable()
             .contextMenu() { torrentRowContextMenu(torrent: torrent) }
         }
     }

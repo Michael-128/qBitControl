@@ -58,7 +58,7 @@ class TorrentListHelperViewModel: ObservableObject {
     
     private func setupSubscriptions() {
         Publishers.CombineLatest4(
-            qBitData.shared.cacheManager.$torrents,
+            qBitData.shared.cacheManager.$torrents.debounce(for: .milliseconds(500), scheduler: RunLoop.main),
             $searchQuery,
             $filter,
             Publishers.CombineLatest4($category, $tag, $sort, $reverse)

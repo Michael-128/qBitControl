@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct TorrentRowView: View {
+struct TorrentRowView: View, Equatable {
     let name: String
     let progress: Float
     let state: String
@@ -14,6 +14,17 @@ struct TorrentRowView: View {
     let ratio: Float
     let size: Int64
     let eta: Int
+    
+    static func == (lhs: TorrentRowView, rhs: TorrentRowView) -> Bool {
+        return lhs.name == rhs.name &&
+               lhs.progress == rhs.progress &&
+               lhs.state == rhs.state &&
+               lhs.dlspeed == rhs.dlspeed &&
+               lhs.upspeed == rhs.upspeed &&
+               lhs.ratio == rhs.ratio &&
+               lhs.size == rhs.size &&
+               lhs.eta == rhs.eta
+    }
     
     var formatter: TorrentFormatting = TorrentFormatter()
     

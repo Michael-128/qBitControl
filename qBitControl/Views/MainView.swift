@@ -4,7 +4,6 @@ import Combine
 struct MainView: View {
     @StateObject private var viewModel = MainViewModel()
     @ObservedObject var serversHelper = ServersHelper.shared
-    @ObservedObject var qBitDataObj = qBitData.shared
     @Environment(\.scenePhase) var scenePhase
     @State var selectedTab: TabItem.Tab = .search
     @State private var showOfflineBanner = false
@@ -89,10 +88,10 @@ struct MainView: View {
                     }
                 }
                 .onAppear {
-                    showOfflineBanner = (qBitDataObj.connectionStatus != .connected)
+                    showOfflineBanner = (qBitData.shared.connectionStatus != .connected)
                     checkWhatsNew()
                 }
-                .onChange(of: qBitDataObj.connectionStatus) { status in
+                .onReceive(qBitData.shared.$connectionStatus) { status in
                     withAnimation(.easeInOut) {
                         showOfflineBanner = (status != .connected)
                     }
