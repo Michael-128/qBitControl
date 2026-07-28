@@ -39,10 +39,7 @@ struct SmoothProgressBar: View {
         }
         .frame(height: 4)
         .onAppear {
-            // Enable animations after the initial layout pass
-            DispatchQueue.main.async {
-                animate = true
-            }
+            animate = true
         }
     }
 }

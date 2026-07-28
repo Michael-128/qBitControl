@@ -21,72 +21,52 @@ struct TorrentRowView: View {
     
     let screenWidth = UIScreen.main.bounds.width
     
-    struct DetailItem: Identifiable {
-        let id = UUID()
-        let view: AnyView
-    }
-    
-    private func getRowItems() -> [DetailItem] {
-        var items: [DetailItem] = []
-        
-        // 1. Always show progress
-        items.append(DetailItem(view: AnyView(
-            Text("\(String(format: "%.1f", progress * 100))%")
-                .monospacedDigit()
-        )))
+    @ViewBuilder
+    private func rowDetailsView() -> some View {
+        Text("\(String(format: "%.1f", progress * 100))%")
+            .monospacedDigit()
         
         if progress < 1.0 {
             let isPaused = state == "pausedDL" || state == "stoppedDL" || state.contains("paused") || state.contains("stopped")
             
             if isPaused {
-                // Paused but not completed: show ratio instead of DL speed
-                items.append(DetailItem(view: AnyView(
-                    HStack(spacing: 2) {
-                        Image(systemName: "arrow.up.arrow.down")
-                        Text("\(String(format: "%.2f", ratio))")
-                            .monospacedDigit()
-                    }
-                )))
-            } else {
-                // Not completed and active: show download speed and remaining
-                items.append(DetailItem(view: AnyView(
-                    HStack(spacing: 2) {
-                        Image(systemName: "arrow.down")
-                        Text("\(formatter.getFormatedSize(size: dlspeed))/s")
-                            .monospacedDigit()
-                    }
-                )))
-                
-                if eta > 0 && eta < 8640000 {
-                    let remainingText = "\(formatter.getFormattedTime(time: eta)) \(NSLocalizedString("remaining", comment: "remaining time"))"
-                    items.append(DetailItem(view: AnyView(
-                        Text(remainingText)
-                            .monospacedDigit()
-                    )))
-                }
-            }
-        } else {
-            // Completed: show upload speed (only if active) and ratio
-            if upspeed > 0 {
-                items.append(DetailItem(view: AnyView(
-                    HStack(spacing: 2) {
-                        Image(systemName: "arrow.up")
-                        Text("\(formatter.getFormatedSize(size: upspeed))/s")
-                            .monospacedDigit()
-                    }
-                )))
-            }
-            
-            items.append(DetailItem(view: AnyView(
+                Text("•").foregroundColor(.gray)
                 HStack(spacing: 2) {
                     Image(systemName: "arrow.up.arrow.down")
                     Text("\(String(format: "%.2f", ratio))")
                         .monospacedDigit()
                 }
-            )))
+            } else {
+                Text("•").foregroundColor(.gray)
+                HStack(spacing: 2) {
+                    Image(systemName: "arrow.down")
+                    Text("\(formatter.getFormatedSize(size: dlspeed))/s")
+                        .monospacedDigit()
+                }
+                
+                if eta > 0 && eta < 8640000 {
+                    Text("•").foregroundColor(.gray)
+                    Text("\(formatter.getFormattedTime(time: eta)) \(NSLocalizedString("remaining", comment: "remaining time"))")
+                        .monospacedDigit()
+                }
+            }
+        } else {
+            if upspeed > 0 {
+                Text("•").foregroundColor(.gray)
+                HStack(spacing: 2) {
+                    Image(systemName: "arrow.up")
+                    Text("\(formatter.getFormatedSize(size: upspeed))/s")
+                        .monospacedDigit()
+                }
+            }
+            
+            Text("•").foregroundColor(.gray)
+            HStack(spacing: 2) {
+                Image(systemName: "arrow.up.arrow.down")
+                Text("\(String(format: "%.2f", ratio))")
+                    .monospacedDigit()
+            }
         }
-        
-        return items
     }
     
     var body: some View {
@@ -110,15 +90,7 @@ struct TorrentRowView: View {
                     .foregroundColor(formatter.getStateColor(state: state))
                     .font(.footnote)
                 
-                let items = getRowItems()
-                ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
-                    item.view
-                    
-                    if index < items.count - 1 {
-                        Text("•")
-                            .foregroundColor(.gray)
-                    }
-                }
+                rowDetailsView()
                 
                 Spacer()
             }
@@ -126,8 +98,6 @@ struct TorrentRowView: View {
                 .padding(.top, 1)
                 .lineLimit(1)
         }
-        
-        
     }
 }
 
