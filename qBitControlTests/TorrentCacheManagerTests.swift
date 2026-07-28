@@ -163,4 +163,18 @@ final class TorrentCacheManagerTests: XCTestCase {
         XCTAssertNil(sut.torrents["hashA"])
         XCTAssertNotNil(sut.torrents["hashB"])
     }
+
+    @MainActor
+    func test_8k_merge_performance() async {
+        let mockClient = MockTorrentClient(mockCount: 8000)
+        let mainData = try! await mockClient.getMainData(rid: 0)
+        let sut = TorrentCacheManager()
+
+        let startTime = CFAbsoluteTimeGetCurrent()
+        sut.merge(mainData: mainData)
+        let duration = CFAbsoluteTimeGetCurrent() - startTime
+
+        XCTAssertEqual(sut.torrents.count, 8000)
+        print("⏱️ Merging 8k torrents took \(duration) seconds")
+    }
 }

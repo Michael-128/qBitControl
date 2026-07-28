@@ -27,12 +27,19 @@ final class qBitControlUITests: XCTestCase {
     }
 
     @MainActor
-    func testLaunchPerformance() throws {
-        if #available(macOS 10.15, iOS 13.0, tvOS 13.0, watchOS 7.0, *) {
-            // This measures how long it takes to launch your application.
-            measure(metrics: [XCTApplicationLaunchMetric()]) {
-                XCUIApplication().launch()
-            }
-        }
+    func test8kLibraryStartupAndScroll() throws {
+        let app = XCUIApplication()
+        app.launchArguments = ["-uitest-8k-mocks"]
+        app.launch()
+
+        // Wait for task count text or table element to appear
+        let taskCountText = app.staticTexts.matching(NSPredicate(format: "label CONTAINS 'Tasks'")).firstMatch
+        XCTAssertTrue(taskCountText.waitForExistence(timeout: 60), "App failed to load 8k task list within 60s")
+
+        // Swipe up to test scrolling performance
+        let collectionOrTable = app.tables.firstMatch.exists ? app.tables.firstMatch : app.collectionViews.firstMatch
+        XCTAssertTrue(collectionOrTable.exists, "Torrent list view not found")
+        collectionOrTable.swipeUp()
+        collectionOrTable.swipeUp()
     }
 }

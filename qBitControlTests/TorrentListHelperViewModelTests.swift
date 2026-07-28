@@ -473,4 +473,26 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         // Then: The selection MUST still persist, even though properties changed
         XCTAssertTrue(sut.selectedTorrents.contains(mockTorrent.hash), "Selection should persist after telemetry updates properties")
     }
+
+    @MainActor
+    func test_8k_sorting_performance() async {
+        let mockClient = MockTorrentClient(mockCount: 8000)
+        let fetched = try! await mockClient.fetchTorrents(filter: nil, category: nil, tag: nil, sort: nil, reverse: nil)
+
+        let sut = TorrentListHelperViewModel(client: mockClient)
+        let startTime = CFAbsoluteTimeGetCurrent()
+        let processed = sut.getProcessedTorrents(
+            allTorrents: fetched,
+            query: "",
+            filterVal: .all,
+            categoryVal: "All",
+            tagVal: "All",
+            sortVal: .name,
+            reverseVal: false
+        )
+        let duration = CFAbsoluteTimeGetCurrent() - startTime
+
+        XCTAssertEqual(processed.count, 8000)
+        print("⏱️ Processing & sorting 8k torrents took \(duration) seconds")
+    }
 }

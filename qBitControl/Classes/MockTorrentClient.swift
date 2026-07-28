@@ -63,10 +63,32 @@ class MockTorrentClient: TorrentClientProtocol {
     
     private let referenceDate: Date
     private var currentRid: Int
-    
-    init() {
+    private let mockTorrentDefs: [(hash: String, name: String, category: String, tags: String, addedOn: TimeInterval, totalSize: Int64, ratio: Float)]
+
+    init(mockCount: Int? = nil) {
         self.referenceDate = Date()
         self.currentRid = 0
+
+        let count: Int
+        if let mockCount = mockCount {
+            count = mockCount
+        } else if let envVal = ProcessInfo.processInfo.environment["MOCK_TORRENT_COUNT"], let envCount = Int(envVal) {
+            count = envCount
+        } else if CommandLine.arguments.contains("-uitest-8k-mocks") {
+            count = 8000
+        } else {
+            count = 0
+        }
+
+        if count > 0 {
+            self.mockTorrentDefs = Self.generateMockDefs(count: count)
+        } else {
+            self.mockTorrentDefs = [
+                ("dl_new",    "Ubuntu 24.04 LTS Desktop", "Linux",  "linux,os",      0,     3_000_000_000, 0),
+                ("ck_fedora", "Fedora 41 Workstation",  "Linux",  "linux,fedora", -43200,   2_200_000_000, 0.3),
+                ("sd_debian", "Debian 12 NetInstall",      "Linux",  "linux,debian", -3600,   500_000_000, 2.5),
+            ]
+        }
     }
     
     // MARK: - Animated Mock Data Generation
@@ -205,11 +227,51 @@ class MockTorrentClient: TorrentClientProtocol {
         }
     }
     
-    private let mockTorrentDefs: [(hash: String, name: String, category: String, tags: String, addedOn: TimeInterval, totalSize: Int64, ratio: Float)] = [
-        ("dl_new",    "Ubuntu 24.04 LTS Desktop", "Linux",  "linux,os",      0,     3_000_000_000, 0),
-        ("ck_fedora", "Fedora 41 Workstation",  "Linux",  "linux,fedora", -43200,   2_200_000_000, 0.3),
-        ("sd_debian", "Debian 12 NetInstall",      "Linux",  "linux,debian", -3600,   500_000_000, 2.5),
-    ]
+    private struct SeededRandomGenerator {
+        private var state: UInt64
+        init(seed: UInt64 = 42) {
+            self.state = seed
+        }
+        mutating func next() -> UInt64 {
+            state = state &* 6364136223846793005 &+ 1442695040888963407
+            return state
+        }
+        mutating func nextInt(in range: ClosedRange<Int>) -> Int {
+            let span = UInt64(range.upperBound - range.lowerBound + 1)
+            return range.lowerBound + Int(next() % span)
+        }
+    }
+
+
+
+
+
+    private static func generateMockDefs(count: Int) -> [(hash: String, name: String, category: String, tags: String, addedOn: TimeInterval, totalSize: Int64, ratio: Float)] {
+        var rng = SeededRandomGenerator(seed: 42)
+        let categories = ["Linux", "Movies", "Music", "Software", "Documentaries", "Books", "Uncategorized"]
+        let tagsList = ["linux,os", "iso", "hd,movie", "flac,audio", "app,mac", "doc,pdf", ""]
+        let namePrefixes = ["Ubuntu", "Debian", "Fedora", "ArchLinux", "Manjaro", "Alpine", "FreeBSD", "OpenBSD", "NetBSD", "CentOS"]
+        let nameTypes = ["Release", "Build", "ISO", "Installer", "Package", "Bundle", "Edition", "Image", "Distribution"]
+
+        var defs: [(hash: String, name: String, category: String, tags: String, addedOn: TimeInterval, totalSize: Int64, ratio: Float)] = []
+        defs.reserveCapacity(count)
+
+        for i in 0..<count {
+            let hash = String(format: "%040x", i)
+            let prefix = namePrefixes[rng.nextInt(in: 0...namePrefixes.count - 1)]
+            let typeStr = nameTypes[rng.nextInt(in: 0...nameTypes.count - 1)]
+            let ver = "\(rng.nextInt(in: 1...25)).\(rng.nextInt(in: 0...9)).\(rng.nextInt(in: 0...99))"
+            let name = "\(prefix) \(typeStr) v\(ver) #\(i)"
+            let cat = categories[rng.nextInt(in: 0...categories.count - 1)]
+            let tags = tagsList[rng.nextInt(in: 0...tagsList.count - 1)]
+            let addedOn = TimeInterval(-rng.nextInt(in: 0...86400 * 365))
+            let totalSize = Int64(rng.nextInt(in: 100_000_000...50_000_000_000))
+            let ratio = Float(rng.nextInt(in: 0...500)) / 100.0
+
+            defs.append((hash, name, cat, tags, addedOn, totalSize, ratio))
+        }
+        return defs
+    }
     
     // MARK: - TorrentTaskActions
     
