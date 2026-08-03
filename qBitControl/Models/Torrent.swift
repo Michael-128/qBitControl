@@ -3,7 +3,7 @@
 
 import Foundation
 
-struct Torrent: Codable, Hashable {
+struct Torrent: Codable, Hashable, Sendable {
     var added_on: Int
     var amount_left: Int
     var auto_tmm: Bool

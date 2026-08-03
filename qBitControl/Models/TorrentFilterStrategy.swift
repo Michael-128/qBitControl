@@ -5,7 +5,7 @@
 
 import Foundation
 
-protocol TorrentFilterStrategy {
+protocol TorrentFilterStrategy: Sendable {
     func matches(_ torrent: Torrent, filter: TorrentFilterOption) -> Bool
 }
 

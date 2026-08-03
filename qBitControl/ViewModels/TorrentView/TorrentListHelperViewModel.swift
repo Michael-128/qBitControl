@@ -45,6 +45,7 @@ class TorrentListHelperViewModel: ObservableObject {
     var hash = ""
     private var cancellables = Set<AnyCancellable>()
     private var lastFilterParamsKey: String = ""
+    private var processingGeneration = 0
     
     public var categoryName: String {
         if(category == "All") {
@@ -78,22 +79,28 @@ class TorrentListHelperViewModel: ObservableObject {
             
             let allTorrents = Array(dict.values)
             
-            Task(priority: .userInitiated) { [weak self] in
+            self.processingGeneration += 1
+            let generation = self.processingGeneration
+            let strategy = self.filterStrategy
+            
+            Task.detached(priority: .userInitiated) { [weak self] in
                 guard let self = self else { return }
-                let processed = self.getProcessedTorrents(
+                let processed = Self.getProcessedTorrents(
                     allTorrents: allTorrents,
                     query: query,
                     filterVal: filterVal,
                     categoryVal: cat,
                     tagVal: tag,
                     sortVal: sortVal,
-                    reverseVal: rev
+                    reverseVal: rev,
+                    strategy: strategy
                 )
                 
                 let dlSpeed = processed.reduce(0) { $0 + $1.dlspeed }
                 let upSpeed = processed.reduce(0) { $0 + $1.upspeed }
                 
-                await MainActor.run {
+                await MainActor.run { [self] in
+                    guard self.processingGeneration == generation else { return }
                     self.torrents = allTorrents
                     self.filteredTorrents = processed
                     self.visibleTorrents = Array(processed.prefix(self.visibleLimit))
@@ -114,18 +121,19 @@ class TorrentListHelperViewModel: ObservableObject {
         }
     }
     
-    func getProcessedTorrents(
+    nonisolated static func getProcessedTorrents(
         allTorrents: [Torrent],
         query: String,
         filterVal: TorrentFilterOption,
         categoryVal: String,
         tagVal: String,
         sortVal: TorrentSortOption,
-        reverseVal: Bool
+        reverseVal: Bool,
+        strategy: TorrentFilterStrategy
     ) -> [Torrent] {
         var list = allTorrents.filter { torrent in
             // Filter by status (filterVal)
-            if !filterStrategy.matches(torrent, filter: filterVal) { return false }
+            if !strategy.matches(torrent, filter: filterVal) { return false }
             
             // Filter by Category
             if categoryVal != "All" {

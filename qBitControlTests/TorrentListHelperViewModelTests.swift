@@ -11,6 +11,20 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         qBitData.shared.cacheManager.torrents = [:]
     }
     
+    @MainActor
+    func waitUntil(_ description: String,
+                   timeout: TimeInterval = 3.0,
+                   _ condition: @escaping () -> Bool) async {
+        let start = Date()
+        while !condition() {
+            if Date().timeIntervalSince(start) > timeout {
+                XCTFail("Timed out waiting for: \(description)")
+                return
+            }
+            try? await Task.sleep(nanoseconds: 10_000_000)
+        }
+    }
+    
     // A clean, subclassed mock client specific to the TorrentListHelperViewModel unit tests
     private class TestTorrentClient: MockTorrentClient {
         var customTorrents: [Torrent]
@@ -215,6 +229,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         
         await sut.getTorrents()
         
+        await waitUntil("filteredTorrents populated") { sut.filteredTorrents.count == 2 }
         XCTAssertEqual(sut.torrents.count, 2)
         XCTAssertEqual(sut.filteredTorrents.count, 2)
     }
@@ -230,12 +245,14 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         // Filter by query matches name "Swift" case-insensitively
         sut.searchQuery = "swift"
         await sut.getTorrents()
+        await waitUntil("swift filter") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.name == "Swift Programming Book" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Swift Programming Book")
         
         // Filter by query matches name "Linux"
         sut.searchQuery = "Linux"
         await sut.getTorrents()
+        await waitUntil("linux filter") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.name == "Ubuntu Linux ISO" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Ubuntu Linux ISO")
     }
@@ -250,16 +267,19 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         
         sut.category = "books"
         await sut.getTorrents()
+        await waitUntil("category books") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.category == "books" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.category, "books")
         
         sut.category = "movies"
         await sut.getTorrents()
+        await waitUntil("category movies") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.category == "movies" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.category, "movies")
         
         sut.category = "All"
         await sut.getTorrents()
+        await waitUntil("category all") { sut.filteredTorrents.count == 2 }
         XCTAssertEqual(sut.filteredTorrents.count, 2)
     }
     
@@ -328,21 +348,25 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         
         sut.tag = "swift"
         await sut.getTorrents()
+        await waitUntil("tag swift") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.name == "Swift Programming Book" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Swift Programming Book")
         
         sut.tag = "linux"
         await sut.getTorrents()
+        await waitUntil("tag linux") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.name == "Ubuntu Linux ISO" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Ubuntu Linux ISO")
         
         sut.tag = ""
         await sut.getTorrents()
+        await waitUntil("tag untagged") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.name == "Untagged Torrent File" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Untagged Torrent File")
         
         sut.tag = "All"
         await sut.getTorrents()
+        await waitUntil("tag all") { sut.filteredTorrents.count == 3 }
         XCTAssertEqual(sut.filteredTorrents.count, 3)
     }
     
@@ -356,11 +380,13 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         
         sut.filter = .seeding
         await sut.getTorrents()
+        await waitUntil("filter seeding") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.state == "uploading" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.state, "uploading")
         
         sut.filter = .downloading
         await sut.getTorrents()
+        await waitUntil("filter downloading") { sut.filteredTorrents.count == 1 && sut.filteredTorrents.first?.state == "downloading" }
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.state, "downloading")
     }
@@ -377,12 +403,14 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         sut.sort = .name
         sut.reverse = false
         await sut.getTorrents()
+        await waitUntil("sort name default") { sut.filteredTorrents.count == 2 }
         XCTAssertEqual(sut.filteredTorrents[0].name, "Swift Programming Book")
         XCTAssertEqual(sut.filteredTorrents[1].name, "Ubuntu Linux ISO")
         
         // Reverse sort is name descending
         sut.reverse = true
         await sut.getTorrents()
+        await waitUntil("sort name reverse") { sut.filteredTorrents.first?.name == "Ubuntu Linux ISO" }
         XCTAssertEqual(sut.filteredTorrents[0].name, "Ubuntu Linux ISO")
         XCTAssertEqual(sut.filteredTorrents[1].name, "Swift Programming Book")
         
@@ -390,6 +418,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         sut.sort = .size
         sut.reverse = false
         await sut.getTorrents()
+        await waitUntil("sort size") { sut.filteredTorrents.first?.size == 2000000000 }
         XCTAssertEqual(sut.filteredTorrents[0].size, 2000000000)
         XCTAssertEqual(sut.filteredTorrents[1].size, 5000000000)
     }
@@ -479,16 +508,16 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let mockClient = MockTorrentClient(mockCount: 8000)
         let fetched = try! await mockClient.fetchTorrents(filter: nil, category: nil, tag: nil, sort: nil, reverse: nil)
 
-        let sut = TorrentListHelperViewModel(client: mockClient)
         let startTime = CFAbsoluteTimeGetCurrent()
-        let processed = sut.getProcessedTorrents(
+        let processed = TorrentListHelperViewModel.getProcessedTorrents(
             allTorrents: fetched,
             query: "",
             filterVal: .all,
             categoryVal: "All",
             tagVal: "All",
             sortVal: .name,
-            reverseVal: false
+            reverseVal: false,
+            strategy: QBitTorrentFilterStrategy()
         )
         let duration = CFAbsoluteTimeGetCurrent() - startTime
 
