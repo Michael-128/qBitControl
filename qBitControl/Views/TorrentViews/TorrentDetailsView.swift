@@ -20,7 +20,7 @@ struct TorrentDetailsView: View {
     
     var body: some View {
         VStack {
-            List {
+            let view = List {
                 Section(header: Text("Management")) {
                     if viewModel.isPaused() {
                         Button { viewModel.toggleTorrentPause() } label: { Label("Resume Task", systemImage: "play.fill") }
@@ -155,7 +155,15 @@ struct TorrentDetailsView: View {
                 }
                 
             }
-            .navigationTitle("Details")
+
+            if #available(iOS 26.0, *) {
+                view
+                    .navigationTitle("Details")
+                    .navigationSubtitle(viewModel.torrent.name)
+            } else {
+                view
+                    .navigationTitle(viewModel.torrent.name)
+            }
         }
         .onAppear() { viewModel.setRefreshTimer() }
         .onDisappear() { viewModel.removeRefreshTimer() }
