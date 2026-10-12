@@ -134,7 +134,14 @@ extension FileNode {
     }
     
     func setPriority(priority: Int) {
-        self.priority = priority
+        if !self.isDir {
+            self.priority = priority
+            return
+        }
+
+        for child in (children ?? []) {
+            child.setPriority(priority: priority)
+        }
     }
     
     func search(index: Int) -> FileNode? {

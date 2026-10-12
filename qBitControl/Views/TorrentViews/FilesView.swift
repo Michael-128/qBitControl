@@ -160,12 +160,8 @@ struct FilesView: View {
                                 setPriority(indexes: indexes, priority: 1, onComplete: {
                                     success in
                                     if success {
-                                        for index in child.getIndexes() {
-                                            if let childOfChild = child.search(index: index) {
-                                                childOfChild.setPriority(priority: 1)
-                                                refresh()
-                                            }
-                                        }
+                                        child.setPriority(priority: 1)
+                                        refresh()
                                     }
                                 })
                             } label: {
@@ -181,12 +177,8 @@ struct FilesView: View {
                                 setPriority(indexes: indexes, priority: 0, onComplete: {
                                     success in
                                     if success {
-                                        for index in childIndexes {
-                                            if let childOfChild = child.search(index: index) {
-                                                childOfChild.setPriority(priority: 0)
-                                                refresh()
-                                            }
-                                        }
+                                        child.setPriority(priority: 0)
+                                        refresh()
                                     }
                                 })
                             } label: {
