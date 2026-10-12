@@ -1,4 +1,5 @@
 import XCTest
+import Combine
 @testable import qBitManager
 
 final class TorrentCacheManagerTests: XCTestCase {
@@ -162,5 +163,156 @@ final class TorrentCacheManagerTests: XCTestCase {
         XCTAssertEqual(sut.torrents.count, 1)
         XCTAssertNil(sut.torrents["hashA"])
         XCTAssertNotNil(sut.torrents["hashB"])
+    }
+
+    @MainActor
+    func test_optimisticUpdate_publishesOneFinalSnapshot() {
+        let sut = TorrentCacheManager()
+        let torrentA = createTorrent(hash: "hashA", name: "Ubuntu", progress: 0.1, dlspeed: 0)
+        let torrentB = createTorrent(hash: "hashB", name: "Debian", progress: 0.5, dlspeed: 0)
+        let untouched = createTorrent(hash: "hashC", name: "Fedora", progress: 0.8, dlspeed: 0)
+        sut.torrents = ["hashA": torrentA, "hashB": torrentB, "hashC": untouched]
+
+        var snapshots: [[String: Torrent]] = []
+        let subscription = sut.$torrents.dropFirst().sink { snapshots.append($0) }
+        defer { subscription.cancel() }
+        var mutationOrder: [String] = []
+
+        sut.updateTorrentsOptimistically(hashes: ["hashA", "missing", "hashB", "hashA"]) { torrent in
+            mutationOrder.append(torrent.hash)
+            torrent.priority += 1
+        }
+
+        var expectedA = torrentA
+        expectedA.priority = 3
+        var expectedB = torrentB
+        expectedB.priority = 2
+        let expected = ["hashA": expectedA, "hashB": expectedB, "hashC": untouched]
+        XCTAssertEqual(mutationOrder, ["hashA", "hashB", "hashA"])
+        XCTAssertEqual(snapshots, [expected])
+        XCTAssertEqual(sut.torrents, expected)
+    }
+
+    @MainActor
+    func test_optimisticUpdate_publishesOnlyForMatchingHashes() {
+        let sut = TorrentCacheManager()
+        let torrent = createTorrent(hash: "hashA", name: "Ubuntu", progress: 0.1, dlspeed: 0)
+        sut.torrents = ["hashA": torrent]
+
+        var snapshots: [[String: Torrent]] = []
+        let subscription = sut.$torrents.dropFirst().sink { snapshots.append($0) }
+        defer { subscription.cancel() }
+
+        for hashes in [[], ["missing"]] {
+            sut.updateTorrentsOptimistically(hashes: hashes) { _ in
+                XCTFail("Mutation should not run without a matching torrent")
+            }
+            XCTAssertTrue(snapshots.isEmpty)
+            XCTAssertEqual(sut.torrents, ["hashA": torrent])
+        }
+
+        sut.updateTorrentsOptimistically(hashes: ["hashA"]) { _ in }
+        XCTAssertEqual(snapshots, [["hashA": torrent]])
+        XCTAssertEqual(sut.torrents, ["hashA": torrent])
+    }
+
+    @MainActor
+    func test_optimisticDelete_publishesOneFinalSnapshot() {
+        let sut = TorrentCacheManager()
+        let torrentA = createTorrent(hash: "hashA", name: "Ubuntu", progress: 0.1, dlspeed: 0)
+        let torrentB = createTorrent(hash: "hashB", name: "Debian", progress: 0.5, dlspeed: 0)
+        let untouched = createTorrent(hash: "hashC", name: "Fedora", progress: 0.8, dlspeed: 0)
+        sut.torrents = ["hashA": torrentA, "hashB": torrentB, "hashC": untouched]
+
+        var snapshots: [[String: Torrent]] = []
+        let subscription = sut.$torrents.dropFirst().sink { snapshots.append($0) }
+        defer { subscription.cancel() }
+
+        sut.deleteTorrentsOptimistically(hashes: ["hashA", "missing", "hashB", "hashA"])
+
+        XCTAssertEqual(snapshots, [["hashC": untouched]])
+        XCTAssertEqual(sut.torrents, ["hashC": untouched])
+    }
+
+    @MainActor
+    func test_optimisticDelete_publishesOnlyForNonemptyInput() {
+        let sut = TorrentCacheManager()
+        let torrent = createTorrent(hash: "hashA", name: "Ubuntu", progress: 0.1, dlspeed: 0)
+        sut.torrents = ["hashA": torrent]
+
+        var snapshots: [[String: Torrent]] = []
+        let subscription = sut.$torrents.dropFirst().sink { snapshots.append($0) }
+        defer { subscription.cancel() }
+
+        sut.deleteTorrentsOptimistically(hashes: [])
+        XCTAssertTrue(snapshots.isEmpty)
+
+        sut.deleteTorrentsOptimistically(hashes: ["missingA", "missingB"])
+        XCTAssertEqual(snapshots, [["hashA": torrent]])
+        XCTAssertEqual(sut.torrents, ["hashA": torrent])
+    }
+
+    @MainActor
+    func test_optimisticUpdate_locksOnlyExistingHashes() {
+        let sut = TorrentCacheManager()
+        sut.torrents = [
+            "hashA": createTorrent(hash: "hashA", name: "Ubuntu", progress: 0.1, dlspeed: 0),
+            "hashB": createTorrent(hash: "hashB", name: "Debian", progress: 0.5, dlspeed: 0)
+        ]
+
+        let mainData = MainData(
+            rid: 1,
+            full_update: false,
+            server_state: nil,
+            torrents: [
+                "hashA": createPartialTorrent(name: "Server A"),
+                "hashB": createPartialTorrent(name: "Server B"),
+                "missing": createPartialTorrent(name: "New torrent")
+            ],
+            torrents_removed: nil,
+            categories: nil,
+            categories_removed: nil,
+            tags: nil,
+            tags_removed: nil
+        )
+        sut.updateTorrentsOptimistically(hashes: ["hashA", "missing"]) { torrent in
+            torrent.name = "Optimistic"
+        }
+        sut.merge(mainData: mainData)
+
+        XCTAssertEqual(sut.torrents["hashA"]?.name, "Optimistic")
+        XCTAssertEqual(sut.torrents["hashB"]?.name, "Server B")
+        XCTAssertEqual(sut.torrents["missing"]?.name, "New torrent")
+    }
+
+    @MainActor
+    func test_optimisticDelete_locksEveryRequestedHash() {
+        let sut = TorrentCacheManager()
+        sut.torrents = [
+            "hashA": createTorrent(hash: "hashA", name: "Ubuntu", progress: 0.1, dlspeed: 0),
+            "hashB": createTorrent(hash: "hashB", name: "Debian", progress: 0.5, dlspeed: 0)
+        ]
+
+        let mainData = MainData(
+            rid: 1,
+            full_update: false,
+            server_state: nil,
+            torrents: [
+                "hashA": createPartialTorrent(name: "Server A"),
+                "hashB": createPartialTorrent(name: "Server B"),
+                "missing": createPartialTorrent(name: "New torrent")
+            ],
+            torrents_removed: nil,
+            categories: nil,
+            categories_removed: nil,
+            tags: nil,
+            tags_removed: nil
+        )
+        sut.deleteTorrentsOptimistically(hashes: ["hashA", "missing"])
+        sut.merge(mainData: mainData)
+
+        XCTAssertNil(sut.torrents["hashA"])
+        XCTAssertEqual(sut.torrents["hashB"]?.name, "Server B")
+        XCTAssertNil(sut.torrents["missing"])
     }
 }

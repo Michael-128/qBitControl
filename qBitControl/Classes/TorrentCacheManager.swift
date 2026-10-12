@@ -49,21 +49,32 @@ class TorrentCacheManager: ObservableObject {
     // Method to apply optimistic updates
     func updateTorrentsOptimistically(hashes: [String], mutation: (inout Torrent) -> Void) {
         let lockExpiration = Date().addingTimeInterval(3.0)
+        var updatedTorrents = torrents
+        var didUpdate = false
         for hash in hashes {
-            if var torrent = torrents[hash] {
+            if var torrent = updatedTorrents[hash] {
                 mutation(&torrent)
-                torrents[hash] = torrent
+                updatedTorrents[hash] = torrent
                 lockedHashes[hash] = lockExpiration
+                didUpdate = true
             }
+        }
+        if didUpdate {
+            torrents = updatedTorrents
         }
     }
     
     // Method to optimistically delete torrents
     func deleteTorrentsOptimistically(hashes: [String]) {
+        guard !hashes.isEmpty else {
+            return
+        }
         let lockExpiration = Date().addingTimeInterval(3.0)
+        var updatedTorrents = torrents
         for hash in hashes {
-            torrents.removeValue(forKey: hash)
+            updatedTorrents.removeValue(forKey: hash)
             lockedHashes[hash] = lockExpiration
         }
+        torrents = updatedTorrents
     }
 }
