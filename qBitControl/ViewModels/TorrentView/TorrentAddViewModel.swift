@@ -5,6 +5,22 @@
 
 import SwiftUI
 
+private enum TorrentFileReader {
+    private static let queue = DispatchQueue(label: "qBitControl.torrent-file-reader", qos: .utility)
+
+    static func read(from url: URL) async throws -> Data {
+        try await withCheckedThrowingContinuation { continuation in
+            queue.async {
+                do {
+                    continuation.resume(returning: try Data(contentsOf: url))
+                } catch {
+                    continuation.resume(throwing: error)
+                }
+            }
+        }
+    }
+}
+
 enum TorrentType {
     case magnet, file
 }
@@ -56,6 +72,7 @@ class TorrentAddViewModel: ObservableObject {
     @Published var isAdding = false
     @Published var isFileLoading = false
     private var pendingFileLoads = 0
+    private var localFileLoadGeneration = UUID()
     
     init(torrentUrls: [URL], magnetOverride: Bool = false, client: TorrentClientProtocol) {
         self.torrentUrls = torrentUrls
@@ -66,6 +83,7 @@ class TorrentAddViewModel: ObservableObject {
     func getTag() -> String { tags.count > 1 ? "\(tags.count)" + " Tags" : (tags.first ?? "Untagged") }
     
     func checkTorrentType() -> Void {
+        localFileLoadGeneration = UUID()
         fileNames = []
         fileContent = [:]
         fileURLs = []
@@ -111,18 +129,21 @@ class TorrentAddViewModel: ObservableObject {
             }
         } else {
             if fileURL.startAccessingSecurityScopedResource() {
+                let generation = localFileLoadGeneration
                 Task {
+                    defer { fileURL.stopAccessingSecurityScopedResource() }
                     do {
-                        let data = try Data(contentsOf: fileURL)
+                        let data = try await TorrentFileReader.read(from: fileURL)
+                        guard generation == self.localFileLoadGeneration else { return }
                         self.fileContent[fileName] = data
                     } catch {
+                        guard generation == self.localFileLoadGeneration else { return }
                         AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "load_local_torrent_data_failed", errorDescription: error.localizedDescription))
                     }
                     self.pendingFileLoads -= 1
                     if self.pendingFileLoads <= 0 {
                         self.isFileLoading = false
                     }
-                    fileURL.stopAccessingSecurityScopedResource()
                 }
             }
         }
