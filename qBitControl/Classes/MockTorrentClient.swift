@@ -453,6 +453,8 @@ class MockTorrentClient: TorrentClientProtocol {
         return SearchResponse(results: [], status: "Success", total: 0)
     }
     
+    func stopSearch(id: Int) async throws {}
+
     func getSearchPlugins() async throws -> [SearchPlugin] {
         return [Self.mockSearchPlugin]
     }

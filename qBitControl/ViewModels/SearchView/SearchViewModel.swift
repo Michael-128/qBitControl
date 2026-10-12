@@ -75,8 +75,21 @@ class SearchViewModel: ObservableObject {
     }
     
     func endSearch() {
+        let searchId = self.searchId
         self.searchId = nil
         stopPolling()
+
+        guard let searchId = searchId else {
+            return
+        }
+
+        Task { [client] in
+            do {
+                try await client.stopSearch(id: searchId)
+            } catch {
+                AppLogger.log(.error, GeneralErrorPayload(category: .network, eventName: "stop_search_failed", errorDescription: error.localizedDescription))
+            }
+        }
     }
     
     private func startPolling() {
@@ -106,9 +119,14 @@ class SearchViewModel: ObservableObject {
         
         do {
             let response = try await client.getSearchResults(id: searchId, limit: 500, offset: 0)
+            guard !Task.isCancelled, self.searchId == searchId else {
+                return
+            }
+
             self.latestResponse = response
             if response.status == "Stopped" {
-                self.endSearch()
+                self.searchId = nil
+                stopPolling()
             }
         } catch {
             AppLogger.log(.error, GeneralErrorPayload(category: .network, eventName: "get_search_results_failed", errorDescription: error.localizedDescription))
