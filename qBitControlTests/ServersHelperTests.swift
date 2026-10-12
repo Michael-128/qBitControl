@@ -8,6 +8,26 @@ final class ServersHelperTests: XCTestCase {
     private var suiteName: String!
     private var sut: ServersHelper!
 
+    private class MetadataClient: MockTorrentClient {
+        var requests: [String] = []
+        var preferencesResult: Result<qBitPreferences, Error> = .success(MockTorrentClient.mockPreferences())
+
+        override func getPreferences() async throws -> qBitPreferences {
+            requests.append("preferences")
+            return try preferencesResult.get()
+        }
+
+        override func getCategories() async throws -> [String: qBitManager.Category] {
+            requests.append("categories")
+            return [:]
+        }
+
+        override func getTags() async throws -> [String] {
+            requests.append("tags")
+            return []
+        }
+    }
+
     override func setUp() {
         super.setUp()
         suiteName = "ServersHelperTests_\(UUID().uuidString)"
@@ -154,5 +174,32 @@ final class ServersHelperTests: XCTestCase {
     func test_getServer_returnsNilForMissingId() {
         let found = sut.getServer(id: "missing")
         XCTAssertNil(found)
+    }
+
+    func test_fetchMetadata_fetchesOnlyPreferences() async throws {
+        let client = MetadataClient()
+        let json = Data(#"{"queueing_enabled":true,"rss_processing_enabled":true}"#.utf8)
+        client.preferencesResult = .success(try JSONDecoder().decode(qBitPreferences.self, from: json))
+        sut.client = client
+
+        await sut.fetchMetadata()
+
+        XCTAssertEqual(client.requests, ["preferences"])
+        XCTAssertEqual(sut.preferences?.queueing_enabled, true)
+        XCTAssertEqual(sut.preferences?.rss_processing_enabled, true)
+    }
+
+    func test_fetchMetadata_whenPreferencesFail_keepsPreferencesWithoutOtherRequests() async throws {
+        let client = MetadataClient()
+        client.preferencesResult = .failure(NetworkError.invalidResponse)
+        sut.client = client
+        let json = Data(#"{"queueing_enabled":true,"rss_processing_enabled":true}"#.utf8)
+        sut.preferences = try JSONDecoder().decode(qBitPreferences.self, from: json)
+
+        await sut.fetchMetadata()
+
+        XCTAssertEqual(client.requests, ["preferences"])
+        XCTAssertEqual(sut.preferences?.queueing_enabled, true)
+        XCTAssertEqual(sut.preferences?.rss_processing_enabled, true)
     }
 }

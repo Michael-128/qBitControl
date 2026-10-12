@@ -285,16 +285,6 @@ class ServersHelper: ObservableObject {
         } catch {
             AppLogger.log(.error, GeneralErrorPayload(category: .system, eventName: "fetch_preferences_failed", errorDescription: error.localizedDescription))
         }
-        do {
-            self.categories = try await client.getCategories()
-        } catch {
-            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_categories_failed", errorDescription: error.localizedDescription))
-        }
-        do {
-            self.tags = try await client.getTags()
-        } catch {
-            AppLogger.log(.error, GeneralErrorPayload(category: .torrents, eventName: "fetch_tags_failed", errorDescription: error.localizedDescription))
-        }
     }
     
     func refreshCategories() {
