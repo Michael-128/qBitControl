@@ -130,6 +130,7 @@
 		90EF6A4F29093142001E9EF3 /* NetworkClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */; };
 		90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */; };
 		90EF6A4F29093142001E9EFE /* TorrentCacheManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A4E29093142001E9EFD /* TorrentCacheManagerTests.swift */; };
+		E793A713710248FBB439EC42 /* SearchViewModelLifetimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 276A763141AA468EB8E796B1 /* SearchViewModelLifetimeTests.swift */; };
 		90EF6A5129093142001E9EF5 /* qBitControlUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */; };
 		90EF6A5329093142001E9EF7 /* qBitControlUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */; };
 		90EF6A5D29093142001E9F71 /* TorrentSortOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */; };
@@ -284,6 +285,7 @@
 		90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClientTests.swift; sourceTree = "<group>"; };
 		90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentListHelperViewModelTests.swift; sourceTree = "<group>"; };
 		90EF6A4E29093142001E9EFD /* TorrentCacheManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentCacheManagerTests.swift; sourceTree = "<group>"; };
+		276A763141AA468EB8E796B1 /* SearchViewModelLifetimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModelLifetimeTests.swift; sourceTree = "<group>"; };
 		90EF6A5229093142001E9EF6 /* qBitControlUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITests.swift; sourceTree = "<group>"; };
 		90EF6A5429093142001E9EF8 /* qBitControlUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = qBitControlUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		90EF6A5D29093142001E9F70 /* TorrentSortOption.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorrentSortOption.swift; sourceTree = "<group>"; };
@@ -640,6 +642,7 @@
 			isa = PBXGroup;
 			children = (
 				90EF6A4E29093142001E9EFD /* TorrentCacheManagerTests.swift */,
+				276A763141AA468EB8E796B1 /* SearchViewModelLifetimeTests.swift */,
 				90EF6A4E29093142001E9EFB /* TorrentListHelperViewModelTests.swift */,
 				90EF6A4E29093142001E9EF2 /* NetworkClientTests.swift */,
 				909EE5AC2CDD3B51002403DF /* qBitDataTests.swift */,
@@ -921,6 +924,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90EF6A4F29093142001E9EFE /* TorrentCacheManagerTests.swift in Sources */,
+				E793A713710248FBB439EC42 /* SearchViewModelLifetimeTests.swift in Sources */,
 				90EF6A4F29093142001E9EFC /* TorrentListHelperViewModelTests.swift in Sources */,
 				9054632B300959EB003755CD /* TabItemTests.swift in Sources */,
 				90546327300959DC003755CD /* ServersHelperTests.swift in Sources */,
