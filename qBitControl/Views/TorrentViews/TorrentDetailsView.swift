@@ -120,14 +120,26 @@ struct TorrentDetailsView: View {
                 }
                 
                 Section(header: Text("Advanced")) {
-                    Toggle(isOn: $viewModel.isSequentialDownload) {
+                    Toggle(isOn: Binding(
+                        get: { viewModel.isSequentialDownload },
+                        set: { value in
+                            guard value != viewModel.isSequentialDownload else { return }
+                            viewModel.isSequentialDownload = value
+                            viewModel.toggleSequentialDownload()
+                        }
+                    )) {
                         Label("Sequential Download", systemImage: "arrow.right.to.line.compact")
                     }
-                        .onChange(of: viewModel.isSequentialDownload, perform: { _ in viewModel.toggleSequentialDownload() })
-                    Toggle(isOn: $viewModel.isFLPiecesFirst) {
+                    Toggle(isOn: Binding(
+                        get: { viewModel.isFLPiecesFirst },
+                        set: { value in
+                            guard value != viewModel.isFLPiecesFirst else { return }
+                            viewModel.isFLPiecesFirst = value
+                            viewModel.toggleFLPiecesFirst()
+                        }
+                    )) {
                         Label("First & Last Pieces First", systemImage: "arrow.left.and.right")
                     }
-                        .onChange(of: viewModel.isFLPiecesFirst, perform: { _ in viewModel.toggleFLPiecesFirst() })
                 }
                 
                 Section(header: Text("Limits")) {
