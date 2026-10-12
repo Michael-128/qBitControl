@@ -29,6 +29,7 @@ struct LogViewerView: View {
     }
     
     var body: some View {
+        let lines = filteredLogLines
         VStack(spacing: 0) {
             Picker("Level", selection: $selectedLevel) {
                     ForEach(LogLevelFilter.allCases, id: \.self) { level in
@@ -38,7 +39,7 @@ struct LogViewerView: View {
                 .pickerStyle(.segmented)
                 .padding()
                 
-                if filteredLogLines.isEmpty {
+                if lines.isEmpty {
                     VStack(spacing: 12) {
                         Image(systemName: "doc.text.magnifyingglass")
                             .font(.largeTitle)
@@ -50,8 +51,8 @@ struct LogViewerView: View {
                 } else {
                     ScrollView {
                         LazyVStack(alignment: .leading, spacing: 6) {
-                            ForEach(filteredLogLines.indices, id: \.self) { index in
-                                let line = filteredLogLines[index]
+                            ForEach(lines.indices, id: \.self) { index in
+                                let line = lines[index]
                                 Text(line)
                                     .font(.system(.caption, design: .monospaced))
                                     .foregroundColor(colorForLine(line))
