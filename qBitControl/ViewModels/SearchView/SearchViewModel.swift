@@ -34,6 +34,10 @@ class SearchViewModel: ObservableObject {
         self.loadFilters()
         self.fetchCategories()
     }
+
+    deinit {
+        searchPollingTask?.cancel()
+    }
     
     var latestResults: [SearchResult] {
         if let latestResponse = self.latestResponse {
@@ -81,9 +85,9 @@ class SearchViewModel: ObservableObject {
     
     private func startPolling() {
         searchPollingTask?.cancel()
-        searchPollingTask = Task {
-            while !Task.isCancelled {
-                await monitorSearchResults()
+        searchPollingTask = Task { [weak self] in
+            while !Task.isCancelled, self != nil {
+                await self?.monitorSearchResults()
                 do {
                     try await Task.sleep(nanoseconds: 2_000_000_000)
                 } catch {
