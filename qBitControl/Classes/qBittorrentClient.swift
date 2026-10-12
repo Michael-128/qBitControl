@@ -597,6 +597,14 @@ class qBittorrentClient: TorrentClientProtocol {
         )
     }
     
+    func stopSearch(id: Int) async throws {
+        let _: String = try await networkClient.sendRequest(
+            path: "/api/v2/search/stop",
+            queryItems: [URLQueryItem(name: "id", value: String(id))],
+            cookie: self.cookie
+        )
+    }
+
     func getSearchPlugins() async throws -> [SearchPlugin] {
         return try await networkClient.sendRequest(
             path: "/api/v2/search/plugins",

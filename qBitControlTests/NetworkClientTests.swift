@@ -255,6 +255,59 @@ final class NetworkClientTests: XCTestCase {
         let _: MockDecodable = try await client.sendRequest(path: "/headers-route", queryItems: [], cookie: expectedCookie)
     }
     
+    @MainActor
+    func testEndSearch_PostsCapturedIDAndCookie() async {
+        let stopRequested = expectation(description: "Server search stop requested")
+        let pluginsRequested = expectation(description: "Initial search plugins requested")
+        let versionRequested = expectation(description: "Initial server version requested")
+        let cookie = "SID=search-session"
+
+        MockURLProtocol.requestHandler = { [self] request in
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            switch request.url?.path {
+            case "/api/v2/search/stop":
+                XCTAssertEqual(request.httpMethod, "POST")
+                XCTAssertEqual(request.value(forHTTPHeaderField: "Content-Type"), "application/x-www-form-urlencoded")
+                XCTAssertEqual(request.value(forHTTPHeaderField: "Cookie"), cookie)
+                let body = getBodyData(from: request).flatMap { String(data: $0, encoding: .utf8) }
+                XCTAssertEqual(body, "id=42")
+                stopRequested.fulfill()
+                return (response, Data())
+            case "/api/v2/search/plugins":
+                pluginsRequested.fulfill()
+                return (response, Data("[]".utf8))
+            case "/api/v2/app/version":
+                versionRequested.fulfill()
+                return (response, Data("5.0.0".utf8))
+            default:
+                XCTFail("Unexpected request: \(request)")
+                return (response, Data())
+            }
+        }
+
+        let networkClient = NetworkClient(baseURL: baseURL, basicAuth: nil, session: mockSession)
+        let client = qBittorrentClient(networkClient: networkClient, cookie: cookie)
+        let sut = SearchViewModel(client: client)
+        sut.searchId = 42
+
+        sut.endSearch()
+
+        XCTAssertFalse(sut.isRunning)
+        await fulfillment(of: [stopRequested, pluginsRequested, versionRequested], timeout: 1.0)
+    }
+
+    func testStopSearch_AcceptsEmptySuccessResponse() async throws {
+        MockURLProtocol.requestHandler = { request in
+            XCTAssertEqual(request.url?.path, "/api/v2/search/stop")
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, Data())
+        }
+        let networkClient = NetworkClient(baseURL: baseURL, basicAuth: nil, session: mockSession)
+        let client = qBittorrentClient(networkClient: networkClient)
+
+        try await client.stopSearch(id: 42)
+    }
+
     func testSendRequest_RawStringResponse() async throws {
         // Given
         let rawVersionString = "4.6.5"

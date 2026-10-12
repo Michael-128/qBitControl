@@ -119,6 +119,7 @@ protocol TorrentTrackerActions {
 protocol TorrentSearchActions {
     func getSearchStart(pattern: String, category: String, plugins: Bool) async throws -> SearchStartResult
     func getSearchResults(id: Int, limit: Int, offset: Int) async throws -> SearchResponse
+    func stopSearch(id: Int) async throws
     func getSearchPlugins() async throws -> [SearchPlugin]
 }
 

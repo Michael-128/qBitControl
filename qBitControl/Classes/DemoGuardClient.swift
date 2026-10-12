@@ -115,7 +115,7 @@ class DemoGuardClient: TorrentClientProtocol {
     func editTrackerURL(hash: String, origUrl: String, newURL: String) async throws { block("Edit Tracker") }
     func removeTracker(hash: String, url: String) async throws { block("Remove Tracker") }
     
-    // MARK: - TorrentSearchActions (Read)
+    // MARK: - TorrentSearchActions
     
     func getSearchStart(pattern: String, category: String, plugins: Bool = true) async throws -> SearchStartResult {
         return try await mock.getSearchStart(pattern: pattern, category: category, plugins: plugins)
@@ -125,6 +125,10 @@ class DemoGuardClient: TorrentClientProtocol {
         return try await mock.getSearchResults(id: id, limit: limit, offset: offset)
     }
     
+    func stopSearch(id: Int) async throws {
+        try await mock.stopSearch(id: id)
+    }
+
     func getSearchPlugins() async throws -> [SearchPlugin] {
         return try await mock.getSearchPlugins()
     }
