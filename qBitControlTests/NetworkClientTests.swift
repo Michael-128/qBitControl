@@ -56,6 +56,23 @@ final class NetworkClientTests: XCTestCase {
         let value: String
     }
 
+    func testReleasingClientKeepsInjectedSessionUsable() async throws {
+        let expectedResponse = MockDecodable(value: "shared_session")
+        let responseData = try JSONEncoder().encode(expectedResponse)
+        MockURLProtocol.requestHandler = { request in
+            let response = HTTPURLResponse(url: request.url!, statusCode: 200, httpVersion: nil, headerFields: nil)!
+            return (response, responseData)
+        }
+
+        var client: NetworkClient? = NetworkClient(baseURL: baseURL, basicAuth: nil, session: mockSession)
+        weak var releasedClient = client
+        client = nil
+        XCTAssertNil(releasedClient)
+
+        let (data, _) = try await mockSession.data(from: URL(string: baseURL + "/test")!)
+        XCTAssertEqual(try JSONDecoder().decode(MockDecodable.self, from: data), expectedResponse)
+    }
+
     func testSendRequest_Success_DecodesJSON() async throws {
         // Given
         let expectedResponse = MockDecodable(value: "hello_world")

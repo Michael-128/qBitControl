@@ -38,6 +38,7 @@ actor NetworkClient {
     private let basicAuth: Server.BasicAuth?
     private let customHeaders: [Server.CustomHeader]
     private let session: URLSession
+    private let ownsSession: Bool
 
     private final class SelfSignedDelegate: NSObject, URLSessionDelegate {
         func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge,
@@ -55,6 +56,7 @@ actor NetworkClient {
         self.baseURL = baseURL
         self.basicAuth = basicAuth
         self.customHeaders = customHeaders
+        self.ownsSession = session == nil
 
         if let session = session {
             self.session = session
@@ -67,6 +69,12 @@ actor NetworkClient {
             } else {
                 self.session = URLSession(configuration: config)
             }
+        }
+    }
+
+    deinit {
+        if ownsSession {
+            session.finishTasksAndInvalidate()
         }
     }
 
