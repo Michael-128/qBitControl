@@ -9,6 +9,8 @@ import SwiftUI
 class TrackersViewModel: ObservableObject {
     private var torrentHash: String
     private let client: TorrentClientProtocol
+    private var isFetchingTrackers = false
+    private var needsTrackerRefresh = false
     
     @Published public var trackers: [Tracker] = []
     
@@ -72,7 +74,21 @@ class TrackersViewModel: ObservableObject {
     }
     
     func getTrackers() {
+        guard !isFetchingTrackers else {
+            needsTrackerRefresh = true
+            return
+        }
+        isFetchingTrackers = true
+
         Task {
+            defer {
+                isFetchingTrackers = false
+                if needsTrackerRefresh {
+                    needsTrackerRefresh = false
+                    getTrackers()
+                }
+            }
+
             do {
                 let trackersList = try await client.getTrackers(hash: torrentHash)
                 self.trackers = trackersList
@@ -83,9 +99,11 @@ class TrackersViewModel: ObservableObject {
     }
     
     func setRefreshTimer() {
+        removeRefreshTimer()
         timer = Timer.scheduledTimer(withTimeInterval: 2, repeats: true) { [weak self] _ in
             Task { @MainActor in
-                self?.getTrackers()
+                guard let self = self, !self.isFetchingTrackers else { return }
+                self.getTrackers()
             }
         }
     }
