@@ -214,6 +214,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let sut = TorrentListHelperViewModel(client: client)
         
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         
         XCTAssertEqual(sut.torrents.count, 2)
         XCTAssertEqual(sut.filteredTorrents.count, 2)
@@ -226,16 +227,19 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let sut = TorrentListHelperViewModel(client: client)
         
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         
         // Filter by query matches name "Swift" case-insensitively
         sut.searchQuery = "swift"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Swift Programming Book")
         
         // Filter by query matches name "Linux"
         sut.searchQuery = "Linux"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Ubuntu Linux ISO")
     }
@@ -247,19 +251,23 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let sut = TorrentListHelperViewModel(client: client)
         
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         
         sut.category = "books"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.category, "books")
         
         sut.category = "movies"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.category, "movies")
         
         sut.category = "All"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 2)
     }
     
@@ -325,24 +333,29 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let sut = TorrentListHelperViewModel(client: client)
         
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         
         sut.tag = "swift"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Swift Programming Book")
         
         sut.tag = "linux"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Ubuntu Linux ISO")
         
         sut.tag = ""
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.name, "Untagged Torrent File")
         
         sut.tag = "All"
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 3)
     }
     
@@ -353,14 +366,17 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let sut = TorrentListHelperViewModel(client: client)
         
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         
         sut.filter = .seeding
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.state, "uploading")
         
         sut.filter = .downloading
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents.count, 1)
         XCTAssertEqual(sut.filteredTorrents.first?.state, "downloading")
     }
@@ -372,17 +388,20 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         let sut = TorrentListHelperViewModel(client: client)
         
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         
         // Default sort is "name" (Ubuntu Linux ISO (U) vs Swift Programming Book (S))
         sut.sort = .name
         sut.reverse = false
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents[0].name, "Swift Programming Book")
         XCTAssertEqual(sut.filteredTorrents[1].name, "Ubuntu Linux ISO")
         
         // Reverse sort is name descending
         sut.reverse = true
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents[0].name, "Ubuntu Linux ISO")
         XCTAssertEqual(sut.filteredTorrents[1].name, "Swift Programming Book")
         
@@ -390,6 +409,7 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         sut.sort = .size
         sut.reverse = false
         await sut.getTorrents()
+        await sut.waitForListUpdate()
         XCTAssertEqual(sut.filteredTorrents[0].size, 2000000000)
         XCTAssertEqual(sut.filteredTorrents[1].size, 5000000000)
     }
@@ -473,4 +493,5 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         // Then: The selection MUST still persist, even though properties changed
         XCTAssertTrue(sut.selectedTorrents.contains(mockTorrent.hash), "Selection should persist after telemetry updates properties")
     }
+
 }
