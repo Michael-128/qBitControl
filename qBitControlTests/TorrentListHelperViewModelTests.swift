@@ -86,6 +86,14 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         }
     }
     
+    // Counts list computations; called from the background computation.
+    private final class CallCounter: @unchecked Sendable {
+        private let lock = NSLock()
+        private var count = 0
+        func increment() { lock.lock(); count += 1; lock.unlock() }
+        var value: Int { lock.lock(); defer { lock.unlock() }; return count }
+    }
+    
     private func getTestTorrents() -> [Torrent] {
         let json = """
         [
@@ -494,4 +502,102 @@ final class TorrentListHelperViewModelTests: XCTestCase {
         XCTAssertTrue(sut.selectedTorrents.contains(mockTorrent.hash), "Selection should persist after telemetry updates properties")
     }
 
+    // MARK: - Off-main list computation
+    
+    func test_computeLists_filtersTheSortedList() {
+        let torrents = getTestTorrents()
+        func inputs(query: String, sort: TorrentSortOption, reverse: Bool) -> TorrentListInputs {
+            TorrentListInputs(
+                torrents: torrents,
+                query: query,
+                filter: .all,
+                category: "All",
+                tag: "All",
+                sort: sort,
+                reverse: reverse,
+                filterStrategy: QBitTorrentFilterStrategy()
+            )
+        }
+        
+        let bySize = TorrentListHelperViewModel.computeLists(inputs(query: "", sort: .size, reverse: false))
+        XCTAssertEqual(bySize.sorted.map(\.name), ["Swift Programming Book", "Ubuntu Linux ISO"])
+        XCTAssertEqual(bySize.filtered, bySize.sorted)
+        
+        let bySizeReversed = TorrentListHelperViewModel.computeLists(inputs(query: "", sort: .size, reverse: true))
+        XCTAssertEqual(bySizeReversed.sorted.map(\.name), ["Ubuntu Linux ISO", "Swift Programming Book"])
+        
+        // `sorted` stays the full list; `filtered` is the matching subset in sorted order
+        let searched = TorrentListHelperViewModel.computeLists(inputs(query: "LINUX", sort: .name, reverse: false))
+        XCTAssertEqual(searched.sorted.map(\.name), ["Swift Programming Book", "Ubuntu Linux ISO"])
+        XCTAssertEqual(searched.filtered.map(\.name), ["Ubuntu Linux ISO"])
+    }
+    
+    @MainActor
+    func test_listUpdate_publishesSortedAndFilteredLists() async {
+        let torrents = getTestTorrents()
+        let sut = TorrentListHelperViewModel(client: TestTorrentClient(torrents: []))
+        
+        qBitData.shared.cacheManager.torrents = Dictionary(uniqueKeysWithValues: torrents.map { ($0.hash, $0) })
+        sut.sort = .size
+        sut.reverse = true
+        sut.searchQuery = "swift"
+        await sut.waitForListUpdate()
+        
+        XCTAssertEqual(sut.torrents.map(\.name), ["Ubuntu Linux ISO", "Swift Programming Book"])
+        XCTAssertEqual(sut.filteredTorrents.map(\.name), ["Swift Programming Book"])
+    }
+    
+    @MainActor
+    func test_listUpdate_changesMadeTogetherAreComputedOnce() async {
+        let torrents = getTestTorrents()
+        let counter = CallCounter()
+        let sut = TorrentListHelperViewModel(client: TestTorrentClient(torrents: []), listComputation: { inputs in
+            counter.increment()
+            return TorrentListHelperViewModel.computeLists(inputs)
+        })
+        
+        // Five inputs change (the initial subscription plus four sets) before the
+        // main actor yields; only the last one should be computed.
+        qBitData.shared.cacheManager.torrents = Dictionary(uniqueKeysWithValues: torrents.map { ($0.hash, $0) })
+        sut.sort = .size
+        sut.reverse = true
+        sut.searchQuery = "i"
+        await sut.waitForListUpdate()
+        
+        XCTAssertEqual(counter.value, 1)
+        XCTAssertEqual(sut.filteredTorrents.map(\.name), ["Ubuntu Linux ISO", "Swift Programming Book"])
+    }
+    
+    @MainActor
+    func test_listUpdate_staleResultCannotOverwriteNewerResult() async {
+        let torrents = getTestTorrents()
+        let slowStarted = XCTestExpectation(description: "slow computation started")
+        let releaseSlow = DispatchSemaphore(value: 0)
+        let sut = TorrentListHelperViewModel(client: TestTorrentClient(torrents: []), listComputation: { inputs in
+            // The computation for the query "slow" blocks until the test releases it.
+            if inputs.query == "slow" {
+                slowStarted.fulfill()
+                releaseSlow.wait()
+            }
+            return TorrentListHelperViewModel.computeLists(inputs)
+        })
+        qBitData.shared.cacheManager.torrents = Dictionary(uniqueKeysWithValues: torrents.map { ($0.hash, $0) })
+        await sut.waitForListUpdate()
+        XCTAssertEqual(sut.filteredTorrents.count, 2)
+        
+        // An older computation is still running...
+        sut.searchQuery = "slow"
+        let slowTask = sut.listUpdateTask
+        await fulfillment(of: [slowStarted], timeout: 5)
+        
+        // ...when a newer input arrives and finishes first.
+        sut.searchQuery = "swift"
+        await sut.waitForListUpdate()
+        XCTAssertEqual(sut.filteredTorrents.map(\.name), ["Swift Programming Book"])
+        
+        // When the older one finishes, its result (no matches) must be dropped.
+        releaseSlow.signal()
+        await slowTask?.value
+        XCTAssertEqual(sut.filteredTorrents.map(\.name), ["Swift Programming Book"])
+    }
 }
