@@ -4,21 +4,27 @@ import Combine
 @MainActor
 class TorrentCacheManager: ObservableObject {
     @Published var torrents: [String: Torrent] = [:]
-    
+
     // Lock expiration timestamps for torrent hashes
     private var lockedHashes: [String: Date] = [:]
-    
+
+    // Each assignment to the @Published `torrents` re-runs every subscriber
+    // (the torrent list re-filters and re-sorts the whole list), so every method
+    // below mutates a local copy and publishes it exactly once.
+
     func merge(mainData: MainData) {
         let now = Date()
         // Clear expired locks
         lockedHashes = lockedHashes.filter { $0.value > now }
-        
+
+        var newTorrents = self.torrents
+
         // 1. Reset Cache on Full Update
         if mainData.full_update == true {
-            self.torrents.removeAll()
+            newTorrents.removeAll(keepingCapacity: true)
             self.lockedHashes.removeAll()
         }
-        
+
         // 2. Apply Updates & Adds
         if let torrentsUpdate = mainData.torrents {
             for (hash, partial) in torrentsUpdate {
@@ -26,44 +32,48 @@ class TorrentCacheManager: ObservableObject {
                 if let lockExpiration = lockedHashes[hash], lockExpiration > now {
                     continue
                 }
-                
-                if let existing = self.torrents[hash] {
-                    var updated = existing
-                    updated.update(from: partial)
-                    self.torrents[hash] = updated
+
+                if var existing = newTorrents[hash] {
+                    existing.update(from: partial)
+                    newTorrents[hash] = existing
                 } else {
-                    let newTorrent = Torrent(from: partial, hash: hash)
-                    self.torrents[hash] = newTorrent
+                    newTorrents[hash] = Torrent(from: partial, hash: hash)
                 }
             }
         }
-        
+
         // 3. Prune Deleted Torrents
         if let removedHashes = mainData.torrents_removed {
             for hash in removedHashes {
-                self.torrents.removeValue(forKey: hash)
+                newTorrents.removeValue(forKey: hash)
             }
         }
+
+        self.torrents = newTorrents
     }
-    
+
     // Method to apply optimistic updates
     func updateTorrentsOptimistically(hashes: [String], mutation: (inout Torrent) -> Void) {
         let lockExpiration = Date().addingTimeInterval(3.0)
+        var newTorrents = self.torrents
         for hash in hashes {
-            if var torrent = torrents[hash] {
+            if var torrent = newTorrents[hash] {
                 mutation(&torrent)
-                torrents[hash] = torrent
+                newTorrents[hash] = torrent
                 lockedHashes[hash] = lockExpiration
             }
         }
+        self.torrents = newTorrents
     }
-    
+
     // Method to optimistically delete torrents
     func deleteTorrentsOptimistically(hashes: [String]) {
         let lockExpiration = Date().addingTimeInterval(3.0)
+        var newTorrents = self.torrents
         for hash in hashes {
-            torrents.removeValue(forKey: hash)
+            newTorrents.removeValue(forKey: hash)
             lockedHashes[hash] = lockExpiration
         }
+        self.torrents = newTorrents
     }
 }
