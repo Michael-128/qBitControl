@@ -65,43 +65,34 @@ class TorrentListHelperViewModel: ObservableObject {
             guard let self = self else { return }
             let (cat, tag, sortVal, rev) = otherParams
             
-            let allTorrents = Array(dict.values)
+            // Sort once; the filtered list is a subset of the sorted list
+            // (filter preserves order), so it does not need its own sort.
+            let sorted = Self.sortTorrents(Array(dict.values), sortVal: sortVal, reverseVal: rev)
             
-            // 1. Update self.torrents (sorted by VM sorting)
-            self.torrents = self.getProcessedTorrents(
-                allTorrents: allTorrents,
-                query: "",
-                filterVal: .all,
-                categoryVal: "All",
-                tagVal: "All",
-                sortVal: sortVal,
-                reverseVal: rev
-            )
-            
-            // 2. Update self.filteredTorrents (filtered and sorted)
-            self.filteredTorrents = self.getProcessedTorrents(
-                allTorrents: allTorrents,
+            self.torrents = sorted
+            self.filteredTorrents = Self.filterTorrents(
+                sorted,
+                using: self.filterStrategy,
                 query: query,
                 filterVal: filterVal,
                 categoryVal: cat,
-                tagVal: tag,
-                sortVal: sortVal,
-                reverseVal: rev
+                tagVal: tag
             )
         }
         .store(in: &cancellables)
     }
     
-    func getProcessedTorrents(
-        allTorrents: [Torrent],
+    // Pure functions with no actor state, so they can run off the main actor if needed.
+    nonisolated static func filterTorrents(
+        _ allTorrents: [Torrent],
+        using filterStrategy: TorrentFilterStrategy,
         query: String,
         filterVal: TorrentFilterOption,
         categoryVal: String,
-        tagVal: String,
-        sortVal: TorrentSortOption,
-        reverseVal: Bool
+        tagVal: String
     ) -> [Torrent] {
-        var list = allTorrents.filter { torrent in
+        let lowercasedQuery = query.lowercased()
+        return allTorrents.filter { torrent in
             // Filter by status (filterVal)
             if !filterStrategy.matches(torrent, filter: filterVal) { return false }
             
@@ -126,13 +117,15 @@ class TorrentListHelperViewModel: ObservableObject {
             
             // Filter by Search Query
             if query != "" {
-                if !torrent.name.lowercased().contains(query.lowercased()) { return false }
+                if !torrent.name.lowercased().contains(lowercasedQuery) { return false }
             }
             
             return true
         }
-        
-        // Sort
+    }
+    
+    nonisolated static func sortTorrents(_ torrents: [Torrent], sortVal: TorrentSortOption, reverseVal: Bool) -> [Torrent] {
+        var list = torrents
         list.sort { a, b in
             let isOrdered: Bool
             switch sortVal {
