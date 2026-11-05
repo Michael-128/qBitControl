@@ -6,6 +6,26 @@
 import SwiftUI
 import Combine
 
+/// Everything the torrent list's filter and sort depend on, snapshotted on the main actor
+/// so the work can run off it.
+struct TorrentListInputs: Sendable {
+    let torrents: [Torrent]
+    let query: String
+    let filter: TorrentFilterOption
+    let category: String
+    let tag: String
+    let sort: TorrentSortOption
+    let reverse: Bool
+    let filterStrategy: any TorrentFilterStrategy
+}
+
+struct TorrentListResult: Sendable, Equatable {
+    /// All torrents, sorted.
+    let sorted: [Torrent]
+    /// The sorted torrents that match the search query, status filter, category and tag.
+    let filtered: [Torrent]
+}
+
 @MainActor
 class TorrentListHelperViewModel: ObservableObject {
     let defaults = UserDefaults.standard
@@ -38,6 +58,16 @@ class TorrentListHelperViewModel: ObservableObject {
     @Published var sheetIdentifier: SheetIdentifier?
     
     private var pollingTask: Task<Void, Never>?
+    
+    /// Filters and sorts the list. Runs off the main actor.
+    private let listComputation: @Sendable (TorrentListInputs) -> TorrentListResult
+    /// The latest scheduled list update. Older updates are cancelled and their results dropped.
+    private(set) var listUpdateTask: Task<Void, Never>?
+    /// Incremented for every scheduled list update; a result is only published if its
+    /// generation is still the latest, so an older, slower computation can never
+    /// overwrite a newer one.
+    private var listGeneration: UInt64 = 0
+    
     var hash = ""
     private var cancellables = Set<AnyCancellable>()
     
@@ -48,9 +78,14 @@ class TorrentListHelperViewModel: ObservableObject {
         return category.capitalized
     }
     
-    init(client: TorrentClientProtocol, filterStrategy: TorrentFilterStrategy = QBitTorrentFilterStrategy()) {
+    init(
+        client: TorrentClientProtocol,
+        filterStrategy: TorrentFilterStrategy = QBitTorrentFilterStrategy(),
+        listComputation: (@Sendable (TorrentListInputs) -> TorrentListResult)? = nil
+    ) {
         self.client = client
         self.filterStrategy = filterStrategy
+        self.listComputation = listComputation ?? { TorrentListHelperViewModel.computeLists($0) }
         setupSubscriptions()
     }
     
@@ -65,43 +100,76 @@ class TorrentListHelperViewModel: ObservableObject {
             guard let self = self else { return }
             let (cat, tag, sortVal, rev) = otherParams
             
-            let allTorrents = Array(dict.values)
-            
-            // 1. Update self.torrents (sorted by VM sorting)
-            self.torrents = self.getProcessedTorrents(
-                allTorrents: allTorrents,
-                query: "",
-                filterVal: .all,
-                categoryVal: "All",
-                tagVal: "All",
-                sortVal: sortVal,
-                reverseVal: rev
-            )
-            
-            // 2. Update self.filteredTorrents (filtered and sorted)
-            self.filteredTorrents = self.getProcessedTorrents(
-                allTorrents: allTorrents,
+            self.scheduleListUpdate(TorrentListInputs(
+                torrents: Array(dict.values),
                 query: query,
-                filterVal: filterVal,
-                categoryVal: cat,
-                tagVal: tag,
-                sortVal: sortVal,
-                reverseVal: rev
-            )
+                filter: filterVal,
+                category: cat,
+                tag: tag,
+                sort: sortVal,
+                reverse: rev,
+                filterStrategy: self.filterStrategy
+            ))
         }
         .store(in: &cancellables)
     }
     
-    func getProcessedTorrents(
-        allTorrents: [Torrent],
+    /// Filters and sorts on a background thread, then publishes on the main actor.
+    /// Inputs that change in quick succession (several properties set in one pass, or a
+    /// poll landing while the user types) cancel the pending update, so only the latest
+    /// one is computed and published.
+    private func scheduleListUpdate(_ inputs: TorrentListInputs) {
+        listGeneration &+= 1
+        let generation = listGeneration
+        let compute = listComputation
+        
+        listUpdateTask?.cancel()
+        listUpdateTask = Task { [weak self] in
+            guard !Task.isCancelled else { return }
+            let result = await Task.detached(priority: .userInitiated) {
+                compute(inputs)
+            }.value
+            guard let self, !Task.isCancelled, generation == self.listGeneration else { return }
+            // Skip no-op assignments so SwiftUI doesn't re-diff an unchanged list.
+            if self.torrents != result.sorted { self.torrents = result.sorted }
+            if self.filteredTorrents != result.filtered { self.filteredTorrents = result.filtered }
+        }
+    }
+    
+    /// Waits until the most recently scheduled list update has been applied (or dropped
+    /// because a newer one replaced it, in which case it waits for that one instead).
+    func waitForListUpdate() async {
+        while let task = listUpdateTask {
+            await task.value
+            if task == listUpdateTask { return }
+        }
+    }
+    
+    /// Sorts once, then filters the sorted list (filter preserves order).
+    nonisolated static func computeLists(_ inputs: TorrentListInputs) -> TorrentListResult {
+        let sorted = sortTorrents(inputs.torrents, sortVal: inputs.sort, reverseVal: inputs.reverse)
+        let filtered = filterTorrents(
+            sorted,
+            using: inputs.filterStrategy,
+            query: inputs.query,
+            filterVal: inputs.filter,
+            categoryVal: inputs.category,
+            tagVal: inputs.tag
+        )
+        return TorrentListResult(sorted: sorted, filtered: filtered)
+    }
+    
+    // Pure functions with no actor state, so they can run off the main actor.
+    nonisolated static func filterTorrents(
+        _ allTorrents: [Torrent],
+        using filterStrategy: TorrentFilterStrategy,
         query: String,
         filterVal: TorrentFilterOption,
         categoryVal: String,
-        tagVal: String,
-        sortVal: TorrentSortOption,
-        reverseVal: Bool
+        tagVal: String
     ) -> [Torrent] {
-        var list = allTorrents.filter { torrent in
+        let lowercasedQuery = query.lowercased()
+        return allTorrents.filter { torrent in
             // Filter by status (filterVal)
             if !filterStrategy.matches(torrent, filter: filterVal) { return false }
             
@@ -126,13 +194,15 @@ class TorrentListHelperViewModel: ObservableObject {
             
             // Filter by Search Query
             if query != "" {
-                if !torrent.name.lowercased().contains(query.lowercased()) { return false }
+                if !torrent.name.lowercased().contains(lowercasedQuery) { return false }
             }
             
             return true
         }
-        
-        // Sort
+    }
+    
+    nonisolated static func sortTorrents(_ torrents: [Torrent], sortVal: TorrentSortOption, reverseVal: Bool) -> [Torrent] {
+        var list = torrents
         list.sort { a, b in
             let isOrdered: Bool
             switch sortVal {
